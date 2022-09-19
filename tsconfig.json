@@ -1,0 +1,57 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "target": "es6",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "paths": {
+      "apexcharts": [
+        "./node_modules/apexcharts-clevision"
+      ],
+      "apexcharts/*": [
+        "./node_modules/apexcharts-clevision/*"
+      ],
+      "@core/*": [
+        "./src/@core/*"
+      ],
+      "@views/*": [
+        "./src/views/*"
+      ],
+      "@src/*": [
+        "./src/*"
+      ],
+      "@auth/*": [
+        "./src/@auth/*"
+      ],
+      "@context/*": [
+        "./src/context/*"
+      ],
+      "src/*": [
+        "./src/*"
+      ],
+    }
+  },
+  "include": [
+    "src",
+    "declaration.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
