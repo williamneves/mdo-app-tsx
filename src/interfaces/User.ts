@@ -1,7 +1,7 @@
+import {Gender} from '@core/utils/types'
+
 export default interface User {
-  inactive: boolean
-  authUID: string
-  provider: Array<string>
+  _id: string
   name: string
   email: string
   imageURL: string
@@ -9,26 +9,11 @@ export default interface User {
   role: "admin" | "manager" | "coordinator" | "vendor" | "streetVendor" | "client"
   profile: {
     jobTitle: string
-    birthDay: Date
-    gender: string
-    phoneNumber: string
-    bio: string
+    birthday?: Date
+    gender?: Gender
+    phoneNumbers?: string
+    bio?: string
   }
-  address: {
-    address: string
-    number: string
-    city: string
-    state: string
-    zipCode: string
-    description: string
-  }
-  bankAccount: {
-    cpf: string
-    bankName: string
-    accountNumber: string
-    routingNumber: string
-    accountType: "checking" | "savings"
-    chavePix: string
-    tipoChavePix: "cpf" | "email" | "celular" | "aleatoria"
-  }
+  createdAt: Date
+  updatedAt: Date
 }
