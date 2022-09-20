@@ -14,6 +14,6 @@ export default interface User {
     phoneNumbers?: string
     bio?: string
   }
-  createdAt: Date
-  updatedAt: Date
+  _createdAt: Date
+  _updatedAt: Date
 }
