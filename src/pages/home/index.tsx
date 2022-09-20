@@ -4,8 +4,19 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
+import { useQuery } from "@tanstack/react-query";
+import fetchUserDB from "@auth/fetchUserDB";
 
 const Home = () => {
+
+  const { data, isLoading } = useQuery(['authUser', ['ZBj2JfRn74UWOfzgn8zjKusmx7G3']], () => fetchUserDB('ZBj2JfRn74UWOfzgn8zjKusmx7G3'))
+
+  if (!isLoading){
+  console.log(data)
+
+  }
+
+
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>

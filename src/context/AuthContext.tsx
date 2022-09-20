@@ -42,11 +42,29 @@ type Props = {
   children: ReactNode
 }
 
+import * as api from 'src/queries/authUser'
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query'
+import fetchUserDB from "@auth/fetchUserDB";
+
 const AuthProvider = ({ children }: Props) => {
   // ** States
   const [user, setUser] = useState<AuthUser | null>(defaultProvider.user);
   const [loading, setLoading] = useState<boolean>(defaultProvider.loading);
   const [isInitialized, setIsInitialized] = useState<boolean>(defaultProvider.isInitialized);
+
+  useEffect(() => {
+     // Test react-query
+
+    // const { data } = api.useGetAuthUserQuery('ZBj2JfRn74UWOfzgn8zjKusmx7G3')
+  // const { data } = useQuery(['authUser', ['ZBj2JfRn74UWOfzgn8zjKusmx7G3']], () => fetchUserDB('ZBj2JfRn74UWOfzgn8zjKusmx7G3'))
+
+    // console.log(data)
+  }, []);
+
 
   // ** Hooks
   const router = useRouter();
