@@ -6,6 +6,7 @@ import {
 } from "src/configs/firebase"
 
 import AuthUser from "src/interfaces/authUser"
+import ls from "src/configs/localStorage";
 
 interface Error {
   message: string,
@@ -37,6 +38,8 @@ export const signInByEmail = async (email: string, password: string) :Promise<Au
 
 // Sign Out
 export const signOutUser = () => {
+  // Remove user from local storage
+  ls.remove("b3_userData")
   return signOut(authInstance)
 }
 

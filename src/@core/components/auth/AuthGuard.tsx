@@ -19,14 +19,17 @@ const AuthGuard = (props: AuthGuardProps) => {
   const router = useRouter()
 
   useEffect(
+
     () => {
+      console.log("authloading", auth.loading)
+      console.log("authuser", auth.user)
       if (!router.isReady) {
         return
       }
       console.log('AuthGuard useEffect')
       if (
         auth.user === null
-        // && !ls.get("b3_userData")
+        && !ls.get("b3_userData")
       ) {
         if (router.asPath !== '/') {
           router.replace({
@@ -43,6 +46,7 @@ const AuthGuard = (props: AuthGuardProps) => {
   )
 
   if (auth.loading || auth.user === null) {
+    console.log('AuthGuard loading***')
     return fallback
   }
 

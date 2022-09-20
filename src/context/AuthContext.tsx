@@ -118,13 +118,17 @@ const AuthProvider = ({ children }: Props) => {
         // @ts-ignore
         auth.fetchUser(response)
           .then((response) => {
-            setLoading(false)
-            setUser(response);
-            // const returnUrl = router.query.returnUrl
-            //
-            // const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/'
-            //
-            // router.replace(redirectURL as string)
+            if (response) {
+              console.log('AuthProvider fetchUser response', response)
+              setUser(response)
+              setLoading(false)
+            }
+            else {
+              ls.remove("b3_userData");
+              setUser(null)
+              setLoading(false)
+              router.replace('/login')
+            }
           })
       })
       .catch(() => {
@@ -192,6 +196,7 @@ const AuthProvider = ({ children }: Props) => {
 
       // ** Redirect to Home Page
       await router.replace(redirectURL as string);
+
     } catch (err) {
       console.error("err", err);
       toast.error("Login failed!", { id: loginToast });
