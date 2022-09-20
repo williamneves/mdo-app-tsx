@@ -35,6 +35,6 @@ export default createSchema({
     client,
     sequenceNumbers,
     goal,
-    salePayment,
+    // salePayment,
   ]),
 });

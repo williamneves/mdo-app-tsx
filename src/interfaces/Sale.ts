@@ -1,12 +1,26 @@
+import AuthUser from "src/interfaces/authUser";
+
 export default interface Sale {
+  _id: string
   saleNumber: number
-  povNumber: number
+  PDVNumber: number
   auditStatus: "pending" | "approved" | "rejected"
   canceled: boolean
   excluded: boolean
   date: Date
   client: any
-  products: Array<any>
+  products: Array<{
+    product: any
+    price: number
+    quantity: number
+    discount: number
+    cost: number
+  }>
+  salePayment: Array<{
+    paymentMethod: any
+    paymentAmount: number
+    splitQuantity: number
+  }>
   totalPrice: number
   totalCost: number
   totalDiscount: number
@@ -17,9 +31,9 @@ export default interface Sale {
   score: number
   paymentMethod: any
   splitQuantity: number
-  user: any
+  user: AuthUser
   store: any
-  origin: Array<any>
+  origin?: Array<any>
   schedule: boolean
   scheduleDiscount: boolean
   observations?: string

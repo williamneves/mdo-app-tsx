@@ -1,8 +1,10 @@
+type productCategory = "armacao-grau" | "oculos-solar" | "lente" | "outros"
+
 export default interface Product {
-  inactive: boolean
+  inactive?: boolean
   name: string
-  description: string
-  sku: string
-  category: "armacao-grau" | "oculos-solar" | "lente" | "outros"
+  description?: string
+  sku?: string
+  category: productCategory
   store: any
 }
