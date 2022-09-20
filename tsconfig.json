@@ -45,6 +45,9 @@
       "src/*": [
         "./src/*"
       ],
+      "components/*": [
+        "./src/views/components/*"
+      ],
     }
   },
   "include": [
