@@ -26,6 +26,9 @@ import HelpCircleOutline from 'mdi-material-ui/HelpCircleOutline'
 // ** Context
 import { useAuth } from 'src/hooks/useAuth'
 
+// ** Import GetImageURL
+import { getImageUrl } from "src/configs/sanityConfig";
+
 // ** Type Imports
 import { Settings } from 'src/@core/context/settingsContext'
 
@@ -51,7 +54,7 @@ const UserDropdown = (props: Props) => {
 
   // ** Hooks
   const router = useRouter()
-  const { logout } = useAuth()
+  const { logout, user } = useAuth()
 
   // ** Vars
   const { direction } = settings
@@ -99,10 +102,12 @@ const UserDropdown = (props: Props) => {
         }}
       >
         <Avatar
-          alt='John Doe'
+          alt={user?.name}
           onClick={handleDropdownOpen}
           sx={{ width: 40, height: 40 }}
-          src='/images/avatars/1.png'
+          src={
+            (user?.imageAsset && getImageUrl(user?.imageAsset).width(128).url()) || user?.imageURL
+          }
         />
       </Badge>
       <Menu
@@ -130,8 +135,8 @@ const UserDropdown = (props: Props) => {
               }}
             >
               <Avatar
-                alt='John Doe'
-                src='/images/avatars/1.png'
+                alt={user?.name}
+                src={(user?.imageAsset && getImageUrl(user?.imageAsset).width(128).url()) || user?.imageURL}
                 sx={{ width: '2.5rem', height: '2.5rem' }}
               />
             </Badge>
@@ -143,18 +148,18 @@ const UserDropdown = (props: Props) => {
                 flexDirection: 'column'
               }}
             >
-              <Typography sx={{ fontWeight: 600 }}>John Doe</Typography>
+              <Typography sx={{ fontWeight: 600 }}>{user?.name}</Typography>
               <Typography
                 variant='body2'
                 sx={{ fontSize: '0.8rem', color: 'text.disabled' }}
               >
-                Admin
+                {user?.profile?.jobTitle}
               </Typography>
             </Box>
           </Box>
         </Box>
         <Divider sx={{ mt: 0, mb: 1 }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose()}>
+        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose("/account-settings")}>
           <Box sx={styles}>
             <AccountOutline sx={{ marginRight: 2 }} />
             Profile
