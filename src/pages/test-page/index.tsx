@@ -11,20 +11,29 @@ import Button from "@mui/lab/LoadingButton";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
-import { TextInputControlled } from "components/inputs/TextInputControlled";
+import TextInputControlled from "src/views/components/inputs/TextInputControlled";
+import CurrencyMaskInputControlled from "src/views/components/inputs/CurrencyMaskInputControlled";
 
 const Home = () => {
 
+  const DefaultValues = {
+    TextInput: "",
+    NumericMaskInput: 0,
+  }
+
   interface FormValues {
-    name: string;
+    TextInput: string;
+    NumericMaskInput: number;
   }
 
   const schema = yup.object().shape({
-    name: yup.string().required('Name is required'),
+    TextInput: yup.string().required('Text is required'),
+    NumericMaskInput: yup.number().required('Number is required'),
   });
 
   const { control, handleSubmit, formState: { errors } } = useForm<FormValues>(
     {
+      defaultValues: DefaultValues,
       resolver: yupResolver(schema)
     }
   );
@@ -39,20 +48,38 @@ const Home = () => {
         <Card>
           <CardHeader title="Testing all custom components from Project"></CardHeader>
           <CardContent>
-            <Typography sx={{ mb: 2 }} variant={"h4"}>Input Controlled.</Typography>
+            <Typography sx={{ mb: 2 }} variant={"h4"}>Input de Text</Typography>
             <form autoComplete={"off"} onSubmit={handleSubmit(onSubmit)}>
               <Grid container spacing={2}>
                 {/*<Grid item xs={12}>*/}
                   <Grid item xs={4}>
                     <TextInputControlled
-                      name={"name"}
+                      name={"TextInput"}
                       control={control}
-                      label={"Name"}
-                      placeholder={"Name"}
+                      label={"TextInput"}
                       errors={errors}
-                      startAdornment={"$"}
-                      endAdornment={"$"}
-                      // otherProps={{ variant: "outlined", size: "small" }}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Button type={"submit"} variant={"contained"}>Submit</Button>
+                  </Grid>
+
+                {/*</Grid>*/}
+              </Grid>
+            </form>
+          </CardContent>
+          <CardContent>
+            <Typography sx={{ mb: 2 }} variant={"h4"}>Input de Dinheiro</Typography>
+            <form autoComplete={"off"} onSubmit={handleSubmit(onSubmit)}>
+              <Grid container spacing={2}>
+                {/*<Grid item xs={12}>*/}
+                  <Grid item xs={4}>
+                    <CurrencyMaskInputControlled
+                      name={"NumericMaskInput"}
+                      control={control}
+                      label={"NumericMaskInput"}
+                      errors={errors}
+                      startAdornment={'R$'}
                     />
                   </Grid>
                   <Grid item xs={4}>
