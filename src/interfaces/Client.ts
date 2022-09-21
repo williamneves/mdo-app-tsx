@@ -18,4 +18,6 @@ export default interface Client {
     state?: string
     zipCode?: string
   }
+  _createdAt: Date
+  _updatedAt?: Date
 }
