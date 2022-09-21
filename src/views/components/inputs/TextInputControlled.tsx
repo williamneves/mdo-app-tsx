@@ -1,20 +1,27 @@
 import FormControl from "@mui/material/FormControl";
-import { Controller } from "react-hook-form";
-import TextField from "@mui/material/TextField";
+import {
+  Controller,
+  Control,
+  ControllerProps,
+  FieldErrors,
+} from "react-hook-form";
+import { TextField, TextFieldProps, StandardTextFieldProps, FilledTextFieldProps, OutlinedTextFieldProps  } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import FormHelperText from "@mui/material/FormHelperText";
 
-interface TextInputProps {
+import { InputController } from "./InputController";
+
+interface TextInputProps extends OutlinedTextFieldProps {
   name: string
-  control: object
+  control: any
   label: string
   placeholder?: string
-  errors: any
+  errors: FieldErrors
+  readOnly?: boolean
   // Just pass a ReactNode to simple string to startAdornment and endAdornment
   startAdornment?: JSX.Element | string
   endAdornment?: JSX.Element | string
   // Add any other props you want to pass to the input
-  otherProps?: object
 }
 
 export const TextInputControlled = (props: TextInputProps) => {
@@ -27,47 +34,50 @@ export const TextInputControlled = (props: TextInputProps) => {
     errors,
     startAdornment,
     endAdornment,
-    otherProps
+    variant,
+    readOnly
   } = props;
 
   // @ts-ignore
   return (
-    <FormControl fullWidth>
-      <Controller
+      <InputController
         name={name}
-        // @ts-ignore
         control={control}
+        errors={errors}
         render={({ field: { value, onChange }, fieldState: { invalid } }) => (
           <TextField
+            {...props}
+            variant={variant}
             value={value}
-            label={label}
             onChange={onChange}
             placeholder={placeholder || label}
             error={invalid}
             aria-describedby={`${name}-text-input-form`}
             InputProps={{
+              readOnly: readOnly || props.InputProps?.readOnly,
               startAdornment: (
-                startAdornment &&
+                startAdornment ?
                 <InputAdornment position="start">
                   {startAdornment}
                 </InputAdornment>
+                : props.InputProps?.startAdornment
               ),
               endAdornment: (
-                startAdornment &&
+                startAdornment ?
                 <InputAdornment position="end">
                   {endAdornment}
                 </InputAdornment>
+                : props.InputProps?.endAdornment
               )
             }}
-            {...otherProps}
           />
         )}
       />
-      {errors[name] && (
-        <FormHelperText sx={{ color: "error.main" }} id={`${name}-text-input-form`}>
-          {errors[name].message}
-        </FormHelperText>
-      )}
-    </FormControl>
   );
 };
+
+TextInputControlled.defaultProps = {
+  variant: "outlined",
+}
+
+export default TextInputControlled;
