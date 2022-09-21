@@ -16,12 +16,16 @@ import authConfig from "src/configs/auth";
 // ** Types
 import { AuthValuesType, RegisterParams, LoginParams, ErrCallbackType } from "./types";
 import AuthUser from "src/interfaces/authUser";
+import SelectedStore from "@src/interfaces/SelectedStore";
+
 
 // ** Defaults
 const defaultProvider: AuthValuesType = {
-  user: null,
   loading: true,
+  user: null,
   setUser: () => null,
+  selectedStore: null,
+  setSelectedStore: () => null,
   setLoading: () => Boolean,
   isInitialized: false,
   login: () => Promise.resolve(),
@@ -45,42 +49,38 @@ type Props = {
 const AuthProvider = ({ children }: Props) => {
   // ** States
   const [user, setUser] = useState<AuthUser | null>(defaultProvider.user);
+  const [selectedStore, setSelectedStore] = useState<SelectedStore | null>(null);
   const [loading, setLoading] = useState<boolean>(defaultProvider.loading);
   const [isInitialized, setIsInitialized] = useState<boolean>(defaultProvider.isInitialized);
 
   // ** Hooks
   const router = useRouter();
 
-  // useEffect(() => {
-  //   console.log('AuthProvider useEffect')
-  //   const initAuth = async (): Promise<void> => {
-  //     setIsInitialized(true)
-  //     const storedToken = window.localStorage.getItem(authConfig.storageTokenKeyName)!
-  //     if (storedToken) {
-  //       setLoading(true)
-  //       await axios
-  //         .get(authConfig.meEndpoint, {
-  //           headers: {
-  //             Authorization: storedToken
-  //           }
-  //         })
-  //         .then(async response => {
-  //           setLoading(false)
-  //           setUser({ ...response.data.userData })
-  //         })
-  //         .catch(() => {
-  //           localStorage.removeItem('userData')
-  //           localStorage.removeItem('refreshToken')
-  //           localStorage.removeItem('accessToken')
-  //           setUser(null)
-  //           setLoading(false)
-  //         })
-  //     } else {
-  //       setLoading(false)
-  //     }
-  //   }
-  //   initAuth()
-  // }, [])
+  const getLocalStorageUser = async (authUID: string): Promise<AuthUser> => {
+    return new Promise(async (resolve, reject) => {
+      const localUser = await ls.get("b3_userData");
+      console.log('getLocalStorageUser', localUser)
+      if (
+        !localUser
+        || moment(localUser.expirationDate).isBefore(moment())
+        || localUser.user.authUID !== authUID
+      ) {
+        reject(false);
+      }
+      resolve(localUser.user)
+    })
+  }
+
+  const setLocalStorageUser = (user: AuthUser): void => {
+    const expirationDate = moment().add(12, "hours").toDate();
+    // Create User Object
+    const storeUser = {
+      user: user,
+      expirationDate: expirationDate
+    };
+    // Store User in Local Storage
+    ls.set("b3_userData", storeUser);
+  }
 
   /*
     Check if user is logged in
@@ -88,47 +88,33 @@ const AuthProvider = ({ children }: Props) => {
     if no, redirect to login page
   */
   useEffect(() => {
-
     // Init auth
     setIsInitialized(true)
     setLoading(true)
-    // // Check if has valid userData in LocalStorage
-    // const userData = ls.get("b3_userData");
-    //
-    // // If no userData, redirect to login page
-    // if (!userData) {
-    //   setLoading(false);
-    //   return;
-    // }
-    //
-    // // If userData is expired, redirect to login page
-    // if (moment().isAfter(moment(userData.expirationDate))) {
-    //   toast.error("Você ficou ausente por muito tempo, faça seu login novamente.", {duration: 5000});
-    //   setLoading(false);
-    //   return;
-    // }
-    //
-    // console.log("is authenticated");
-    // setLoading(false);
-    //
-    //
+
+    // Check if user is logged in
     auth.isAuthenticated()
-      .then((response) => {
-        console.log('AuthProvider isAuthenticated response', response)
-        // @ts-ignore
-        auth.fetchUser(response)
-          .then((response) => {
-            if (response) {
-              console.log('AuthProvider fetchUser response', response)
-              setUser(response)
-              setLoading(false)
-            }
-            else {
-              ls.remove("b3_userData");
-              setUser(null)
-              setLoading(false)
-              router.replace('/login')
-            }
+      // If user is logged in
+      .then((userUID) => {
+        // Check if it has valid userData in LocalStorage
+        // And if it is not expired
+        // Return user from LocalStorage
+        getLocalStorageUser(userUID as string)
+          .then((user) => {
+            setUser(user) // Set user
+            setSelectedStore(user.stores[0]) // Set selected store
+            setLoading(false) // Stop loading
+          })
+          // If user is not in LocalStorage
+          .catch(() => {
+            // Fetch user from DB
+            auth.fetchUser(userUID as string)
+              .then((user) => {
+                setLocalStorageUser(user) // Set user in LocalStorage
+                setUser(user) // Set user
+                setSelectedStore(user.stores[0]) // Set selected store
+                setLoading(false) // Stop loading
+              })
           })
       })
       .catch(() => {
@@ -138,57 +124,23 @@ const AuthProvider = ({ children }: Props) => {
 
   }, []);
 
-  // const handleLogin = (params: LoginParams, errorCallback?: ErrCallbackType) => {
-  //   axios
-  //     .post(authConfig.loginEndpoint, params)
-  //     .then(async res => {
-  //       window.localStorage.setItem(authConfig.storageTokenKeyName, res.data.accessToken)
-  //     })
-  //     .then(() => {
-  //       axios
-  //         .get(authConfig.meEndpoint, {
-  //           headers: {
-  //             Authorization: window.localStorage.getItem(authConfig.storageTokenKeyName)!
-  //           }
-  //         })
-  //         .then(async response => {
-  //           const returnUrl = router.query.returnUrl
-  //
-  //           setUser({ ...response.data.userData })
-  //           await window.localStorage.setItem('userData', JSON.stringify(response.data.userData))
-  //
-  //           const redirectURL = returnUrl && returnUrl !== '/' ? returnUrl : '/'
-  //
-  //           router.replace(redirectURL as string)
-  //         })
-  //     })
-  //     .catch(err => {
-  //       if (errorCallback) errorCallback(err)
-  //     })
-  // }
+  // ** Methods
 
+  // ** Login
   const handleLogin = async (params: LoginParams, errorCallback?: ErrCallbackType) => {
     const loginToast = toast.loading("Logging in...");
 
     try {
       // ** Sign the user
-      const userAuth = await auth.signInByEmail(params.email, params.password);
+      const user = await auth.signInByEmail(params.email, params.password);
       // console.log('userUID', userUID)
 
       // ** Set the user
-      setUser(userAuth);
+      setUser(user);
 
       // ** Store User in Local Storage
-      // Create Expiration Date with 1 day expiration in milliseconds
-      const expirationDate = moment().add(24, "hours").toDate();
-
-      // Create User Object
-      const storeUser = {
-        user: userAuth,
-        expirationDate: expirationDate
-      };
-      // Store User in Local Storage
-      await ls.set("b3_userData", storeUser);
+      // Create Expiration Date with 12 hours expiration in milliseconds
+      setLocalStorageUser(user)
 
       const returnUrl = router.query.returnUrl;
       const redirectURL = returnUrl && returnUrl !== "/" ? returnUrl : "/";
@@ -206,6 +158,7 @@ const AuthProvider = ({ children }: Props) => {
 
   };
 
+  // ** Logout
   const handleLogout = async () => {
     await auth.signOutUser();
     setUser(null);
@@ -236,6 +189,8 @@ const AuthProvider = ({ children }: Props) => {
     loading,
     setUser,
     setLoading,
+    selectedStore,
+    setSelectedStore,
     isInitialized,
     setIsInitialized,
     login: handleLogin,
