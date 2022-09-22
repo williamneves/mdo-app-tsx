@@ -118,3 +118,14 @@ export const createClient = async (client: Client) => {
     throw error;
   }
 };
+
+export const increaseClientCode = async () => {
+  try {
+    return dbClient
+      .patch("8a7d451e-193d-4ebc-92c1-40dfc7725ed8")
+      .inc({ clientNumber: 1 })
+      .commit();
+  } catch (error) {
+    throw error;
+  }
+};
