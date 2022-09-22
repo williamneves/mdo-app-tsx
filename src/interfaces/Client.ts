@@ -1,12 +1,13 @@
 import { Gender } from "@core/utils/types";
 
 export default interface Client {
+  _id: string;
   inactive?: boolean;
   clientNumber: number;
   name: string;
   phone?: string;
   email?: string;
-  birthDay?: Date;
+  birthday?: Date;
   gender?: Gender;
   hearAboutUs?: string;
   cpf?: string;
