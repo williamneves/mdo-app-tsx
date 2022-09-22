@@ -54,6 +54,7 @@ const clientForm = ({ client }: Props) => {
   // React Query
   const queryClient = useQueryClient();
   const createClient = useClient.useCreateClient(queryClient);
+  const { isLoading } = createClient;
 
   const defaultValue = {
     inactive: false,
@@ -108,9 +109,6 @@ const clientForm = ({ client }: Props) => {
     })
   });
 
-  // States
-  const [isLoading, setIsLoading] = useState(false);
-
   // Effects
   useEffect(() => {
     if (user) setValue("createdBy", user);
@@ -121,7 +119,7 @@ const clientForm = ({ client }: Props) => {
     handleSubmit,
     formState: { errors },
     setValue,
-    getValues
+    reset
   } = useForm({
     defaultValues: defaultValue,
     resolver: yupResolver(schema),
@@ -131,20 +129,18 @@ const clientForm = ({ client }: Props) => {
   const onSubmit = async (data: any) => {
 
     const toastId = toast.loading(client ? "Editando cliente..." : "Salvando cliente...");
-    setIsLoading(true);
 
-      try {
-        await createClient.mutateAsync(data);
-        toast.success("Cliente criado com sucesso!", { id: toastId, position: "top-center" });
-      } catch (error) {
-        console.log("error", error);
-        toast.error("Não foi possível salvar, tente novamente ou fale com o suporte", {
-          id: toastId,
-          position: "top-center"
-        });
-      } finally {
-        setIsLoading(false);
-      }
+    try {
+      await createClient.mutateAsync(data);
+      toast.success("Cliente criado com sucesso!", { id: toastId, position: "top-center" });
+      reset(defaultValue);
+    } catch (error) {
+      console.log("error", error);
+      toast.error("Não foi possível salvar, tente novamente ou fale com o suporte", {
+        id: toastId,
+        position: "top-center"
+      });
+    }
 
     // TODO: Update client
   };
@@ -213,6 +209,7 @@ const clientForm = ({ client }: Props) => {
                     control={control}
                     errors={errors}
                     disabled={isLoading}
+                    required={true}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
