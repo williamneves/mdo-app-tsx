@@ -1,7 +1,7 @@
 import { dbClient } from "../../../configs/sanityConfig";
 import Client from "src/interfaces/Client";
 
-export const getAllClients = async (): Promise<Client[] | unknown> => {
+export const getAllClients = async (): Promise<Client[]> => {
   const q = `
   *[
     _type == "client"
@@ -65,9 +65,7 @@ export const getAllClients = async (): Promise<Client[] | unknown> => {
     return data;
   } catch (e) {
     console.log(e);
-    return {
-      error: e
-    };
+    throw e;
   }
 };
 
@@ -125,6 +123,51 @@ export const increaseClientCode = async () => {
       .patch("8a7d451e-193d-4ebc-92c1-40dfc7725ed8")
       .inc({ clientNumber: 1 })
       .commit();
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const updateClient = async (client: Client) => {
+
+  if (!client._id)
+    throw new Error("Missing required fields");
+
+  const clientObject = {
+    _type: "client",
+    clientNumber: client.clientNumber || null,
+    inactive: (client.inactive && client.inactive) || false,
+    name: client.name, // required
+    phone: (client.phone && client.phone) || "",
+    email: (client.email && client.email) || "",
+    birthday: (client.birthday && client.birthday) || "",
+    gender: (client.gender && client.gender) || "",
+    hearAboutUs: (client.hearAboutUs && client.hearAboutUs) || "",
+    cpf: (client.cpf && client.cpf) || "",
+    address: {
+      street: (client.address?.street && client.address.street) || "",
+      number: (client.address?.number && client.address.number) || "",
+      complement:
+        (client.address?.complement && client.address.complement) || "",
+      city: (client.address?.city && client.address.city) || "",
+      state: (client.address?.state && client.address.state) || "",
+      zipCode: (client.address?.zipCode && client.address.zipCode) || ""
+    },
+    store: {
+      // required
+      _type: "reference",
+      _ref: client.store._id
+    },
+    createdBy: {
+      // required
+      _type: "reference",
+      _ref: client.createdBy._id
+    }
+  };
+
+  try {
+    const result = await dbClient.patch(client._id).set(clientObject).commit();
+    return result;
   } catch (error) {
     throw error;
   }

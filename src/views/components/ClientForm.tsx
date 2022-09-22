@@ -55,6 +55,7 @@ const clientForm = ({ client }: Props) => {
   // React Query
   const queryClient = useQueryClient();
   const createClient = useClient.useCreateClientQuery(queryClient);
+  const updateClient = useClient.useUpdateClientQuery(queryClient);
   const { isLoading } = createClient;
 
   const defaultValue = {
@@ -114,7 +115,7 @@ const clientForm = ({ client }: Props) => {
 
   // Effects
   useEffect(() => {
-    if (user) setValue("createdBy", user);
+    if (user && !client) setValue("createdBy", user);
   }, [user, clientsNumber]);
 
   useEffect(() => {
@@ -134,7 +135,7 @@ const clientForm = ({ client }: Props) => {
     getValues,
     reset
   } = useForm({
-    defaultValues: defaultValue,
+    defaultValues: client ? client : defaultValue,
     resolver: yupResolver(schema),
     mode: "onBlur"
   });
@@ -144,8 +145,10 @@ const clientForm = ({ client }: Props) => {
     const toastId = toast.loading(client ? "Editando cliente..." : "Salvando cliente...");
 
     try {
-      await createClient.mutateAsync(data);
-      toast.success("Cliente criado com sucesso!", { id: toastId, position: "top-center" });
+      client ? await updateClient.mutateAsync(data) : await createClient.mutateAsync(data);
+      toast.success(`Cliente ${client ?
+          `#${client?.clientNumber} editado` : "criado"} com sucesso!`,
+        { id: toastId, position: "top-center" });
       reset();
       setClientsNumber(clientsNumber + 1);
     } catch (error) {
@@ -155,8 +158,6 @@ const clientForm = ({ client }: Props) => {
         position: "top-center"
       });
     }
-
-    // TODO: Update client
   };
 
   const storesInSelect = client
@@ -396,9 +397,6 @@ const clientForm = ({ client }: Props) => {
                     type={"submit"}
                     variant={"contained"}
                     sx={{ marginLeft: "auto" }}
-                    // onClick={() => {
-                    //   console.log(getValues());
-                    // }}
                   >
                     <SaveAltIcon sx={{ marginRight: 1 }} />
                     Salvar
