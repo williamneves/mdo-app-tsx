@@ -1,15 +1,17 @@
+import { Gender } from "@core/utils/types";
+
 export default interface Client {
-  inactive?: boolean
-  clientNumber: number
-  name: string
-  phone?: string
-  email?: string
-  birthDay?: Date
-  gender?: "male" | "female" | "other"
-  hearAboutUs?: string
-  cpf?: string
-  store: any
-  createdBy: any
+  inactive?: boolean;
+  clientNumber: number;
+  name: string;
+  phone?: string;
+  email?: string;
+  birthDay?: Date;
+  gender?: Gender;
+  hearAboutUs?: string;
+  cpf?: string;
+  store: any;
+  createdBy: any;
   address?: {
     street?: string
     number?: string
@@ -17,7 +19,7 @@ export default interface Client {
     city?: string
     state?: string
     zipCode?: string
-  }
-  _createdAt: Date
-  _updatedAt?: Date
+  };
+  _createdAt: Date;
+  _updatedAt: Date;
 }

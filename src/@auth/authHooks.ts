@@ -8,13 +8,6 @@ import {
 import AuthUser from "src/interfaces/authUser"
 import ls from "src/configs/localStorage";
 
-interface Error {
-  message: string,
-  query: string,
-  error: any,
-}
-
-
 import fetchUserDB from "src/@auth/fetchUserDB"
 
 export const fetchUser = fetchUserDB
@@ -26,11 +19,13 @@ export const signInByEmail = async (email: string, password: string) :Promise<Au
     // Fetch user from Firebase
     const { user: authUser } = await signInWithEmailAndPassword(authInstance, email, password)
 
+    console.log("authUser", authUser)
     // Fetch and return user from Sanity
     return fetchUserDB(authUser.uid)
   }
 
   catch (error) {
+    console.log('error')
     // Trow error
     throw (error)
   }
@@ -46,14 +41,14 @@ export const signOutUser = () => {
 type userUID = string | null
 
 // Check if user is authenticated
-export const isAuthenticated = async () :Promise<userUID | false> => {
+export const isAuthenticated = async ():Promise<userUID> => {
   // Return user.uid if authenticated, otherwise return false
   return new Promise((resolve, reject) => {
     onAuthStateChanged(authInstance, user => {
       if (user) {
         resolve(user.uid)
       } else {
-        resolve(false)
+        reject(false)
       }
     })
   })

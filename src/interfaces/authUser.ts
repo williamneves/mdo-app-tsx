@@ -1,3 +1,6 @@
+import { Gender } from '@core/utils/types'
+import SelectedStore from "src/interfaces/SelectedStore";
+
 export default interface AuthUser {
   _id: string
   inactive?: boolean
@@ -13,14 +16,11 @@ export default interface AuthUser {
     'vendor' |
     'streetVendor' |
     'customer'
-  stores: [{
-    _id: string
-    name: string
-  }]
-  profile?: {
-    jobTitle?: string
+  stores: Array<SelectedStore>
+  profile: {
+    jobTitle: string
     birthday?: Date
-    gender?: string
+    gender?: Gender
     phoneNumbers?: string
     bio?: string
   }
@@ -41,4 +41,6 @@ export default interface AuthUser {
     chavePix?: string
     tipoChavePix?: "cpf" | "email" | "celular" | "aleatoria"
   }
+  _createdAt: Date
+  _updatedAt: Date
 }

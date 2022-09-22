@@ -1,5 +1,6 @@
 export type ErrCallbackType = (err: { [key: string]: string }) => void
 
+import SelectedStore from "@src/interfaces/SelectedStore";
 import AuthUser from "src/interfaces/authUser";
 
 export type LoginParams = {
@@ -30,6 +31,8 @@ export type AuthValuesType = {
   isInitialized: boolean
   user: AuthUser | null
   setUser: (value: AuthUser | null) => void
+  selectedStore: SelectedStore | null
+  setSelectedStore: (value: SelectedStore | null) => void
   setIsInitialized: (value: boolean) => void
   login: (params: LoginParams, errorCallback?: ErrCallbackType) => void
   register: (params: RegisterParams, errorCallback?: ErrCallbackType) => void
