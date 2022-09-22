@@ -14,25 +14,35 @@ import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import TextInputControlled from "src/views/components/inputs/TextInputControlled";
 import CurrencyMaskInputControlled from "src/views/components/inputs/CurrencyMaskInputControlled";
 import SelectInputController from "src/views/components/inputs/SelectInputController";
+import AutocompleteInputControlled from "src/views/components/inputs/AutocompleteInputControlled";
+import DateInputControlled from "components/inputs/DateInputControlled";
 
 const Home = () => {
 
   const DefaultValues = {
     TextInput: "",
     NumericMaskInput: 0,
-    selectInput: "",
+    selectInput: " ",
+    AutoComplete: [{ _id: "", name: "", age: 0, phone: "" }],
+    DateInput: null,
   }
 
   interface FormValues {
     TextInput: string;
     NumericMaskInput: number;
     selectInput: string;
+    AutoComplete: any;
+    DateInput: Date | null;
   }
 
   const schema = yup.object().shape({
     TextInput: yup.string().required('Text is required'),
-    NumericMaskInput: yup.number().required('Number is required'),
-    selectInput: yup.string().required('Select is required'),
+    NumericMaskInput: yup.number().min(1, 'Number is required').required('Number is required'),
+    selectInput: yup.string().trim().required('Select is required'),
+    AutoComplete: yup.object().shape({
+      name: yup.string().required('Autocomplete is required'),
+    }).required('AutoComplete is required').nullable(),
+    DateInput: yup.date().required('Date is required').nullable(),
   });
 
   const { control, handleSubmit, getValues, formState: { errors } } = useForm<FormValues>(
@@ -50,6 +60,15 @@ const Home = () => {
     console.log(getValues());
   }, []);
 
+
+  const autoCompleteOptions = [
+    { _id: "1", name: "John", age: 20, phone: "9549949940" },
+    { _id: "2", name: "Marta", age: 21, phone: "3210022212" },
+    { _id: "3", name: "Adam", age: 22, phone: "7861230022" },
+    { _id: "4", name: "Sara", age: 23, phone: "9549949944" },
+    { _id: "5", name: "John", age: 24, phone: "9549949945" },
+  ]
+
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
@@ -66,7 +85,6 @@ const Home = () => {
                       control={control}
                       label={"TextInput"}
                       errors={errors}
-                      disabled={true}
                     />
                   </Grid>
                   <Grid item xs={4}>
@@ -113,7 +131,7 @@ const Home = () => {
                       selectItems={{
                         placeholder: {
                           disabled: true,
-                          label: "Selecione uma opção"
+                          label: "Selecione uma opção",
                         },
                         items: [{
                             key: 1,
@@ -121,6 +139,55 @@ const Home = () => {
                             value: "Item 1"
                           }]
                       }}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Button type={"submit"} variant={"contained"}>Submit</Button>
+                  </Grid>
+
+                {/*</Grid>*/}
+              </Grid>
+            </form>
+          </CardContent>
+          <CardContent>
+            <Typography sx={{ mb: 2 }} variant={"h4"}>Input de Dinheiro</Typography>
+            <form autoComplete={"off"} onSubmit={handleSubmit(onSubmit)}>
+              <Grid container spacing={2}>
+                {/*<Grid item xs={12}>*/}
+                  <Grid item xs={4}>
+                    <AutocompleteInputControlled
+                      multiple={true}
+                      limitTags={3}
+                      disableCloseOnSelect
+                      name={"AutoComplete"}
+                      control={control}
+                      label={"Select Input"}
+                      placeholder={"Selecione uma opção"}
+                      errors={errors}
+                      options={autoCompleteOptions}
+                      optionLabel={"name"}
+                      filterKeys={['name', 'age', 'phone']}
+                    />
+                  </Grid>
+                  <Grid item xs={4}>
+                    <Button type={"submit"} variant={"contained"}>Submit</Button>
+                  </Grid>
+
+                {/*</Grid>*/}
+              </Grid>
+            </form>
+          </CardContent>
+          <CardContent>
+            <Typography sx={{ mb: 2 }} variant={"h4"}>Input de Dinheiro</Typography>
+            <form autoComplete={"off"} onSubmit={handleSubmit(onSubmit)}>
+              <Grid container spacing={2}>
+                {/*<Grid item xs={12}>*/}
+                  <Grid item xs={4}>
+                    <DateInputControlled
+                      name={"DateInput"}
+                      control={control}
+                      label={"Date Input"}
+                      errors={errors}
                     />
                   </Grid>
                   <Grid item xs={4}>

@@ -30,6 +30,8 @@ interface CurrencyMaskInputControlledProps extends NumericFormatProps, OutlinedT
   endAdornment?: JSX.Element | string;
 }
 
+const CustomTextField = (props: any) => <TextField {...props} />;
+
 const CurrencyMaskInputControlled = (props: CurrencyMaskInputControlledProps) => {
 
   const {
@@ -38,7 +40,8 @@ const CurrencyMaskInputControlled = (props: CurrencyMaskInputControlledProps) =>
     errors,
     readOnly,
     startAdornment,
-    endAdornment
+    endAdornment,
+    ...rest
   } = props;
 
   return (
@@ -50,7 +53,6 @@ const CurrencyMaskInputControlled = (props: CurrencyMaskInputControlledProps) =>
         <NumericFormat
           {...numericSetup}
           onValueChange={({ floatValue }) => onChange(floatValue)}
-          customInput={TextField}
           value={value}
           name={name}
           error={invalid}
@@ -71,6 +73,8 @@ const CurrencyMaskInputControlled = (props: CurrencyMaskInputControlledProps) =>
                 : props.InputProps?.endAdornment
             )
           }}
+          {...rest}
+          customInput={CustomTextField}
         />
       )}
     />

@@ -73,7 +73,7 @@ export const SelectInputController = (props: SelectInputProps) => {
             {...rest}
             select
             variant={variant}
-            value={value || ""}
+            value={value}
             onChange={onChange}
             error={invalid}
             aria-describedby={`${name}-text-input-form`}
@@ -104,7 +104,7 @@ export const SelectInputController = (props: SelectInputProps) => {
             {
               selectItems &&
               selectItems.placeholder &&
-              <MenuItem key={"PlaceholderKey"} selected value="">
+              <MenuItem key={"PlaceholderKey"} disabled={selectItems.placeholder.disabled} value=" ">
                 <em>{selectItems.placeholder.label}</em>
               </MenuItem>
             }
