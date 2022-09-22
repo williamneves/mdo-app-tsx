@@ -6,7 +6,7 @@ export default interface Client {
   name: string;
   phone?: string;
   email?: string;
-  birthDay?: Date;
+  birthday?: Date;
   gender?: Gender;
   hearAboutUs?: string;
   cpf?: string;
