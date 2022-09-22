@@ -29,6 +29,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useAuth } from "src/hooks/useAuth";
 import * as useClient from "src/queries/clients";
 import { useQueryClient } from "@tanstack/react-query";
+import * as useClientHook from "src/queries/clients/hooks/useClient";
 
 // ** Third Party Imports
 import * as yup from "yup";
@@ -53,7 +54,7 @@ const clientForm = ({ client }: Props) => {
 
   // React Query
   const queryClient = useQueryClient();
-  const createClient = useClient.useCreateClient(queryClient);
+  const createClient = useClient.useCreateClientQuery(queryClient);
   const { isLoading } = createClient;
 
   const defaultValue = {
@@ -109,16 +110,28 @@ const clientForm = ({ client }: Props) => {
     })
   });
 
+  const [clientsNumber, setClientsNumber] = useState(0);
+
   // Effects
   useEffect(() => {
     if (user) setValue("createdBy", user);
-  }, [user]);
+  }, [user, clientsNumber]);
+
+  useEffect(() => {
+    if (getValues("clientNumber") === null) {
+      useClientHook.increaseClientCode()
+        .then((data) => {
+          setValue("clientNumber", data.clientNumber);
+        });
+    }
+  }, [clientsNumber]);
 
   const {
     control,
     handleSubmit,
     formState: { errors },
     setValue,
+    getValues,
     reset
   } = useForm({
     defaultValues: defaultValue,
@@ -133,7 +146,8 @@ const clientForm = ({ client }: Props) => {
     try {
       await createClient.mutateAsync(data);
       toast.success("Cliente criado com sucesso!", { id: toastId, position: "top-center" });
-      reset(defaultValue);
+      reset();
+      setClientsNumber(clientsNumber + 1);
     } catch (error) {
       console.log("error", error);
       toast.error("Não foi possível salvar, tente novamente ou fale com o suporte", {

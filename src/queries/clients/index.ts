@@ -1,9 +1,21 @@
-import { useQuery } from "@tanstack/react-query";
-import useClient from "../../hooks/useClient";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import * as useClient from "./hooks/useClient";
 
-const useGetClientsQuery = (options?: Object) => {
-  const { getAllClients } = useClient();
-  return useQuery(["clients"], getAllClients, options);
+export const useGetClientsQuery = (options?: Object) => {
+  return useQuery(["clients", "all"], useClient.getAllClients, options);
 };
 
-export default useGetClientsQuery;
+export const useCreateClientQuery = (queryClient: any) => {
+  return useMutation((client: any) => useClient.createClient(client),
+    {
+      onSuccess: (newClient) => {
+        queryClient.setQueryData(["clients", "all"], (old: any) => {
+          if (old) {
+            return [...old, newClient];
+          }
+          return [newClient];
+        });
+        queryClient.invalidateQueries(["clients", "all"]);
+      }
+    });
+};
