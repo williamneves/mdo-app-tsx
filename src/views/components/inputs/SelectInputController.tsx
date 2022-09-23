@@ -11,15 +11,15 @@ import InputAdornment from "@mui/material/InputAdornment";
 
 import { InputController } from "./InputController";
 
-interface menuItems {
+export interface menuItems {
   key: string | number;
-  value: string;
-  label: string | ReactElement;
+  value: any;
+  label: string | ReactElement | any;
   disabled?: boolean;
   selected?: boolean;
 }
 
-interface SelectItems {
+export interface SelectItems {
   placeholder?: {
     disabled: boolean;
     label: string;
@@ -110,7 +110,7 @@ export const SelectInputController = (props: SelectInputProps) => {
             }
             {
               selectItems &&
-              selectItems.items.map((item: menuItems) => (
+              selectItems.items?.map((item: menuItems) => (
                 <MenuItem key={item.key} value={item.value} disabled={item.disabled} selected={item.selected}>
                   {item.label}
                 </MenuItem>

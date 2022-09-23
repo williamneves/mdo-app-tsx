@@ -39,7 +39,7 @@ import ptBR from "date-fns/locale/pt-BR";
 
 // ** Third Party Components
 import TextInputControlled from "components/inputs/TextInputControlled";
-import SelectInputController from "components/inputs/SelectInputController";
+import SelectInputController, { SelectItems } from "components/inputs/SelectInputController";
 
 // ** Types
 import Client from "src/interfaces/Client";
@@ -58,7 +58,14 @@ const clientForm = ({ client }: Props) => {
   const updateClient = useClient.useUpdateClientQuery(queryClient);
   const { isLoading } = createClient;
 
-  const defaultValue = {
+  interface DefaultValues extends Omit<Client, 'clientNumber'| 'birthday'| 'gender' | '_createdAt' | '_updatedAt' > {
+    clientNumber?: number | null,
+    birthday?: Date | null,
+    gender?: 'male' | 'female' | 'other' | "",
+  }
+
+  const defaultValue:DefaultValues = {
+    _id: "",
     inactive: false,
     clientNumber: null,
     name: "",
@@ -145,7 +152,8 @@ const clientForm = ({ client }: Props) => {
     const toastId = toast.loading(client ? "Editando cliente..." : "Salvando cliente...");
 
     try {
-      client ? await updateClient.mutateAsync(data) : await createClient.mutateAsync(data);
+      if (client) await updateClient.mutateAsync(data);
+      else await createClient.mutateAsync(data);
       toast.success(`Cliente ${client ?
           `#${client?.clientNumber} editado` : "criado"} com sucesso!`,
         { id: toastId, position: "top-center" });
@@ -160,11 +168,19 @@ const clientForm = ({ client }: Props) => {
     }
   };
 
+  const storesInSelect2 = () => {
+    if (client) return user!.stores.map((store) => ({ key: store._id, value: store, label: store.name }))
+
+    if (user?.role === "admin") return user!.stores.map((store) => ({key: store._id, value: store, label: store.name }))
+
+    return [{ key: selectedStore!._id, value: selectedStore, label: selectedStore?.name, selected: true }];
+  }
+
   const storesInSelect = client
-    ? user?.stores.map((store) => ({ value: store, label: store.name }))
+    ? user!.stores.map((store) => ({ key: store._id, value: store, label: store.name }))
     : user?.role === "admin"
-      ? user?.stores.map((store) => ({ value: store, label: store.name }))
-      : [{ value: selectedStore, label: selectedStore?.name, selected: true }];
+      ? user!.stores.map((store) => ({key: store._id, value: store, label: store.name }))
+      : [{ key: selectedStore?._id, value: selectedStore, label: selectedStore?.name, selected: true }];
 
   return (
     <Grid container spacing={6}>
@@ -288,9 +304,9 @@ const clientForm = ({ client }: Props) => {
                     selectItems={
                       {
                         items: [
-                          { key: "M", value: "male", label: "Homem" },
-                          { key: "F", value: "female", label: "Mulher" },
-                          { key: "O", value: "other", label: "Outros" }
+                          { key: "male", value: "male", label: "Homem" },
+                          { key: "male", value: "female", label: "Mulher" },
+                          { key: "male", value: "other", label: "Outros" }
                         ]
                       }}
                   />
@@ -384,7 +400,7 @@ const clientForm = ({ client }: Props) => {
                     disabled={user?.role !== "admin" || isLoading}
                     selectItems={
                       {
-                        items: storesInSelect
+                        items: storesInSelect2()
                       }}
                   />
                 </Grid>
