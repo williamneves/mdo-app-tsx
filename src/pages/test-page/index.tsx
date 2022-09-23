@@ -16,6 +16,12 @@ import CurrencyMaskInputControlled from "src/views/components/inputs/CurrencyMas
 import SelectInputController from "src/views/components/inputs/SelectInputController";
 import AutocompleteInputControlled from "src/views/components/inputs/AutocompleteInputControlled";
 import DateInputControlled from "components/inputs/DateInputControlled";
+import PatternInputControlled from "components/inputs/PatternInputControlled";
+
+
+// ** Import Validate CPF
+import { cpf } from 'cpf-cnpj-validator';
+
 
 const Home = () => {
 
@@ -25,6 +31,8 @@ const Home = () => {
     selectInput: " ",
     AutoComplete: [{ _id: "", name: "", age: 0, phone: "" }],
     DateInput: null,
+    cpfInput: "",
+    phoneInput: "",
   }
 
   interface FormValues {
@@ -33,16 +41,22 @@ const Home = () => {
     selectInput: string;
     AutoComplete: any;
     DateInput: Date | null;
+    cpfInput: string;
+    phoneInput: string;
   }
 
   const schema = yup.object().shape({
     TextInput: yup.string().required('Text is required'),
     NumericMaskInput: yup.number().min(1, 'Number is required').required('Number is required'),
     selectInput: yup.string().trim().required('Select is required'),
-    AutoComplete: yup.object().shape({
+    AutoComplete: yup.array().of(yup.object().shape({
       name: yup.string().required('Autocomplete is required'),
-    }).required('AutoComplete is required').nullable(),
+    })).required('AutoComplete is required').nullable(),
     DateInput: yup.date().required('Date is required').nullable(),
+    cpfInput: yup.string().required('CPF is required').test('cpf', 'CPF is invalid', (value) => {
+      return cpf.isValid(value as string);
+    }),
+    phoneInput: yup.string().required('Phone is required'),
   });
 
   const { control, handleSubmit, getValues, formState: { errors } } = useForm<FormValues>(
@@ -112,6 +126,29 @@ const Home = () => {
                   <Grid item xs={4}>
                     <Button type={"submit"} variant={"contained"}>Submit</Button>
                   </Grid>
+
+                {/*</Grid>*/}
+              </Grid>
+            </form>
+          </CardContent>
+          <CardContent>
+            <Typography sx={{ mb: 2 }} variant={"h4"}>Input de Dinheiro</Typography>
+            <form autoComplete={"off"} onSubmit={handleSubmit(onSubmit)}>
+              <Grid container spacing={2}>
+                {/*<Grid item xs={12}>*/}
+                <Grid item xs={4}>
+                  <PatternInputControlled
+                    name={"cpfInput"}
+                    control={control}
+                    label={"CPF Input"}
+                    patternType={"cpf"}
+                    errors={errors}
+                    startAdornment={'CPF'}
+                  />
+                </Grid>
+                <Grid item xs={4}>
+                  <Button type={"submit"} variant={"contained"}>Submit</Button>
+                </Grid>
 
                 {/*</Grid>*/}
               </Grid>
