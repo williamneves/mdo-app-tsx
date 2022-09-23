@@ -1,19 +1,6 @@
-import {Gender} from '@core/utils/types'
+import AuthUser from 'src/interfaces/authUser';
 
-export default interface User {
-  _id: string
-  name: string
-  email: string
-  imageURL: string
-  imageAsset: any
+export default interface User extends Omit<AuthUser,
+  'inactive' | 'authUID' | 'provider' | 'stores' | 'role' | 'address' | 'bankAccount'> {
   role: "admin" | "manager" | "coordinator" | "vendor" | "streetVendor" | "client"
-  profile: {
-    jobTitle: string
-    birthday?: Date
-    gender?: Gender
-    phoneNumbers?: string
-    bio?: string
-  }
-  _createdAt: Date
-  _updatedAt: Date
 }
