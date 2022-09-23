@@ -52,7 +52,8 @@ export const SelectInputController = (props: SelectInputProps) => {
     endAdornment,
     variant,
     readOnly,
-    selectItems
+    selectItems,
+    ...rest
   } = props;
 
   // @ts-ignore
@@ -61,14 +62,7 @@ export const SelectInputController = (props: SelectInputProps) => {
       name={name}
       control={control}
       errors={errors}
-      render={({ field: { value, onChange }, fieldState: { invalid } }) => {
-
-        // Remove selectItems from props
-        const { selectItems, ...rest } = props;
-
-        console.log(value)
-
-        return (
+      render={({ field: { value, onChange }, fieldState: { invalid } }) => (
           <TextField
             {...rest}
             select
@@ -117,8 +111,8 @@ export const SelectInputController = (props: SelectInputProps) => {
               ))
             }
           </TextField>
-        );
-      }}
+        )
+      }
     />
   );
 };

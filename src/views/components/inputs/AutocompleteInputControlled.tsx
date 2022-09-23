@@ -16,9 +16,9 @@ interface AutocompleteInputControlledProps {
   name: string;
   control: any;
   errors: FieldErrors;
-  options: any[];
+  options: Array<any>;
   filterKeys: Array<string>;
-  optionLabel: string;
+  optionLabel?: string;
 }
 
 export const AutocompleteInputControlled = (props: AutocompleteInputControlledProps | any) => {
@@ -35,8 +35,6 @@ export const AutocompleteInputControlled = (props: AutocompleteInputControlledPr
     optionLabel,
     ...rest
   } = props;
-
-  console.log(filterKeys);
 
   return (
     <InputController
@@ -55,7 +53,7 @@ export const AutocompleteInputControlled = (props: AutocompleteInputControlledPr
             options={options}
             isOptionEqualToValue={(option: any, value: any) => option[optionLabel] === value[optionLabel]}
             filterOptions={filterKeys ? (options, { inputValue }) => filterOptions(options, inputValue, filterKeys) : props.filterOptions}
-            groupBy={(option: any) => option[optionLabel][0].toUpperCase()}
+            groupBy={(option: any) => option[optionLabel][0]?.toUpperCase()}
             getOptionLabel={!!optionLabel ? (option: string) => option[optionLabel] : props.getOptionLabel}
             renderOption={(props, option: any, { inputValue }) => {
 
