@@ -54,3 +54,7 @@ export const useDeleteClientQuery = (queryClient: any) => {
       }
     });
 };
+
+export const useGetClientByIdQuery = (id: string, options?: Object) => {
+  return useQuery(["clients", id], () => useClient.getClientById(id), options);
+}

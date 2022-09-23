@@ -181,3 +181,68 @@ export const deleteClient = async (clientID: string) => {
     throw error;
   }
 };
+
+export const getClientById = async (clientID: string) => {
+  const q = `
+  *[
+    _type == "client"
+    && _id == "${clientID}"
+  ]{
+     _id,
+      inactive,
+      clientNumber,
+      name,
+      phone,
+      email,
+      birthday,
+      gender,
+      hearAboutUs,
+      cpf,
+      address {
+        street,
+        number,
+        complement,
+        city,
+        state,
+        zipCode,
+      },
+    store -> {
+    _id,
+    inactive,
+    name,
+    taxID,
+    imageURL,
+    address {
+       street,
+       number,
+       complement,
+       city,
+       state,
+       zipCode,
+    },
+  },
+    createdBy-> {
+        _id,
+        name,
+        email,
+        imageURL,
+        imageAsset,
+        role,
+        profile {
+           jobTitle,
+           birthDay,
+           gender,
+           phoneNumbers,
+           bio,
+        }
+    },
+  }
+  `;
+
+  try {
+    return await dbClient.fetch(q);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+};
