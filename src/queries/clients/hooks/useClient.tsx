@@ -172,3 +172,12 @@ export const updateClient = async (client: Client) => {
     throw error;
   }
 };
+
+export const deleteClient = async (clientID: string) => {
+  try {
+    const response = await dbClient.delete(clientID);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};

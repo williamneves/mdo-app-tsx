@@ -39,3 +39,18 @@ export const useUpdateClientQuery = (queryClient: any) => {
       }
     });
 };
+
+export const useDeleteClientQuery = (queryClient: any) => {
+  return useMutation((clientID: string) => useClient.deleteClient(clientID),
+    {
+      onSuccess: (deletedClient) => {
+        queryClient.setQueryData(["clients", "all"], (old: any) => {
+          if (old) {
+            return old.filter((client: any) => client._id !== deletedClient._id);
+          }
+          return [];
+        });
+        queryClient.invalidateQueries(["clients", "all"]);
+      }
+    });
+};
