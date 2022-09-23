@@ -1,20 +1,14 @@
 // ** React Imports
-import { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 // ** MUI Imports
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
-import MobileDatePicker from "@mui/lab/MobileDatePicker";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import Divider from "@mui/material/Divider";
-import TextField from "@mui/material/TextField";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
@@ -35,7 +29,6 @@ import * as useClientHook from "src/queries/clients/hooks/useClient";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import toast from "react-hot-toast";
-import ptBR from "date-fns/locale/pt-BR";
 
 // ** Third Party Components
 import TextInputControlled from "components/inputs/TextInputControlled";
@@ -43,6 +36,8 @@ import SelectInputController, { SelectItems } from "components/inputs/SelectInpu
 
 // ** Types
 import Client from "src/interfaces/Client";
+import PatternInputControlled from "components/inputs/PatternInputControlled";
+import DateInputControlled from "components/inputs/DateInputControlled";
 
 interface Props {
   client?: Client;
@@ -244,12 +239,12 @@ const clientForm = ({ client }: Props) => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextInputControlled
+                  <PatternInputControlled
                     name={"phone"}
-                    label={"Telefone"}
                     control={control}
+                    label={"Telefone"}
+                    patternType={"phone"}
                     errors={errors}
-                    disabled={isLoading}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -262,37 +257,12 @@ const clientForm = ({ client }: Props) => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth>
-                    <Controller
-                      name="birthday"
-                      control={control}
-                      rules={{ required: true }}
-                      render={({ field: { value, onChange } }) => (
-                        <LocalizationProvider
-                          dateAdapter={AdapterDateFns}
-                          locale={ptBR}
-                        >
-                          <MobileDatePicker
-                            label={"Data de nascimento"}
-                            value={value}
-                            onChange={onChange}
-                            disabled={isLoading}
-                            renderInput={(params) => (
-                              <TextField {...params} error={Boolean(errors.birthday)} />
-                            )}
-                          />
-                        </LocalizationProvider>
-                      )}
-                    />
-                    {errors.birthday && (
-                      <FormHelperText
-                        sx={{ color: "error.main" }}
-                        id="novo-cliente-birthday"
-                      >
-                        {errors.birthday.message}
-                      </FormHelperText>
-                    )}
-                  </FormControl>
+                  <DateInputControlled
+                    name={"birthday"}
+                    control={control}
+                    label={"Data de Nascimento"}
+                    errors={errors}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <SelectInputController
@@ -312,13 +282,12 @@ const clientForm = ({ client }: Props) => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextInputControlled
+                  <PatternInputControlled
                     name={"cpf"}
-                    label={"CPF"}
                     control={control}
+                    label={"CPF"}
+                    patternType={"cpf"}
                     errors={errors}
-                    disabled={isLoading}
-                    type={"number"}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -382,13 +351,12 @@ const clientForm = ({ client }: Props) => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextInputControlled
+                  <PatternInputControlled
                     name={"address.zipCode"}
-                    label={"CEP"}
                     control={control}
+                    label={"CEP"}
+                    patternType={"cep"}
                     errors={errors}
-                    disabled={isLoading}
-                    type={"number"}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
