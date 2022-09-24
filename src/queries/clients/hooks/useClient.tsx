@@ -82,7 +82,7 @@ export const createClient = async (client: Client) => {
     name: client.name, // required
     phone: (client.phone && client.phone) || "",
     email: (client.email && client.email) || "",
-    birthday: (client.birthday && client.birthday) || "",
+    birthday: (client.birthday && client.birthday) || null,
     gender: (client.gender && client.gender) || "",
     hearAboutUs: (client.hearAboutUs && client.hearAboutUs) || "",
     cpf: (client.cpf && client.cpf) || "",
@@ -140,7 +140,7 @@ export const updateClient = async (client: Client) => {
     name: client.name, // required
     phone: (client.phone && client.phone) || "",
     email: (client.email && client.email) || "",
-    birthday: (client.birthday && client.birthday) || "",
+    birthday: (client.birthday && client.birthday) || null,
     gender: (client.gender && client.gender) || "",
     hearAboutUs: (client.hearAboutUs && client.hearAboutUs) || "",
     cpf: (client.cpf && client.cpf) || "",
