@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 // ** MUI Imports
 import Card from "@mui/material/Card";
@@ -9,6 +9,7 @@ import CardContent from "@mui/material/CardContent";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormControl from "@mui/material/FormControl";
 import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
@@ -17,6 +18,7 @@ import Switch from "@mui/material/Switch";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 // ** Hooks
 import { Controller, useForm } from "react-hook-form";
@@ -32,12 +34,12 @@ import toast from "react-hot-toast";
 
 // ** Third Party Components
 import TextInputControlled from "components/inputs/TextInputControlled";
-import SelectInputController, { SelectItems } from "components/inputs/SelectInputController";
+import SelectInputController from "components/inputs/SelectInputController";
+import DateInputControlled from "components/inputs/DateInputControlled";
+import PatternInputControlled from "components/inputs/PatternInputControlled";
 
 // ** Types
 import Client from "src/interfaces/Client";
-import PatternInputControlled from "components/inputs/PatternInputControlled";
-import DateInputControlled from "components/inputs/DateInputControlled";
 
 interface Props {
   client?: Client;
@@ -53,13 +55,13 @@ const clientForm = ({ client }: Props) => {
   const updateClient = useClient.useUpdateClientQuery(queryClient);
   const { isLoading } = createClient;
 
-  interface DefaultValues extends Omit<Client, 'clientNumber'| 'birthday'| 'gender' | '_createdAt' | '_updatedAt' > {
+  interface DefaultValues extends Omit<Client, "clientNumber" | "birthday" | "gender" | "_createdAt" | "_updatedAt"> {
     clientNumber?: number | null,
     birthday?: Date | null,
-    gender?: 'male' | 'female' | 'other' | "",
+    gender?: "male" | "female" | "other" | "",
   }
 
-  const defaultValue:DefaultValues = {
+  const defaultValue: DefaultValues = {
     _id: "",
     inactive: false,
     clientNumber: null,
@@ -164,17 +166,21 @@ const clientForm = ({ client }: Props) => {
   };
 
   const storesInSelect2 = () => {
-    if (client) return user!.stores.map((store) => ({ key: store._id, value: store, label: store.name }))
+    if (client) return user!.stores.map((store) => ({ key: store._id, value: store, label: store.name }));
 
-    if (user?.role === "admin") return user!.stores.map((store) => ({key: store._id, value: store, label: store.name }))
+    if (user?.role === "admin") return user!.stores.map((store) => ({
+      key: store._id,
+      value: store,
+      label: store.name
+    }));
 
     return [{ key: selectedStore!._id, value: selectedStore, label: selectedStore?.name, selected: true }];
-  }
+  };
 
   const storesInSelect = client
     ? user!.stores.map((store) => ({ key: store._id, value: store, label: store.name }))
     : user?.role === "admin"
-      ? user!.stores.map((store) => ({key: store._id, value: store, label: store.name }))
+      ? user!.stores.map((store) => ({ key: store._id, value: store, label: store.name }))
       : [{ key: selectedStore?._id, value: selectedStore, label: selectedStore?.name, selected: true }];
 
   return (
@@ -376,6 +382,16 @@ const clientForm = ({ client }: Props) => {
                   <Divider variant={"middle"} />
                 </Grid>
                 <Grid item xs={12} sx={{ display: "flex" }}>
+                  {
+                    client &&
+                    <Button
+                      variant={"outlined"}
+                      onClick={() => history.back()}
+                    >
+                      <ArrowBackIcon sx={{ mr: 2 }} />
+                      Voltar
+                    </Button>
+                  }
                   <LoadingButton
                     loading={isLoading}
                     type={"submit"}

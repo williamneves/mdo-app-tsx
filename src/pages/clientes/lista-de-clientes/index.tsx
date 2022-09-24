@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, useEffect, Fragment } from "react";
+import { useState, Fragment } from "react";
 
 // ** MUI Imports
 import Box from "@mui/material/Box";
@@ -23,6 +23,9 @@ import toast from "react-hot-toast";
 import * as useClient from "src/queries/clients";
 import { useQueryClient } from "@tanstack/react-query";
 
+// ** Next Imports
+import { useRouter } from "next/router";
+
 // ** Types
 import Client from "src/interfaces/Client";
 
@@ -31,6 +34,9 @@ interface RowsData {
 }
 
 const ClientList = () => {
+
+  // ** Next Router
+  const router = useRouter();
 
   // ** React Query
   const queryClient = useQueryClient();
@@ -53,6 +59,10 @@ const ClientList = () => {
         toast.error(`Erro ao deletar client`, { id: toastId });
       });
   };
+
+  const openEditClientForm = (clientID: string) => {
+    router.push(`/clientes/editar-cliente/${clientID}`);
+  }
 
   const handleViewClient = (clientId: string) => {
     const client = clientList.find((client) => client._id === clientId);
@@ -152,8 +162,7 @@ const ClientList = () => {
         <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
           <IconButton
             color={"primary"}
-            onClick={() => {
-            }}
+            onClick={() => openEditClientForm(row._id)}
           >
             <EditIcon />
           </IconButton>
