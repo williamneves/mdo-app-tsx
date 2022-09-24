@@ -1,10 +1,5 @@
 import { InputController } from "./InputController";
-import {
-  Controller,
-  Control,
-  ControllerProps,
-  FieldErrors
-} from "react-hook-form";
+import { FieldErrors } from "react-hook-form";
 
 import { TextField } from "@mui/material";
 
@@ -16,7 +11,7 @@ import { Locale } from "date-fns";
 
 const LangObj: { [key: string]: Locale } = { ptBR };
 
-interface DatePickerProps {
+interface DatePickerProps extends Pick<MobileDatePickerProps, "disabled"> {
   name: string;
   control: any;
   label: string;
