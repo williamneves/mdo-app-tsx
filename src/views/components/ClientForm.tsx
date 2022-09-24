@@ -107,7 +107,7 @@ const clientForm = ({ client }: Props) => {
       zipCode: yup.string()
     }),
     store: yup.object().shape({
-      name: yup.string().required("Esse campo é obrigatório *")
+      name: yup.string().required()
     }),
     createdBy: yup.object().shape({
       name: yup.string(),
@@ -165,7 +165,7 @@ const clientForm = ({ client }: Props) => {
     }
   };
 
-  const storesInSelect2 = () => {
+  const storesInSelect = () => {
     if (client) return user!.stores.map((store) => ({ key: store._id, value: store, label: store.name }));
 
     if (user?.role === "admin") return user!.stores.map((store) => ({
@@ -176,12 +176,6 @@ const clientForm = ({ client }: Props) => {
 
     return [{ key: selectedStore!._id, value: selectedStore, label: selectedStore?.name, selected: true }];
   };
-
-  const storesInSelect = client
-    ? user!.stores.map((store) => ({ key: store._id, value: store, label: store.name }))
-    : user?.role === "admin"
-      ? user!.stores.map((store) => ({ key: store._id, value: store, label: store.name }))
-      : [{ key: selectedStore?._id, value: selectedStore, label: selectedStore?.name, selected: true }];
 
   return (
     <Grid container spacing={6}>
@@ -208,31 +202,30 @@ const clientForm = ({ client }: Props) => {
                   </Divider>
                 </Grid>
                 {
-                  client ?
-                    <Grid item xs={12}>
-                      <FormControl fullWidth>
-                        <Controller
-                          control={control}
-                          name={"inactive"}
-                          rules={{ required: true }}
-                          render={({ field: { value, onChange } }) => (
-                            <FormGroup row>
-                              <FormControlLabel
-                                label="O cliente está ativo?"
-                                control={
-                                  <Switch
-                                    disabled={isLoading}
-                                    checked={!value}
-                                    onChange={() => onChange(!value)}
-                                  />
-                                }
-                              />
-                            </FormGroup>
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    : null
+                  client &&
+                  <Grid item xs={12}>
+                    <FormControl fullWidth>
+                      <Controller
+                        control={control}
+                        name={"inactive"}
+                        rules={{ required: true }}
+                        render={({ field: { value, onChange } }) => (
+                          <FormGroup row>
+                            <FormControlLabel
+                              label="O cliente está ativo?"
+                              control={
+                                <Switch
+                                  disabled={isLoading}
+                                  checked={!value}
+                                  onChange={() => onChange(!value)}
+                                />
+                              }
+                            />
+                          </FormGroup>
+                        )}
+                      />
+                    </FormControl>
+                  </Grid>
                 }
                 <Grid item xs={12} sm={6}>
                   <TextInputControlled
@@ -251,6 +244,7 @@ const clientForm = ({ client }: Props) => {
                     label={"Telefone"}
                     patternType={"phone"}
                     errors={errors}
+                    disabled={isLoading}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -268,6 +262,7 @@ const clientForm = ({ client }: Props) => {
                     control={control}
                     label={"Data de Nascimento"}
                     errors={errors}
+                    disabled={isLoading}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -294,6 +289,7 @@ const clientForm = ({ client }: Props) => {
                     label={"CPF"}
                     patternType={"cpf"}
                     errors={errors}
+                    disabled={isLoading}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -363,6 +359,7 @@ const clientForm = ({ client }: Props) => {
                     label={"CEP"}
                     patternType={"cep"}
                     errors={errors}
+                    disabled={isLoading}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -374,7 +371,7 @@ const clientForm = ({ client }: Props) => {
                     disabled={user?.role !== "admin" || isLoading}
                     selectItems={
                       {
-                        items: storesInSelect2()
+                        items: storesInSelect()
                       }}
                   />
                 </Grid>
