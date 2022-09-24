@@ -79,7 +79,7 @@ const PatternInputControlled = (props: PatternInputControlledProps) => {
       name={name}
       render={({ field: { onChange, name, value }, fieldState: { invalid } }) => (
         <PatternFormat
-          onValueChange={({ floatValue }) => onChange(floatValue)}
+          onValueChange={({ value }) => onChange(value)}
           value={value}
           name={name}
           error={invalid}
