@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState, Fragment } from "react";
+import React, { useState, Fragment } from "react";
 
 // ** MUI Imports
 import Box from "@mui/material/Box";
@@ -18,6 +18,7 @@ import GroupsIcon from "@mui/icons-material/Groups";
 // ** Third Party Imports
 import SimpleDialog from "components/SimpleDialog";
 import toast from "react-hot-toast";
+import QuickSearchToolbar from "components/data-grid/QuickSearcToolBar";
 
 // ** Hooks Imports
 import * as useClient from "src/queries/clients";
@@ -46,6 +47,30 @@ const ClientList = () => {
   // ** States
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogData, setDialogData] = useState({});
+  const [searchValue, setSearchValue] = useState("");
+  const [filteredData, setFilteredData] = useState<Client[]>([]);
+
+  const escapeRegExp = (value: string) => {
+    return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+  };
+
+  const handleSearch = (searchValue: string) => {
+    setSearchValue(searchValue);
+    const searchRegex = new RegExp(escapeRegExp(searchValue), "i");
+
+    if (clientList) {
+      const filteredRows = clientList.filter((row) => {
+        return Object.keys(row).some((field) => {
+          if (field === "createdBy")
+            return searchRegex.test(row[field]?.name);
+          // @ts-ignore
+          return searchRegex.test(row[field]?.toString());
+        });
+      });
+      if (filteredRows.length) setFilteredData(filteredRows);
+      else setFilteredData([]);
+    }
+  };
 
   const deleteClientData = (clientID: string) => {
     const toastId = toast.loading("Deletando cliente...");
@@ -62,10 +87,10 @@ const ClientList = () => {
 
   const openEditClientForm = (clientID: string) => {
     router.push(`/clientes/editar-cliente/${clientID}`);
-  }
+  };
 
   const handleViewClient = (clientId: string) => {
-    const client = clientList.find((client) => client._id === clientId);
+    const client = clientList?.find((client) => client._id === clientId);
     const data = {
       id: client?._id,
       client: client,
@@ -79,7 +104,6 @@ const ClientList = () => {
         // Delete Client
         deleteClientData(clientId);
         console.log("delete");
-        console.log(clientId);
       }
     };
     setDialogData(data);
@@ -176,7 +200,6 @@ const ClientList = () => {
       )
     }
   ];
-  // @ts-ignore
   return (
     <Fragment>
       <Grid container spacing={6}>
@@ -191,14 +214,26 @@ const ClientList = () => {
             getRowId={(row) => row._id}
             autoHeight={true}
             loading={isLoading}
-            rows={clientList || []}
+            rows={filteredData.length ? filteredData : (clientList || [])}
             columns={columns}
+            checkboxSelection
+            components={{
+              Toolbar: QuickSearchToolbar
+            }}
+            componentsProps={{
+              toolbar: {
+                value: searchValue,
+                clearSearch: () => handleSearch(""),
+                onChange: (event: React.ChangeEvent<HTMLInputElement>) => handleSearch(event.target.value)
+              }
+            }}
           />
         </Card>
       </Grid>
       <SimpleDialog
         open={openDialog}
         setOpen={setOpenDialog}
+        // @ts-ignore
         data={dialogData}
       />
     </Fragment>
