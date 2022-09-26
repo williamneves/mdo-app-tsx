@@ -1,4 +1,6 @@
-export default interface Store {
+import { SanityDefaultObject } from "./SanityDefaultInterfaces"
+
+export default interface Store extends Partial<SanityDefaultObject> {
   _id: string
   inactive?: boolean
   name: string
