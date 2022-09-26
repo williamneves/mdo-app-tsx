@@ -166,7 +166,11 @@ const clientForm = ({ client }: Props) => {
   };
 
   const storesInSelect = () => {
-    if (client) return user!.stores.map((store) => ({ key: store._id, value: store, label: store.name }));
+    if (client) return user!.stores.map((store) => ({
+      key: store._id,
+      value: store._id == client.store._id ? client.store : store,
+      label: store.name
+    }));
 
     if (user?.role === "admin") return user!.stores.map((store) => ({
       key: store._id,
