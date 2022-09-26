@@ -144,8 +144,8 @@ const Step1Form = (props: Step1FormProps) => {
       setValueStep1("vendor", userDB);
 
       // Set only one client
-      if (allClients?.length < 2) {
-        setValueStep1("client", allClients[0]);
+      if (allClients!.length < 2) {
+        setValueStep1("client", allClients![0]);
       }
     }
   }, [userDB?._id, allClients?.length, selectedStore]);
@@ -172,19 +172,32 @@ const Step1Form = (props: Step1FormProps) => {
 
         {/* saleNumber */}
         <Grid item xs={12} sm={6}>
-          <TextInputControlled name={"saleNumber"} label={"Número da venda (Gerado automaticamente)"}
-                               errors={errorsStep1} control={controlStep1} />
+          <TextInputControlled
+            name={"saleNumber"}
+            label={"Número da venda (Gerado automaticamente)"}
+            errors={errorsStep1}
+            control={controlStep1}
+          />
         </Grid>
 
         {/* PDVNumber */}
         <Grid item xs={12} sm={6}>
-          <TextInputControlled name={"PDVNumber"} label={"Numero no P.D.V."} errors={errorsStep1}
-                               control={controlStep1} />
+          <TextInputControlled
+            name={"PDVNumber"}
+            label={"Numero no P.D.V."}
+            errors={errorsStep1}
+            control={controlStep1}
+          />
         </Grid>
 
         {/* date */}
         <Grid item xs={12} sm={6}>
-          <DateInputControlled name={"date"} control={controlStep1} label={"Data da Venda"} errors={errorsStep1} />
+          <DateInputControlled
+            name={"date"}
+            control={controlStep1}
+            label={"Data da Venda"}
+            errors={errorsStep1}
+          />
         </Grid>
 
         {/* client */}
