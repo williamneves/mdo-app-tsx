@@ -8,7 +8,9 @@
     "start": "next start",
     "export": "next export",
     "lint": "eslint --fix \"src/**/*.{js,jsx,ts,tsx}\"",
-    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\""
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@auth0/auth0-react": "1.10.1",
@@ -36,6 +38,7 @@
     "@reduxjs/toolkit": "1.8.1",
     "@sanity/client": "^3.4.1",
     "@sanity/image-url": "^1.0.1",
+    "@storybook/react": "^6.5.12",
     "@tanstack/react-query": "^4.3.7",
     "@tanstack/react-query-devtools": "^4.3.7",
     "apexcharts-clevision": "3.28.5",
@@ -84,11 +87,20 @@
     "react-to-pdf": "0.0.14",
     "recharts": "2.1.6",
     "secure-ls": "^1.2.6",
+    "storybook": "^6.5.12",
     "stylis": "4.0.10",
     "stylis-plugin-rtl": "2.1.1",
     "yup": "0.32.9"
   },
   "devDependencies": {
+    "@babel/core": "^7.19.1",
+    "@storybook/addon-actions": "^6.5.12",
+    "@storybook/addon-essentials": "^6.5.12",
+    "@storybook/addon-interactions": "^6.5.12",
+    "@storybook/addon-links": "^6.5.12",
+    "@storybook/builder-webpack5": "^6.5.12",
+    "@storybook/manager-webpack5": "^6.5.12",
+    "@storybook/testing-library": "^0.0.13",
     "@types/cleave.js": "1.4.6",
     "@types/draft-js": "0.11.8",
     "@types/jsonwebtoken": "8.5.8",
@@ -104,6 +116,7 @@
     "@types/react-redux": "7.1.24",
     "@typescript-eslint/eslint-plugin": "5.6.0",
     "@typescript-eslint/parser": "5.11.0",
+    "babel-loader": "^8.2.5",
     "eslint": "8.14.0",
     "eslint-config-next": "12.1.6",
     "eslint-config-prettier": "8.3.0",
