@@ -4,6 +4,24 @@ export default {
   type: "document",
   fields: [
     {
+      title: "Inactive",
+      name: "inactive",
+      type: "boolean",
+      initialValue: false,
+    },
+    {
+      title: "Deleted",
+      name: "deleted",
+      type: "boolean",
+      initialValue: false,
+    },
+    {
+      title: "Meta Principal?",
+      name: "mainStoreGoal",
+      type: "boolean",
+      initialValue: false,
+    },
+    {
       title: "Goal Name",
       name: "name",
       type: "string",
@@ -14,34 +32,50 @@ export default {
       type: "string",
     },
     {
-      title: "Goal Date Start",
-      name: "dateStart",
-      type: "date",
-      options: {
-        dateFormat: "DD/MM/YY",
-      }
+      title: "Período da Meta",
+      name: "goalRange",
+      type: "object",
+      fields: [
+        {
+          title: "Data de Início",
+          name: "dateStart",
+          type: "datetime",
+          options: {
+            dateFormat: "DD/MM/YYYY",
+          }
+        },
+        {
+          title: "Data de Término",
+          name: "dateEnd",
+          type: "datetime",
+          options: {
+            dateFormat: "DD/MM/YYYY",
+          }
+        },
+      ],
     },
     {
-      title: "Goal Date End",
-      name: "dateEnd",
-      type: "date",
-      options: {
-        dateFormat: "DD/MM/YY",
-      }
-    },
-    {
-      title: "Goal Type",
+      title: "Tipo de Meta",
       name: "type",
       type: "string",
       options: {
         list: [
           { title: "Loja", value: "store" },
+          { title: "Produto", value: "product" },
+          { title: "Grupo", value: "group" },
           { title: "Individual", value: "individual" },
+          { title: "Outro", value: "other" },
         ],
       }
     },
     {
-      title: "Goal Category",
+      title: "Referência do Tipo de Meta",
+      name: "targetField",
+      type: "array",
+      of: [{ type: "string", }],
+    },
+    {
+      title: "Categoria",
       name: "category",
       type: "string",
       options: {
@@ -56,18 +90,29 @@ export default {
       }
     },
     {
-      title: "Goal Target Field",
-      name: "targetField",
-      type: "string",
-    },
-    {
-      title: "Goal Target Values",
+      title: "Valores Alvos",
       name: "targetValues",
       type: "array",
-      of: [{ type: "string" || "number" }],
+      of: [
+        {
+          type: "object",
+          fields: [
+            {
+              title: "Valor",
+              name: "value",
+              type: "number",
+            },
+            {
+              title: "Descrição",
+              name: "description",
+              type: "string",
+            }
+          ],
+        }
+      ],
     },
     {
-      title: "Goal Stores",
+      title: "Lojas Alvo",
       name: "targetStores",
       type: "array",
       of: [{ type: "reference", to: [{ type: "store" }] }],
