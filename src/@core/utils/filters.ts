@@ -1,7 +1,7 @@
 // Give an array of objects and a key, return an array of unique keys from the array of objects
 // Useful when on AutoComplete or Any searchable component to filter on all objects keys when you type
 const getAllObjectKeys = (arrayOfObjects: any):Array<string> => {
-  console.log(arrayOfObjects);
+  // console.log(arrayOfObjects);
   return Object.keys(arrayOfObjects[0]);
 }
 

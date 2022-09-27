@@ -16,6 +16,7 @@ import TextInputControlled from "components/inputs/TextInputControlled";
 import DateInputControlled from "components/inputs/DateInputControlled";
 import SelectInputController from "components/inputs/SelectInputController";
 import * as clientsQ from "src/queries/clients";
+import * as salesQ from "src/queries/sales";
 import AutocompleteInputControlled from "components/inputs/AutocompleteInputControlled";
 
 import FallbackSpinner from "src/@core/components/spinner";
@@ -41,23 +42,27 @@ const Step1Form = (props: Step1FormProps) => {
   const {
     data: allClients,
     isSuccess: loadingClients
-  } = clientsQ.useGetClientsByReferenceIdQuery({ referenceId: userDB!._id }, { active: !!userDB, placeholderData: [] });
+  } = clientsQ.useGetClientsByReferenceIdQuery({ referenceId: selectedStore!._id }, {
+    active: !!userDB,
+    placeholderData: []
+  });
+  const { data: saleNumber, isLoading: loadingSaleNumber } = salesQ.useGetSaleNumberQuery();
 
-  const disableStoreInput = ():boolean => {
+  const disableStoreInput = (): boolean => {
     let disable = false;
     if (userDB?.stores.length === 1) return true;
     if (userDB?.role !== "admin" || "manager") return true;
     return disable;
   };
 
-  const disabledVendorInput = ():boolean => {
+  const disabledVendorInput = (): boolean => {
     let disable = false;
     if (userDB?.stores.length === 1) return true;
     if (userDB?.role !== "admin" || "manager") return true;
     return disable;
-  }
+  };
 
-  const disabledClientInput = ():boolean => {
+  const disabledClientInput = (): boolean => {
     let disable = false;
     if (allClients?.length === 1) return true;
     if (userDB?.role !== "admin" || "manager") return true;
@@ -67,7 +72,7 @@ const Step1Form = (props: Step1FormProps) => {
   // ** Hook Form Dependencies
   // ** Defaults Values - Step 1
   const step1DefaultValue = {
-    saleNumber: "",
+    saleNumber: "Gerando...",
     PDVNumber: "",
     // New date in timezone Brazil/East using ISO
     date: moment().tz("America/Sao_Paulo"),
@@ -84,30 +89,32 @@ const Step1Form = (props: Step1FormProps) => {
 
   // ** Schema Validation - Step 1
   const step1Schema = yup.object().shape({
-    saleNumber: yup.number().required("Obrigatório").nullable(),
+    saleNumber: yup.number().required("Obrigatório").typeError("Obrigatório").nullable(),
     PDVNumber: yup.string().required("Obrigatório"),
     date: yup.date().nullable().required("Obrigatória"),
     client: yup
       .object()
       .shape({
-        name: yup.string().nullable().required("Obrigatório")
+        name: yup.string()
+          .required("Obrigatório")
+          .nullable()
       })
-      .nullable()
-      .required("Cliente é obrigatório"),
+      .required("Cliente é obrigatório")
+      .nullable(),
     vendor: yup
       .object()
       .shape({
         name: yup.string().nullable().required("Obrigatório")
       })
-      .nullable()
-      .required("Obrigatório"),
+      .required("Obrigatório")
+      .nullable(),
     store: yup
       .object()
       .shape({
         name: yup.string().required("*")
       })
-      .nullable()
       .required("Obrigatório")
+      .nullable()
   });
 
 
@@ -134,6 +141,11 @@ const Step1Form = (props: Step1FormProps) => {
   // Effects
   useEffect(() => {
 
+    if (!loadingSaleNumber) {
+      // @ts-ignore
+      setValueStep1("saleNumber", saleNumber);
+    }
+
     // Set selected store
     if (userDB?._id) {
       setValueStep1("store", selectedStore!);
@@ -148,7 +160,7 @@ const Step1Form = (props: Step1FormProps) => {
         setValueStep1("client", allClients![0]);
       }
     }
-  }, [userDB?._id, allClients?.length, selectedStore]);
+  }, [userDB?._id, allClients?.length, selectedStore, loadingSaleNumber]);
 
   // if (allClients?.length === 0) return <FallbackSpinner />;
 
@@ -177,6 +189,7 @@ const Step1Form = (props: Step1FormProps) => {
             label={"Número da venda (Gerado automaticamente)"}
             errors={errorsStep1}
             control={controlStep1}
+            disabled={true}
           />
         </Grid>
 
