@@ -5,6 +5,7 @@ import Store from "src/interfaces/Store";
 
 export default interface StreetDailyReport extends SanityDefaultObject {
   street: User
+  auditStatus: "pending" | "approved" | "rejected"
   clientsApproached: number
   clientsRegistered: number
   sales: Array<Sale>
