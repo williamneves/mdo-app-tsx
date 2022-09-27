@@ -41,7 +41,10 @@ const Step1Form = (props: Step1FormProps) => {
   const {
     data: allClients,
     isSuccess: loadingClients
-  } = clientsQ.useGetClientsByReferenceIdQuery({ referenceId: userDB!._id }, { active: !!userDB, placeholderData: [] });
+  } = clientsQ.useGetClientsByReferenceIdQuery({ referenceId: selectedStore!._id }, { active: !!userDB, placeholderData: [] });
+
+
+  console.log(allClients)
 
   const disableStoreInput = ():boolean => {
     let disable = false;

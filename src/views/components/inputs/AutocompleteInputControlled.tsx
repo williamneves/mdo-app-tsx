@@ -36,6 +36,8 @@ export const AutocompleteInputControlled = (props: AutocompleteInputControlledPr
     ...rest
   } = props;
 
+  console.log("options", options);
+
   return (
     <InputController
       name={name}
@@ -57,13 +59,13 @@ export const AutocompleteInputControlled = (props: AutocompleteInputControlledPr
             getOptionLabel={!!optionLabel ? (option: string) => option[optionLabel] : props.getOptionLabel}
             renderOption={(props, option: any, { inputValue }) => {
 
-              const matchs = match(option[optionLabel], inputValue);
-              const parses = parse(option[optionLabel], matchs);
+              const matchOptionLabel = match(option[optionLabel], inputValue, { insideWords: true });
+              const parseOptionLabel = parse(option[optionLabel], matchOptionLabel);
 
               return (
                 <li {...props} key={option._id}>
                   {
-                    parses.map((part: any, index: number) => (
+                    parseOptionLabel.map((part: any, index: number) => (
                       <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
                         {part.text}
                       </span>

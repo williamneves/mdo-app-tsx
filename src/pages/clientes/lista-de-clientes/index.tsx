@@ -19,10 +19,18 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import SimpleDialog from "components/SimpleDialog";
 import toast from "react-hot-toast";
 import QuickSearchToolbar from "components/data-grid/QuickSearcToolBar";
+// @ts-ignore
+import parse from "autosuggest-highlight/parse";
+// @ts-ignore
+import match from "autosuggest-highlight/match";
+
+import { InputController } from "./InputController";
+import moment from "moment";
 
 // ** Hooks Imports
 import * as useClient from "src/queries/clients";
 import { useQueryClient } from "@tanstack/react-query";
+import { matchSearchFilter, getAllObjectKeys } from "@core/utils/filters";
 
 // ** Next Imports
 import { useRouter } from "next/router";
@@ -32,6 +40,21 @@ import Client from "src/interfaces/Client";
 
 interface RowsData {
   row: Client;
+}
+
+const renderCellWithMatchLetters = (row: any, searchValue: string) => {
+  const matchesChar = match(row, searchValue, {insideWords: true});
+  const parsesChar = parse(row, matchesChar);
+
+  return (<Typography variant="body2" color="textPrimary">
+    {
+      parsesChar.map((part: any, index: number) => (
+        <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
+                {part.text}
+              </span>
+      ))
+    }
+  </Typography>)
 }
 
 const ClientList = () => {
@@ -127,53 +150,38 @@ const ClientList = () => {
       headerName: "Nome",
       flex: 0.15,
       minWidth: 140,
-      renderCell: ({ row }: RowsData) => (
-        <Typography variant="body2" color="textPrimary">
-          {row.name}
-        </Typography>
-      )
+      renderCell: ({ row }: RowsData) => renderCellWithMatchLetters(row.name, searchValue)
     },
     {
       field: "email",
       headerName: "E-mail",
       flex: 0.15,
       minWidth: 140,
-      renderCell: ({ row }: RowsData) => (
-        <Typography variant="body2" color="textPrimary">
-          {row.email}
-        </Typography>
-      )
+      renderCell: ({ row }: RowsData) => renderCellWithMatchLetters(row.email || "", searchValue)
     },
     {
       field: "phone",
       headerName: "Telefone",
       flex: 0.15,
       minWidth: 140,
-      renderCell: ({ row }: RowsData) => (
-        <Typography variant="body2" color="textPrimary">
-          {row.phone}
-        </Typography>
-      )
+      renderCell: ({ row }: RowsData) => renderCellWithMatchLetters(row.phone || "", searchValue)
     },
     {
       field: "createdBy",
       headerName: "Criado por",
       flex: 0.15,
       minWidth: 140,
-      renderCell: ({ row }: RowsData) => (
-        <Typography variant="body2" color="textPrimary">
-          {row.createdBy?.name}
-        </Typography>
-      )
+      valueSetter: ({value}: any) => value.name,
+      renderCell: ({ row }: RowsData) => renderCellWithMatchLetters(row.createdBy?.name || "", searchValue)
     },
     {
-      field: "createdAt",
+      field: "_createdAt",
       headerName: "Criado em",
       flex: 0.15,
       minWidth: 140,
       renderCell: ({ row }: RowsData) => (
         <Typography variant="body2" color="textPrimary">
-          {`${row?._createdAt}`}
+          {`${moment(row?._createdAt).format("DD/MM/YYYY")}`}
         </Typography>
       )
     },
@@ -214,7 +222,7 @@ const ClientList = () => {
             getRowId={(row) => row._id}
             autoHeight={true}
             loading={isLoading}
-            rows={filteredData.length ? filteredData : (clientList || [])}
+            rows={clientList && clientList.length > 0 && matchSearchFilter(clientList!, searchValue, [...getAllObjectKeys(clientList), "createdBy.name"]) || []}
             columns={columns}
             checkboxSelection
             components={{
@@ -223,8 +231,8 @@ const ClientList = () => {
             componentsProps={{
               toolbar: {
                 value: searchValue,
-                clearSearch: () => handleSearch(""),
-                onChange: (event: React.ChangeEvent<HTMLInputElement>) => handleSearch(event.target.value)
+                clearSearch: () => setSearchValue(""),
+                onChange: (event: React.ChangeEvent<HTMLInputElement>) => setSearchValue(event.target.value)
               }
             }}
           />

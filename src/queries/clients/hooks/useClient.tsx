@@ -7,7 +7,7 @@ const queryAllClients = `
     && inactive != true
     && !(_id in path('drafts.**'))
   ]{
-     _id,
+      ...,
       inactive,
       clientNumber,
       name,
@@ -65,7 +65,7 @@ const queryAllClientsByRefenceId = `
     && inactive != true
     && !(_id in path('drafts.**'))
   ]{
-     _id,
+      ...,
       inactive,
       clientNumber,
       name,
