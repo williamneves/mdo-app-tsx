@@ -31,6 +31,7 @@ import * as useClientHook from "src/queries/clients/hooks/useClient";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import toast from "react-hot-toast";
+import { validateCPF } from "validations-br";
 
 // ** Next Imports
 import { useRouter } from "next/router";
@@ -98,9 +99,9 @@ const clientForm = ({ client }: Props) => {
     name: yup.string().required("Esse campo é obrigatório *"),
     phone: yup.string(),
     email: yup.string().email("Email inválido"),
-    birthday: yup.date().typeError("Data inválida"),
+    birthday: yup.date().nullable(),
     gender: yup.string(),
-    cpf: yup.string(),
+    cpf: yup.string().nullable().test("cpf", "CPF Inválido", (value) => validateCPF(value as string)),
     hearAboutUs: yup.string(),
     address: yup.object().shape({
       street: yup.string(),

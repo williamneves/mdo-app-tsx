@@ -90,6 +90,7 @@
     "storybook": "^6.5.12",
     "stylis": "4.0.10",
     "stylis-plugin-rtl": "2.1.1",
+    "validations-br": "^1.2.0",
     "yup": "0.32.9"
   },
   "devDependencies": {
