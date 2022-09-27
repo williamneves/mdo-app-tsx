@@ -32,6 +32,9 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import toast from "react-hot-toast";
 
+// ** Next Imports
+import { useRouter } from "next/router";
+
 // ** Third Party Components
 import TextInputControlled from "components/inputs/TextInputControlled";
 import SelectInputController from "components/inputs/SelectInputController";
@@ -48,6 +51,7 @@ interface Props {
 const clientForm = ({ client }: Props) => {
 
   const { user, selectedStore } = useAuth();
+  const router = useRouter();
 
   // React Query
   const queryClient = useQueryClient();
@@ -57,7 +61,7 @@ const clientForm = ({ client }: Props) => {
 
   interface DefaultValues extends Omit<Client, "clientNumber" | "birthday" | "gender" | "_createdAt" | "_updatedAt"> {
     clientNumber?: number | null,
-    birthday?: Date | null,
+    birthday?: Date | null | "",
     gender?: "male" | "female" | "other" | "",
   }
 
@@ -94,7 +98,7 @@ const clientForm = ({ client }: Props) => {
     name: yup.string().required("Esse campo é obrigatório *"),
     phone: yup.string(),
     email: yup.string().email("Email inválido"),
-    birthday: yup.date().nullable(),
+    birthday: yup.date().typeError("Data inválida"),
     gender: yup.string(),
     cpf: yup.string(),
     hearAboutUs: yup.string(),
@@ -154,6 +158,7 @@ const clientForm = ({ client }: Props) => {
       toast.success(`Cliente ${client ?
           `#${client?.clientNumber} editado` : "criado"} com sucesso!`,
         { id: toastId, position: "top-center" });
+      if (client) router.push("/clientes/lista-de-clientes");
       reset();
       setClientsNumber(clientsNumber + 1);
     } catch (error) {
