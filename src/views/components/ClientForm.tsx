@@ -30,7 +30,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import toast from "react-hot-toast";
-import { validateCPF } from "validations-br";
+import { validateCPF, validatePhone } from "validations-br";
 import cep from "cep-promise";
 
 // ** Next Imports
@@ -41,6 +41,7 @@ import TextInputControlled from "components/inputs/TextInputControlled";
 import SelectInputController from "components/inputs/SelectInputController";
 import DateInputControlled from "components/inputs/DateInputControlled";
 import PatternInputControlled from "components/inputs/PatternInputControlled";
+import AutocompleteInputControlled from "components/inputs/AutocompleteInputControlled";
 
 // ** Types
 import Client from "src/interfaces/Client";
@@ -97,13 +98,18 @@ const clientForm = ({ client }: Props) => {
     inactive: yup.boolean(),
     clientNumber: yup.number().nullable(),
     name: yup.string().required("Esse campo é obrigatório *"),
-    phone: yup.string(),
+    phone: yup.string()
+      .nullable()
+      .test("phone", "Número Inválido", (value) => {
+        if (value === "") return true;
+        return validatePhone(value as string);
+      }),
     email: yup.string().email("Email inválido"),
     birthday: yup.date().nullable(),
     gender: yup.string(),
     cpf: yup.string().test("cpf", "CPF Inválido", (value) => {
       if (value === "") return true;
-      return validateCPF(value as string)
+      return validateCPF(value as string);
     }),
     hearAboutUs: yup.string(),
     address: yup.object().shape({
