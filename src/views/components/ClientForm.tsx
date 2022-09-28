@@ -32,6 +32,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import toast from "react-hot-toast";
 import { validateCPF } from "validations-br";
+import cep from "cep-promise";
 
 // ** Next Imports
 import { useRouter } from "next/router";
@@ -101,7 +102,10 @@ const clientForm = ({ client }: Props) => {
     email: yup.string().email("Email inválido"),
     birthday: yup.date().nullable(),
     gender: yup.string(),
-    cpf: yup.string().nullable().test("cpf", "CPF Inválido", (value) => validateCPF(value as string)),
+    cpf: yup.string().test("cpf", "CPF Inválido", (value) => {
+      if (value === "") return true;
+      return validateCPF(value as string)
+    }),
     hearAboutUs: yup.string(),
     address: yup.object().shape({
       street: yup.string(),
@@ -120,6 +124,25 @@ const clientForm = ({ client }: Props) => {
     })
   });
 
+  const setAddressByCep = () => {
+    cep(getValues("address.zipCode"))
+      .then((response) => {
+        setTimeout(() => {
+          setValue("address.street", response?.street || "");
+          setValue("address.city", response?.city || "");
+          setValue("address.state", response?.state || "");
+          toast.success("CEP encontrado! Endereço carregado automaticamente", {
+            duration: 4000,
+            position: "top-center"
+          });
+        }, 500);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  // States
   const [clientsNumber, setClientsNumber] = useState(0);
 
   // Effects
@@ -142,12 +165,15 @@ const clientForm = ({ client }: Props) => {
     formState: { errors },
     setValue,
     getValues,
+    watch,
     reset
   } = useForm({
     defaultValues: client ? client : defaultValue,
     resolver: yupResolver(schema),
     mode: "onBlur"
   });
+
+  if (watch("address.zipCode")?.length === 8) setAddressByCep();
 
   const onSubmit = async (data: any) => {
 
@@ -318,6 +344,16 @@ const clientForm = ({ client }: Props) => {
                   </Divider>
                 </Grid>
                 <Grid item xs={12} sm={6}>
+                  <PatternInputControlled
+                    name={"address.zipCode"}
+                    control={control}
+                    label={"CEP"}
+                    patternType={"cep"}
+                    errors={errors}
+                    disabled={isLoading}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
                   <TextInputControlled
                     name={"address.street"}
                     label={"Rua"}
@@ -358,16 +394,6 @@ const clientForm = ({ client }: Props) => {
                     name={"address.state"}
                     label={"Estado"}
                     control={control}
-                    errors={errors}
-                    disabled={isLoading}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <PatternInputControlled
-                    name={"address.zipCode"}
-                    control={control}
-                    label={"CEP"}
-                    patternType={"cep"}
                     errors={errors}
                     disabled={isLoading}
                   />
