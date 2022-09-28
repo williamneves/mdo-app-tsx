@@ -52,7 +52,7 @@ interface Props {
 
 const clientForm = ({ client }: Props) => {
 
-  const { user, selectedStore } = useAuth();
+  const { user } = useAuth();
   const router = useRouter();
 
   // React Query
@@ -129,7 +129,30 @@ const clientForm = ({ client }: Props) => {
     })
   });
 
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    getValues,
+    reset
+  } = useForm({
+    defaultValues: client ? client : defaultValue,
+    resolver: yupResolver(schema),
+    mode: "onBlur"
+  });
+
+  // States
+  const [clientsNumber, setClientsNumber] = useState(0);
+  const [isLoadingAddress, setIsLoadingAddress] = useState(false);
+
+  // Effects
+  useEffect(() => {
+    if (user && !client) setValue("createdBy", user);
+  }, [user, clientsNumber]);
+
   const setAddressByCep = () => {
+    setIsLoadingAddress(true);
     cep(getValues("address.zipCode"))
       .then((response) => {
         setTimeout(() => {
@@ -140,36 +163,20 @@ const clientForm = ({ client }: Props) => {
             duration: 4000,
             position: "top-center"
           });
+          setIsLoadingAddress(false);
         }, 500);
       })
       .catch((error) => {
         console.log(error);
+        toast.error("CEP não encontrado! preencha os campos de endereço manualmente", {
+          duration: 4000,
+          position: "top-center"
+        });
+        setIsLoadingAddress(false);
       });
   };
 
-  // States
-  const [clientsNumber, setClientsNumber] = useState(0);
-
-  // Effects
-  useEffect(() => {
-    if (user && !client) setValue("createdBy", user);
-  }, [user, clientsNumber]);
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    getValues,
-    watch,
-    reset
-  } = useForm({
-    defaultValues: client ? client : defaultValue,
-    resolver: yupResolver(schema),
-    mode: "onBlur"
-  });
-
-  if (watch("address.zipCode")?.length === 8) setAddressByCep();
+  const getAddressLabel = (fieldName: string) => isLoadingAddress ? "Buscando endereço..." : fieldName;
 
   const onSubmit = async (data: any) => {
 
@@ -191,22 +198,6 @@ const clientForm = ({ client }: Props) => {
         position: "top-center"
       });
     }
-  };
-
-  const storesInSelect = () => {
-    if (client) return user!.stores.map((store) => ({
-      key: store._id,
-      value: store._id == client.store._id ? client.store : store,
-      label: store.name
-    }));
-
-    if (user?.role === "admin") return user!.stores.map((store) => ({
-      key: store._id,
-      value: store,
-      label: store.name
-    }));
-
-    return [{ key: selectedStore!._id, value: selectedStore, label: selectedStore?.name, selected: true }];
   };
 
   return (
@@ -347,15 +338,18 @@ const clientForm = ({ client }: Props) => {
                     patternType={"cep"}
                     errors={errors}
                     disabled={isLoading}
+                    onBlur={() => {
+                      if ((getValues("address.zipCode") as string).length === 8) setAddressByCep();
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextInputControlled
                     name={"address.street"}
-                    label={"Rua"}
+                    label={getAddressLabel("Rua")}
                     control={control}
                     errors={errors}
-                    disabled={isLoading}
+                    disabled={isLoading || isLoadingAddress}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -379,19 +373,19 @@ const clientForm = ({ client }: Props) => {
                 <Grid item xs={12} sm={6}>
                   <TextInputControlled
                     name={"address.city"}
-                    label={"Cidade"}
+                    label={getAddressLabel("Cidade")}
                     control={control}
                     errors={errors}
-                    disabled={isLoading}
+                    disabled={isLoading || isLoadingAddress}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextInputControlled
                     name={"address.state"}
-                    label={"Estado"}
+                    label={getAddressLabel("Estado")}
                     control={control}
                     errors={errors}
-                    disabled={isLoading}
+                    disabled={isLoading || isLoadingAddress}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
