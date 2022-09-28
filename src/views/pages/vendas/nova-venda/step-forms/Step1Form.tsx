@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 
 // ** Third Party Imports
 import * as yup from "yup";
@@ -41,7 +41,7 @@ const Step1Form = (props: Step1FormProps) => {
   const { setHasErrors, handleNext, handleBack, onSubmit, setSaleObject, steps, resetAll } = props;
   const { user: userDB, selectedStore } = useAuth();
   const {
-    data: allClients,
+    data: allClients
   } = clientsQ.useGetClientsByReferenceIdQuery({ referenceId: selectedStore!._id }, {
     active: !!userDB,
     placeholderData: []
@@ -225,16 +225,21 @@ const Step1Form = (props: Step1FormProps) => {
               optionLabel={"name"}
               errors={errorsStep1}
               options={allClients}
-              disabled={allClients?.length === 1}
+              disabled={allClients?.length === 1 && userDB?.role !== "admin"}
               filterKeys={allClients?.length !== 0 && getAllObjectKeys(allClients)}
               noOptionsText={
-                <Button
-                  variant="outlined"
-                  endIcon={<PersonAddAltTwoToneIcon />}
-                  onClick={(): void => setNewClientDialogOpen(true)}
-                >
-                  Criar Novo Cliente
-                </Button>
+                <Fragment>
+                  <Typography variant="body2" sx={{ fontWeight: 600, paddingBottom: 3 }}>
+                    Nenhum cliente encontrado
+                  </Typography>
+                  <Button
+                    variant="text"
+                    endIcon={<PersonAddAltTwoToneIcon />}
+                    onClick={(): void => setNewClientDialogOpen(true)}
+                  >
+                    Criar Novo Cliente
+                  </Button>
+                </Fragment>
               }
             />
           </Grid>

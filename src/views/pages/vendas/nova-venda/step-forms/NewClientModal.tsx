@@ -40,6 +40,7 @@ import Client from "src/interfaces/Client";
 
 // ** Import Api
 import * as clientsQ from "src/queries/clients";
+import * as clientsHooks from "src/queries/clients/hooks/useClient";
 
 // Interface
 interface NewClientModalProps {
@@ -99,6 +100,22 @@ const NewClientModal = ({ isOpen, onClose: handleClose, clientList, setNewClient
         if (value === "") return true;
         return validateCPF(value);
       })
+      .test("duplicatedCPF", "CPF já cadastrado", async (value:any) => {
+        if (value === "") return true;
+        if (value.length === 11) {
+          const isUnique = await clientsHooks.cpfIsUnique(value);
+
+          if (!isUnique)
+            toast("Esse CPF já está registrado no sistema!", {
+              icon: "🚨",
+              duration: 5000,
+              position: "top-center"
+            });
+
+          return isUnique;
+        }
+        return true;
+      })
   });
 
   /// *** Form Defaults
@@ -131,7 +148,6 @@ const NewClientModal = ({ isOpen, onClose: handleClose, clientList, setNewClient
 
   // ** Functions
   const handleSubmitForm = async (data: any) => {
-    console.log(data);
     try {
       setLoading(true);
       const dataNew = await createNewClient.mutateAsync(data);

@@ -2,6 +2,29 @@ export default {
   title: "Client",
   name: "client",
   type: "document",
+  preview: {
+    select: {
+      title: "name",
+      subtitle: "store.name",
+      clientNumber: "clientNumber",
+    },
+    prepare(value) {
+      const { title, subtitle, clientNumber } = value;
+      return {
+        title: `${title} ${clientNumber ? `(${clientNumber})` : ""}`,
+        subtitle: `${subtitle}`,
+      };
+    }
+  },
+  orderings: [
+    {
+      title: "Numero do cliente",
+      name: "clientNumber",
+      by: [
+        {field: "clientNumber", direction: "desc"}
+      ],
+    },
+  ],
   fields: [
     {
       title: "Inativado",

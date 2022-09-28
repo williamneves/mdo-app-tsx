@@ -116,6 +116,18 @@ const queryAllClientsByRefenceId = `
   }
   `;
 
+export const cpfIsUnique = async (cpf: number):Promise<boolean> => {
+  try{
+    const result = await dbClient.fetch(`count(*[cpf=="${cpf}"])`)
+    console.log(result)
+    return result === 0;
+  }
+  catch(error){
+    throw error
+  }
+
+};
+
 export const getAllClients = async (): Promise<Client[]> => {
   try {
     return await dbClient.fetch(queryAllClients);
@@ -140,9 +152,15 @@ export const createClient = async (client: Client) => {
   if (!client.name || !client.store._id || !client.createdBy._id)
     throw new Error("Missing required fields");
 
+  async function getNewClientNumber():Promise<number> {
+    const data = await increaseClientCode();
+    console.log('number',data);
+    return data.clientNumber;
+  }
+
   let clientObject = {
     _type: "client",
-    clientNumber: client.clientNumber || null,
+    clientNumber: client.clientNumber || await getNewClientNumber(),
     inactive: (client.inactive && client.inactive) || false,
     name: client.name, // required
     phone: (client.phone && client.phone) || "",
