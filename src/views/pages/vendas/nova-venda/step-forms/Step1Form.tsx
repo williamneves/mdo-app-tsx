@@ -5,6 +5,7 @@ import React, { useState, useEffect, Fragment } from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
+import toast from "react-hot-toast";
 
 const moment = require("moment");
 import "moment-timezone";
@@ -183,6 +184,7 @@ const Step1Form = (props: Step1FormProps) => {
   // ** Set Validation Step
   useEffect(() => {
     if (submitCountStep1 > 0) {
+      toast.error("Verifique os campos obrigatórios");
       setHasErrors(!isValidStep1);
     }
   }, [isValidStep1, submitCountStep1, isDirtyStep1]);

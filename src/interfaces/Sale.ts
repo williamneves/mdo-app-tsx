@@ -3,6 +3,14 @@ import PaymentMethod from "src/interfaces/PaymentMethod";
 import Product from "src/interfaces/Product";
 import { SanityDefaultObject } from "src/interfaces/SanityDefaultInterfaces";
 
+interface Products {
+  product: Partial<Product>;
+  quantity: number;
+  price: number;
+  discount: number;
+  cost: number;
+}
+
 export default interface Sale extends Partial<SanityDefaultObject> {
   _id: string;
   saleNumber: number;
@@ -12,8 +20,8 @@ export default interface Sale extends Partial<SanityDefaultObject> {
   excluded: boolean;
   date: Date;
   client: any;
-  products: Array<Partial<Product>>;
-  salePayment: Array<{
+  products: Array<Products>;
+  salePayments: Array<{
     paymentMethod: PaymentMethod;
     paymentAmount: number
     splitQuantity: number
