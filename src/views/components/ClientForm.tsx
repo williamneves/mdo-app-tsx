@@ -25,7 +25,6 @@ import { Controller, useForm } from "react-hook-form";
 import { useAuth } from "src/hooks/useAuth";
 import * as useClient from "src/queries/clients";
 import { useQueryClient } from "@tanstack/react-query";
-import * as useClientHook from "src/queries/clients/hooks/useClient";
 
 // ** Third Party Imports
 import * as yup from "yup";
@@ -149,15 +148,6 @@ const clientForm = ({ client }: Props) => {
   useEffect(() => {
     if (user && !client) setValue("createdBy", user);
   }, [user, clientsNumber]);
-
-  useEffect(() => {
-    if (getValues("clientNumber") === null) {
-      useClientHook.increaseClientCode()
-        .then((data) => {
-          setValue("clientNumber", data.clientNumber);
-        });
-    }
-  }, [clientsNumber]);
 
   const {
     control,

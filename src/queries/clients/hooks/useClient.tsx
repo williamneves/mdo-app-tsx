@@ -1,138 +1,73 @@
-import { dbClient } from "src/configs/sanityConfig";
+import { dbClient } from "../../../configs/sanityConfig";
 import Client from "src/interfaces/Client";
 
-const queryAllClients = `
-  *[
-    _type == "client"
-    && inactive != true
-    && !(_id in path('drafts.**'))
-  ]{
-      ...,
-      inactive,
-      clientNumber,
-      name,
-      phone,
-      email,
-      birthday,
-      gender,
-      hearAboutUs,
-      cpf,
-      address {
-        street,
-        number,
-        complement,
-        city,
-        state,
-        zipCode,
-      },
-    store -> {
-    _id,
-    inactive,
-    name,
-    taxID,
-    imageURL,
-    address {
-       street,
-       number,
-       complement,
-       city,
-       state,
-       zipCode,
-    },
-  },
-    createdBy-> {
-        _id,
-        name,
-        email,
-        imageURL,
-        imageAsset,
-        role,
-        profile {
-           jobTitle,
-           birthDay,
-           gender,
-           phoneNumbers,
-           bio,
-        }
-    },
-  }
-  `;
-
-const queryAllClientsByRefenceId = `
-  *[
-    _type == "client"
-    && references($referenceId)
-    && inactive != true
-    && !(_id in path('drafts.**'))
-  ]{
-      ...,
-      inactive,
-      clientNumber,
-      name,
-      phone,
-      email,
-      birthday,
-      gender,
-      hearAboutUs,
-      cpf,
-      address {
-        street,
-        number,
-        complement,
-        city,
-        state,
-        zipCode,
-      },
-    store -> {
-    _id,
-    inactive,
-    name,
-    taxID,
-    imageURL,
-    address {
-       street,
-       number,
-       complement,
-       city,
-       state,
-       zipCode,
-    },
-  },
-    createdBy-> {
-        _id,
-        name,
-        email,
-        imageURL,
-        imageAsset,
-        role,
-        profile {
-           jobTitle,
-           birthDay,
-           gender,
-           phoneNumbers,
-           bio,
-        }
-    },
-  }
-  `;
-
 export const getAllClients = async (): Promise<Client[]> => {
+  const q = `
+  *[
+    _type == "client"
+    && inactive != true
+    && !(_id in path('drafts.**'))
+  ]{
+     _id,
+      inactive,
+      clientNumber,
+      name,
+      phone,
+      email,
+      birthday,
+      gender,
+      hearAboutUs,
+      cpf,
+      address {
+        street,
+        number,
+        complement,
+        city,
+        state,
+        zipCode,
+      },
+    store -> {
+    _id,
+    inactive,
+    name,
+    taxID,
+    imageURL,
+    address {
+       street,
+       number,
+       complement,
+       city,
+       state,
+       zipCode,
+    },
+  },
+    createdBy-> {
+        _id,
+        name,
+        email,
+        imageURL,
+        imageAsset,
+        role,
+        profile {
+           jobTitle,
+           birthDay,
+           gender,
+           phoneNumbers,
+           bio,
+        }
+    },
+  }
+  `;
+
   try {
-    return await dbClient.fetch(queryAllClients);
+    const data = await dbClient.fetch(q);
+    console.log("data", data);
+    return data;
   } catch (e) {
     console.log(e);
     throw e;
   }
 };
-
-export const getAllClientsByReferenceId = async ({referenceId}: {referenceId: string}): Promise<Client[]> => {
-  try {
-    return await dbClient.fetch(queryAllClientsByRefenceId, {referenceId});
-  } catch (e) {
-    console.log(e);
-    throw e;
-  }
-}
 
 export const createClient = async (client: Client) => {
 
@@ -173,6 +108,9 @@ export const createClient = async (client: Client) => {
   };
 
   try {
+    // Increment client number
+    const { clientNumber } = await increaseClientCode();
+    clientObject.clientNumber = clientNumber;
     // Create client
     const result = await dbClient.create(clientObject);
     console.log("success", result);
