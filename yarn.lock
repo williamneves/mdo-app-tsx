@@ -14455,10 +14455,10 @@ react-generate-context@1.0.1:
   resolved "https://registry.yarnpkg.com/react-generate-context/-/react-generate-context-1.0.1.tgz#4454cfecb0b3f27502185dfa5c63d5f5ec14b936"
   integrity sha512-rOFGh3KgC2Ot66DmVCcT1p8lVJCmmCjzGE5WK/KsyDFi43wpIbW1PYcr04cQ3mbF4LaIkY6SpK7k1DOgwtpUXA==
 
-react-hook-form@7.3.0:
-  version "7.3.0"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.3.0.tgz#b98ff66bc54783d0e2c00ca0c1fbbf1dc22d139f"
-  integrity sha512-hV2/p55XXvV9M4FU7c3hNKnD0gI+UU+qtekyOcYvU7Wea6gsLTjy1vwdUv0itd5w0T/DE4le5fimiV8O+poknw==
+react-hook-form@7.30.0:
+  version "7.30.0"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.30.0.tgz#c9e2fd54d3627e43bd94bf38ef549df2e80c1371"
+  integrity sha512-DzjiM6o2vtDGNMB9I4yCqW8J21P314SboNG1O0obROkbg7KVS0I7bMtwSdKyapnCPjHgnxc3L7E5PEdISeEUcQ==
 
 react-hot-toast@2.1.1:
   version "2.1.1"
@@ -16863,6 +16863,11 @@ validate-npm-package-license@^3.0.1:
   dependencies:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
+
+validations-br@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/validations-br/-/validations-br-1.2.0.tgz#254c3a7982667cada8935e633c7a4168e1d98de1"
+  integrity sha512-BHoRZMH+GklOObdxnqatyo0JxpiKxzzRwLHOHAbSeBJ1REB5yBietcmyMK7pR7JwzWuLiU2CwTF/xpY7CmP7XQ==
 
 vary@~1.1.2:
   version "1.1.2"

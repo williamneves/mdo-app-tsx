@@ -16,6 +16,7 @@ const lastSalesNumbers = async () => {
   };
 };
 
+// Handle the sale number creation
 export const getSaleNumber = async (): Promise<number> => {
   // Create New Promise
   return new Promise(async (resolve, reject) => {
@@ -40,14 +41,29 @@ export const getSaleNumber = async (): Promise<number> => {
         .set({ saleNumber: lastSaleNumber + 1 })
         .commit()
         .then((res) => {
-          return res.saleNumber;
+          resolve(res.saleNumber);
         })
         .catch((err) => {
-          throw err;
+          reject(err);
         });
     }
 
     // If the sale number is greater than the last sale number, return the actual sale number
     resolve(actualSaleNumber);
   });
+};
+
+// Validate the P.D.V. number
+export const validatePDVNumber = async (PDVNumber: any): Promise<boolean> => {
+
+  const intPDVNumber = parseInt(PDVNumber);
+
+  try {
+    const data = await dbClient.fetch(
+      `count(*[_type=="sale" && PDVNumber==${intPDVNumber}])`
+    );
+    return data === 0;
+  } catch (err) {
+    return false;
+  }
 };

@@ -36,6 +36,14 @@ export const useCreateClientQuery = (queryClient: any) => {
           }
           return [newClient];
         });
+        queryClient.setQueryData(["clients", "referenceId", `${newClient?.store?._ref}`], (old: any) => {
+          console.log(old);
+          if (old) {
+            return [...old, newClient];
+          }
+          return [newClient];
+        });
+        queryClient.invalidateQueries(["clients", "referenceId", `${newClient?.store?._ref}`]);
         queryClient.invalidateQueries(["clients", "all"]);
       }
     });

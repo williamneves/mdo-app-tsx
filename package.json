@@ -77,7 +77,7 @@
     "react-dom": "18.1.0",
     "react-draft-wysiwyg": "1.14.7",
     "react-dropzone": "14.2.0",
-    "react-hook-form": "7.3.0",
+    "react-hook-form": "7.30.0",
     "react-hot-toast": "2.1.1",
     "react-i18next": "11.14.3",
     "react-number-format": "^5.0.0-beta.5",
@@ -90,6 +90,7 @@
     "storybook": "^6.5.12",
     "stylis": "4.0.10",
     "stylis-plugin-rtl": "2.1.1",
+    "validations-br": "^1.2.0",
     "yup": "0.32.9"
   },
   "devDependencies": {

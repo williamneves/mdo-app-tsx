@@ -62,7 +62,10 @@ export const SelectInputController = (props: SelectInputProps) => {
       name={name}
       control={control}
       errors={errors}
-      render={({ field: { value, onChange }, fieldState: { invalid } }) => (
+      render={({ field: { value, onChange }, fieldState: { invalid } }) => {
+
+        // console.log("value", value);
+        return (
           <TextField
             {...rest}
             select
@@ -111,7 +114,8 @@ export const SelectInputController = (props: SelectInputProps) => {
               ))
             }
           </TextField>
-        )
+        );
+      }
       }
     />
   );
