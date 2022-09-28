@@ -395,16 +395,15 @@ const clientForm = ({ client }: Props) => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <SelectInputController
+                  <AutocompleteInputControlled
                     name={"store"}
-                    label={"Loja"}
                     control={control}
+                    label={"Loja"}
+                    optionLabel={"name"}
                     errors={errors}
-                    disabled={user?.role !== "admin" || isLoading}
-                    selectItems={
-                      {
-                        items: storesInSelect()
-                      }}
+                    options={user?.stores}
+                    loading={!Boolean(user?.stores)}
+                    disabled={user?.stores.length === 1 || user?.role !== "admin" || isLoading}
                   />
                 </Grid>
                 <Grid item xs={12}>
