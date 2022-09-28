@@ -1,3 +1,4 @@
+// ** React Imports
 import React, { useState, useEffect, Fragment } from "react";
 
 // ** Third Party Imports
@@ -8,20 +9,30 @@ import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 const moment = require("moment");
 import "moment-timezone";
 
-// ** Import Context and Queries
-import { useAuth } from "src/hooks/useAuth";
+// ** MUI Imports
 import { Grid, Typography, Button } from "@mui/material";
-import TextInputControlled from "components/inputs/TextInputControlled";
-import DateInputControlled from "components/inputs/DateInputControlled";
-import * as clientsQ from "src/queries/clients";
-import * as salesQ from "src/queries/sales";
-import * as salesHooks from "src/queries/sales/hooks";
-import AutocompleteInputControlled from "components/inputs/AutocompleteInputControlled";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import PersonAddAltTwoToneIcon from "@mui/icons-material/PersonAddAltTwoTone";
 
+// ** Import Components
+import TextInputControlled from "components/inputs/TextInputControlled";
+import DateInputControlled from "components/inputs/DateInputControlled";
+import AutocompleteInputControlled from "components/inputs/AutocompleteInputControlled";
+import NewClientModal from "./NewClientModal";
 
+// ** Import Context and Queries
+import { useAuth } from "src/hooks/useAuth";
+import * as clientsQ from "src/queries/clients";
+import * as salesQ from "src/queries/sales";
+import * as salesHooks from "src/queries/sales/hooks";
+
+// ** Import Hooks
+import { getAllObjectKeys, filterListByKeyValue } from "src/@core/utils/filters";
+
+
+// ** Rendered Element
+// Interface for Step2FormProps
 interface Step1FormProps {
   setHasErrors: (value: boolean) => void;
   handleNext: () => void;
@@ -30,15 +41,26 @@ interface Step1FormProps {
   setSaleObject: (value: any) => void;
   steps: Array<{ title: string, subtitle: string }>;
   resetAll: boolean;
+  step1Data: any;
+  setStep1Data: (value: any) => void;
+
 }
 
-import { getAllObjectKeys, filterListByKeyValue } from "src/@core/utils/filters";
-import NewClientModal from "./NewClientModal";
-
+// Rendered Element
 const Step1Form = (props: Step1FormProps) => {
 
   // ** Props and States
-  const { setHasErrors, handleNext, handleBack, onSubmit, setSaleObject, steps, resetAll } = props;
+  const {
+    setHasErrors,
+    handleNext,
+    handleBack,
+    onSubmit,
+    setSaleObject,
+    steps,
+    resetAll,
+    step1Data,
+    setStep1Data
+  } = props;
   const { user: userDB, selectedStore } = useAuth();
   const {
     data: allClients
@@ -56,7 +78,7 @@ const Step1Form = (props: Step1FormProps) => {
     saleNumber: "Gerando...",
     PDVNumber: "",
     // New date in timezone Brazil/East using ISO
-    date: moment().tz("America/Sao_Paulo"),
+    date: moment().tz("America/Belem"),
     client: {
       name: ""
     },
@@ -122,7 +144,7 @@ const Step1Form = (props: Step1FormProps) => {
       submitCount: submitCountStep1
     }
   } = useForm({
-    defaultValues: step1DefaultValue,
+    defaultValues: step1Data || step1DefaultValue,
     resolver: yupResolver(step1Schema),
     mode: "onSubmit"
   });
@@ -160,14 +182,19 @@ const Step1Form = (props: Step1FormProps) => {
 
   // ** Set Validation Step
   useEffect(() => {
-    if (isDirtyStep1 && submitCountStep1 > 0 && !isValidStep1) {
+    if (submitCountStep1 > 0) {
       setHasErrors(!isValidStep1);
     }
   }, [isValidStep1, submitCountStep1, isDirtyStep1]);
 
+  useEffect(() => {
+    console.log(isValidStep1);
+    console.log(errorsStep1);
+  }, [errorsStep1, isValidStep1]);
+
 
   return (
-    <>
+    <Fragment>
       <form key={0} id={"formStep1"} onSubmit={handleSubmitStep1(onSubmit)}>
         <Grid container spacing={5}>
           {/* Step Title */}
@@ -307,7 +334,7 @@ const Step1Form = (props: Step1FormProps) => {
         clientList={allClients && allClients.length > 0 ? allClients : []}
         setNewClient={setValueStep1}
       />
-    </>
+    </Fragment>
   );
 };
 

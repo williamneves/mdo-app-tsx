@@ -14,7 +14,7 @@ import { FieldErrors } from "react-hook-form";
 const numericSetup = {
   thousandSeparator: ".",
   allowNegative: false,
-  allowedDecimalSeparators: ["%", ",", "/", " ", "-"],
+  allowedDecimalSeparators: ["."],
   decimalScale: 2,
   decimalSeparator: ","
 };
@@ -45,6 +45,7 @@ const CurrencyMaskInputControlled = (props: CurrencyMaskInputControlledProps) =>
   } = props;
 
   return (
+    // @ts-ignore
     <InputController
       control={control}
       errors={errors}

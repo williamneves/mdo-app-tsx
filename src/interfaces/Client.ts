@@ -1,6 +1,8 @@
 import { Gender } from "@core/utils/types";
+import { SanityDefaultObject } from "src/interfaces/SanityDefaultInterfaces";
 
-export default interface Client {
+
+export default interface Client extends Partial<SanityDefaultObject> {
   _id: string;
   inactive?: boolean;
   clientNumber: number;
@@ -21,6 +23,4 @@ export default interface Client {
     state?: string
     zipCode?: string
   };
-  _createdAt: Date;
-  _updatedAt: Date;
 }

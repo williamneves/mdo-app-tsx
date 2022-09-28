@@ -61,20 +61,28 @@ const steps = [
 // ** Import Interfaces
 import Sale from "src/interfaces/Sale";
 import Step1Form from "./step-forms/Step1Form";
+import Step2Form from "./step-forms/Step2Form";
 
 const NovaVendaWizard = () => {
   // ** States
-  const [activeStep, setActiveStep] = useState<number>(0);
+  const [activeStep, setActiveStep] = useState<number>(1);
   const [hasErrorsStep1, setHasErrorsStep1] = useState<boolean>(false);
   const [hasErrorsStep2, setHasErrorsStep2] = useState<boolean>(false);
   const [hasErrorsStep3, setHasErrorsStep3] = useState<boolean>(false);
   const [resetAll, setResetAll] = useState<boolean>(false);
-  const [saleObject, setSaleObject] = useState<Sale | null>(null);
+  const [step1Data, setStep1Data] = useState<Partial<Sale> | null>(null);
+  const [step2Data, setStep2Data] = useState<Partial<Sale> | null>(null);
+  const [step3Data, setStep3Data] = useState<Partial<Sale> | null>(null);
+  const [saleObject, setSaleObject] = useState<any>(null);
 
   // ** Handlers
   // Handle Submit
   const onSubmit = (data: any) => {
     console.log(data);
+    if (activeStep === 0) {
+      setStep1Data(data);
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
   };
   // Handle Reset
   const handleReset = () => {
@@ -101,11 +109,18 @@ const NovaVendaWizard = () => {
             handleNext={handleNext}
             handleBack={handleBack}
             onSubmit={onSubmit}
-            setSaleObject={setSaleObject} />
+            setSaleObject={setSaleObject}
+            step1Data={step1Data}
+            setStep1Data={setStep1Data}
+          />
         );
       case 1:
         return (
-          "Dados da Venda"
+          <Step2Form
+            onSubmit={onSubmit}
+            handleStepBack={handleBack}
+            steps={steps}
+          />
         );
       case 2:
         return (

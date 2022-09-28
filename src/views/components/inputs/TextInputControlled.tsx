@@ -1,13 +1,6 @@
-import FormControl from "@mui/material/FormControl";
-import {
-  Controller,
-  Control,
-  ControllerProps,
-  FieldErrors,
-} from "react-hook-form";
-import { TextField, TextFieldProps, StandardTextFieldProps, FilledTextFieldProps, OutlinedTextFieldProps  } from "@mui/material";
+import { OutlinedTextFieldProps, TextField } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
-import FormHelperText from "@mui/material/FormHelperText";
+import { FieldErrors } from "react-hook-form";
 
 import { InputController } from "./InputController";
 
@@ -38,8 +31,8 @@ export const TextInputControlled = (props: TextInputProps) => {
     readOnly
   } = props;
 
-  // @ts-ignore
   return (
+    // @ts-ignore
       <InputController
         name={name}
         control={control}

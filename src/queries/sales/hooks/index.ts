@@ -1,4 +1,5 @@
 import { dbClient } from "src/configs/sanityConfig";
+import Product from "src/interfaces/Product";
 
 // Create the sale number
 const getSaleNumberAndLastSaleNumber = `*[_id=="8a7d451e-193d-4ebc-92c1-40dfc7725ed8"]{
@@ -65,5 +66,66 @@ export const validatePDVNumber = async (PDVNumber: any): Promise<boolean> => {
     return data === 0;
   } catch (err) {
     return false;
+  }
+};
+
+// Get All Products By Reference (Store)
+const allProductsByReferenceQuery = `
+*[
+  _type == "product" 
+  && references($storeRef)
+  && inactive != true
+  && !(_id in path("drafts.**"))
+]{
+  ...,
+  inactive,
+  title,
+  description,
+  sku,
+  category,
+  store,
+}`;
+
+
+export const getAllProductsByReference = async (referenceID: string): Promise<Product[]> => {
+  try {
+    const data = await dbClient.fetch(allProductsByReferenceQuery, {
+      storeRef: referenceID as string
+    });
+    console.log(data);
+    return data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+
+// Get All Products By Reference (Store)
+const allPaymentMethodByReferenceQuery = `
+*[
+  _type == "paymentMethod" 
+  && references($storeRef)
+  && inactive != true
+  && !(_id in path("drafts.**"))
+]{
+  ...,
+  inactive,
+  title,
+  description,
+  sku,
+  category,
+  store,
+}`;
+
+
+export const getAllPaymentMethodByReference = async (referenceID: string): Promise<Product[]> => {
+  try {
+    const data = await dbClient.fetch(allPaymentMethodByReferenceQuery, {
+      storeRef: referenceID as string
+    });
+    console.log(data);
+    return data;
+  } catch (err) {
+    throw err;
   }
 };

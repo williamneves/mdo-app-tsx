@@ -1,10 +1,12 @@
 type productCategory = "armacao-grau" | "oculos-solar" | "lente" | "outros"
 
-export default interface Product {
-  inactive?: boolean
-  name: string
-  description?: string
-  sku?: string
-  category: productCategory
-  store: any
+import { SanityDefaultReference, SanityDefaultObject } from "src/interfaces/SanityDefaultInterfaces";
+
+export default interface Product extends Partial<SanityDefaultObject> {
+  inactive?: boolean;
+  title: string;
+  description?: string;
+  sku?: string;
+  category: productCategory;
+  store: SanityDefaultReference;
 }
