@@ -1,10 +1,8 @@
+import FormHelperText from "@mui/material/FormHelperText";
 import { NumericFormat, NumericFormatProps } from "react-number-format";
 import InputAdornment from "@mui/material/InputAdornment";
 import {
   TextField,
-  TextFieldProps,
-  StandardTextFieldProps,
-  FilledTextFieldProps,
   OutlinedTextFieldProps
 } from "@mui/material";
 import { InputController } from "./InputController";
@@ -14,7 +12,7 @@ import { FieldErrors } from "react-hook-form";
 const numericSetup = {
   thousandSeparator: ".",
   allowNegative: false,
-  allowedDecimalSeparators: ["%", ",", "/", " ", "-"],
+  allowedDecimalSeparators: ["."],
   decimalScale: 2,
   decimalSeparator: ","
 };
@@ -28,6 +26,7 @@ interface CurrencyMaskInputControlledProps extends NumericFormatProps, OutlinedT
   // Just pass a ReactNode to simple string to startAdornment and endAdornment
   startAdornment?: JSX.Element | string;
   endAdornment?: JSX.Element | string;
+  errorField?: string;
 }
 
 const CustomTextField = (props: any) => <TextField {...props} />;
@@ -41,42 +40,62 @@ const CurrencyMaskInputControlled = (props: CurrencyMaskInputControlledProps) =>
     readOnly,
     startAdornment,
     endAdornment,
+    errorField,
     ...rest
   } = props;
 
   return (
+    // @ts-ignore
     <InputController
       control={control}
       errors={errors}
       name={name}
-      render={({ field: { onChange, name, value }, fieldState: { invalid } }) => (
-        <NumericFormat
-          {...numericSetup}
-          onValueChange={({ floatValue }) => onChange(floatValue)}
-          value={value}
-          name={name}
-          error={invalid}
-          InputProps={{
-            readOnly: readOnly || props.InputProps?.readOnly,
-            startAdornment: (
-              startAdornment ?
-                <InputAdornment position="start">
-                  {startAdornment}
-                </InputAdornment>
-                : props.InputProps?.startAdornment
-            ),
-            endAdornment: (
-              startAdornment ?
-                <InputAdornment position="end">
-                  {endAdornment}
-                </InputAdornment>
-                : props.InputProps?.endAdornment
-            )
-          }}
-          {...rest}
-          customInput={CustomTextField}
-        />
-      )}
+      errorField={errorField}
+      render={({ field: { onChange, name, value }, fieldState: { invalid, error } }) => {
+
+        return (
+          <>
+            <NumericFormat
+              {...numericSetup}
+              onValueChange={({ floatValue }) => onChange(floatValue)}
+              value={value}
+              name={name}
+              error={invalid}
+              InputProps={{
+                readOnly: readOnly || props.InputProps?.readOnly,
+                startAdornment: (
+                  startAdornment ?
+                    <InputAdornment position="start">
+                      {startAdornment}
+                    </InputAdornment>
+                    : props.InputProps?.startAdornment
+                ),
+                endAdornment: (
+                  startAdornment ?
+                    <InputAdornment position="end">
+                      {endAdornment}
+                    </InputAdornment>
+                    : props.InputProps?.endAdornment
+                )
+              }}
+              {...rest}
+              customInput={CustomTextField}
+            />
+            {
+              error &&
+              <FormHelperText sx={{ color: "error.main" }} id={`${name}-text-input-form`}>
+                {
+                  error.message ||
+                  Object.keys(error).map((key: string) => {
+                    // @ts-ignore
+                    return error[key].message;
+                  })[0]
+                }
+              </FormHelperText>
+            }
+          </>
+        );
+      }}
     />
   );
 };

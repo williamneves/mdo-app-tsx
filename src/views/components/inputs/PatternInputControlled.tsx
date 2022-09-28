@@ -1,3 +1,4 @@
+import FormHelperText from "@mui/material/FormHelperText";
 import { PatternFormat, PatternFormatProps } from "react-number-format";
 import InputAdornment from "@mui/material/InputAdornment";
 import {
@@ -53,6 +54,7 @@ interface PatternInputControlledProps extends Omit<PatternFormatProps, "format">
   startAdornment?: JSX.Element | string;
   endAdornment?: JSX.Element | string;
   patternType: "cpf" | "cnpj" | "cep" | "phone";
+  errorField?: string;
 }
 
 const CustomTextField = (props: any) => <TextField {...props} />;
@@ -67,6 +69,7 @@ const PatternInputControlled = (props: PatternInputControlledProps) => {
     startAdornment,
     endAdornment,
     patternType,
+    errorField,
     ...rest
   } = props;
 
@@ -77,33 +80,48 @@ const PatternInputControlled = (props: PatternInputControlledProps) => {
       control={control}
       errors={errors}
       name={name}
-      render={({ field: { onChange, name, value }, fieldState: { invalid } }) => (
-        <PatternFormat
-          onValueChange={({ floatValue }) => onChange(floatValue)}
-          value={value}
-          name={name}
-          error={invalid}
-          InputProps={{
-            readOnly: readOnly || props.InputProps?.readOnly,
-            startAdornment: (
-              startAdornment ?
-                <InputAdornment position="start">
-                  {startAdornment}
-                </InputAdornment>
-                : props.InputProps?.startAdornment
-            ),
-            endAdornment: (
-              startAdornment ?
-                <InputAdornment position="end">
-                  {endAdornment}
-                </InputAdornment>
-                : props.InputProps?.endAdornment
-            )
-          }}
-          {...rest}
-          {...patternSetup}
-          customInput={CustomTextField}
-        />
+      errorField={errorField}
+      render={({ field: { onChange, name, value }, fieldState: { invalid, error } }) => (
+        <>
+          <PatternFormat
+            onValueChange={({ value }) => onChange(value)}
+            value={value}
+            name={name}
+            error={invalid}
+            InputProps={{
+              readOnly: readOnly || props.InputProps?.readOnly,
+              startAdornment: (
+                startAdornment ?
+                  <InputAdornment position="start">
+                    {startAdornment}
+                  </InputAdornment>
+                  : props.InputProps?.startAdornment
+              ),
+              endAdornment: (
+                startAdornment ?
+                  <InputAdornment position="end">
+                    {endAdornment}
+                  </InputAdornment>
+                  : props.InputProps?.endAdornment
+              )
+            }}
+            {...rest}
+            {...patternSetup}
+            customInput={CustomTextField}
+          />
+          {
+            error &&
+            <FormHelperText sx={{ color: "error.main" }} id={`${name}-text-input-form`}>
+              {
+                error.message ||
+                Object.keys(error).map((key: string) => {
+                  // @ts-ignore
+                  return error[key].message;
+                })[0]
+              }
+            </FormHelperText>
+          }
+        </>
       )}
     />
   );

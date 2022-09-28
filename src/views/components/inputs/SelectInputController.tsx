@@ -1,3 +1,4 @@
+import FormHelperText from "@mui/material/FormHelperText";
 import { ReactElement } from "react";
 import {
   FieldErrors
@@ -52,7 +53,8 @@ export const SelectInputController = (props: SelectInputProps) => {
     endAdornment,
     variant,
     readOnly,
-    selectItems
+    selectItems,
+    ...rest
   } = props;
 
   // @ts-ignore
@@ -61,64 +63,75 @@ export const SelectInputController = (props: SelectInputProps) => {
       name={name}
       control={control}
       errors={errors}
-      render={({ field: { value, onChange }, fieldState: { invalid } }) => {
+      render={({ field: { value, onChange }, fieldState: { invalid, error } }) => {
 
-        // Remove selectItems from props
-        const { selectItems, ...rest } = props;
-
-        console.log(value)
-
+        // console.log("value", value);
         return (
-          <TextField
-            {...rest}
-            select
-            variant={variant}
-            value={value}
-            onChange={onChange}
-            error={invalid}
-            aria-describedby={`${name}-text-input-form`}
-            InputProps={{
-              readOnly: readOnly || props.InputProps?.readOnly,
-              startAdornment: (
-                startAdornment ?
-                  <InputAdornment position="start">
-                    {startAdornment}
-                  </InputAdornment>
-                  : props.InputProps?.startAdornment
-              ),
-              endAdornment: (
-                startAdornment ?
-                  <InputAdornment position="end">
-                    {endAdornment}
-                  </InputAdornment>
-                  : props.InputProps?.endAdornment
-              )
-            }}
-          >
-            {
-              !selectItems &&
-              <MenuItem key={"NoItemsKey"} disabled value="">
-                <em>No items</em>
-              </MenuItem>
-            }
-            {
-              selectItems &&
-              selectItems.placeholder &&
-              <MenuItem key={"PlaceholderKey"} disabled={selectItems.placeholder.disabled} value=" ">
-                <em>{selectItems.placeholder.label}</em>
-              </MenuItem>
-            }
-            {
-              selectItems &&
-              selectItems.items?.map((item: menuItems) => (
-                <MenuItem key={item.key} value={item.value} disabled={item.disabled} selected={item.selected}>
-                  {item.label}
+          <>
+            <TextField
+              {...rest}
+              select
+              variant={variant}
+              value={value}
+              onChange={onChange}
+              error={invalid}
+              aria-describedby={`${name}-text-input-form`}
+              InputProps={{
+                readOnly: readOnly || props.InputProps?.readOnly,
+                startAdornment: (
+                  startAdornment ?
+                    <InputAdornment position="start">
+                      {startAdornment}
+                    </InputAdornment>
+                    : props.InputProps?.startAdornment
+                ),
+                endAdornment: (
+                  startAdornment ?
+                    <InputAdornment position="end">
+                      {endAdornment}
+                    </InputAdornment>
+                    : props.InputProps?.endAdornment
+                )
+              }}
+            >
+              {
+                !selectItems &&
+                <MenuItem key={"NoItemsKey"} disabled value="">
+                  <em>No items</em>
                 </MenuItem>
-              ))
+              }
+              {
+                selectItems &&
+                selectItems.placeholder &&
+                <MenuItem key={"PlaceholderKey"} disabled={selectItems.placeholder.disabled} value=" ">
+                  <em>{selectItems.placeholder.label}</em>
+                </MenuItem>
+              }
+              {
+                selectItems &&
+                selectItems.items?.map((item: menuItems) => (
+                  <MenuItem key={item.key} value={item.value} disabled={item.disabled} selected={item.selected}>
+                    {item.label}
+                  </MenuItem>
+                ))
+              }
+            </TextField>
+            {
+              error &&
+              <FormHelperText sx={{ color: "error.main" }} id={`${name}-text-input-form`}>
+                {
+                  error.message ||
+                  Object.keys(error).map((key: string) => {
+                    // @ts-ignore
+                    return error[key].message;
+                  })[0]
+                }
+              </FormHelperText>
             }
-          </TextField>
+          </>
         );
-      }}
+      }
+      }
     />
   );
 };

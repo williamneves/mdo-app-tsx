@@ -6,7 +6,6 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormControl from "@mui/material/FormControl";
 import FormHelperText from "@mui/material/FormHelperText";
@@ -39,7 +38,7 @@ import ptBR from "date-fns/locale/pt-BR";
 
 // ** Third Party Components
 import TextInputControlled from "components/inputs/TextInputControlled";
-import SelectInputController, { SelectItems } from "components/inputs/SelectInputController";
+import SelectInputController from "components/inputs/SelectInputController";
 
 // ** Types
 import Client from "src/interfaces/Client";
@@ -169,18 +168,22 @@ const clientForm = ({ client }: Props) => {
   };
 
   const storesInSelect2 = () => {
-    if (client) return user!.stores.map((store) => ({ key: store._id, value: store, label: store.name }))
+    if (client) return user!.stores.map((store) => ({ key: store._id, value: store, label: store.name }));
 
-    if (user?.role === "admin") return user!.stores.map((store) => ({key: store._id, value: store, label: store.name }))
+    if (user?.role === "admin") return user!.stores.map((store) => ({
+      key: store._id,
+      value: store,
+      label: store.name
+    }));
 
     return [{ key: selectedStore!._id, value: selectedStore, label: selectedStore?.name, selected: true }];
-  }
+  };
 
-  const storesInSelect = client
-    ? user!.stores.map((store) => ({ key: store._id, value: store, label: store.name }))
-    : user?.role === "admin"
-      ? user!.stores.map((store) => ({key: store._id, value: store, label: store.name }))
-      : [{ key: selectedStore?._id, value: selectedStore, label: selectedStore?.name, selected: true }];
+  // const storesInSelect = client
+  //   ? user!.stores.map((store) => ({ key: store._id, value: store, label: store.name }))
+  //   : user?.role === "admin"
+  //     ? user!.stores.map((store) => ({key: store._id, value: store, label: store.name }))
+  //     : [{ key: selectedStore?._id, value: selectedStore, label: selectedStore?.name, selected: true }];
 
   return (
     <Grid container spacing={6}>
@@ -305,8 +308,8 @@ const clientForm = ({ client }: Props) => {
                       {
                         items: [
                           { key: "male", value: "male", label: "Homem" },
-                          { key: "male", value: "female", label: "Mulher" },
-                          { key: "male", value: "other", label: "Outros" }
+                          { key: "female", value: "female", label: "Mulher" },
+                          { key: "other", value: "other", label: "Outros" }
                         ]
                       }}
                   />

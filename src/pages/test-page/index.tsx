@@ -204,6 +204,7 @@ const Home = () => {
                       options={autoCompleteOptions}
                       optionLabel={"name"}
                       filterKeys={['name', 'age', 'phone']}
+                      loading={true}
                     />
                   </Grid>
                   <Grid item xs={4}>
