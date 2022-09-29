@@ -17,11 +17,16 @@ import Typography from "@mui/material/Typography";
 import StepperWrapper from "src/@core/styles/mui/stepper";
 import StepperCustomDot from "./StepperCustomDot";
 
-// ** Import Interfaces
-import Sale from "src/interfaces/Sale";
+// ** Import Components
 import Step1Form from "./step-forms/Step1Form";
 import Step2Form from "./step-forms/Step2Form";
+import Step3Form from "./step-forms/Step3Form";
+import Step4Form from "./step-forms/Step4Form";
 
+// ** Import Interfaces
+import Sale from "src/interfaces/Sale";
+
+import { createSale } from "src/queries/sales/hooks";
 
 const steps = [
   {
@@ -48,7 +53,7 @@ const steps = [
 
 const NovaVendaWizard = () => {
   // ** States
-  const [activeStep, setActiveStep] = useState<number>(1);
+  const [activeStep, setActiveStep] = useState<number>(0);
   const [hasErrorsStep1, setHasErrorsStep1] = useState<boolean>(false);
   const [hasErrorsStep2, setHasErrorsStep2] = useState<boolean>(false);
   const [hasErrorsStep3, setHasErrorsStep3] = useState<boolean>(false);
@@ -60,7 +65,7 @@ const NovaVendaWizard = () => {
 
   // ** Handlers
   // Handle Submit
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any): Promise<void> => {
     console.log(data);
     if (activeStep === 0) {
       setStep1Data(data);
@@ -69,6 +74,21 @@ const NovaVendaWizard = () => {
     if (activeStep === 1) {
       setStep2Data(data);
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
+    if (activeStep === 2) {
+      setStep3Data(data);
+      setSaleObject({
+        ...step1Data,
+        ...step2Data,
+        ...data
+      });
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
+    if (activeStep === 3) {
+      console.log("income data", data);
+      console.log("SaleObject", saleObject);
+      const newSale = await createSale(saleObject);
+      console.log("newSale", newSale);
     }
   };
 
@@ -114,11 +134,23 @@ const NovaVendaWizard = () => {
         );
       case 2:
         return (
-          "Outras Informações"
+          <Step3Form
+            setHasErrors={setHasErrorsStep3}
+            onSubmit={onSubmit}
+            handleStepBack={handleBack}
+            steps={steps}
+            step3Data={step3Data}
+          />
         );
       case 3:
         return (
-          "Revisão e Confirmação"
+          <Step4Form
+            onSubmit={onSubmit}
+            handleStepBack={handleBack}
+            steps={steps}
+            setActiveStep={setActiveStep}
+            step4Data={saleObject}
+          />
         );
       default:
         return null;

@@ -1,6 +1,7 @@
 import AuthUser from "src/interfaces/authUser";
 import PaymentMethod from "src/interfaces/PaymentMethod";
 import Product from "src/interfaces/Product";
+import Origin from "src/interfaces/Origin";
 import { SanityDefaultObject } from "src/interfaces/SanityDefaultInterfaces";
 
 interface Products {
@@ -14,7 +15,7 @@ interface Products {
 export default interface Sale extends Partial<SanityDefaultObject> {
   _id: string;
   saleNumber: number;
-  PDVNumber: number;
+  PDVNumber: string;
   auditStatus: "pending" | "approved" | "rejected";
   canceled: boolean;
   excluded: boolean;
@@ -36,9 +37,10 @@ export default interface Sale extends Partial<SanityDefaultObject> {
   score: number;
   paymentMethod: PaymentMethod;
   splitQuantity: number;
-  user: AuthUser;
+  user: Partial<AuthUser>;
   store: any;
-  origin?: Array<any>;
+  origin?: Array<Origin>;
+  userReferrer?: Array<Origin>;
   schedule: boolean;
   scheduleDiscount: boolean;
   observations?: string;

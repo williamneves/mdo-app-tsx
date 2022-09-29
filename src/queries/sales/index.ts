@@ -45,3 +45,18 @@ export const useAllPaymentMethodsByReferenceQuery = (storeRef: string, options?:
       ...options
     });
 };
+
+// Get All Origin
+export const useAllOriginQuery = (options?: Object) => {
+  return useQuery(["origin", "all"],
+    api.getAllOrigin,
+    {
+      // 1hr stale time
+      staleTime: 1000 * 60 * 60,
+      // 12hr cache time
+      cacheTime: 1000 * 60 * 60 * 12,
+      //
+      refetchOnWindowFocus: true,
+      ...options
+    });
+};

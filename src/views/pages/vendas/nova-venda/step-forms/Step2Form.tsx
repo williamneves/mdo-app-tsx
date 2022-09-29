@@ -1,5 +1,4 @@
 // ** React Imports
-import CurrencyMaskInputControlled from "components/inputs/CurrencyMaskInputControlled";
 import React, { useEffect, Fragment } from "react";
 
 // ** MUI Imports
@@ -21,6 +20,7 @@ import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import toast from "react-hot-toast";
 
 // ** Import Components
+import CurrencyMaskInputControlled from "components/inputs/CurrencyMaskInputControlled";
 import TextInputControlled from "components/inputs/TextInputControlled";
 import AutocompleteInputControlled from "components/inputs/AutocompleteInputControlled";
 
@@ -250,7 +250,7 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
 
   // ** Set Validation Step
   useEffect(() => {
-    if (submitCountStep2 > 0) {
+    if (!isValidStep2 && submitCountStep2 > 0) {
       toast.error("Verifique os campos obrigatórios");
       setHasErrors(!isValidStep2);
     }
@@ -297,10 +297,6 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
     return () => watchSubscription.unsubscribe();
   }, [watchStep2]);
 
-  useEffect(() => {
-    console.log(errorsStep2);
-  }, [errorsStep2]);
-
   const onSubmitStep2 = (data: any) => {
     console.log(data);
     if (calculateSales(data, "totalPayments") !== data.saleAmount) {
@@ -321,7 +317,7 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
     setValueStep2("paymentMethod", principalPaymentMethod.paymentMethod);
     // Set the splitQuantity to the sale
     setValueStep2("splitQuantity", principalPaymentMethod.splitQuantity);
-
+    
     // Now, calculate others stats
     const salesScore = calcSalesScore(data);
     // Set score to the sale
@@ -332,7 +328,7 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
     setValueStep2("markup", salesScore.markup);
 
     // Submit the form
-    onSubmit(data);
+    onSubmit(getValuesStep2());
   };
 
   return (
