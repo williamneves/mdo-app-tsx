@@ -1,6 +1,7 @@
 // ** Sale Score Calculation
 export default (saleObj: any) => {
 
+  // Get Sale Object
   let { saleAmount: sale, totalCost: cost, paymentMethod: payment } = saleObj;
   let { paymentType: paymentMethod } = payment;
 
