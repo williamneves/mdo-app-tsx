@@ -1,20 +1,26 @@
-import { OutlinedTextFieldProps, TextField } from "@mui/material";
-import FormHelperText from "@mui/material/FormHelperText";
+import FormControl from "@mui/material/FormControl";
+import {
+  Controller,
+  Control,
+  ControllerProps,
+  FieldErrors,
+} from "react-hook-form";
+import { TextField, TextFieldProps, StandardTextFieldProps, FilledTextFieldProps, OutlinedTextFieldProps  } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
-import { FieldErrors } from "react-hook-form";
+import FormHelperText from "@mui/material/FormHelperText";
 
 import { InputController } from "./InputController";
 
 interface TextInputProps extends OutlinedTextFieldProps {
-  name: string;
-  control: any;
-  label: string;
-  placeholder?: string;
-  errors: FieldErrors;
-  readOnly?: boolean;
+  name: string
+  control: any
+  label: string
+  placeholder?: string
+  errors: FieldErrors
+  readOnly?: boolean
   // Just pass a ReactNode to simple string to startAdornment and endAdornment
-  startAdornment?: JSX.Element | string;
-  endAdornment?: JSX.Element | string;
+  startAdornment?: JSX.Element | string
+  endAdornment?: JSX.Element | string
   // Add any other props you want to pass to the input
 }
 
@@ -29,61 +35,44 @@ export const TextInputControlled = (props: TextInputProps) => {
     startAdornment,
     endAdornment,
     variant,
-    readOnly,
-    ...rest
+    readOnly
   } = props;
 
+  // @ts-ignore
   return (
-    // @ts-ignore
-    <InputController
-      name={name}
-      control={control}
-      errors={errors}
-      render={({ field: { value, onChange }, fieldState: { invalid, error } }) => {
-        return (
-          <>
-            <TextField
-              {...rest}
-              variant={variant}
-              value={value}
-              onChange={onChange}
-              placeholder={placeholder || label}
-              error={invalid}
-              aria-describedby={`${name}-text-input-form`}
-              InputProps={{
-                readOnly: readOnly || rest.InputProps?.readOnly,
-                startAdornment: (
-                  startAdornment ?
-                    <InputAdornment position="start">
-                      {startAdornment}
-                    </InputAdornment>
-                    : rest.InputProps?.startAdornment
-                ),
-                endAdornment: (
-                  startAdornment ?
-                    <InputAdornment position="end">
-                      {endAdornment}
-                    </InputAdornment>
-                    : rest.InputProps?.endAdornment
-                )
-              }}
-            />
-            {
-              error &&
-              <FormHelperText sx={{ color: "error.main" }} id={`${name}-text-input-form`}>
-                {
-                  error.message ||
-                  Object.keys(error).map((key: string) => {
-                    // @ts-ignore
-                    return error[key].message;
-                  })[0]
-                }
-              </FormHelperText>
-            }
-          </>
-        );
-      }}
-    />
+      <InputController
+        name={name}
+        control={control}
+        errors={errors}
+        render={({ field: { value, onChange }, fieldState: { invalid } }) => (
+          <TextField
+            {...props}
+            variant={variant}
+            value={value}
+            onChange={onChange}
+            placeholder={placeholder || label}
+            error={invalid}
+            aria-describedby={`${name}-text-input-form`}
+            InputProps={{
+              readOnly: readOnly || props.InputProps?.readOnly,
+              startAdornment: (
+                startAdornment ?
+                <InputAdornment position="start">
+                  {startAdornment}
+                </InputAdornment>
+                : props.InputProps?.startAdornment
+              ),
+              endAdornment: (
+                startAdornment ?
+                <InputAdornment position="end">
+                  {endAdornment}
+                </InputAdornment>
+                : props.InputProps?.endAdornment
+              )
+            }}
+          />
+        )}
+      />
   );
 };
 

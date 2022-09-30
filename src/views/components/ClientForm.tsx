@@ -8,12 +8,8 @@ import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import LoadingButton from "@mui/lab/LoadingButton";
 import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
-import MobileDatePicker from "@mui/lab/MobileDatePicker";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import Divider from "@mui/material/Divider";
-import TextField from "@mui/material/TextField";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import Button from "@mui/material/Button";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
@@ -22,23 +18,30 @@ import Switch from "@mui/material/Switch";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 // ** Hooks
 import { Controller, useForm } from "react-hook-form";
 import { useAuth } from "src/hooks/useAuth";
 import * as useClient from "src/queries/clients";
 import { useQueryClient } from "@tanstack/react-query";
-import * as useClientHook from "src/queries/clients/hooks/useClient";
 
 // ** Third Party Imports
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import toast from "react-hot-toast";
-import ptBR from "date-fns/locale/pt-BR";
+import { validateCPF, validatePhone } from "validations-br";
+import cep from "cep-promise";
+
+// ** Next Imports
+import { useRouter } from "next/router";
 
 // ** Third Party Components
 import TextInputControlled from "components/inputs/TextInputControlled";
 import SelectInputController from "components/inputs/SelectInputController";
+import DateInputControlled from "components/inputs/DateInputControlled";
+import PatternInputControlled from "components/inputs/PatternInputControlled";
+import AutocompleteInputControlled from "components/inputs/AutocompleteInputControlled";
 
 // ** Types
 import Client from "src/interfaces/Client";
@@ -49,7 +52,8 @@ interface Props {
 
 const clientForm = ({ client }: Props) => {
 
-  const { user, selectedStore } = useAuth();
+  const { user } = useAuth();
+  const router = useRouter();
 
   // React Query
   const queryClient = useQueryClient();
@@ -57,13 +61,13 @@ const clientForm = ({ client }: Props) => {
   const updateClient = useClient.useUpdateClientQuery(queryClient);
   const { isLoading } = createClient;
 
-  interface DefaultValues extends Omit<Client, 'clientNumber'| 'birthday'| 'gender' | '_createdAt' | '_updatedAt' > {
+  interface DefaultValues extends Omit<Client, "clientNumber" | "birthday" | "gender" | "_createdAt" | "_updatedAt"> {
     clientNumber?: number | null,
-    birthday?: Date | null,
-    gender?: 'male' | 'female' | 'other' | "",
+    birthday?: Date | null | "",
+    gender?: "male" | "female" | "other" | "",
   }
 
-  const defaultValue:DefaultValues = {
+  const defaultValue: DefaultValues = {
     _id: "",
     inactive: false,
     clientNumber: null,
@@ -94,11 +98,19 @@ const clientForm = ({ client }: Props) => {
     inactive: yup.boolean(),
     clientNumber: yup.number().nullable(),
     name: yup.string().required("Esse campo é obrigatório *"),
-    phone: yup.string(),
+    phone: yup.string()
+      .nullable()
+      .test("phone", "Número Inválido", (value) => {
+        if (value === "") return true;
+        return validatePhone(value as string);
+      }),
     email: yup.string().email("Email inválido"),
     birthday: yup.date().nullable(),
     gender: yup.string(),
-    cpf: yup.string(),
+    cpf: yup.string().test("cpf", "CPF Inválido", (value) => {
+      if (value === "") return true;
+      return validateCPF(value as string);
+    }),
     hearAboutUs: yup.string(),
     address: yup.object().shape({
       street: yup.string(),
@@ -109,29 +121,13 @@ const clientForm = ({ client }: Props) => {
       zipCode: yup.string()
     }),
     store: yup.object().shape({
-      name: yup.string().required("Esse campo é obrigatório *")
+      name: yup.string().required()
     }),
     createdBy: yup.object().shape({
       name: yup.string(),
       _id: yup.string()
     })
   });
-
-  const [clientsNumber, setClientsNumber] = useState(0);
-
-  // Effects
-  useEffect(() => {
-    if (user && !client) setValue("createdBy", user);
-  }, [user, clientsNumber]);
-
-  useEffect(() => {
-    if (getValues("clientNumber") === null) {
-      useClientHook.increaseClientCode()
-        .then((data) => {
-          setValue("clientNumber", data.clientNumber);
-        });
-    }
-  }, [clientsNumber]);
 
   const {
     control,
@@ -146,6 +142,42 @@ const clientForm = ({ client }: Props) => {
     mode: "onBlur"
   });
 
+  // States
+  const [clientsNumber, setClientsNumber] = useState(0);
+  const [isLoadingAddress, setIsLoadingAddress] = useState(false);
+
+  // Effects
+  useEffect(() => {
+    if (user && !client) setValue("createdBy", user);
+  }, [user, clientsNumber]);
+
+  const setAddressByCep = () => {
+    setIsLoadingAddress(true);
+    cep(getValues("address.zipCode"))
+      .then((response) => {
+        setTimeout(() => {
+          setValue("address.street", response?.street || "");
+          setValue("address.city", response?.city || "");
+          setValue("address.state", response?.state || "");
+          toast.success("CEP encontrado! Endereço carregado automaticamente", {
+            duration: 4000,
+            position: "top-center"
+          });
+          setIsLoadingAddress(false);
+        }, 500);
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("CEP não encontrado! preencha os campos de endereço manualmente", {
+          duration: 4000,
+          position: "top-center"
+        });
+        setIsLoadingAddress(false);
+      });
+  };
+
+  const getAddressLabel = (fieldName: string) => isLoadingAddress ? "Buscando endereço..." : fieldName;
+
   const onSubmit = async (data: any) => {
 
     const toastId = toast.loading(client ? "Editando cliente..." : "Salvando cliente...");
@@ -156,6 +188,7 @@ const clientForm = ({ client }: Props) => {
       toast.success(`Cliente ${client ?
           `#${client?.clientNumber} editado` : "criado"} com sucesso!`,
         { id: toastId, position: "top-center" });
+      if (client) router.push("/clientes/lista-de-clientes");
       reset();
       setClientsNumber(clientsNumber + 1);
     } catch (error) {
@@ -166,24 +199,6 @@ const clientForm = ({ client }: Props) => {
       });
     }
   };
-
-  const storesInSelect2 = () => {
-    if (client) return user!.stores.map((store) => ({ key: store._id, value: store, label: store.name }));
-
-    if (user?.role === "admin") return user!.stores.map((store) => ({
-      key: store._id,
-      value: store,
-      label: store.name
-    }));
-
-    return [{ key: selectedStore!._id, value: selectedStore, label: selectedStore?.name, selected: true }];
-  };
-
-  // const storesInSelect = client
-  //   ? user!.stores.map((store) => ({ key: store._id, value: store, label: store.name }))
-  //   : user?.role === "admin"
-  //     ? user!.stores.map((store) => ({key: store._id, value: store, label: store.name }))
-  //     : [{ key: selectedStore?._id, value: selectedStore, label: selectedStore?.name, selected: true }];
 
   return (
     <Grid container spacing={6}>
@@ -210,31 +225,30 @@ const clientForm = ({ client }: Props) => {
                   </Divider>
                 </Grid>
                 {
-                  client ?
-                    <Grid item xs={12}>
-                      <FormControl fullWidth>
-                        <Controller
-                          control={control}
-                          name={"inactive"}
-                          rules={{ required: true }}
-                          render={({ field: { value, onChange } }) => (
-                            <FormGroup row>
-                              <FormControlLabel
-                                label="O cliente está ativo?"
-                                control={
-                                  <Switch
-                                    disabled={isLoading}
-                                    checked={!value}
-                                    onChange={() => onChange(!value)}
-                                  />
-                                }
-                              />
-                            </FormGroup>
-                          )}
-                        />
-                      </FormControl>
-                    </Grid>
-                    : null
+                  client &&
+                  <Grid item xs={12}>
+                    <FormControl fullWidth>
+                      <Controller
+                        control={control}
+                        name={"inactive"}
+                        rules={{ required: true }}
+                        render={({ field: { value, onChange } }) => (
+                          <FormGroup row>
+                            <FormControlLabel
+                              label="O cliente está ativo?"
+                              control={
+                                <Switch
+                                  disabled={isLoading}
+                                  checked={!value}
+                                  onChange={() => onChange(!value)}
+                                />
+                              }
+                            />
+                          </FormGroup>
+                        )}
+                      />
+                    </FormControl>
+                  </Grid>
                 }
                 <Grid item xs={12} sm={6}>
                   <TextInputControlled
@@ -247,10 +261,11 @@ const clientForm = ({ client }: Props) => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextInputControlled
+                  <PatternInputControlled
                     name={"phone"}
-                    label={"Telefone"}
                     control={control}
+                    label={"Telefone"}
+                    patternType={"phone"}
                     errors={errors}
                     disabled={isLoading}
                   />
@@ -265,37 +280,13 @@ const clientForm = ({ client }: Props) => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth>
-                    <Controller
-                      name="birthday"
-                      control={control}
-                      rules={{ required: true }}
-                      render={({ field: { value, onChange } }) => (
-                        <LocalizationProvider
-                          dateAdapter={AdapterDateFns}
-                          locale={ptBR}
-                        >
-                          <MobileDatePicker
-                            label={"Data de nascimento"}
-                            value={value}
-                            onChange={onChange}
-                            disabled={isLoading}
-                            renderInput={(params) => (
-                              <TextField {...params} error={Boolean(errors.birthday)} />
-                            )}
-                          />
-                        </LocalizationProvider>
-                      )}
-                    />
-                    {errors.birthday && (
-                      <FormHelperText
-                        sx={{ color: "error.main" }}
-                        id="novo-cliente-birthday"
-                      >
-                        {errors.birthday.message}
-                      </FormHelperText>
-                    )}
-                  </FormControl>
+                  <DateInputControlled
+                    name={"birthday"}
+                    control={control}
+                    label={"Data de Nascimento"}
+                    errors={errors}
+                    disabled={isLoading}
+                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <SelectInputController
@@ -308,20 +299,20 @@ const clientForm = ({ client }: Props) => {
                       {
                         items: [
                           { key: "male", value: "male", label: "Homem" },
-                          { key: "female", value: "female", label: "Mulher" },
-                          { key: "other", value: "other", label: "Outros" }
+                          { key: "male", value: "female", label: "Mulher" },
+                          { key: "male", value: "other", label: "Outros" }
                         ]
                       }}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextInputControlled
+                  <PatternInputControlled
                     name={"cpf"}
-                    label={"CPF"}
                     control={control}
+                    label={"CPF"}
+                    patternType={"cpf"}
                     errors={errors}
                     disabled={isLoading}
-                    type={"number"}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -340,12 +331,25 @@ const clientForm = ({ client }: Props) => {
                   </Divider>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextInputControlled
-                    name={"address.street"}
-                    label={"Rua"}
+                  <PatternInputControlled
+                    name={"address.zipCode"}
                     control={control}
+                    label={"CEP"}
+                    patternType={"cep"}
                     errors={errors}
                     disabled={isLoading}
+                    onBlur={() => {
+                      if ((getValues("address.zipCode") as string).length === 8) setAddressByCep();
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextInputControlled
+                    name={"address.street"}
+                    label={getAddressLabel("Rua")}
+                    control={control}
+                    errors={errors}
+                    disabled={isLoading || isLoadingAddress}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -369,48 +373,47 @@ const clientForm = ({ client }: Props) => {
                 <Grid item xs={12} sm={6}>
                   <TextInputControlled
                     name={"address.city"}
-                    label={"Cidade"}
+                    label={getAddressLabel("Cidade")}
                     control={control}
                     errors={errors}
-                    disabled={isLoading}
+                    disabled={isLoading || isLoadingAddress}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextInputControlled
                     name={"address.state"}
-                    label={"Estado"}
+                    label={getAddressLabel("Estado")}
                     control={control}
                     errors={errors}
-                    disabled={isLoading}
+                    disabled={isLoading || isLoadingAddress}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextInputControlled
-                    name={"address.zipCode"}
-                    label={"CEP"}
-                    control={control}
-                    errors={errors}
-                    disabled={isLoading}
-                    type={"number"}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <SelectInputController
+                  <AutocompleteInputControlled
                     name={"store"}
-                    label={"Loja"}
                     control={control}
+                    label={"Loja"}
+                    optionLabel={"name"}
                     errors={errors}
-                    disabled={user?.role !== "admin" || isLoading}
-                    selectItems={
-                      {
-                        items: storesInSelect2()
-                      }}
+                    options={user?.stores}
+                    loading={!Boolean(user?.stores)}
+                    disabled={user?.stores.length === 1 || user?.role !== "admin" || isLoading}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <Divider variant={"middle"} />
                 </Grid>
                 <Grid item xs={12} sx={{ display: "flex" }}>
+                  {
+                    client &&
+                    <Button
+                      variant={"outlined"}
+                      onClick={() => history.back()}
+                    >
+                      <ArrowBackIcon sx={{ mr: 2 }} />
+                      Voltar
+                    </Button>
+                  }
                   <LoadingButton
                     loading={isLoading}
                     type={"submit"}
