@@ -1,31 +1,23 @@
 // ** MUI Imports
-import { ThemeOptions } from "@mui/material";
+import { ThemeOptions } from '@mui/material'
 
 // ** To use core palette, uncomment the below import
-import corePalette from "src/@core/theme/palette";
+// import corePalette from 'src/@core/theme/palette'
 
 // ** To use mode (light/dark), skin(default/bordered/semi-dark), direction(ltr/rtl), etc. for conditional styles, uncomment below line
-import { useSettings } from "src/@core/hooks/useSettings";
+// import { useSettings } from 'src/@core/hooks/useSettings'
 
-interface UserThemeOptions extends ThemeOptions {
-  toaster: any;
-}
-
-const UserThemeOptions = (): UserThemeOptions => {
+const UserThemeOptions = (): ThemeOptions => {
   // ** To use mode (light/dark), skin(default/bordered/semi-dark), direction(ltr/rtl), etc. for conditional styles, uncomment below line
-  const { settings } = useSettings();
+  // const { settings } = useSettings()
 
   // ** To use mode (light/dark), skin(default/bordered/semi-dark), direction(ltr/rtl), etc. for conditional styles, uncomment below line
-  const { mode, skin } = settings;
+  // const { mode, skin } = settings
 
   // ** To use core palette, uncomment the below line
-  // const palette = corePalette(mode, skin);
+  // const palette = corePalette(mode, skin)
 
   return {
-    toaster: {
-      bg: mode === "dark" ? "#F7F7F9" : "#282A42",
-      color: mode === "dark" ? "#888" : "#EEE"
-    }
     /*
     palette:{
       primary: {
@@ -184,7 +176,7 @@ const UserThemeOptions = (): UserThemeOptions => {
       appBar: 1200,
       drawer: 1100
     } */
-  };
-};
+  }
+}
 
-export default UserThemeOptions;
+export default UserThemeOptions

@@ -1,39 +1,26 @@
-// ** React Imports
-import React, { useState, useEffect, Fragment } from "react";
+import React, { SetStateAction, useState, useEffect } from "react";
 
 // ** Third Party Imports
 import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import toast from "react-hot-toast";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 
 const moment = require("moment");
 import "moment-timezone";
 
-// ** MUI Imports
-import { Grid, Typography, Button } from "@mui/material";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import PersonAddAltTwoToneIcon from "@mui/icons-material/PersonAddAltTwoTone";
-
-// ** Import Components
-import TextInputControlled from "components/inputs/TextInputControlled";
-import DateInputControlled from "components/inputs/DateInputControlled";
-import AutocompleteInputControlled from "components/inputs/AutocompleteInputControlled";
-import NewClientModal from "./NewClientModal";
-
 // ** Import Context and Queries
 import { useAuth } from "src/hooks/useAuth";
+import { Grid, Typography, Button } from "@mui/material";
+import TextInputControlled from "components/inputs/TextInputControlled";
+import DateInputControlled from "components/inputs/DateInputControlled";
+import SelectInputController from "components/inputs/SelectInputController";
 import * as clientsQ from "src/queries/clients";
-import * as salesQ from "src/queries/sales";
-import * as salesHooks from "src/queries/sales/hooks";
+import AutocompleteInputControlled from "components/inputs/AutocompleteInputControlled";
 
-// ** Import Hooks
-import { getAllObjectKeys, filterListByKeyValue } from "src/@core/utils/filters";
+import FallbackSpinner from "src/@core/components/spinner";
 
 
-// ** Rendered Element
-// Interface for Step2FormProps
 interface Step1FormProps {
   setHasErrors: (value: boolean) => void;
   handleNext: () => void;
@@ -42,44 +29,51 @@ interface Step1FormProps {
   setSaleObject: (value: any) => void;
   steps: Array<{ title: string, subtitle: string }>;
   resetAll: boolean;
-  step1Data: any;
-  setStep1Data: (value: any) => void;
-
 }
 
-// Rendered Element
+import { getAllObjectKeys, filterListByKeyValue } from "src/@core/utils/filters";
+
 const Step1Form = (props: Step1FormProps) => {
 
   // ** Props and States
-  const {
-    setHasErrors,
-    handleNext,
-    handleBack,
-    onSubmit,
-    setSaleObject,
-    steps,
-    resetAll,
-    step1Data,
-    setStep1Data
-  } = props;
+  const { setHasErrors, handleNext, handleBack, onSubmit, setSaleObject, steps, resetAll } = props;
   const { user: userDB, selectedStore } = useAuth();
   const {
-    data: allClients
-  } = clientsQ.useGetClientsByReferenceIdQuery({ referenceId: selectedStore!._id }, {
-    active: !!userDB,
-    placeholderData: []
-  });
-  const { data: saleNumber, isLoading: loadingSaleNumber } = salesQ.useGetSaleNumberQuery();
+    data: allClients,
+    isSuccess: loadingClients
+  } = clientsQ.useGetClientsByReferenceIdQuery({ referenceId: selectedStore!._id }, { active: !!userDB, placeholderData: [] });
 
-  const [newClientDialogOpen, setNewClientDialogOpen] = useState<boolean>(false);
+
+  console.log(allClients)
+
+  const disableStoreInput = ():boolean => {
+    let disable = false;
+    if (userDB?.stores.length === 1) return true;
+    if (userDB?.role !== "admin" || "manager") return true;
+    return disable;
+  };
+
+  const disabledVendorInput = ():boolean => {
+    let disable = false;
+    if (userDB?.stores.length === 1) return true;
+    if (userDB?.role !== "admin" || "manager") return true;
+    return disable;
+  }
+
+  const disabledClientInput = ():boolean => {
+    let disable = false;
+    if (allClients?.length === 1) return true;
+    if (userDB?.role !== "admin" || "manager") return true;
+    return disable;
+  };
 
   // ** Hook Form Dependencies
   // ** Defaults Values - Step 1
   const step1DefaultValue = {
-    saleNumber: "Gerando...",
+    saleNumber: "",
     PDVNumber: "",
     // New date in timezone Brazil/East using ISO
-    date: moment().tz("America/Belem"),
+    date: moment().tz("America/Sao_Paulo"),
     client: {
       name: ""
     },
@@ -93,38 +87,30 @@ const Step1Form = (props: Step1FormProps) => {
 
   // ** Schema Validation - Step 1
   const step1Schema = yup.object().shape({
-    saleNumber: yup.number().required("Obrigatório").typeError("Obrigatório").nullable(),
-    PDVNumber: yup.string()
-      .required("Obrigatório")
-      .min(4, "Número do PDV inválido")
-      .test("Validate PDVNumber", "Número já cadastrado", async (value): Promise<boolean> => {
-        if (value && value.length > 3) return salesHooks.validatePDVNumber(parseInt(value));
-        return true;
-      }),
+    saleNumber: yup.number().required("Obrigatório").nullable(),
+    PDVNumber: yup.string().required("Obrigatório"),
     date: yup.date().nullable().required("Obrigatória"),
     client: yup
       .object()
       .shape({
-        name: yup.string()
-          .required("Obrigatório")
-          .nullable()
+        name: yup.string().nullable().required("Obrigatório")
       })
-      .required("Cliente é obrigatório")
-      .nullable(),
+      .nullable()
+      .required("Cliente é obrigatório"),
     vendor: yup
       .object()
       .shape({
         name: yup.string().nullable().required("Obrigatório")
       })
-      .required("Obrigatório")
-      .nullable(),
+      .nullable()
+      .required("Obrigatório"),
     store: yup
       .object()
       .shape({
         name: yup.string().required("*")
       })
-      .required("Obrigatório")
       .nullable()
+      .required("Obrigatório")
   });
 
 
@@ -134,209 +120,163 @@ const Step1Form = (props: Step1FormProps) => {
     control: controlStep1,
     handleSubmit: handleSubmitStep1,
     setValue: setValueStep1,
-    setError: setErrorStep1,
     getValues: getValuesStep1,
     clearErrors: clearErrorsStep1,
     watch: watchStep1,
     formState: {
       errors: errorsStep1,
       isValid: isValidStep1,
-      isDirty: isDirtyStep1,
       submitCount: submitCountStep1
     }
   } = useForm({
-    defaultValues: step1Data || step1DefaultValue,
+    defaultValues: step1DefaultValue,
     resolver: yupResolver(step1Schema),
     mode: "onSubmit"
   });
 
   // Effects
-
-  // ** Set Sale Number
   useEffect(() => {
-    if (!loadingSaleNumber) {
-      // @ts-ignore
-      setValueStep1("saleNumber", saleNumber);
+
+    // Set selected store
+    if (userDB?._id) {
+      setValueStep1("store", selectedStore!);
     }
-  }, [loadingSaleNumber]);
 
-  // ** Set the Client if there is only one
-  useEffect(() => {
-    // Set only one client
-    if (allClients!.length === 1) {
-      setValueStep1("client", allClients![0]);
-    }
-  }, [allClients!.length === 1]);
-
-  // ** Set Vendor if user is vendor
-  useEffect(() => {
     // Set selected vendor
     if (userDB?.role === "vendor") {
       setValueStep1("vendor", userDB);
+
+      // Set only one client
+      if (allClients!.length < 2) {
+        setValueStep1("client", allClients![0]);
+      }
     }
-  }, [userDB?.role]);
+  }, [userDB?._id, allClients?.length, selectedStore]);
 
-  // ** Set Store
-  useEffect(() => {
-    setValueStep1("store", selectedStore!);
-  }, [selectedStore!._id]);
-
-  // ** Set Validation Step
-  useEffect(() => {
-    if (submitCountStep1 > 0) {
-      toast.error("Verifique os campos obrigatórios");
-      setHasErrors(!isValidStep1);
-    }
-  }, [isValidStep1, submitCountStep1, isDirtyStep1]);
-
-  useEffect(() => {
-    console.log(isValidStep1);
-    console.log(errorsStep1);
-  }, [errorsStep1, isValidStep1]);
-
+  // if (allClients?.length === 0) return <FallbackSpinner />;
 
   return (
-    <Fragment>
-      <form key={0} id={"formStep1"} onSubmit={handleSubmitStep1(onSubmit)}>
-        <Grid container spacing={5}>
-          {/* Step Title */}
-          <Grid item xs={12}>
-            <Typography
-              variant="body2"
-              sx={{ fontWeight: 600, color: "text.primary" }}
-            >
-              {steps[0].title}
-            </Typography>
-            <Typography variant="caption" component="p">
-              {steps[0].subtitle}
-            </Typography>
-          </Grid>
-
-          {/* Step 1 Fields */}
-
-          {/* saleNumber */}
-          <Grid item xs={12} sm={6}>
-            <TextInputControlled
-              name={"saleNumber"}
-              label={"Número da venda (Gerado automaticamente)"}
-              errors={errorsStep1}
-              control={controlStep1}
-              disabled={true}
-            />
-          </Grid>
-
-          {/* PDVNumber */}
-          <Grid item xs={12} sm={6}>
-            <TextInputControlled
-              name={"PDVNumber"}
-              label={"Numero no P.D.V."}
-              errors={errorsStep1}
-              control={controlStep1}
-            />
-          </Grid>
-
-          {/* date */}
-          <Grid item xs={12} sm={6}>
-            <DateInputControlled
-              name={"date"}
-              control={controlStep1}
-              label={"Data da Venda"}
-              errors={errorsStep1}
-            />
-          </Grid>
-
-          {/* client */}
-          <Grid item xs={12} sm={6}>
-            <AutocompleteInputControlled
-              name={"client"}
-              control={controlStep1}
-              label={"Cliente"}
-              optionLabel={"name"}
-              errors={errorsStep1}
-              options={allClients}
-              disabled={allClients?.length === 1 && userDB?.role !== "admin"}
-              filterKeys={allClients?.length !== 0 && getAllObjectKeys(allClients)}
-              noOptionsText={
-                <Fragment>
-                  <Typography variant="body2" sx={{ fontWeight: 600, paddingBottom: 3 }}>
-                    Nenhum cliente encontrado
-                  </Typography>
-                  <Button
-                    variant="text"
-                    endIcon={<PersonAddAltTwoToneIcon />}
-                    onClick={(): void => setNewClientDialogOpen(true)}
-                  >
-                    Criar Novo Cliente
-                  </Button>
-                </Fragment>
-              }
-            />
-          </Grid>
-
-
-          {/* vendor */}
-          <Grid item xs={12} sm={6}>
-            <AutocompleteInputControlled
-              name={"vendor"}
-              control={controlStep1}
-              label={"Vendedor"}
-              optionLabel={"name"}
-              errors={errorsStep1}
-              options={filterListByKeyValue(selectedStore?.employees, "role", "vendor")}
-              loading={!Boolean(selectedStore)}
-              disabled={userDB?.role === "vendor"}
-              filterKeys={getAllObjectKeys(selectedStore?.employees)}
-            />
-
-          </Grid>
-
-          {/* store */}
-          <Grid item xs={12} sm={6}>
-            <AutocompleteInputControlled
-              name={"store"}
-              control={controlStep1}
-              label={"Loja"}
-              optionLabel={"name"}
-              errors={errorsStep1}
-              options={userDB?.stores}
-              loading={!Boolean(userDB?.stores)}
-              filterKeys={getAllObjectKeys(userDB?.stores)}
-              disabled={userDB?.stores.length === 1 || userDB?.role !== "admin"}
-            />
-          </Grid>
-
-          {/*  Next Step Section */}
-          <Grid
-            item
-            xs={12}
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              marginTop: "1rem"
-            }}
+    <form key={0} id={"formStep1"} onSubmit={handleSubmitStep1(onSubmit)}>
+      <Grid container spacing={5}>
+        {/* Step Title */}
+        <Grid item xs={12}>
+          <Typography
+            variant="body2"
+            sx={{ fontWeight: 600, color: "text.primary" }}
           >
-            <Button
-              size="large"
-              variant="outlined"
-              color="secondary"
-              startIcon={<ChevronLeftIcon />}
-              disabled
-            >
-              Voltar
-            </Button>
-            <Button size="large" endIcon={<ChevronRightIcon />} type="submit" variant="contained" form={"formStep1"}>
-              Próximo
-            </Button>
-          </Grid>
+            {steps[0].title}
+          </Typography>
+          <Typography variant="caption" component="p">
+            {steps[0].subtitle}
+          </Typography>
         </Grid>
-      </form>
-      <NewClientModal
-        isOpen={newClientDialogOpen}
-        onClose={() => setNewClientDialogOpen(false)}
-        clientList={allClients && allClients.length > 0 ? allClients : []}
-        setNewClient={setValueStep1}
-      />
-    </Fragment>
+
+        {/* Step 1 Fields */}
+
+        {/* saleNumber */}
+        <Grid item xs={12} sm={6}>
+          <TextInputControlled
+            name={"saleNumber"}
+            label={"Número da venda (Gerado automaticamente)"}
+            errors={errorsStep1}
+            control={controlStep1}
+          />
+        </Grid>
+
+        {/* PDVNumber */}
+        <Grid item xs={12} sm={6}>
+          <TextInputControlled
+            name={"PDVNumber"}
+            label={"Numero no P.D.V."}
+            errors={errorsStep1}
+            control={controlStep1}
+          />
+        </Grid>
+
+        {/* date */}
+        <Grid item xs={12} sm={6}>
+          <DateInputControlled
+            name={"date"}
+            control={controlStep1}
+            label={"Data da Venda"}
+            errors={errorsStep1}
+          />
+        </Grid>
+
+        {/* client */}
+        <Grid item xs={12} sm={6}>
+          <AutocompleteInputControlled
+            name={"client"}
+            control={controlStep1}
+            label={"Cliente"}
+            optionLabel={"name"}
+            errors={errorsStep1}
+            options={allClients}
+            loading={allClients?.length === 0}
+            filterKeys={allClients?.length !== 0 && getAllObjectKeys(allClients)}
+          />
+        </Grid>
+
+        {/* vendor */}
+        <Grid item xs={12} sm={6}>
+          <AutocompleteInputControlled
+            name={"vendor"}
+            control={controlStep1}
+            label={"Vendedor"}
+            optionLabel={"name"}
+            errors={errorsStep1}
+            options={filterListByKeyValue(selectedStore?.employees, "role", "vendor")}
+            loading={!Boolean(selectedStore)}
+            filterKeys={getAllObjectKeys(selectedStore?.employees)}
+          />
+
+        </Grid>
+
+        {/* store */}
+        <Grid item xs={12} sm={6}>
+          <SelectInputController
+            name={"store"}
+            label={"Loja"}
+            control={controlStep1}
+            errors={errorsStep1}
+            disabled={disableStoreInput()}
+            selectItems={{
+              items: userDB!.stores.map((store) => {
+                return {
+                  value: store,
+                  label: store.name,
+                  key: store._id,
+                  selected: store._id === selectedStore?._id
+                };
+              })
+            }}
+          />
+        </Grid>
+
+        {/*  Next Step Section */}
+        <Grid
+          item
+          xs={12}
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginTop: "1rem"
+          }}
+        >
+          <Button
+            size="large"
+            variant="outlined"
+            color="secondary"
+            disabled
+          >
+            Voltar
+          </Button>
+          <Button size="large" type="submit" variant="contained">
+            Próximo
+          </Button>
+        </Grid>
+      </Grid>
+    </form>
   );
 };
 

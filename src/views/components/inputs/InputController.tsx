@@ -2,33 +2,39 @@ import FormControl from "@mui/material/FormControl";
 import {
   Controller,
   ControllerProps,
+  FieldErrors,
 } from "react-hook-form";
+import FormHelperText from "@mui/material/FormHelperText";
 
 interface InputControllerProps extends ControllerProps{
-  errors: any;
+  errors: FieldErrors;
 }
 
-const defaultProps: any = {
+const defaultProps: FieldErrors = {
   name: "controlledInputText",
   errors: {
     controlledInputText: {
-      message: "Error message"
-    }
-  }
-};
+      message: "Error message",
+    },
+  },
+}
 
 export const InputController = (props: InputControllerProps) => {
 
   const {
     name,
     errors,
-    ...rest
   } = props;
 
   // @ts-ignore
   return (
     <FormControl fullWidth>
-      <Controller name={name} {...rest} />
+      <Controller {...props} />
+      {errors[name] && (
+        <FormHelperText sx={{ color: "error.main" }} id={`${name}-text-input-form`}>
+          {errors[name].message}
+        </FormHelperText>
+      )}
     </FormControl>
   );
 };
