@@ -22,6 +22,7 @@ export default interface Sale extends Partial<SanityDefaultObject> {
   date: Date;
   client: any;
   products: Array<Products>;
+  // Sale payments
   salePayments: Array<{
     paymentMethod: PaymentMethod;
     paymentAmount: number
