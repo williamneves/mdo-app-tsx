@@ -12,7 +12,7 @@ export default {
     {
       title: "PDV Number",
       name: "PDVNumber",
-      type: "number",
+      type: "string"
     },
     {
       title: "Status de Auditoria",

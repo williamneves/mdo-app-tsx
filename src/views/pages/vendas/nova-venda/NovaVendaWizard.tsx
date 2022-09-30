@@ -1,39 +1,32 @@
 // ** React Imports
-import { Fragment, useState, useEffect } from "react";
-import { useRouter } from "next/router";
+// ** MUI Imports
+import { Fragment, useState } from "react";
 
 // ** MUI Imports
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import Step from "@mui/material/Step";
-import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
-import Select from "@mui/material/Select";
-import Divider from "@mui/material/Divider";
-import Stepper from "@mui/material/Stepper";
-import MenuItem from "@mui/material/MenuItem";
-import StepLabel from "@mui/material/StepLabel";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import InputLabel from "@mui/material/InputLabel";
+import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import FormControl from "@mui/material/FormControl";
-import FormHelperText from "@mui/material/FormHelperText";
-import InputAdornment from "@mui/material/InputAdornment";
-import Autocomplete from "@mui/material/Autocomplete";
-import { createFilterOptions } from "@mui/material/Autocomplete";
-import Checkbox from "@mui/material/Checkbox";
-import Switch from "@mui/material/Switch";
-import FormLabel from "@mui/material/FormLabel";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Chip from "@mui/material/Chip";
-
-// ** Custom Components Imports
-import StepperCustomDot from "./StepperCustomDot";
+import Divider from "@mui/material/Divider";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import Stepper from "@mui/material/Stepper";
+import Typography from "@mui/material/Typography";
 
 // ** Styled Components
 import StepperWrapper from "src/@core/styles/mui/stepper";
+import StepperCustomDot from "./StepperCustomDot";
+
+// ** Import Components
+import Step1Form from "./step-forms/Step1Form";
+import Step2Form from "./step-forms/Step2Form";
+import Step3Form from "./step-forms/Step3Form";
+import Step4Form from "./step-forms/Step4Form";
+
+// ** Import Interfaces
+import Sale from "src/interfaces/Sale";
+
+import { createSale } from "src/queries/sales/hooks";
 
 const steps = [
   {
@@ -58,10 +51,6 @@ const steps = [
   }
 ];
 
-// ** Import Interfaces
-import Sale from "src/interfaces/Sale";
-import Step1Form from "./step-forms/Step1Form";
-
 const NovaVendaWizard = () => {
   // ** States
   const [activeStep, setActiveStep] = useState<number>(0);
@@ -69,13 +58,40 @@ const NovaVendaWizard = () => {
   const [hasErrorsStep2, setHasErrorsStep2] = useState<boolean>(false);
   const [hasErrorsStep3, setHasErrorsStep3] = useState<boolean>(false);
   const [resetAll, setResetAll] = useState<boolean>(false);
-  const [saleObject, setSaleObject] = useState<Sale | null>(null);
+  const [step1Data, setStep1Data] = useState<Partial<Sale> | null>(null);
+  const [step2Data, setStep2Data] = useState<Partial<Sale> | null>(null);
+  const [step3Data, setStep3Data] = useState<Partial<Sale> | null>(null);
+  const [saleObject, setSaleObject] = useState<any>(null);
 
   // ** Handlers
   // Handle Submit
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any): Promise<void> => {
     console.log(data);
+    if (activeStep === 0) {
+      setStep1Data(data);
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
+    if (activeStep === 1) {
+      setStep2Data(data);
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
+    if (activeStep === 2) {
+      setStep3Data(data);
+      setSaleObject({
+        ...step1Data,
+        ...step2Data,
+        ...data
+      });
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
+    if (activeStep === 3) {
+      console.log("income data", data);
+      console.log("SaleObject", saleObject);
+      const newSale = await createSale(saleObject);
+      console.log("newSale", newSale);
+    }
   };
+
   // Handle Reset
   const handleReset = () => {
     console.log("reset");
@@ -101,19 +117,40 @@ const NovaVendaWizard = () => {
             handleNext={handleNext}
             handleBack={handleBack}
             onSubmit={onSubmit}
-            setSaleObject={setSaleObject} />
+            setSaleObject={setSaleObject}
+            step1Data={step1Data}
+            setStep1Data={setStep1Data}
+          />
         );
       case 1:
         return (
-          "Dados da Venda"
+          <Step2Form
+            setHasErrors={setHasErrorsStep2}
+            onSubmit={onSubmit}
+            handleStepBack={handleBack}
+            steps={steps}
+            step2Data={step2Data}
+          />
         );
       case 2:
         return (
-          "Outras Informações"
+          <Step3Form
+            setHasErrors={setHasErrorsStep3}
+            onSubmit={onSubmit}
+            handleStepBack={handleBack}
+            steps={steps}
+            step3Data={step3Data}
+          />
         );
       case 3:
         return (
-          "Revisão e Confirmação"
+          <Step4Form
+            onSubmit={onSubmit}
+            handleStepBack={handleBack}
+            steps={steps}
+            setActiveStep={setActiveStep}
+            step4Data={saleObject}
+          />
         );
       default:
         return null;
