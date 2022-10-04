@@ -2,8 +2,9 @@ import { dbClient } from "../../../configs/sanityConfig";
 import StreetDailyReport from "src/interfaces/StreetDailyReport";
 
 export const createDailyReport = async (data: StreetDailyReport) => {
+  console.log("data", data);
 
-  const reportObject = {
+  let clientObject = {
     _type: "streetDailyReport",
     inactive: (data.inactive && data.inactive) || false,
     excluded: (data.excluded && data.excluded) || false,
@@ -26,34 +27,8 @@ export const createDailyReport = async (data: StreetDailyReport) => {
     }
   };
   try {
-    return await dbClient.create(reportObject);
+    return await dbClient.create(clientObject);
   } catch (err) {
     throw err;
   }
-};
-
-export const getClientsByReporter = async (reporterID: string, reportDate: string) => {
-
-  const query = `
-  *[
-    _type == "client" 
-    && references("${reporterID}")
-    && createdAt == "${reportDate}"
-    && inactive != true
-  ]{
-    _id,
-    inactive,
-    createdAt,
-    clientNumber,
-    name,
-    _createdAt,
-  createdBy->
 }
-  `;
-
-  try {
-    return await dbClient.fetch(query);
-  } catch (err) {
-    throw err;
-  }
-};
