@@ -9,6 +9,11 @@ export default {
       type: "boolean",
     },
     {
+      title: "Criado em",
+      name: "createdAt",
+      type: "string",
+    },
+    {
       title: "Código do Cliente",
       name: "clientNumber",
       type: "number",

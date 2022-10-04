@@ -1,5 +1,6 @@
 import { dbClient } from "../../../configs/sanityConfig";
 import Client from "src/interfaces/Client";
+import moment from "moment";
 
 export const getAllClients = async (): Promise<Client[]> => {
   const q = `
@@ -77,6 +78,7 @@ export const createClient = async (client: Client) => {
 
   let clientObject = {
     _type: "client",
+    createdAt: moment().format("YYYY-MM-DD"),
     clientNumber: client.clientNumber || null,
     inactive: (client.inactive && client.inactive) || false,
     name: client.name, // required
