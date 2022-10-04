@@ -16,6 +16,8 @@ import SaveAltIcon from "@mui/icons-material/SaveAlt";
 // ** Third Party Imports
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
+import moment from "moment";
+import { toast } from "react-hot-toast";
 
 // ** Third Party Components
 import TextInputControlled from "components/inputs/TextInputControlled";
@@ -24,47 +26,53 @@ import DateInputControlled from "components/inputs/DateInputControlled";
 // ** Hooks
 import { useForm } from "react-hook-form";
 import { useAuth } from "src/hooks/useAuth";
+import { useQueryClient } from "@tanstack/react-query";
+import * as useDailyReport from "src/queries/streetDailyReport/";
 
 const StreetDailyReport = () => {
 
-  const { user } = useAuth();
+  const { user, selectedStore } = useAuth();
+
+  // React Query
+  const queryClient = useQueryClient();
+  const createDailyReport = useDailyReport.useCreateStreetDailyReportQuery(queryClient);
+  const getClientsByReporter = useDailyReport.useGetClientsByReporterQuery(queryClient);
+  const { isLoading } = createDailyReport;
 
   const defaultValue = {
-    date: Date.now(),
+    reportDate: moment().format("YYYY-MM-DD"),
     clientsApproached: "",
     scheduledAppointments: "",
-    activityReport: "",
-    clientsRegistered: 0,
-    sales: 0,
-    street: {
+    activitiesReport: "",
+    reporter: {
+      name: ""
+    },
+    store: {
       name: ""
     }
   };
 
   const schema = yup.object().shape({
-    date: yup.date().required("Este campo é obrigatório"),
+    reportDate: yup.date().required("Este campo é obrigatório"),
     clientsApproached: yup.number().required("Este campo é obrigatório"),
-    clientsRegistered: yup.number().required("Este campo é obrigatório"),
-    activityReport: yup.string(),
-    sales: yup.array().of(yup.object().shape({
-      _id: yup.string().required(),
-      saleNumber: yup.number()
-    })),
+    clientsRegistered: yup.number(),//.required("Este campo é obrigatório"),
+    activitiesReport: yup.string(),
     scheduledAppointments: yup.number().required("Este campo é obrigatório"),
-    user: yup.object().shape({
-      _id: yup.string().required(),
-      name: yup.string().required()
+    reporter: yup.object().shape({
+      _id: yup.string(),//.required(),
+      name: yup.string()//.required()
     }),
     store: yup.object().shape({
-      _id: yup.string().required(),
-      name: yup.string().required()
+      _id: yup.string(),//.required(),
+      name: yup.string()//.required()
     })
   });
 
   // Effects
   useEffect(() => {
-    if (user) setValue("street", user);
-  }, [user]);
+    if (user) setValue("reporter", user);
+    if (selectedStore) setValue("store", selectedStore);
+  }, [user, selectedStore]);
 
   const {
     control,
@@ -77,6 +85,26 @@ const StreetDailyReport = () => {
     mode: "onBlur"
   });
 
+  const onSubmit = async (data: any) => {
+    const toastId = toast.loading("Salvando relatório diário...");
+    try {
+      const reportDate = moment(data.reportDate).format("YYYY-MM-DD");
+      const clients = await getClientsByReporter.mutateAsync({ reporterID: data.reporter._id, reportDate });
+      data.clientsRegistered = clients.map((client: any) => (
+        {
+          _ref: client._id,
+          _type: "reference",
+          _key: client._id
+        }
+      ));
+      await createDailyReport.mutateAsync(data);
+      toast.success("Relatório diário salvo com sucesso!", { id: toastId });
+    } catch (error) {
+      console.log(error);
+      toast.error("Erro ao salvar relatório diário!", { id: toastId });
+    }
+  };
+
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
@@ -86,15 +114,15 @@ const StreetDailyReport = () => {
         </Typography>
         <Card>
           <CardContent>
-            <form onSubmit={() => {
-            }}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <Grid container spacing={6}>
                 <Grid item xs={12} sm={6}>
                   <DateInputControlled
-                    name={"date"}
+                    name={"reportDate"}
                     control={control}
                     label={"Data do Relatório"}
                     errors={errors}
+                    disabled={isLoading}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -104,6 +132,7 @@ const StreetDailyReport = () => {
                     label={"Clientes Abordados"}
                     errors={errors}
                     type={"number"}
+                    disabled={isLoading}
                     required
                   />
                 </Grid>
@@ -114,15 +143,17 @@ const StreetDailyReport = () => {
                     label={"Consultas Agendadas"}
                     errors={errors}
                     type={"number"}
+                    disabled={isLoading}
                     required
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextInputControlled
-                    name={"activityReport"}
+                    name={"activitiesReport"}
                     control={control}
                     label={"Relatório de Atividades"}
                     errors={errors}
+                    disabled={isLoading}
                     multiline
                     rows={4}
                   />
@@ -131,16 +162,6 @@ const StreetDailyReport = () => {
                   <Divider textAlign={"left"}>
                     <Typography variant={"subtitle1"}>Campos automáticos</Typography>
                   </Divider>
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextInputControlled
-                    name={"sales"}
-                    control={control}
-                    label={"Vendas"}
-                    errors={errors}
-                    type={"number"}
-                    disabled
-                  />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextInputControlled
@@ -159,6 +180,7 @@ const StreetDailyReport = () => {
                   <LoadingButton
                     type={"submit"}
                     variant={"contained"}
+                    loading={isLoading}
                     sx={{ marginLeft: "auto" }}
                   >
                     <SaveAltIcon sx={{ mr: 1 }} />
