@@ -14,6 +14,7 @@ const getSaleNumberAndLastSaleNumber = `*[_id=="8a7d451e-193d-4ebc-92c1-40dfc772
 
 const lastSalesNumbers = async () => {
   const data = await dbClient.fetch(getSaleNumberAndLastSaleNumber);
+  console.log(data);
   return {
     actualSaleNumber: data[0].saleNumber,
     lastSaleNumber: data[0].lastSaleNumber.saleNumber
@@ -25,13 +26,17 @@ export const getSaleNumber = async (): Promise<number> => {
   // Create New Promise
   return new Promise(async (resolve, reject) => {
     const { actualSaleNumber, lastSaleNumber } = await lastSalesNumbers();
+    console.log(actualSaleNumber, lastSaleNumber);
     if (actualSaleNumber === lastSaleNumber) {
+      console.log("actualSaleNumber === lastSaleNumber");
       // Increment the sale number by 1 and return it
       dbClient
         .patch("8a7d451e-193d-4ebc-92c1-40dfc7725ed8")
         .inc({ saleNumber: 1 })
         .commit()
         .then((res) => {
+          console.log("Sale number updated");
+          console.log(res.saleNumber);
           resolve(res.saleNumber);
         })
         .catch((err) => {
@@ -39,6 +44,7 @@ export const getSaleNumber = async (): Promise<number> => {
         });
     }
     if (actualSaleNumber < lastSaleNumber) {
+      console.log("actualSaleNumber < lastSaleNumber");
       // Set the sale number to the last sale number + 1 and return it
       dbClient
         .patch("8a7d451e-193d-4ebc-92c1-40dfc7725ed8")
@@ -53,7 +59,10 @@ export const getSaleNumber = async (): Promise<number> => {
     }
 
     // If the sale number is greater than the last sale number, return the actual sale number
-    resolve(actualSaleNumber);
+    if (actualSaleNumber > lastSaleNumber) {
+      console.log("actualSaleNumber > lastSaleNumber");
+      resolve(actualSaleNumber);
+    }
   });
 };
 
@@ -61,11 +70,18 @@ export const getSaleNumber = async (): Promise<number> => {
 export const validatePDVNumber = async (PDVNumber: any): Promise<boolean> => {
 
   const intPDVNumber = parseInt(PDVNumber);
-
+  console.log(intPDVNumber);
   try {
     const data = await dbClient.fetch(
-      `count(*[_type=="sale" && PDVNumber==${intPDVNumber}])`
+      `count(
+      *[
+      _type=="sale" 
+      && PDVNumber=="${intPDVNumber}" 
+      && canceled!=true
+      && excluded!=true
+      ])`
     );
+    console.log(data);
     return data === 0;
   } catch (err) {
     return false;

@@ -69,7 +69,7 @@ const Step1Form = (props: Step1FormProps) => {
     active: !!userDB,
     placeholderData: []
   });
-  const { data: saleNumber, isLoading: loadingSaleNumber } = salesQ.useGetSaleNumberQuery();
+  const { data: saleNumber, isLoading: loadingSaleNumber, refetch: refetchSaleNumber } = salesQ.useGetSaleNumberQuery();
 
   const [newClientDialogOpen, setNewClientDialogOpen] = useState<boolean>(false);
 
@@ -98,7 +98,7 @@ const Step1Form = (props: Step1FormProps) => {
       .required("Obrigatório")
       .min(4, "Número do PDV inválido")
       .test("Validate PDVNumber", "Número já cadastrado", async (value): Promise<boolean> => {
-        if (value && value.length > 3) return salesHooks.validatePDVNumber(parseInt(value));
+        if (value && value.length > 3) return salesHooks.validatePDVNumber(value);
         return true;
       }),
     date: yup.date().nullable().required("Obrigatória"),
@@ -151,6 +151,22 @@ const Step1Form = (props: Step1FormProps) => {
   });
 
   // Effects
+  // ** Reset Form
+  useEffect(() => {
+    console.log(step1Data);
+    console.log(isValidStep1);
+    if (step1Data === null) {
+      resetStep1();
+      clearErrorsStep1();
+      console.log(getValuesStep1("saleNumber"));
+      if (getValuesStep1("saleNumber") === "Gerando...") {
+        refetchSaleNumber().then((res) => {
+          console.log("restnumber", res);
+          setValueStep1("saleNumber", res.data);
+        });
+      }
+    }
+  }, [step1Data]);
 
   // ** Set Sale Number
   useEffect(() => {
@@ -158,7 +174,7 @@ const Step1Form = (props: Step1FormProps) => {
       // @ts-ignore
       setValueStep1("saleNumber", saleNumber);
     }
-  }, [loadingSaleNumber]);
+  }, [loadingSaleNumber, saleNumber]);
 
   // ** Set the Client if there is only one
   useEffect(() => {
@@ -183,7 +199,7 @@ const Step1Form = (props: Step1FormProps) => {
 
   // ** Set Validation Step
   useEffect(() => {
-    if (submitCountStep1 > 0) {
+    if (!isValidStep1 && submitCountStep1 > 0) {
       toast.error("Verifique os campos obrigatórios");
       setHasErrors(!isValidStep1);
     }

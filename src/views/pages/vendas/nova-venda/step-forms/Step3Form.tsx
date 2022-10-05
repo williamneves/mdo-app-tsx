@@ -109,6 +109,13 @@ const Step3Form = (props: Step3FormProps): JSX.Element => {
   });
 
 // *** Step 3 Functions
+  // ** Reset Form
+  useEffect(() => {
+    if (step3Data === null) {
+      resetStep3();
+    }
+  }, [step3Data]);
+
   // ** Set Validation Step
   useEffect(() => {
     if (!isValidStep3 && submitCountStep3 > 0) {

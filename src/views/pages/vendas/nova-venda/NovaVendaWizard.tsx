@@ -26,6 +26,13 @@ import Step4Form from "./step-forms/Step4Form";
 // ** Import Interfaces
 import Sale from "src/interfaces/Sale";
 
+// ** Import Third Party Libraries
+import toast from "react-hot-toast";
+
+
+// ** Import Queries
+import { useQueryClient } from "@tanstack/react-query";
+import * as salesQ from "src/queries/sales";
 import { createSale } from "src/queries/sales/hooks";
 
 const steps = [
@@ -62,6 +69,12 @@ const NovaVendaWizard = () => {
   const [step2Data, setStep2Data] = useState<Partial<Sale> | null>(null);
   const [step3Data, setStep3Data] = useState<Partial<Sale> | null>(null);
   const [saleObject, setSaleObject] = useState<any>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [newSale, setNewSale] = useState<Sale | null>(null);
+
+  // ** Fetchs
+  const queryClient = useQueryClient();
+  const createNewSale = salesQ.useCreateSaleMutation(queryClient);
 
   // ** Handlers
   // Handle Submit
@@ -85,16 +98,37 @@ const NovaVendaWizard = () => {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
     if (activeStep === 3) {
-      console.log("income data", data);
-      console.log("SaleObject", saleObject);
-      const newSale = await createSale(saleObject);
-      console.log("newSale", newSale);
+      // console.log("income data", data);
+      // console.log("SaleObject", saleObject);
+      // const newSale = await createSale(saleObject);
+      // console.log("newSale", newSale);
+      setIsSubmitting(true);
+      const newSaleToast = toast.loading("Salvando Venda...");
+
+      try {
+        const data = await createNewSale.mutateAsync(saleObject);
+        setNewSale(data);
+        toast.success("Venda salva com sucesso!", { id: newSaleToast, duration: 4000 });
+        setIsSubmitting(false);
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      } catch (err) {
+        toast.error("Erro ao salvar venda!", { id: newSaleToast, duration: 4000 });
+        console.log(err);
+        setIsSubmitting(false);
+      }
+
     }
   };
 
   // Handle Reset
   const handleReset = () => {
-    console.log("reset");
+    setStep1Data(null);
+    setStep2Data(null);
+    setStep3Data(null);
+    setSaleObject(null);
+    setActiveStep(0);
+
+    toast("Os campos estão limpos, pode começar uma nova venda!");
   };
 
   // Handle Step progress
@@ -145,6 +179,7 @@ const NovaVendaWizard = () => {
       case 3:
         return (
           <Step4Form
+            isSubmitting={isSubmitting}
             onSubmit={onSubmit}
             handleStepBack={handleBack}
             steps={steps}

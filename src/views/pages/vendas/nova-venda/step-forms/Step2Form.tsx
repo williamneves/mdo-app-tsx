@@ -248,6 +248,13 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
 
   // ** Step 2 Functions
 
+  // ** Reset Form
+  useEffect(() => {
+    if (step2Data === null) {
+      resetStep2();
+    }
+  }, [step2Data]);
+
   // ** Set Validation Step
   useEffect(() => {
     if (!isValidStep2 && submitCountStep2 > 0) {
