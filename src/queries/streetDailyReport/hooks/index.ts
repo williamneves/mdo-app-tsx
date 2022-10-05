@@ -10,8 +10,6 @@ export const createDailyReport = async (data: StreetDailyReport) => {
 
   let reportObject = {
     _type: "streetDailyReport",
-    // inactive: (data.inactive && data.inactive) || false,
-    // excluded: (data.excluded && data.excluded) || false,
     auditStatus: (data.auditStatus && data.auditStatus) || "pending",
     clientsApproached: (data.clientsApproached && data.clientsApproached) || 0,
     clientsRegistered: (data.clientsRegistered && data.clientsRegistered) || [],
@@ -37,14 +35,6 @@ export const createDailyReport = async (data: StreetDailyReport) => {
     throw err;
   }
 }
-
-export const deleteDayReport = async (id: string) => {
-try {
-    return await dbClient.delete(id);
-  } catch (err) {
-    throw err;
-  }
-};
 
 export const getClientsByReporter = async (reporterID: string, reportDate: string) => {
 
