@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // ** MUI Imports
 import Card from "@mui/material/Card";
@@ -8,6 +8,9 @@ import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Divider from "@mui/material/Divider";
+import TextField from "@mui/material/TextField";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 // ** MUI Icons
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
@@ -40,8 +43,9 @@ const StreetDailyReport = () => {
   const { isLoading } = createDailyReport;
 
   const defaultValue = {
-    reportDate: moment().format("YYYY-MM-DD"),
+    reportDate: moment(),
     clientsApproached: "",
+    clientsRegistered: [],
     scheduledAppointments: "",
     activitiesReport: "",
     reporter: {
@@ -55,29 +59,28 @@ const StreetDailyReport = () => {
   const schema = yup.object().shape({
     reportDate: yup.date().required("Este campo é obrigatório"),
     clientsApproached: yup.number().required("Este campo é obrigatório"),
-    clientsRegistered: yup.number(),//.required("Este campo é obrigatório"),
+    clientsRegistered: yup.array().of(yup.object().shape({
+      _id: yup.string().required()
+    })),
     activitiesReport: yup.string(),
     scheduledAppointments: yup.number().required("Este campo é obrigatório"),
     reporter: yup.object().shape({
-      _id: yup.string(),//.required(),
-      name: yup.string()//.required()
+      _id: yup.string().required(),
+      name: yup.string()
     }),
     store: yup.object().shape({
-      _id: yup.string(),//.required(),
-      name: yup.string()//.required()
+      _id: yup.string().required(),
+      name: yup.string()
     })
   });
-
-  // Effects
-  useEffect(() => {
-    if (user) setValue("reporter", user);
-    if (selectedStore) setValue("store", selectedStore);
-  }, [user, selectedStore]);
 
   const {
     control,
     handleSubmit,
     setValue,
+    watch,
+    getValues,
+    reset,
     formState: { errors }
   } = useForm({
     defaultValues: defaultValue,
@@ -85,12 +88,32 @@ const StreetDailyReport = () => {
     mode: "onBlur"
   });
 
+  // States
+  const [reportsCount, setReportsCount] = useState(0);
+
+  // Effects
+  useEffect(() => {
+    if (user) setValue("reporter", user);
+    if (selectedStore) setValue("store", selectedStore);
+  }, [user, selectedStore, reportsCount]);
+
+  useEffect(() => {
+    if (user) {
+      getClientsByReporter.mutateAsync({
+        reporterID: user?._id,
+        reportDate: moment(getValues("reportDate")).format("YYYY-MM-DD")
+      })
+        .then((res) => {
+          setValue("clientsRegistered", res);
+        });
+    }
+    // @ts-ignore
+  }, [watch("reportDate")]);
+
   const onSubmit = async (data: any) => {
     const toastId = toast.loading("Salvando relatório diário...");
     try {
-      const reportDate = moment(data.reportDate).format("YYYY-MM-DD");
-      const clients = await getClientsByReporter.mutateAsync({ reporterID: data.reporter._id, reportDate });
-      data.clientsRegistered = clients.map((client: any) => (
+      data.clientsRegistered = data.clientsRegistered.map((client: any) => (
         {
           _ref: client._id,
           _type: "reference",
@@ -99,6 +122,8 @@ const StreetDailyReport = () => {
       ));
       await createDailyReport.mutateAsync(data);
       toast.success("Relatório diário salvo com sucesso!", { id: toastId });
+      reset(defaultValue);
+      setReportsCount(reportsCount + 1);
     } catch (error) {
       console.log(error);
       toast.error("Erro ao salvar relatório diário!", { id: toastId });
@@ -164,14 +189,16 @@ const StreetDailyReport = () => {
                   </Divider>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextInputControlled
-                    name={"clientsRegistered"}
-                    control={control}
+                  <TextField
                     label={"Clientes Cadastrados"}
-                    errors={errors}
-                    type={"number"}
+                    value={watch("clientsRegistered")?.length}
                     disabled
+                    sx={{ width: "100%" }}
                   />
+                  <Alert severity={"warning"} sx={{ mt: 3 }}>
+                    <AlertTitle>Aviso</AlertTitle>
+                    Este campo se refere aos clientes cadastrados na data do relatório
+                  </Alert>
                 </Grid>
                 <Grid item xs={12}>
                   <Divider variant={"middle"} />
