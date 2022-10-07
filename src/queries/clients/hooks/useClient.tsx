@@ -19,6 +19,7 @@ export const getAllClients = async (): Promise<Client[]> => {
       gender,
       hearAboutUs,
       cpf,
+      _createdAt,
       address {
         street,
         number,
