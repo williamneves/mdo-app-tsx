@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
+import TextField from "@mui/material/TextField";
 
 // ** MUI Icons Imports
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
@@ -129,19 +130,6 @@ const clientForm = ({ client }: Props) => {
     })
   });
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    getValues,
-    reset
-  } = useForm({
-    defaultValues: client ? client : defaultValue,
-    resolver: yupResolver(schema),
-    mode: "onBlur"
-  });
-
   // States
   const [clientsNumber, setClientsNumber] = useState(0);
   const [isLoadingAddress, setIsLoadingAddress] = useState(false);
@@ -156,13 +144,14 @@ const clientForm = ({ client }: Props) => {
     cep(getValues("address.zipCode"))
       .then((response) => {
         setTimeout(() => {
-          setValue("address.street", response?.street || "");
-          setValue("address.city", response?.city || "");
-          setValue("address.state", response?.state || "");
+          setValue("address.street", response?.street as never || "");
+          setValue("address.city", response?.city as never || "");
+          setValue("address.state", response?.state as never || "");
           toast.success("CEP encontrado! Endereço carregado automaticamente", {
             duration: 4000,
             position: "top-center"
           });
+          setFocus("address.number");
           setIsLoadingAddress(false);
         }, 500);
       })
@@ -177,6 +166,20 @@ const clientForm = ({ client }: Props) => {
   };
 
   const getAddressLabel = (fieldName: string) => isLoadingAddress ? "Buscando endereço..." : fieldName;
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    getValues,
+    reset,
+    setFocus
+  } = useForm({
+    defaultValues: client ? client : defaultValue,
+    resolver: yupResolver(schema),
+    mode: "onBlur"
+  });
 
   const onSubmit = async (data: any) => {
 
@@ -353,13 +356,22 @@ const clientForm = ({ client }: Props) => {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextInputControlled
-                    name={"address.number"}
-                    label={"Número"}
-                    control={control}
-                    errors={errors}
-                    disabled={isLoading}
-                  />
+                  <FormControl fullWidth>
+                    <Controller
+                      control={control}
+                      name={"address.number"}
+                      rules={{ required: true }}
+                      render={({ field: { value, onChange, ref } }) => (
+                        <TextField
+                          value={value}
+                          onChange={onChange}
+                          label={"Número"}
+                          type={"number"}
+                          inputRef={ref}
+                        />
+                      )}
+                    />
+                  </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextInputControlled
