@@ -8,9 +8,11 @@ import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Divider from "@mui/material/Divider";
-import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import MenuList from "@mui/material/MenuList";
 
 // ** MUI Icons
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
@@ -31,6 +33,9 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "src/hooks/useAuth";
 import { useQueryClient } from "@tanstack/react-query";
 import * as useDailyReport from "src/queries/streetDailyReport/";
+
+// ** Types
+import Client from "src/interfaces/Client";
 
 const StreetDailyReport = () => {
 
@@ -189,12 +194,33 @@ const StreetDailyReport = () => {
                   </Divider>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <TextField
-                    label={"Clientes Cadastrados"}
-                    value={watch("clientsRegistered")?.length}
-                    disabled
-                    sx={{ width: "100%" }}
-                  />
+                  <Typography variant={"h6"}>Clientes cadastrados</Typography>
+                  <MenuList
+                    sx={{
+                      width: "100%",
+                      maxWidth: 360,
+                      bgcolor: "background.paper",
+                      position: "relative",
+                      overflow: "auto",
+                      maxHeight: 300,
+                      "& ul": { padding: 0 }
+                    }}
+                    subheader={<li />}
+                  >
+                    {getValues("clientsRegistered").map((client: Client) => (
+                      <li key={`section-${client}`}>
+                        <ul>
+                          <ListItem key={client._id}>
+                            <ListItemText
+                              primary={`${client.name} - ${client.phone ? client.phone : "Sem telefone"}`}
+                              secondary={`Código: ${client.clientNumber}`} />
+                          </ListItem>
+                          <ListItem>
+                          </ListItem>
+                        </ul>
+                      </li>
+                    ))}
+                  </MenuList>
                   <Alert severity={"warning"} sx={{ mt: 3 }}>
                     <AlertTitle>Aviso</AlertTitle>
                     Este campo se refere aos clientes cadastrados na data do relatório

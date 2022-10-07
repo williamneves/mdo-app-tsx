@@ -53,6 +53,7 @@ export const getClientsByReporter = async (reporterID: string, reportDate: strin
     createdAt,
     clientNumber,
     name,
+    phone,
     _createdAt,
   createdBy->
 }
