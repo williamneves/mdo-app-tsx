@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 
 // ** MUI Imports
 import Box from "@mui/material/Box";
@@ -24,26 +24,27 @@ import parse from "autosuggest-highlight/parse";
 // @ts-ignore
 import match from "autosuggest-highlight/match";
 
-import { InputController } from "./InputController";
 import moment from "moment";
 
 // ** Hooks Imports
 import * as useClient from "src/queries/clients";
 import { useQueryClient } from "@tanstack/react-query";
 import { matchSearchFilter, getAllObjectKeys } from "@core/utils/filters";
+import * as useDailyReport from "src/queries/streetDailyReport";
 
 // ** Next Imports
 import { useRouter } from "next/router";
 
 // ** Types
 import Client from "src/interfaces/Client";
+import StreetDailyReport from "src/interfaces/StreetDailyReport";
 
 interface RowsData {
   row: Client;
 }
 
 const renderCellWithMatchLetters = (row: any, searchValue: string) => {
-  const matchesChar = match(row, searchValue, {insideWords: true});
+  const matchesChar = match(row, searchValue, { insideWords: true });
   const parsesChar = parse(row, matchesChar);
 
   return (<Typography variant="body2" color="textPrimary">
@@ -54,8 +55,8 @@ const renderCellWithMatchLetters = (row: any, searchValue: string) => {
               </span>
       ))
     }
-  </Typography>)
-}
+  </Typography>);
+};
 
 const ClientList = () => {
 
@@ -66,34 +67,23 @@ const ClientList = () => {
   const queryClient = useQueryClient();
   const deleteClient = useClient.useDeleteClientQuery(queryClient);
   const { data: clientList, isLoading } = useClient.useGetClientsQuery();
+  const { data: dailyReports } = useDailyReport.useGetAllDailyReportsQuery();
 
   // ** States
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogData, setDialogData] = useState({});
   const [searchValue, setSearchValue] = useState("");
-  const [filteredData, setFilteredData] = useState<Client[]>([]);
+  const [clientsInReport, setClientsInReport] = useState<string[]>([]);
 
-  const escapeRegExp = (value: string) => {
-    return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
-  };
-
-  const handleSearch = (searchValue: string) => {
-    setSearchValue(searchValue);
-    const searchRegex = new RegExp(escapeRegExp(searchValue), "i");
-
-    if (clientList) {
-      const filteredRows = clientList.filter((row) => {
-        return Object.keys(row).some((field) => {
-          if (field === "createdBy")
-            return searchRegex.test(row[field]?.name);
-          // @ts-ignore
-          return searchRegex.test(row[field]?.toString());
-        });
-      });
-      if (filteredRows.length) setFilteredData(filteredRows);
-      else setFilteredData([]);
+  // Effects
+  useEffect(() => {
+    if (dailyReports) {
+      const reportClients: string[] = [];
+      (dailyReports as StreetDailyReport[]).forEach((report) =>
+        report.clientsRegistered.forEach((client) => reportClients.push(client._ref)));
+      setClientsInReport(reportClients);
     }
-  };
+  }, [dailyReports]);
 
   const deleteClientData = (clientID: string) => {
     const toastId = toast.loading("Deletando cliente...");
@@ -171,7 +161,7 @@ const ClientList = () => {
       headerName: "Criado por",
       flex: 0.15,
       minWidth: 140,
-      valueSetter: ({value}: any) => value.name,
+      valueSetter: ({ value }: any) => value.name,
       renderCell: ({ row }: RowsData) => renderCellWithMatchLetters(row.createdBy?.name || "", searchValue)
     },
     {
@@ -200,6 +190,7 @@ const ClientList = () => {
           </IconButton>
           <IconButton
             color={"error"}
+            disabled={clientsInReport.includes(row._id)}
             onClick={() => handleViewClient(row._id)}
           >
             <DeleteForeverTwoToneIcon />
@@ -224,7 +215,6 @@ const ClientList = () => {
             loading={isLoading}
             rows={clientList && clientList.length > 0 && matchSearchFilter(clientList!, searchValue, [...getAllObjectKeys(clientList), "createdBy.name"]) || []}
             columns={columns}
-            checkboxSelection
             components={{
               Toolbar: QuickSearchToolbar
             }}
