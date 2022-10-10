@@ -87,3 +87,28 @@ export const getAllDailyReports = async () => {
     throw err;
   }
 }
+
+export const changeAuditStatus = async (reportID: string, status: "approved" | "rejected") => {
+  const query = `
+  *[_type == "streetDailyReport" && _id == "${reportID}"]{
+    _id,
+    auditStatus,
+    clientsApproached,
+    clientsRegistered,
+    activitiesReport,
+    reportDate,
+    scheduledAppointments,
+    store->,
+    reporter->,
+  }
+  `;
+
+  try {
+    const report = await dbClient.fetch(query);
+    if (report.length > 0) {
+      return await dbClient.patch(report[0]._id).set({ auditStatus: status }).commit();
+    }
+  } catch (err) {
+    throw err;
+  }
+}

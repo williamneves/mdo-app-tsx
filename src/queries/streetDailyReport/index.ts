@@ -46,3 +46,28 @@ export const useGetAllDailyReportsQuery = (options?: Object) => {
     ...options,
   });
 };
+
+interface ChangeAuditStatusParams {
+  reportID: string;
+  status: "approved" | "rejected";
+}
+
+export const useChangeAuditStatusQuery = (queryClient: any) => {
+  return useMutation(({ reportID, status }: ChangeAuditStatusParams) => useStreetDailyReport.changeAuditStatus(reportID, status),
+    {
+      onSuccess: (updatedDailyReport) => {
+        queryClient.setQueryData(["dailyReports", "all"], (old: any) => {
+          if (old) {
+            return old.map((dailyReport: any) => {
+              if (dailyReport._id === updatedDailyReport?._id) {
+                return updatedDailyReport;
+              }
+              return dailyReport;
+            });
+          }
+          return [updatedDailyReport];
+        });
+        queryClient.invalidateQueries(["dailyReports", "all"]);
+      }
+    });
+};
