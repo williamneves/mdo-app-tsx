@@ -65,3 +65,25 @@ export const getClientsByReporter = async (reporterID: string, reportDate: strin
     throw err;
   }
 };
+
+export const getAllDailyReports = async () => {
+  const query = `
+  *[_type == "streetDailyReport"]{
+    _id,
+    auditStatus,
+    clientsApproached,
+    clientsRegistered,
+    activitiesReport,
+    reportDate,
+    scheduledAppointments,
+    store->,
+    reporter->,
+  }
+  `;
+
+  try {
+    return await dbClient.fetch(query);
+  } catch (err) {
+    throw err;
+  }
+}

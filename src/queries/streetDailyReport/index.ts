@@ -34,3 +34,15 @@ export const useGetClientsByReporterQuery = (queryClient: any) => {
     }
   });
 };
+
+export const useGetAllDailyReportsQuery = (options?: Object) => {
+  return useQuery(["dailyReports"], useStreetDailyReport.getAllDailyReports, {
+    // 1hr stale time
+    staleTime: 1000 * 60 * 60,
+    // 6hr cache time
+    cacheTime: 1000 * 60 * 60 * 6,
+    //
+    refetchOnWindowFocus: true,
+    ...options,
+  });
+};
