@@ -15,7 +15,6 @@ import Divider from "@mui/material/Divider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import TextField from "@mui/material/TextField";
 import { DataGrid } from "@mui/x-data-grid";
-import SimpleDialog from "components/SimpleDialog";
 
 // ** MUI Icons
 import ThumbUpAltTwoToneIcon from "@mui/icons-material/ThumbUpAltTwoTone";
@@ -25,11 +24,14 @@ import UpdateIcon from "@mui/icons-material/Update";
 // ** Third Party Imports
 import moment from "moment";
 import toast from "react-hot-toast";
-import StreetDailyReport from "src/interfaces/StreetDailyReport";
+import QuickDialog from "components/QuickDialog";
 
 // ** Hooks Imports
 import * as useDailyReport from "src/queries/streetDailyReport";
 import { useQueryClient } from "@tanstack/react-query";
+
+// ** Types
+import StreetDailyReport from "src/interfaces/StreetDailyReport";
 
 const ApproveDailyReport = () => {
 
@@ -65,30 +67,39 @@ const ApproveDailyReport = () => {
     try {
       await changeReportStatus.mutateAsync({ reportID, status: action });
       toast.success("Status do relatório atualizado com sucesso!", { id: toastId });
+      setOpenDialog(false);
     } catch (e) {
       toast.error("Erro ao atualizar status do relatório!", { id: toastId });
     }
   };
 
-  const handleApproveRejectReport = async (id: string, action) => {
-    const report = reportsData.find((report) => report._id === id);
+  const handleApproveRejectReport = async (report: StreetDailyReport, action: "Aprovar" | "Recusar") => {
 
     setDialogData({
       id: report._id,
       report: report,
-      title: `Realmente deseja ${action} essa venda?`, // Required
-      message: <SaleStatusChangeDialogMessage report={sale} />, // Required
-      confirm: `${action} Venda`, // Required
-      confirmColor: action === "Aprovar" ? "success" : "error", // Required
-      cancel: "Cancelar", // Required
-      cancelColor: "secondary", // Required
-      confirmAction: () => {
-        // Required
-        // Approve or Reject Sale
-      },
+      headerTitle: `${action} relatório`,
+      content: `Realmente deseja ${action} o relatório do dia ${moment(report.reportDate).format("DD/MM/YYYY")} feito por ${report.reporter.name}?`,
+      actions: [{
+        mode: "button",
+        props: {
+          label: "confirmar",
+          color: "primary",
+          variant: "contained",
+          onClick: () => changeAuditStatus(report._id, action === "Aprovar" ? "approved" : "rejected")
+        },
+      },{
+        mode: "button",
+        props: {
+          label: "cancelar",
+          color: "error",
+          variant: "outlined",
+          onClick: () => setOpenDialog(false)
+        }
+      }]
     });
 
-    setOpenApproveDialog(true);
+    setOpenDialog(true);
   };
 
   interface RowData {
@@ -100,7 +111,6 @@ const ApproveDailyReport = () => {
     {
       minWidth: 100,
       headerAlign: "center",
-      // flex: 0.125,
       headerName: "Data",
       type: "date",
       field: "date",
@@ -174,7 +184,7 @@ const ApproveDailyReport = () => {
               width: "35px",
               height: "35px"
             }}
-            onClick={() => handleApproveRejectReport(row._id, "approved")}
+            onClick={() => handleApproveRejectReport(row, "Aprovar")}
           >
             <ThumbUpAltTwoToneIcon fontSize={"small"} />
           </Fab>
@@ -188,7 +198,7 @@ const ApproveDailyReport = () => {
               height: "35px"
             }}
             onClick={() => {
-              changeAuditStatus(row._id, "rejected");
+              handleApproveRejectReport(row, "Recusar");
             }}
           >
             <ThumbDownAltTwoToneIcon fontSize={"small"} />
@@ -281,9 +291,13 @@ const ApproveDailyReport = () => {
           />
         </Card>
       </Grid>
-      <SimpleDialog
+      <QuickDialog
         open={openDialog}
-        setOpen={setOpenDialog}
+        handleClose={() => setOpenDialog(false)}
+        contentText={"Deseja realmente aprovar este report?"}
+        onConfirm={() => {}}
+        fullWidth={true}
+        maxWidth={"sm"}
         data={dialogData}
       />
     </Grid>
