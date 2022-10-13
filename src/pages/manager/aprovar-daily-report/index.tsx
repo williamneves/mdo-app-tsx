@@ -58,8 +58,8 @@ const ApproveDailyReport = () => {
   }, []);
 
   const handleUpdateDates = () => {
-    setStartDate(rangeDateStart);
-    setEndDate(rangeDateEnd);
+    setRangeDateStart(rangeDateStart);
+    setRangeDateEnd(rangeDateEnd);
   };
 
   const changeAuditStatus = async (reportID: string, action: "approved" | "rejected") => {
@@ -73,7 +73,46 @@ const ApproveDailyReport = () => {
     }
   };
 
-  const handleApproveRejectReport = async (report: StreetDailyReport, action: "Aprovar" | "Recusar") => {
+  const approveAllReports = async () => {
+    const toastId = toast.loading("Aguarde...");
+    try {
+      await Promise.all(reportsData.map(async (report: StreetDailyReport) => {
+        await changeReportStatus.mutateAsync({ reportID: report._id, status: "approved" });
+      }));
+      toast.success("Relatórios aprovados com sucesso!", { id: toastId });
+      setOpenDialog(false);
+    } catch (e) {
+      toast.error("Erro ao aprovar todos os relatórios!", { id: toastId });
+    }
+  };
+
+  const handleApproveAllReports = () => {
+    setDialogData({
+      headerTitle: "Aprovar todos os relatórios",
+      content: "Realmente deseja aprovar todos os relatórios?",
+      actions: [{
+        mode: "button",
+        props: {
+          label: "confirmar",
+          color: "primary",
+          variant: "contained",
+          onClick: () => approveAllReports()
+        }
+      }, {
+        mode: "button",
+        props: {
+          label: "cancelar",
+          color: "error",
+          variant: "outlined",
+          onClick: () => setOpenDialog(false)
+        }
+      }]
+    });
+
+    setOpenDialog(true);
+  };
+
+  const handleApproveRejectReport = (report: StreetDailyReport, action: "Aprovar" | "Recusar") => {
 
     setDialogData({
       id: report._id,
@@ -87,8 +126,8 @@ const ApproveDailyReport = () => {
           color: "primary",
           variant: "contained",
           onClick: () => changeAuditStatus(report._id, action === "Aprovar" ? "approved" : "rejected")
-        },
-      },{
+        }
+      }, {
         mode: "button",
         props: {
           label: "cancelar",
@@ -216,8 +255,7 @@ const ApproveDailyReport = () => {
             <Grid item xs={12}>
               <Button
                 variant={"outlined"}
-                onClick={() => {
-                }}
+                onClick={() => handleApproveAllReports()}
               >
                 Aprovar tudo
               </Button>
@@ -285,8 +323,9 @@ const ApproveDailyReport = () => {
             autoHeight
             getRowId={(row) => row._id}
             loading={reportsIsLoading}
+            // @ts-ignore
             columns={columns}
-            rows={reportsData?.filter((report) => report.auditStatus === "pending") || []}
+            rows={(reportsData as StreetDailyReport[])?.filter((report) => report.auditStatus === "pending") || []}
             rowsPerPageOptions={[10, 20, 30, 50, 100]}
           />
         </Card>
@@ -295,9 +334,9 @@ const ApproveDailyReport = () => {
         open={openDialog}
         handleClose={() => setOpenDialog(false)}
         contentText={"Deseja realmente aprovar este report?"}
-        onConfirm={() => {}}
         fullWidth={true}
         maxWidth={"sm"}
+        // @ts-ignore
         data={dialogData}
       />
     </Grid>
