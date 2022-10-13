@@ -49,6 +49,9 @@ const ApproveDailyReport = () => {
   const queryClient = useQueryClient();
   const changeReportStatus = useDailyReport.useChangeAuditStatusQuery(queryClient);
 
+  // Get only reports that are pending
+  const pendingReports = reportsData?.filter((report: StreetDailyReport) => report.auditStatus === "pending");
+
   // Get the first day of the month
   useEffect(() => {
     console.log(moment().startOf("month"));
@@ -76,7 +79,7 @@ const ApproveDailyReport = () => {
   const approveAllReports = async () => {
     const toastId = toast.loading("Aguarde...");
     try {
-      await Promise.all(reportsData.map(async (report: StreetDailyReport) => {
+      await Promise.all(pendingReports.map(async (report: StreetDailyReport) => {
         await changeReportStatus.mutateAsync({ reportID: report._id, status: "approved" });
       }));
       toast.success("Relatórios aprovados com sucesso!", { id: toastId });
@@ -325,7 +328,7 @@ const ApproveDailyReport = () => {
             loading={reportsIsLoading}
             // @ts-ignore
             columns={columns}
-            rows={(reportsData as StreetDailyReport[])?.filter((report) => report.auditStatus === "pending") || []}
+            rows={pendingReports || []}
             rowsPerPageOptions={[10, 20, 30, 50, 100]}
           />
         </Card>
