@@ -153,15 +153,11 @@ const Step1Form = (props: Step1FormProps) => {
   // Effects
   // ** Reset Form
   useEffect(() => {
-    console.log(step1Data);
-    console.log(isValidStep1);
     if (step1Data === null) {
       resetStep1();
       clearErrorsStep1();
-      console.log(getValuesStep1("saleNumber"));
       if (getValuesStep1("saleNumber") === "Gerando...") {
         refetchSaleNumber().then((res) => {
-          console.log("restnumber", res);
           setValueStep1("saleNumber", res.data);
         });
       }
@@ -205,10 +201,11 @@ const Step1Form = (props: Step1FormProps) => {
     }
   }, [isValidStep1, submitCountStep1, isDirtyStep1]);
 
-  useEffect(() => {
-    console.log(isValidStep1);
-    console.log(errorsStep1);
-  }, [errorsStep1, isValidStep1]);
+  //
+  // useEffect(() => {
+  //   console.log(isValidStep1);
+  //   console.log(errorsStep1);
+  // }, [errorsStep1, isValidStep1]);
 
 
   return (

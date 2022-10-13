@@ -1,4 +1,5 @@
 // ** React Imports
+import { CardHeader } from "@mui/material";
 // ** MUI Imports
 import { Fragment, useState } from "react";
 
@@ -28,6 +29,7 @@ import Sale from "src/interfaces/Sale";
 
 // ** Import Third Party Libraries
 import toast from "react-hot-toast";
+import moment from "moment";
 
 
 // ** Import Queries
@@ -197,12 +199,40 @@ const NovaVendaWizard = () => {
     if (activeStep === steps.length) {
       return (
         <Fragment>
-          <Typography>All steps are completed!</Typography>
-          <Box sx={{ mt: 4, display: "flex", justifyContent: "flex-end" }}>
-            <Button size="large" variant="contained" onClick={handleReset}>
-              Reset
-            </Button>
-          </Box>
+          <Card>
+            <CardHeader
+              title={`Venda #${newSale?.saleNumber || 2222} criada com sucesso!`}
+              subtitle="A venda foi criada com sucesso!"
+              />
+            <CardContent>
+              <Typography
+                variant="subtitle1"
+                color="textSecondary"
+                >
+                Data da Venda: {moment(newSale?.date).format("DD/MM/YYYY")}
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                color="textSecondary"
+              >
+                Cliente: {newSale?.client?.name}
+              </Typography>
+              <Typography
+                variant="subtitle1"
+                color="textSecondary"
+                >
+                Valor Total: {newSale?.saleAmount}
+              </Typography>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleReset}
+                sx={{marginY: 3}}
+                >
+                Criar Nova Venda
+              </Button>
+            </CardContent>
+          </Card>
         </Fragment>
       );
     } else {

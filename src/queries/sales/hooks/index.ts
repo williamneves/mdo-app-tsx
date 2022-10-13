@@ -14,7 +14,6 @@ const getSaleNumberAndLastSaleNumber = `*[_id=="8a7d451e-193d-4ebc-92c1-40dfc772
 
 const lastSalesNumbers = async () => {
   const data = await dbClient.fetch(getSaleNumberAndLastSaleNumber);
-  console.log(data);
   return {
     actualSaleNumber: data[0].saleNumber,
     lastSaleNumber: data[0].lastSaleNumber.saleNumber
@@ -26,9 +25,8 @@ export const getSaleNumber = async (): Promise<number> => {
   // Create New Promise
   return new Promise(async (resolve, reject) => {
     const { actualSaleNumber, lastSaleNumber } = await lastSalesNumbers();
-    console.log(actualSaleNumber, lastSaleNumber);
+    // Check if the last sale number is the same as the actual sale number
     if (actualSaleNumber === lastSaleNumber) {
-      console.log("actualSaleNumber === lastSaleNumber");
       // Increment the sale number by 1 and return it
       dbClient
         .patch("8a7d451e-193d-4ebc-92c1-40dfc7725ed8")
@@ -37,31 +35,31 @@ export const getSaleNumber = async (): Promise<number> => {
         .then((res) => {
           console.log("Sale number updated");
           console.log(res.saleNumber);
-          resolve(res.saleNumber);
+          return resolve(res.saleNumber);
         })
         .catch((err) => {
-          reject(err);
+          return reject(err);
         });
     }
+
+    // If the last sale number is not the same as the actual sale number
     if (actualSaleNumber < lastSaleNumber) {
-      console.log("actualSaleNumber < lastSaleNumber");
       // Set the sale number to the last sale number + 1 and return it
       dbClient
         .patch("8a7d451e-193d-4ebc-92c1-40dfc7725ed8")
         .set({ saleNumber: lastSaleNumber + 1 })
         .commit()
         .then((res) => {
-          resolve(res.saleNumber);
+          return resolve(res.saleNumber);
         })
         .catch((err) => {
-          reject(err);
+          return reject(err);
         });
     }
 
     // If the sale number is greater than the last sale number, return the actual sale number
     if (actualSaleNumber > lastSaleNumber) {
-      console.log("actualSaleNumber > lastSaleNumber");
-      resolve(actualSaleNumber);
+      return resolve(actualSaleNumber);
     }
   });
 };
@@ -70,7 +68,6 @@ export const getSaleNumber = async (): Promise<number> => {
 export const validatePDVNumber = async (PDVNumber: any): Promise<boolean> => {
 
   const intPDVNumber = parseInt(PDVNumber);
-  console.log(intPDVNumber);
   try {
     const data = await dbClient.fetch(
       `count(
@@ -111,7 +108,6 @@ export const getAllProductsByReference = async (referenceID: string): Promise<Pr
     const data = await dbClient.fetch(allProductsByReferenceQuery, {
       storeRef: referenceID as string
     });
-    console.log(data);
     return data;
   } catch (err) {
     throw err;
@@ -142,7 +138,6 @@ export const getAllPaymentMethodByReference = async (referenceID: string): Promi
     const data = await dbClient.fetch(allPaymentMethodByReferenceQuery, {
       storeRef: referenceID as string
     });
-    console.log(data);
     return data;
   } catch (err) {
     throw err;
