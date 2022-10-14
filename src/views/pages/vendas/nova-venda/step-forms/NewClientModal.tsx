@@ -4,7 +4,6 @@ import SelectInputController from "components/inputs/SelectInputController";
 import TextInputControlled from "components/inputs/TextInputControlled";
 import PatternInputControlled from "components/inputs/PatternInputControlled";
 
-
 // ** MUI Imports
 import Grid from "@mui/material/Grid";
 import Button from "@mui/material/Button";
@@ -159,7 +158,6 @@ const NewClientModal = ({ isOpen, onClose: handleClose, clientList, setNewClient
       console.log(error);
       setLoading(false);
     }
-
   };
 
   useEffect(() => {
@@ -187,7 +185,10 @@ const NewClientModal = ({ isOpen, onClose: handleClose, clientList, setNewClient
           alignItems: "center",
           gap: ".5rem",
           color: "primary.main"
-        }}><GroupAddTwoToneIcon /> Criar novo Cliente</DialogTitle>
+        }}>
+          <GroupAddTwoToneIcon />
+          Criar novo Cliente
+        </DialogTitle>
         <DialogContent>
           <DialogContentText variant={"subtitle2"} sx={{ mb: 5 }}>
             Use esse formulário para adicionar rapidamente um cliente para a venda. Serão precisas poucas informações,
@@ -219,8 +220,6 @@ const NewClientModal = ({ isOpen, onClose: handleClose, clientList, setNewClient
                   </Grid>
                 </Grid>
               </Grid>
-
-
               <Grid item xs={12} sm={6}>
                 <TextInputControlled
                   name={"email"}
