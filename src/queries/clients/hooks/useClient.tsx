@@ -116,6 +116,7 @@ const queryAllClientsByRefenceId = `
   }
   `;
 
+// Check if CPF is Unique at Sanity
 export const cpfIsUnique = async (cpf: number):Promise<boolean> => {
   try{
     const result = await dbClient.fetch(`count(*[cpf=="${cpf}"])`)
@@ -125,7 +126,6 @@ export const cpfIsUnique = async (cpf: number):Promise<boolean> => {
   catch(error){
     throw error
   }
-
 };
 
 export const getAllClients = async (): Promise<Client[]> => {
@@ -249,8 +249,9 @@ export const updateClient = async (client: Client) => {
   };
 
   try {
-    const result = await dbClient.patch(client._id).set(clientObject).commit();
-    return result;
+    // Update client
+    return dbClient.patch(client._id).set(clientObject).commit();
+
   } catch (error) {
     throw error;
   }

@@ -8,6 +8,7 @@ interface Risk {
   probableDuplicity: Array<Client>;
 }
 
+// Verify Duplicated Name
 export const verifyDuplicatedName = (newClientName: string, ListDataToCompare: Client[]): Risk => {
   // Format the new client name
   const formattedName: string = formatName(newClientName);
