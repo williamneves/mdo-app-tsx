@@ -1,41 +1,43 @@
 // ** React Imports
-import { CardHeader } from "@mui/material";
+// ** MUI Icons
+
+// ** MUI Imports
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Divider,
+  Step,
+  StepLabel,
+  Stepper,
+  Typography
+} from "@mui/material";
+
+
+// ** Import Queries
+import { useQueryClient } from "@tanstack/react-query";
+import { SaleCardList } from "@views/pages/vendas/nova-venda/NewSaleMockup";
 // ** MUI Imports
 import { Fragment, useState } from "react";
 
-// ** MUI Imports
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Divider from "@mui/material/Divider";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
-import Stepper from "@mui/material/Stepper";
-import Typography from "@mui/material/Typography";
+// ** Import Third Party Libraries
+import toast from "react-hot-toast";
 
 // ** Styled Components
 import StepperWrapper from "src/@core/styles/mui/stepper";
-import StepperCustomDot from "./StepperCustomDot";
+
+// ** Import Interfaces
+import Sale from "src/interfaces/Sale";
+import * as salesQ from "src/queries/sales";
 
 // ** Import Components
 import Step1Form from "./step-forms/Step1Form";
 import Step2Form from "./step-forms/Step2Form";
 import Step3Form from "./step-forms/Step3Form";
 import Step4Form from "./step-forms/Step4Form";
-
-// ** Import Interfaces
-import Sale from "src/interfaces/Sale";
-
-// ** Import Third Party Libraries
-import toast from "react-hot-toast";
-import moment from "moment";
-
-
-// ** Import Queries
-import { useQueryClient } from "@tanstack/react-query";
-import * as salesQ from "src/queries/sales";
-import { createSale } from "src/queries/sales/hooks";
+import StepperCustomDot from "./StepperCustomDot";
 
 const steps = [
   {
@@ -196,103 +198,91 @@ const NovaVendaWizard = () => {
 
   // ** Render Steps
   const renderContent = () => {
-    if (activeStep === steps.length) {
-      return (
-        <Fragment>
-          <Card>
-            <CardHeader
-              title={`Venda #${newSale?.saleNumber || 2222} criada com sucesso!`}
-              subtitle="A venda foi criada com sucesso!"
-              />
-            <CardContent>
-              <Typography
-                variant="subtitle1"
-                color="textSecondary"
-                >
-                Data da Venda: {moment(newSale?.date).format("DD/MM/YYYY")}
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                color="textSecondary"
-              >
-                Cliente: {newSale?.client?.name}
-              </Typography>
-              <Typography
-                variant="subtitle1"
-                color="textSecondary"
-                >
-                Valor Total: {newSale?.saleAmount}
-              </Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleReset}
-                sx={{marginY: 3}}
-                >
-                Criar Nova Venda
-              </Button>
-            </CardContent>
-          </Card>
-        </Fragment>
-      );
-    } else {
-      return getStepContent(activeStep);
-    }
+    return getStepContent(activeStep);
   };
 
-  return (
-    <Card>
-      <CardContent>
-        <StepperWrapper>
-          <Stepper activeStep={activeStep}>
-            {steps.map((step, index) => {
-              const labelProps: {
-                error?: boolean
-              } = {};
-              if (index === activeStep) {
-                labelProps.error = false;
-                if (
-                  hasErrorsStep1 &&
-                  activeStep === 0
-                ) {
-                  labelProps.error = true;
-                } else if (
-                  hasErrorsStep2 &&
-                  activeStep === 1
-                ) {
-                  labelProps.error = true;
-                } else if (
-                  hasErrorsStep3 &&
-                  activeStep === 2
-                ) {
-                  labelProps.error = true;
-                } else {
+  if (activeStep !== steps.length)
+    return (
+      <Card>
+        <CardContent>
+          <StepperWrapper>
+            <Stepper activeStep={activeStep}>
+              {steps.map((step, index) => {
+                const labelProps: {
+                  error?: boolean
+                } = {};
+                if (index === activeStep) {
                   labelProps.error = false;
+                  if (
+                    hasErrorsStep1 &&
+                    activeStep === 0
+                  ) {
+                    labelProps.error = true;
+                  } else if (
+                    hasErrorsStep2 &&
+                    activeStep === 1
+                  ) {
+                    labelProps.error = true;
+                  } else if (
+                    hasErrorsStep3 &&
+                    activeStep === 2
+                  ) {
+                    labelProps.error = true;
+                  } else {
+                    labelProps.error = false;
+                  }
                 }
-              }
 
-              return (
-                <Step key={index}>
-                  <StepLabel {...labelProps} StepIconComponent={StepperCustomDot}>
-                    <div className="step-label">
-                      <Typography className="step-number">0{index + 1}</Typography>
-                      <div>
-                        <Typography className="step-title">{step.title}</Typography>
-                        <Typography className="step-subtitle">{step.subtitle}</Typography>
+                return (
+                  <Step key={index}>
+                    <StepLabel {...labelProps} StepIconComponent={StepperCustomDot}>
+                      <div className="step-label">
+                        <Typography className="step-number">0{index + 1}</Typography>
+                        <div>
+                          <Typography className="step-title">{step.title}</Typography>
+                          <Typography className="step-subtitle">{step.subtitle}</Typography>
+                        </div>
                       </div>
-                    </div>
-                  </StepLabel>
-                </Step>
-              );
-            })}
-          </Stepper>
-        </StepperWrapper>
-      </CardContent>
+                    </StepLabel>
+                  </Step>
+                );
+              })}
+            </Stepper>
+          </StepperWrapper>
+        </CardContent>
 
-      <Divider sx={{ m: 0 }} />
+        <Divider sx={{ m: 0 }} />
 
-      <CardContent>{renderContent()}</CardContent>
-    </Card>
+        <CardContent>{renderContent()}</CardContent>
+      </Card>
+    );
+
+  else return (
+    <Fragment>
+      <Card>
+        <CardHeader
+          title={`👏 Parabéns! Venda #${newSale?.saleNumber || 2222} criada com sucesso!`}
+          subtitle="A venda foi criada com sucesso!"
+        />
+        <Divider sx={{ paddingY: 0, marginY: 0, width: "100%" }} />
+        <CardContent>
+
+          <SaleCardList newSaleMockup={newSale} />
+        </CardContent>
+        <Divider sx={{ paddingY: 0, marginY: 0, width: "100%" }} />
+        <CardActions sx={{ justifyContent: "flex-end", paddingY: 2 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleReset}
+            sx={{ marginY: 3 }}
+          >
+            Criar Nova Venda
+          </Button>
+        </CardActions>
+
+      </Card>
+    </Fragment>
   );
 };
 
