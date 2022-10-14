@@ -36,14 +36,6 @@ export const useCreateClientQuery = (queryClient: any) => {
           }
           return [newClient];
         });
-        queryClient.setQueryData(["clients", "referenceId", `${newClient?.store?._ref}`], (old: any) => {
-          console.log(old);
-          if (old) {
-            return [...old, newClient];
-          }
-          return [newClient];
-        });
-        queryClient.invalidateQueries(["clients", "referenceId", `${newClient?.store?._ref}`]);
         queryClient.invalidateQueries(["clients", "all"]);
       }
     });
@@ -68,3 +60,22 @@ export const useUpdateClientQuery = (queryClient: any) => {
       }
     });
 };
+
+export const useDeleteClientQuery = (queryClient: any) => {
+  return useMutation((clientID: string) => useClient.deleteClient(clientID),
+    {
+      onSuccess: (deletedClient) => {
+        queryClient.setQueryData(["clients", "all"], (old: any) => {
+          if (old) {
+            return old.filter((client: any) => client._id !== deletedClient._id);
+          }
+          return [];
+        });
+        queryClient.invalidateQueries(["clients", "all"]);
+      }
+    });
+};
+
+export const useGetClientByIdQuery = (id: string, options?: Object) => {
+  return useQuery(["clients", id], () => useClient.getClientById(id), options);
+}

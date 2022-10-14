@@ -1,18 +1,6 @@
-import { Gender } from "@core/utils/types";
-import { SanityDefaultObject } from "src/interfaces/SanityDefaultInterfaces";
+import AuthUser from 'src/interfaces/authUser';
 
-export default interface User extends Partial<SanityDefaultObject> {
-  _id: string;
-  name: string;
-  email: string;
-  imageURL: string;
-  imageAsset: any;
-  role: "admin" | "manager" | "coordinator" | "vendor" | "streetVendor" | "client";
-  profile: {
-    jobTitle: string
-    birthday?: Date
-    gender?: Gender
-    phoneNumbers?: string
-    bio?: string
-  };
+export default interface User extends Omit<AuthUser,
+  'inactive' | 'authUID' | 'provider' | 'stores' | 'role' | 'address' | 'bankAccount'> {
+  role: "admin" | "manager" | "coordinator" | "vendor" | "streetVendor" | "client"
 }

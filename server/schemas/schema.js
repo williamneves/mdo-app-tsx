@@ -15,6 +15,7 @@ import client from "./client";
 import origin from "./origin";
 import sequenceNumbers from "./sequenceNumbers";
 import goal from "./goal";
+import StreetDailyReport from "./StreetDailyReport";
 import salePayment from "./salePayment";
 
 // Then we give our schema to the builder and provide the result to Sanity
@@ -35,6 +36,7 @@ export default createSchema({
     client,
     sequenceNumbers,
     goal,
+    StreetDailyReport,
     // salePayment,
   ]),
 });
