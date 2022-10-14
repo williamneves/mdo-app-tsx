@@ -16,6 +16,8 @@ import {
   Checkbox,
   InputAdornment
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+
 
 // ** MUI Icons
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
@@ -37,6 +39,7 @@ interface Step4FormProps {
   steps: Array<{ title: string, subtitle: string }>;
   step4Data: any;
   setActiveStep: (value: number) => void;
+  isSubmitting: boolean;
 }
 
 const Step4Form = (props: Step4FormProps): JSX.Element => {
@@ -47,10 +50,11 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
     handleStepBack,
     steps,
     step4Data,
-    setActiveStep
+    setActiveStep,
+    isSubmitting
   } = props;
 
-  // Functions
+  // ** Functions
   // Paid Amount
   const paidAmount = (payments: any) => {
     let sum = 0;
@@ -413,7 +417,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
             <b>Origens:</b>
           </Typography>
           <FormGroup row>
-            {step4Data["origin"]?.map((item: any, index: number) => {
+            {step4Data["origin"]?.map((item: any) => {
               return (
                 <Fragment key={item._id}>
                   <FormControlLabel
@@ -578,18 +582,21 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
             color="secondary"
             startIcon={<ChevronLeftIcon />}
             onClick={handleStepBack}
+            disabled={isSubmitting}
           >
             Voltar
           </Button>
-          <Button
+          <LoadingButton
             size="large"
             type="submit"
             variant="contained"
             endIcon={<AddShoppingCartIcon />}
+            loadingPosition={"end"}
+            loading={isSubmitting}
             onClick={handleFinalStep}
           >
-            Lançar Venda
-          </Button>
+            {isSubmitting ? "Lançando Venda" : "Lançar Venda"}
+          </LoadingButton>
         </Grid>
       </Grid>
     </div>

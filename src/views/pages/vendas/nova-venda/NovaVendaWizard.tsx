@@ -1,32 +1,43 @@
 // ** React Imports
+// ** MUI Icons
+
+// ** MUI Imports
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Divider,
+  Step,
+  StepLabel,
+  Stepper,
+  Typography
+} from "@mui/material";
+
+
+// ** Import Queries
+import { useQueryClient } from "@tanstack/react-query";
+import { SaleCardList } from "@views/pages/vendas/nova-venda/NewSaleMockup";
 // ** MUI Imports
 import { Fragment, useState } from "react";
 
-// ** MUI Imports
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Divider from "@mui/material/Divider";
-import Step from "@mui/material/Step";
-import StepLabel from "@mui/material/StepLabel";
-import Stepper from "@mui/material/Stepper";
-import Typography from "@mui/material/Typography";
+// ** Import Third Party Libraries
+import toast from "react-hot-toast";
 
 // ** Styled Components
 import StepperWrapper from "src/@core/styles/mui/stepper";
-import StepperCustomDot from "./StepperCustomDot";
+
+// ** Import Interfaces
+import Sale from "src/interfaces/Sale";
+import * as salesQ from "src/queries/sales";
 
 // ** Import Components
 import Step1Form from "./step-forms/Step1Form";
 import Step2Form from "./step-forms/Step2Form";
 import Step3Form from "./step-forms/Step3Form";
 import Step4Form from "./step-forms/Step4Form";
-
-// ** Import Interfaces
-import Sale from "src/interfaces/Sale";
-
-import { createSale } from "src/queries/sales/hooks";
+import StepperCustomDot from "./StepperCustomDot";
 
 const steps = [
   {
@@ -62,6 +73,12 @@ const NovaVendaWizard = () => {
   const [step2Data, setStep2Data] = useState<Partial<Sale> | null>(null);
   const [step3Data, setStep3Data] = useState<Partial<Sale> | null>(null);
   const [saleObject, setSaleObject] = useState<any>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [newSale, setNewSale] = useState<Sale | null>(null);
+
+  // ** Fetchs
+  const queryClient = useQueryClient();
+  const createNewSale = salesQ.useCreateSaleMutation(queryClient);
 
   // ** Handlers
   // Handle Submit
@@ -85,16 +102,38 @@ const NovaVendaWizard = () => {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
     if (activeStep === 3) {
-      console.log("income data", data);
-      console.log("SaleObject", saleObject);
-      const newSale = await createSale(saleObject);
-      console.log("newSale", newSale);
+      // console.log("income data", data);
+      // console.log("SaleObject", saleObject);
+      // const newSale = await createSale(saleObject);
+      // console.log("newSale", newSale);
+      setIsSubmitting(true);
+      const newSaleToast = toast.loading("Salvando Venda...");
+
+      try {
+        const data = await createNewSale.mutateAsync(saleObject);
+        setNewSale(data);
+        toast.success("Venda salva com sucesso!", { id: newSaleToast, duration: 4000 });
+        setIsSubmitting(false);
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      } catch (err) {
+        toast.error("Erro ao salvar venda!", { id: newSaleToast, duration: 4000 });
+        console.log(err);
+        setIsSubmitting(false);
+      }
+
     }
   };
 
   // Handle Reset
   const handleReset = () => {
-    console.log("reset");
+    // Reset all steps
+    setStep1Data(null);
+    setStep2Data(null);
+    setStep3Data(null);
+    setSaleObject(null);
+    setActiveStep(0);
+
+    toast("Os campos estão limpos, pode começar uma nova venda!");
   };
 
   // Handle Step progress
@@ -145,6 +184,7 @@ const NovaVendaWizard = () => {
       case 3:
         return (
           <Step4Form
+            isSubmitting={isSubmitting}
             onSubmit={onSubmit}
             handleStepBack={handleBack}
             steps={steps}
@@ -159,75 +199,91 @@ const NovaVendaWizard = () => {
 
   // ** Render Steps
   const renderContent = () => {
-    if (activeStep === steps.length) {
-      return (
-        <Fragment>
-          <Typography>All steps are completed!</Typography>
-          <Box sx={{ mt: 4, display: "flex", justifyContent: "flex-end" }}>
-            <Button size="large" variant="contained" onClick={handleReset}>
-              Reset
-            </Button>
-          </Box>
-        </Fragment>
-      );
-    } else {
-      return getStepContent(activeStep);
-    }
+    return getStepContent(activeStep);
   };
 
-  return (
-    <Card>
-      <CardContent>
-        <StepperWrapper>
-          <Stepper activeStep={activeStep}>
-            {steps.map((step, index) => {
-              const labelProps: {
-                error?: boolean
-              } = {};
-              if (index === activeStep) {
-                labelProps.error = false;
-                if (
-                  hasErrorsStep1 &&
-                  activeStep === 0
-                ) {
-                  labelProps.error = true;
-                } else if (
-                  hasErrorsStep2 &&
-                  activeStep === 1
-                ) {
-                  labelProps.error = true;
-                } else if (
-                  hasErrorsStep3 &&
-                  activeStep === 2
-                ) {
-                  labelProps.error = true;
-                } else {
+  if (activeStep !== steps.length)
+    return (
+      <Card>
+        <CardContent>
+          <StepperWrapper>
+            <Stepper activeStep={activeStep}>
+              {steps.map((step, index) => {
+                const labelProps: {
+                  error?: boolean
+                } = {};
+                if (index === activeStep) {
                   labelProps.error = false;
+                  if (
+                    hasErrorsStep1 &&
+                    activeStep === 0
+                  ) {
+                    labelProps.error = true;
+                  } else if (
+                    hasErrorsStep2 &&
+                    activeStep === 1
+                  ) {
+                    labelProps.error = true;
+                  } else if (
+                    hasErrorsStep3 &&
+                    activeStep === 2
+                  ) {
+                    labelProps.error = true;
+                  } else {
+                    labelProps.error = false;
+                  }
                 }
-              }
 
-              return (
-                <Step key={index}>
-                  <StepLabel {...labelProps} StepIconComponent={StepperCustomDot}>
-                    <div className="step-label">
-                      <Typography className="step-number">0{index + 1}</Typography>
-                      <div>
-                        <Typography className="step-title">{step.title}</Typography>
-                        <Typography className="step-subtitle">{step.subtitle}</Typography>
+                return (
+                  <Step key={index}>
+                    <StepLabel {...labelProps} StepIconComponent={StepperCustomDot}>
+                      <div className="step-label">
+                        <Typography className="step-number">0{index + 1}</Typography>
+                        <div>
+                          <Typography className="step-title">{step.title}</Typography>
+                          <Typography className="step-subtitle">{step.subtitle}</Typography>
+                        </div>
                       </div>
-                    </div>
-                  </StepLabel>
-                </Step>
-              );
-            })}
-          </Stepper>
-        </StepperWrapper>
-      </CardContent>
+                    </StepLabel>
+                  </Step>
+                );
+              })}
+            </Stepper>
+          </StepperWrapper>
+        </CardContent>
 
-      <Divider sx={{ m: 0 }} />
+        <Divider sx={{ m: 0 }} />
 
-      <CardContent>{renderContent()}</CardContent>
-    </Card>
+        <CardContent>{renderContent()}</CardContent>
+      </Card>
+    );
+
+  else return (
+    <Fragment>
+      <Card>
+        <CardHeader
+          title={`👏 Parabéns! Venda #${newSale?.saleNumber || 2222} criada com sucesso!`}
+          subtitle="A venda foi criada com sucesso!"
+        />
+        <Divider sx={{ paddingY: 0, marginY: 0, width: "100%" }} />
+        <CardContent>
+
+          <SaleCardList newSaleMockup={newSale} />
+        </CardContent>
+        <Divider sx={{ paddingY: 0, marginY: 0, width: "100%" }} />
+        <CardActions sx={{ justifyContent: "flex-end", paddingY: 2 }}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleReset}
+            sx={{ marginY: 3 }}
+          >
+            Criar Nova Venda
+          </Button>
+        </CardActions>
+
+      </Card>
+    </Fragment>
   );
 };
 

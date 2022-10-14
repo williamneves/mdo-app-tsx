@@ -55,7 +55,7 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
   } = props;
 
   // ** Api and Context
-  const { user: userDB, selectedStore } = useAuth();
+  const { selectedStore } = useAuth();
   const { data: allProducts } = salesQ
     .useAllProductsByReferenceQuery(selectedStore!._id,
       {
@@ -69,8 +69,9 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
         enabled: !!selectedStore
       });
 
-  // ** Step 2 Dependencies
-  // Step 2 Default Values
+  // *** Step 2 Dependencies
+
+  // ** Step 2 Default Values
   const step2DefaultValueFields = {
     products: [
       {
@@ -109,6 +110,7 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
     profit: 0,
     markup: 0
   };
+
   const step2DefaultValueProducts = [
     {
       product: {
@@ -120,6 +122,7 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
       cost: 0
     }
   ];
+
   const step2DefaultValueSalePayments = [
     {
       paymentMethod: {
@@ -130,7 +133,7 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
     }
   ];
 
-  // Step 2 Schema
+  // ** Step 2 Schema
   const step2Schema = yup.object().shape({
     products: yup.array().of(
       yup.object().shape({
@@ -212,7 +215,6 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
     getValues: getValuesStep2,
     watch: watchStep2,
     setError: setErrorStep2,
-    clearErrors: clearErrorsStep2,
     formState: {
       errors: errorsStep2,
       isValid: isValidStep2,
@@ -240,13 +242,19 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
     fields: salePaymentsFields,
     append: appendSalePayments,
     remove: removeSalePayments,
-    replace: replaceSalePayments
   } = useFieldArray({
     control: controlStep2,
     name: "salePayments"
   });
 
   // ** Step 2 Functions
+
+  // ** Reset Form
+  useEffect(() => {
+    if (step2Data === null) {
+      resetStep2();
+    }
+  }, [step2Data]);
 
   // ** Set Validation Step
   useEffect(() => {
@@ -655,8 +663,6 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
       </form>
     </Fragment>
   );
-
 };
-
 
 export default Step2Form;

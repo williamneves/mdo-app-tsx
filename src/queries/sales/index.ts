@@ -1,5 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import * as api from "./hooks";
+import Sale from "src/interfaces/Sale";
 
 // Get SaleNumber
 export const useGetSaleNumberQuery = (options?: Object) => {
@@ -9,9 +10,11 @@ export const useGetSaleNumberQuery = (options?: Object) => {
       // No Stale Time
       staleTime: 0,
       // 1hr cache time
-      cacheTime: 1000 * 60 * 60,
+      cacheTime: 0,
       //
       refetchOnWindowFocus: true,
+      refetchOnMount: true,
+      refetchOnReconnect: true,
       ...options
     });
 };
@@ -58,5 +61,31 @@ export const useAllOriginQuery = (options?: Object) => {
       //
       refetchOnWindowFocus: true,
       ...options
+    });
+};
+
+// Create New Sale
+export const useCreateSaleMutation = (queryClient: any) => {
+  return useMutation((sale: any) => api.createSale(sale),
+    {
+      onSuccess: (newSale) => {
+        const salesReferenceList = queryClient.getQueryData(["sales", newSale?.store?._id]);
+        if (salesReferenceList) {
+          queryClient.setQueryData(["sales", newSale?.store?._id], (old: any) => {
+            return [...old, newSale];
+          });
+
+          queryClient.invalidateQueries(["sales", newSale?.store?._id]);
+        }
+
+        const salesList = queryClient.getQueryData(["sales", "all"]);
+        if (salesList) {
+          queryClient.setQueryData(["sales", "all"], (old: any) => {
+            return [...old, newSale];
+          });
+
+          queryClient.invalidateQueries(["sales", "all"]);
+        }
+      }
     });
 };

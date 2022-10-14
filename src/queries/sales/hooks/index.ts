@@ -25,6 +25,7 @@ export const getSaleNumber = async (): Promise<number> => {
   // Create New Promise
   return new Promise(async (resolve, reject) => {
     const { actualSaleNumber, lastSaleNumber } = await lastSalesNumbers();
+    // Check if the last sale number is the same as the actual sale number
     if (actualSaleNumber === lastSaleNumber) {
       // Increment the sale number by 1 and return it
       dbClient
@@ -32,12 +33,16 @@ export const getSaleNumber = async (): Promise<number> => {
         .inc({ saleNumber: 1 })
         .commit()
         .then((res) => {
-          resolve(res.saleNumber);
+          console.log("Sale number updated");
+          console.log(res.saleNumber);
+          return resolve(res.saleNumber);
         })
         .catch((err) => {
-          reject(err);
+          return reject(err);
         });
     }
+
+    // If the last sale number is not the same as the actual sale number
     if (actualSaleNumber < lastSaleNumber) {
       // Set the sale number to the last sale number + 1 and return it
       dbClient
@@ -45,15 +50,17 @@ export const getSaleNumber = async (): Promise<number> => {
         .set({ saleNumber: lastSaleNumber + 1 })
         .commit()
         .then((res) => {
-          resolve(res.saleNumber);
+          return resolve(res.saleNumber);
         })
         .catch((err) => {
-          reject(err);
+          return reject(err);
         });
     }
 
     // If the sale number is greater than the last sale number, return the actual sale number
-    resolve(actualSaleNumber);
+    if (actualSaleNumber > lastSaleNumber) {
+      return resolve(actualSaleNumber);
+    }
   });
 };
 
@@ -61,11 +68,17 @@ export const getSaleNumber = async (): Promise<number> => {
 export const validatePDVNumber = async (PDVNumber: any): Promise<boolean> => {
 
   const intPDVNumber = parseInt(PDVNumber);
-
   try {
     const data = await dbClient.fetch(
-      `count(*[_type=="sale" && PDVNumber==${intPDVNumber}])`
+      `count(
+      *[
+      _type=="sale" 
+      && PDVNumber=="${intPDVNumber}" 
+      && canceled!=true
+      && excluded!=true
+      ])`
     );
+    console.log(data);
     return data === 0;
   } catch (err) {
     return false;
@@ -95,7 +108,6 @@ export const getAllProductsByReference = async (referenceID: string): Promise<Pr
     const data = await dbClient.fetch(allProductsByReferenceQuery, {
       storeRef: referenceID as string
     });
-    console.log(data);
     return data;
   } catch (err) {
     throw err;
@@ -126,7 +138,6 @@ export const getAllPaymentMethodByReference = async (referenceID: string): Promi
     const data = await dbClient.fetch(allPaymentMethodByReferenceQuery, {
       storeRef: referenceID as string
     });
-    console.log(data);
     return data;
   } catch (err) {
     throw err;

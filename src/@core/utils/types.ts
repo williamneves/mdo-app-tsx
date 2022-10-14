@@ -82,4 +82,5 @@ export type PaymentTypes = {
   formatCardExpiry(elem: HTMLInputElement): HTMLInputElement
 }
 
-export type Gender  = "male" | "female" | "other"
+// Gender
+export type Gender = "male" | "female" | "other" | ""

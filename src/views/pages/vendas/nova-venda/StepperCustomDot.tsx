@@ -22,20 +22,24 @@ const Box = styled(MuiBox)<BoxProps>(({ theme }) => ({
 
 const StepperCustomDot = (props: StepIconProps) => {
   // ** Props
-  const { active, completed, error } = props
+  const {
+    active,
+    completed,
+    error
+  } = props;
 
   if (error) {
-    return <Alert sx={{ width: 20, height: 20, color: 'error.main', transform: 'scale(1.2)' }} />
+    return <Alert sx={{ width: 20, height: 20, color: "error.main", transform: "scale(1.2)" }} />;
   } else if (completed) {
-    return <CheckCircle sx={{ width: 20, height: 20, color: 'primary.main', transform: 'scale(1.2)' }} />
+    return <CheckCircle sx={{ width: 20, height: 20, color: "primary.main", transform: "scale(1.2)" }} />;
   } else {
     return (
       <Box
         sx={{
-          ...(active && { borderColor: 'primary.main' })
+          ...(active && { borderColor: "primary.main" })
         }}
       />
-    )
+    );
   }
 }
 
