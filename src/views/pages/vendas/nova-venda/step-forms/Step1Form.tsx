@@ -41,7 +41,6 @@ interface Step1FormProps {
   onSubmit: (value: any) => void;
   setSaleObject: (value: any) => void;
   steps: Array<{ title: string, subtitle: string }>;
-  resetAll: boolean;
   step1Data: any;
   setStep1Data: (value: any) => void;
 
@@ -58,7 +57,6 @@ const Step1Form = (props: Step1FormProps) => {
     onSubmit,
     setSaleObject,
     steps,
-    resetAll,
     step1Data,
     setStep1Data
   } = props;

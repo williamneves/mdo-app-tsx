@@ -62,13 +62,17 @@ const steps = [
   }
 ];
 
-const NovaVendaWizard = () => {
+interface NovaVendaWizardProps {
+  mode?: "create" | "edit";
+  editSale?: Sale | null;
+}
+
+const NovaVendaWizard = ({ mode, editSale }: NovaVendaWizardProps) => {
   // ** States
   const [activeStep, setActiveStep] = useState<number>(0);
   const [hasErrorsStep1, setHasErrorsStep1] = useState<boolean>(false);
   const [hasErrorsStep2, setHasErrorsStep2] = useState<boolean>(false);
   const [hasErrorsStep3, setHasErrorsStep3] = useState<boolean>(false);
-  const [resetAll, setResetAll] = useState<boolean>(false);
   const [step1Data, setStep1Data] = useState<Partial<Sale> | null>(null);
   const [step2Data, setStep2Data] = useState<Partial<Sale> | null>(null);
   const [step3Data, setStep3Data] = useState<Partial<Sale> | null>(null);
@@ -76,7 +80,7 @@ const NovaVendaWizard = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [newSale, setNewSale] = useState<Sale | null>(null);
 
-  // ** Fetchs
+  // ** Fetchers
   const queryClient = useQueryClient();
   const createNewSale = salesQ.useCreateSaleMutation(queryClient);
 
@@ -151,7 +155,6 @@ const NovaVendaWizard = () => {
         return (
           <Step1Form
             steps={steps}
-            resetAll={resetAll}
             setHasErrors={setHasErrorsStep1}
             handleNext={handleNext}
             handleBack={handleBack}

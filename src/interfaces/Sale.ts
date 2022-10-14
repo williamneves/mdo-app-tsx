@@ -2,14 +2,20 @@ import AuthUser from "src/interfaces/authUser";
 import PaymentMethod from "src/interfaces/PaymentMethod";
 import Product from "src/interfaces/Product";
 import Origin from "src/interfaces/Origin";
-import { SanityDefaultObject } from "src/interfaces/SanityDefaultInterfaces";
+import { SanityDefaultObject, SanityDefaultArray } from "src/interfaces/SanityDefaultInterfaces";
 
-interface Products {
+interface Products extends Partial<SanityDefaultArray> {
   product: Partial<Product>;
   quantity: number;
   price: number;
   discount: number;
   cost: number;
+}
+
+interface SalePayments extends Partial<SanityDefaultArray> {
+  paymentMethod: PaymentMethod;
+  paymentAmount: number;
+  splitQuantity: number;
 }
 
 export default interface Sale extends Partial<SanityDefaultObject> {
@@ -23,11 +29,7 @@ export default interface Sale extends Partial<SanityDefaultObject> {
   client: any;
   products: Array<Products>;
   // Sale payments
-  salePayments: Array<{
-    paymentMethod: PaymentMethod;
-    paymentAmount: number
-    splitQuantity: number
-  }>;
+  salePayments: Array<SalePayments>;
   totalPrice: number;
   totalCost: number;
   totalDiscount: number;
