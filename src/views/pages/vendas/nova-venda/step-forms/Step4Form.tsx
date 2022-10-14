@@ -54,7 +54,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
     isSubmitting
   } = props;
 
-  // Functions
+  // ** Functions
   // Paid Amount
   const paidAmount = (payments: any) => {
     let sum = 0;
@@ -417,7 +417,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
             <b>Origens:</b>
           </Typography>
           <FormGroup row>
-            {step4Data["origin"]?.map((item: any, index: number) => {
+            {step4Data["origin"]?.map((item: any) => {
               return (
                 <Fragment key={item._id}>
                   <FormControlLabel

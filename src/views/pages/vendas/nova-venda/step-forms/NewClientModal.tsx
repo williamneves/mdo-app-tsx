@@ -128,7 +128,7 @@ const NewClientModal = ({ isOpen, onClose: handleClose, clientList, setNewClient
     createdBy: userDB
   };
 
-  /// *** Form Hook
+  // *** Form Hook
   const {
     reset,
     control,

@@ -1,15 +1,13 @@
 // ** Sale Score Calculation
 export default (saleObj: any) => {
-
   let { saleAmount: sale, totalCost: cost, paymentMethod: payment } = saleObj;
   let { paymentType: paymentMethod } = payment;
 
-  // Markup calculation
-  const markup = Math.round(((sale - cost) / cost) * 10) / 10;
-  const profit = Math.round(sale - cost);
+  const markup = Math.round(((sale - cost) / cost) * 10) / 10; // Markup
+  const profit = Math.round(sale - cost); // Profit
+  let score = 0; // Score
+  let maxScore = 10; // Max Score
 
-  let score = 0;
-  let maxScore = 10;
   let priceRange = {
     1: { min: 0, max: 999 },
     2: { min: 1000, max: 1599 },
@@ -50,11 +48,10 @@ export default (saleObj: any) => {
     }
   };
 
-  console.log("score", score);
+  // console.log("score", score);
   // Add score based on price /1000
   score += sale / 850;
-
-  console.log("score + based on price", score);
+  // console.log("score + based on price", score);
 
   // Add score based on profit
   let profitScore = () => {
@@ -73,7 +70,7 @@ export default (saleObj: any) => {
     }
   };
   score += profitScore();
-  console.log("score + based on profit", score);
+  // console.log("score + based on profit", score);
 
   // add score based on price
   let priceScore = () => {
@@ -92,7 +89,7 @@ export default (saleObj: any) => {
     }
   };
   score += priceScore();
-  console.log("score + based on price range", score);
+  // console.log("score + based on price range", score);
 
   // Add score based on markup
   let markupScore = () => {
@@ -111,17 +108,17 @@ export default (saleObj: any) => {
     }
   };
   score += markupScore();
-  console.log("score + based on markup", score);
+  // console.log("score + based on markup", score);
 
   // Multiply score by payment method multiplicator
   score *= paymentMethodMultiplicator();
-  console.log("score * payment method multiplicator", score);
+  // console.log("score * payment method multiplicator", score);
 
   // Limit score to 10
   if (score > maxScore) {
     score = maxScore;
   }
-  console.log("score limited to 10", score);
+  // console.log("score limited to 10", score);
 
   // Return score
   return {

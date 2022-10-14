@@ -1,8 +1,10 @@
+// Functions
 const formatName = (name: string): string => name.normalize("NFD").replace(/[^a-zA-Z\s]/g, "");
 const splitName = (name: string): Array<string> => name.toLowerCase().split(" ").filter((char) => char !== "");
 
 import Client from "src/interfaces/Client";
 
+// Risk Interface
 interface Risk {
   status: boolean;
   probableDuplicity: Array<Client>;
@@ -28,6 +30,6 @@ export const verifyDuplicatedName = (newClientName: string, ListDataToCompare: C
       risk.probableDuplicity.push(client);
     }
   });
-  
+
   return risk;
 };

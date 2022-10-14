@@ -90,7 +90,6 @@ export function SaleCardList({ newSaleMockup }: SaleCardProps) {
         <ListItemText
           primary={`Valor da venda: R$ ${formattedCurrency(newSaleMockup?.saleAmount!) || "0,00"}`}
           secondary={`Custo da venda: R$ ${formattedCurrency(newSaleMockup?.totalCost!) || "0,00"}`}
-
         />
       </ListItemButton>
     </ListItem>

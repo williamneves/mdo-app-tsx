@@ -126,6 +126,7 @@ const NovaVendaWizard = () => {
 
   // Handle Reset
   const handleReset = () => {
+    // Reset all steps
     setStep1Data(null);
     setStep2Data(null);
     setStep3Data(null);

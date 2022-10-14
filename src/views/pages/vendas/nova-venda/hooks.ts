@@ -1,7 +1,6 @@
 // Interfaces
 import Sale from "src/interfaces/Sale";
 
-
 // Calculate sale saleAmount
 const calculateSaleAmount = (sale: Partial<Sale>) => {
   let saleAmount = 0;
@@ -81,7 +80,7 @@ export const getPrincipalPaymentMethod = (sales: Partial<Sale>) => {
   // Loop through sale payments, and compare the paymentAmount. The Index with highest paymentAmount is the principal payment method
   let principalPaymentMethod: any = {};
   let highestPaymentAmount = 0;
-  sales!.salePayments!.forEach((payment: any, index: number) => {
+  sales!.salePayments!.forEach((payment: any) => {
     // For each payment, check if the paymentAmount is higher than the highest paymentAmount
     if (parseFloat(payment.paymentAmount) > highestPaymentAmount) {
       // If so, set the highestPaymentAmount to the paymentAmount and set the principalPaymentMethodIndex to the index

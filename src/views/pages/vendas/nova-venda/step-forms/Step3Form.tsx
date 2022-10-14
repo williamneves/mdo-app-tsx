@@ -1,40 +1,27 @@
 // ** React Imports
-import LocalOfferTwoToneIcon from "@mui/icons-material/LocalOfferTwoTone";
-import React, { Fragment, useEffect, useState } from "react";
-
-// ** MUI Imports
-import {
-  Alert,
-  Box,
-  Button,
-  Divider,
-  Grid,
-  Typography,
-  FormGroup,
-  FormControlLabel,
-  Switch,
-  FormControl
-} from "@mui/material";
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 
 // ** MUI Icons
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
+// ** MUI Imports
+import { Button, FormControl, FormControlLabel, FormGroup, Grid, Switch, Typography } from "@mui/material";
+
 // ** Import Components
 import AutocompleteInputControlled from "components/inputs/AutocompleteInputControlled";
 import TextInputControlled from "components/inputs/TextInputControlled";
-
-// ** Third Party Imports
-import * as yup from "yup";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
+import React, { Fragment, useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 // ** Import Hooks
-import { useAuth } from "src/hooks/useAuth";
 
 // ** Import Context and Queries
 import * as salesQ from "src/queries/sales";
+
+// ** Third Party Imports
+import * as yup from "yup";
 
 // ** Rendered Element
 interface Step3FormProps {
@@ -87,15 +74,13 @@ const Step3Form = (props: Step3FormProps): JSX.Element => {
     scheduleDiscounted: yup.boolean()
   });
 
-  // *** Step 3 Form Hook
+  // ** Step 3 Form Hook
   const {
     reset: resetStep3,
     control: controlStep3,
     handleSubmit: handleSubmitStep3,
-    getValues: getValuesStep3,
     setValue: setValueStep3,
     watch: watchStep3,
-    clearErrors: clearErrorsStep3,
     formState: {
       errors: errorsStep3,
       isDirty: isDirtyStep3,
