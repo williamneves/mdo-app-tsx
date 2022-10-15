@@ -36,9 +36,8 @@ export const AutocompleteInputControlled = (props: AutocompleteInputControlledPr
     ...rest
   } = props;
 
-  console.log("options", options);
-
   return (
+    // @ts-ignore
     <InputController
       name={name}
       control={control}

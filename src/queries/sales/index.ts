@@ -89,3 +89,17 @@ export const useCreateSaleMutation = (queryClient: any) => {
       }
     });
 };
+
+// Get One Sale By ID
+export const useGetSaleByIDQuery = (saleID: string, options?: Object) => {
+  return useQuery(["sale", saleID],
+    () => api.getOneSaleById(saleID),
+    {
+      // 1hr stale time
+      staleTime: 1000 * 60 * 60,
+      // 12hr cache time
+      cacheTime: 1000 * 60 * 60 * 12,
+      //
+      ...options
+    });
+};

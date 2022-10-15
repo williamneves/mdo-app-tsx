@@ -15,6 +15,8 @@ import { Grid, Typography, Button } from "@mui/material";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import PersonAddAltTwoToneIcon from "@mui/icons-material/PersonAddAltTwoTone";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 
 // ** Import Components
 import TextInputControlled from "components/inputs/TextInputControlled";
@@ -43,7 +45,7 @@ interface Step1FormProps {
   steps: Array<{ title: string, subtitle: string }>;
   step1Data: any;
   setStep1Data: (value: any) => void;
-
+  mode?: "create" | "edit";
 }
 
 // Rendered Element
@@ -52,13 +54,10 @@ const Step1Form = (props: Step1FormProps) => {
   // ** Props and States
   const {
     setHasErrors,
-    handleNext,
-    handleBack,
     onSubmit,
-    setSaleObject,
     steps,
     step1Data,
-    setStep1Data
+    mode
   } = props;
   const { user: userDB, selectedStore } = useAuth();
   const {
@@ -70,6 +69,7 @@ const Step1Form = (props: Step1FormProps) => {
   const { data: saleNumber, isLoading: loadingSaleNumber, refetch: refetchSaleNumber } = salesQ.useGetSaleNumberQuery();
 
   const [newClientDialogOpen, setNewClientDialogOpen] = useState<boolean>(false);
+
 
   // ** Hook Form Dependencies
   // ** Defaults Values - Step 1
@@ -96,6 +96,7 @@ const Step1Form = (props: Step1FormProps) => {
       .required("Obrigatório")
       .min(4, "Número do PDV inválido")
       .test("Validate PDVNumber", "Número já cadastrado", async (value): Promise<boolean> => {
+        if (mode === "edit" && value === step1Data.PDVNumber) return true;
         if (value && value.length > 3) return salesHooks.validatePDVNumber(value);
         return true;
       }),
@@ -164,11 +165,24 @@ const Step1Form = (props: Step1FormProps) => {
 
   // ** Set Sale Number
   useEffect(() => {
-    if (!loadingSaleNumber) {
+
+    if (mode === "edit"){
+      setValueStep1("saleNumber", step1Data.saleNumber);
+      return
+    }
+
+    if (!loadingSaleNumber && mode === "create") {
       // @ts-ignore
       setValueStep1("saleNumber", saleNumber);
     }
-  }, [loadingSaleNumber, saleNumber]);
+  }, [loadingSaleNumber, saleNumber, mode]);
+
+  // Watch PDVNumber and transform to uppercase
+  useEffect(() => {
+    if (watchStep1("PDVNumber")) {
+      setValueStep1("PDVNumber", watchStep1("PDVNumber").toUpperCase());
+    }
+  }, [watchStep1("PDVNumber")]);
 
   // ** Set the Client if there is only one
   useEffect(() => {
@@ -222,6 +236,23 @@ const Step1Form = (props: Step1FormProps) => {
               {steps[0].subtitle}
             </Typography>
           </Grid>
+
+          {/* Edit Mode Alert */}
+          {
+            mode === "edit" && (
+              <Grid item xs={12}>
+                <Alert severity="info">
+                  <AlertTitle>Modo de edição</AlertTitle>
+                  <Typography variant="body2">
+                      <strong>Atenção:</strong> Alterações feitas aqui afetarão a venda original.
+                  </Typography>
+                  <Typography variant="body2">
+                    Somente alguns campos podem ser editados.
+                  </Typography>
+                </Alert>
+              </Grid>
+            )
+          }
 
           {/* Step 1 Fields */}
 
@@ -295,7 +326,7 @@ const Step1Form = (props: Step1FormProps) => {
               errors={errorsStep1}
               options={filterListByKeyValue(selectedStore?.employees, "role", "vendor")}
               loading={!Boolean(selectedStore)}
-              disabled={userDB?.role === "vendor"}
+              disabled={userDB?.role === "vendor" || mode === "edit"}
               filterKeys={getAllObjectKeys(selectedStore?.employees)}
             />
 
@@ -312,7 +343,7 @@ const Step1Form = (props: Step1FormProps) => {
               options={userDB?.stores}
               loading={!Boolean(userDB?.stores)}
               filterKeys={getAllObjectKeys(userDB?.stores)}
-              disabled={userDB?.stores.length === 1 || userDB?.role !== "admin"}
+              disabled={userDB?.stores.length === 1 || userDB?.role !== "admin" || mode === "edit"}
             />
           </Grid>
 

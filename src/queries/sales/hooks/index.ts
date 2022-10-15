@@ -67,13 +67,13 @@ export const getSaleNumber = async (): Promise<number> => {
 // Validate the P.D.V. number
 export const validatePDVNumber = async (PDVNumber: any): Promise<boolean> => {
 
-  const intPDVNumber = parseInt(PDVNumber);
+  // const intPDVNumber = parseInt(PDVNumber);
   try {
     const data = await dbClient.fetch(
       `count(
       *[
       _type=="sale" 
-      && PDVNumber=="${intPDVNumber}" 
+      && PDVNumber=="${PDVNumber.toUpperCase()}" 
       && canceled!=true
       && excluded!=true
       ])`
@@ -217,16 +217,21 @@ const getOneSaleByIdQ = `
 *[_type=="sale" && _id==$saleID]{
   ...,
   "origin": userReferrer[]->,
+  userReferrer[]->,
   user->,
   "vendor": user->,
   client->,
   store->,
   paymentMethod->,
+  salePayments[]{
+    ...,
+    paymentMethod->,
+    },
   products[] {
     ...,
     product->,
   }
-}[0]
+  }[0]
 `;
 
 export const getOneSaleById = async (id: string): Promise<Sale> => {

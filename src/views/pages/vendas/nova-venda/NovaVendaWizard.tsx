@@ -1,5 +1,5 @@
 // ** React Imports
-// ** MUI Icons
+import { Fragment, useState, useEffect } from "react";
 
 // ** MUI Imports
 import {
@@ -19,14 +19,14 @@ import {
 // ** Import Queries
 import { useQueryClient } from "@tanstack/react-query";
 import { SaleCardList } from "@views/pages/vendas/nova-venda/NewSaleMockup";
-// ** MUI Imports
-import { Fragment, useState } from "react";
 
 // ** Import Third Party Libraries
 import toast from "react-hot-toast";
 
 // ** Styled Components
 import StepperWrapper from "src/@core/styles/mui/stepper";
+import FallBackSpinner from "@core/components/spinner";
+
 
 // ** Import Interfaces
 import Sale from "src/interfaces/Sale";
@@ -83,6 +83,23 @@ const NovaVendaWizard = ({ mode, editSale }: NovaVendaWizardProps) => {
   // ** Fetchers
   const queryClient = useQueryClient();
   const createNewSale = salesQ.useCreateSaleMutation(queryClient);
+
+  // If edit mode, set initial data
+  useEffect(() => {
+    if (mode === "edit") {
+      setStep1Data(editSale!);
+      setStep2Data(editSale!);
+      setStep3Data(editSale!);
+    }
+  }, [mode]);
+
+  if (
+    mode === "edit" &&
+    !step1Data &&
+    !step2Data &&
+    !step3Data) {
+    return <FallBackSpinner />;
+  }
 
   // ** Handlers
   // Handle Submit
@@ -162,6 +179,7 @@ const NovaVendaWizard = ({ mode, editSale }: NovaVendaWizardProps) => {
             setSaleObject={setSaleObject}
             step1Data={step1Data}
             setStep1Data={setStep1Data}
+            mode={mode}
           />
         );
       case 1:
@@ -172,6 +190,7 @@ const NovaVendaWizard = ({ mode, editSale }: NovaVendaWizardProps) => {
             handleStepBack={handleBack}
             steps={steps}
             step2Data={step2Data}
+            mode={mode}
           />
         );
       case 2:

@@ -12,6 +12,8 @@ import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import NovaVendaWizard from "@views/pages/vendas/nova-venda/NovaVendaWizard";
 import FallBackSpinner from "@core/components/spinner";
 
+// ** Import Api
+import * as salesQ from "src/queries/sales";
 
 const EditarVenda = () => {
   // ** Next Router
@@ -22,6 +24,15 @@ const EditarVenda = () => {
     return <FallBackSpinner />;
   }
 
+  // ** React Query
+  const { data: sale, isLoading } = salesQ.useGetSaleByIDQuery(sale_id as string);
+
+  if (isLoading) {
+    return <FallBackSpinner />;
+  }
+
+  console.log(sale);
+
   return (
     <Grid container spacing={6}>
 
@@ -31,7 +42,7 @@ const EditarVenda = () => {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        <NovaVendaWizard />
+        <NovaVendaWizard mode={"edit"} editSale={sale} />
       </Grid>
     </Grid>
   );

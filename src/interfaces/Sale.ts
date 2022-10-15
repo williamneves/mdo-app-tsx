@@ -40,7 +40,8 @@ export default interface Sale extends Partial<SanityDefaultObject> {
   score: number;
   paymentMethod: PaymentMethod;
   splitQuantity: number;
-  user: Partial<AuthUser>;
+  user?: Partial<AuthUser>;
+  vendor?: Partial<AuthUser>;
   store: any;
   origin?: Array<Origin>;
   userReferrer?: Array<Origin>;

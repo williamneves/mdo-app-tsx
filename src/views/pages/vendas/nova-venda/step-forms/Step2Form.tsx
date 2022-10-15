@@ -41,6 +41,7 @@ interface Step2FormProps {
   handleStepBack: any;
   steps: Array<{ title: string, subtitle: string }>;
   step2Data: any;
+  mode?: "create" | "edit";
 }
 
 const Step2Form = (props: Step2FormProps): JSX.Element => {
@@ -51,8 +52,11 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
     handleStepBack,
     steps,
     step2Data,
-    setHasErrors
+    setHasErrors,
+    mode,
   } = props;
+
+  console.log("step2Data", step2Data);
 
   // ** Api and Context
   const { selectedStore } = useAuth();
@@ -266,6 +270,13 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
 
   // * Watch form step 2 for make the calculations
   useEffect(() => {
+    // If on edit mode, set the initial values
+    if (mode === "edit") {
+      setValueStep2("saleAmountDisplay", formattedCurrency(step2Data?.saleAmount));
+      setValueStep2("totalCostDisplay", formattedCurrency(step2Data?.totalCost));
+      setValueStep2("totalDiscountDisplay", formattedCurrency(step2Data?.totalDiscount));
+    }
+
     // Create the watch subscription
     const watchSubscription = watchStep2((values, { name }) => {
       // Set saleAmount value dynamically
@@ -303,7 +314,7 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
     });
     // Cleanup subscription on unmount
     return () => watchSubscription.unsubscribe();
-  }, [watchStep2]);
+  }, [watchStep2, mode]);
 
   const onSubmitStep2 = (data: any) => {
     console.log(data);
