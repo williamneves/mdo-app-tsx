@@ -17,6 +17,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import PersonAddAltTwoToneIcon from "@mui/icons-material/PersonAddAltTwoTone";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
 
 // ** Import Components
 import TextInputControlled from "components/inputs/TextInputControlled";
@@ -366,6 +367,16 @@ const Step1Form = (props: Step1FormProps) => {
             >
               Voltar
             </Button>
+            {mode === "edit" &&
+              <Button
+              size="large"
+              variant="outlined"
+              color="secondary"
+              endIcon={<RestartAltIcon />}
+              onClick={() => resetStep1()}
+            >
+              Desfazer
+            </Button>}
             <Button size="large" endIcon={<ChevronRightIcon />} type="submit" variant="contained" form={"formStep1"}>
               Próximo
             </Button>

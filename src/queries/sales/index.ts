@@ -90,6 +90,42 @@ export const useCreateSaleMutation = (queryClient: any) => {
     });
 };
 
+// Update Entire Sale
+export const useUpdateEntireSaleMutation = (queryClient: any) => {
+  return useMutation((sale: any) => api.updateEntireSale(sale),
+    {
+      onSuccess: (updatedSale) => {
+        const salesReferenceList = queryClient.getQueryData(["sales", updatedSale?.store?._id]);
+        if (salesReferenceList) {
+          queryClient.setQueryData(["sales", updatedSale?.store?._id], (old: any) => {
+            return old.map((sale: Sale) => {
+              if (sale._id === updatedSale._id) {
+                return updatedSale;
+              }
+              return sale;
+            });
+          });
+
+          queryClient.invalidateQueries(["sales", updatedSale?.store?._id]);
+        }
+
+        const salesList = queryClient.getQueryData(["sales", "all"]);
+        if (salesList) {
+          queryClient.setQueryData(["sales", "all"], (old: any) => {
+            return old.map((sale: Sale) => {
+              if (sale._id === updatedSale._id) {
+                return updatedSale;
+              }
+              return sale;
+            });
+          });
+
+          queryClient.invalidateQueries(["sales", "all"]);
+        }
+      }
+    });
+}
+
 // Get One Sale By ID
 export const useGetSaleByIDQuery = (saleID: string, options?: Object) => {
   return useQuery(["sale", saleID],

@@ -1,4 +1,6 @@
 // ** React Imports
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import AlertTitle from "@mui/material/AlertTitle";
 import React, { useEffect, Fragment } from "react";
 
 // ** MUI Imports
@@ -366,6 +368,23 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
             </Typography>
           </Grid>
 
+          {/* Edit Mode Alert */}
+          {
+            mode === "edit" && (
+              <Grid item xs={12}>
+                <Alert severity="info">
+                  <AlertTitle>Modo de edição</AlertTitle>
+                  <Typography variant="body2">
+                    <strong>Atenção:</strong> Alterações feitas aqui afetarão a venda original.
+                  </Typography>
+                  <Typography variant="body2">
+                    Somente alguns campos podem ser editados.
+                  </Typography>
+                </Alert>
+              </Grid>
+            )
+          }
+
           {/* Step 2 Fields */}
 
           {/* Produtos */}
@@ -666,6 +685,16 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
             >
               Voltar
             </Button>
+            {mode === "edit" &&
+              <Button
+              size="large"
+              variant="outlined"
+              color="secondary"
+              endIcon={<RestartAltIcon />}
+              onClick={() => resetStep2()}
+            >
+              Desfazer
+            </Button>}
             <Button size="large" endIcon={<ChevronRightIcon />} type="submit" variant="contained" form={"formStep2"}>
               Próximo
             </Button>

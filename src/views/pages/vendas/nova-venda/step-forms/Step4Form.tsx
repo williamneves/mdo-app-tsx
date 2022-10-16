@@ -24,6 +24,7 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import UpdateIcon from '@mui/icons-material/Update';
 
 // ** Third Party Imports
 import moment from "moment";
@@ -40,6 +41,7 @@ interface Step4FormProps {
   step4Data: any;
   setActiveStep: (value: number) => void;
   isSubmitting: boolean;
+  mode: "create" | "edit";
 }
 
 const Step4Form = (props: Step4FormProps): JSX.Element => {
@@ -51,8 +53,11 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
     steps,
     step4Data,
     setActiveStep,
-    isSubmitting
+    isSubmitting,
+    mode
   } = props;
+
+  console.log(step4Data);
 
   // ** Functions
   // Paid Amount
@@ -488,8 +493,19 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
           <Alert severity="info" sx={{ marginBottom: 5 }}>
             <Typography variant="body2">
               Se todos os datos estiverem corretos, clique em{" "}
-              <b>LANÇAR VENDA</b>
-              <AddShoppingCartIcon sx={{ fontSize: "16px" }} />{" "}
+              {
+                mode !== "edit" ?
+                  (<>
+                      <b>LANÇAR VENDA</b>
+                      <AddShoppingCartIcon sx={{ fontSize: "16px" }} />{" "}
+                  </>)
+                    :
+                  (<>
+                    <b>ATUALIZAR VENDA</b>
+                    <UpdateIcon sx={{ fontSize: "16px" }} />{" "}
+                  </>)
+              }
+
             </Typography>
           </Alert>
         </Grid>
@@ -590,12 +606,17 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
             size="large"
             type="submit"
             variant="contained"
-            endIcon={<AddShoppingCartIcon />}
+            endIcon={mode !== "edit" ? <AddShoppingCartIcon /> : <UpdateIcon />}
             loadingPosition={"end"}
             loading={isSubmitting}
             onClick={handleFinalStep}
           >
-            {isSubmitting ? "Lançando Venda" : "Lançar Venda"}
+            {
+              mode === "edit" ?
+              (isSubmitting ? "Atualizando..." : "Atualizar Venda")
+              :
+              (isSubmitting ? "Lançando Venda" : "Lançar Venda")
+            }
           </LoadingButton>
         </Grid>
       </Grid>

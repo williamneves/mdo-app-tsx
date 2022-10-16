@@ -37,7 +37,7 @@ const EditarVenda = () => {
     <Grid container spacing={6}>
 
       <Grid item xs={12}>
-        <Typography variant="h6" display={"flex"} alignItems={"center"} gap={2} px={5}>
+        <Typography variant="h5" display={"flex"} alignItems={"center"} gap={2} px={5}>
           <PublishedWithChangesIcon sx={{ color: "primary.main" }} /> Editar Venda
         </Typography>
       </Grid>

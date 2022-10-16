@@ -293,3 +293,56 @@ export const createSale = async (sale: Sale): Promise<Sale> => {
   }
 
 };
+
+// Create a new sale
+export const updateEntireSale = async (sale: Sale): Promise<Sale> => {
+
+  const saleObject = {
+    _type: "sale",
+    _id: sale._id,
+    saleNumber: sale.saleNumber,
+    PDVNumber: sale.PDVNumber,
+    auditStatus: sale.auditStatus || "pending",
+    date: moment(sale.date).format("YYYY-MM-DD"),
+    client: {
+      _ref: sale.client._id,
+      _type: "reference"
+    },
+    products: prepareProductsObject(sale.products),
+    salePayments: preparePaymentsObject(sale.salePayments),
+    saleAmount: sale.saleAmount,
+    totalDiscount: sale.totalDiscount,
+    totalCost: sale.totalCost,
+    totalQuantity: sale.totalQuantity,
+    profit: sale.profit,
+    markup: sale.markup,
+    score: sale.score,
+    paymentMethod: {
+      _ref: sale.paymentMethod._id,
+      _type: "reference"
+    },
+    splitQuantity: sale.splitQuantity,
+    userReferrer: prepareOriginsObject(sale.origin),
+    schedule: sale.schedule,
+    scheduleDiscount: sale.scheduleDiscount,
+    observations: sale.observations,
+    user: {
+      // @ts-ignore
+      _ref: sale.vendor._id,
+      _type: "reference"
+    },
+    store: {
+      _ref: sale.store._id,
+      _type: "reference"
+    }
+  };
+
+  try {
+    const newSale = await dbClient.createOrReplace(saleObject);
+    // fetch the new sale
+    return getOneSaleById(newSale._id);
+  } catch (err) {
+    throw err;
+  }
+
+};

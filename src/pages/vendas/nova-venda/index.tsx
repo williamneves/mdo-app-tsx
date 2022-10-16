@@ -13,7 +13,7 @@ const NovaVenda = () => {
     <Grid container spacing={6}>
 
       <Grid item xs={12}>
-        <Typography variant='h6' display={"flex"} alignItems={'center'} gap={2} px={5}>
+        <Typography variant='h5' display={"flex"} alignItems={'center'} gap={2} px={5}>
           <AddShoppingCartTwoToneIcon sx={{color:'primary.main'}}/> Cadastrar Nova Venda
         </Typography>
       </Grid>
