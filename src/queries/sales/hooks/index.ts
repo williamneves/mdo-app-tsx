@@ -277,3 +277,28 @@ export const createSale = async (sale: Sale): Promise<Sale> => {
   }
 
 };
+
+// Get pending sales
+const getPendingSalesQ = `
+*[_type=="sale" && auditStatus=="pending"]{
+  ...,
+  "origin": userReferrer[]->,
+  user->,
+  "vendor": user->,
+  client->,
+  store->,
+  paymentMethod->,
+  products[] {
+    ...,
+    product->,
+  }
+}
+`;
+
+export const getPendingSales = async (): Promise<Sale[]> => {
+  try {
+    return dbClient.fetch(getPendingSalesQ);
+  } catch (err) {
+    throw err;
+  }
+};

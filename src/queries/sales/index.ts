@@ -60,3 +60,18 @@ export const useAllOriginQuery = (options?: Object) => {
       ...options
     });
 };
+
+// Get Pending Sales
+export const usePendingSalesQuery = (options?: Object) => {
+  return useQuery(["sales", "pending"],
+    api.getPendingSales,
+    {
+      // 1hr stale time
+      staleTime: 1000 * 60 * 60,
+      // 12hr cache time
+      cacheTime: 1000 * 60 * 60 * 12,
+      //
+      refetchOnWindowFocus: true,
+      ...options
+    });
+};
