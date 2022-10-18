@@ -163,7 +163,6 @@ export const createClient = async (client: Client) => {
 
   let clientObject = {
     _type: "client",
-    clientNumber: client.clientNumber || await getNewClientNumber(),
     createdAt: moment().format("YYYY-MM-DD"),
     clientNumber: client.clientNumber || null,
     inactive: (client.inactive && client.inactive) || false,

@@ -141,7 +141,7 @@ const clientForm = ({ client }: Props) => {
 
   const setAddressByCep = () => {
     setIsLoadingAddress(true);
-    cep(getValues("address.zipCode"))
+    cep(getValues("address.zipCode")!)
       .then((response) => {
         setTimeout(() => {
           setValue("address.street", response?.street as never || "");
