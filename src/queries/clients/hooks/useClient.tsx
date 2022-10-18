@@ -1,11 +1,69 @@
-import { dbClient } from "../../../configs/sanityConfig";
+import { dbClient } from "src/configs/sanityConfig";
 import Client from "src/interfaces/Client";
 import moment from "moment";
 
-export const getAllClients = async (): Promise<Client[]> => {
-  const q = `
+const queryAllClients = `
   *[
     _type == "client"
+    && inactive != true
+    && !(_id in path('drafts.**'))
+  ]{
+      _id,
+      _createdAt,
+      inactive,
+      clientNumber,
+      name,
+      phone,
+      email,
+      birthday,
+      gender,
+      hearAboutUs,
+      cpf,
+      address {
+        street,
+        number,
+        complement,
+        city,
+        state,
+        zipCode,
+      },
+    store -> {
+    _id,
+    inactive,
+    name,
+    taxID,
+    imageURL,
+    address {
+       street,
+       number,
+       complement,
+       city,
+       state,
+       zipCode,
+    },
+  },
+    createdBy-> {
+        _id,
+        name,
+        email,
+        imageURL,
+        imageAsset,
+        role,
+        profile {
+           jobTitle,
+           birthDay,
+           gender,
+           phoneNumbers,
+           bio,
+        }
+    },
+  }
+  `;
+
+const queryAllClientsByRefenceId = `
+  *[
+    _type == "client"
+    && references($referenceId)
     && inactive != true
     && !(_id in path('drafts.**'))
   ]{
@@ -61,15 +119,35 @@ export const getAllClients = async (): Promise<Client[]> => {
   }
   `;
 
+// Check if CPF is Unique at Sanity
+export const cpfIsUnique = async (cpf: number):Promise<boolean> => {
+  try{
+    const result = await dbClient.fetch(`count(*[cpf=="${cpf}"])`)
+    console.log(result)
+    return result === 0;
+  }
+  catch(error){
+    throw error
+  }
+};
+
+export const getAllClients = async (): Promise<Client[]> => {
   try {
-    const data = await dbClient.fetch(q);
-    console.log("data", data);
-    return data;
+    return await dbClient.fetch(queryAllClients);
   } catch (e) {
     console.log(e);
     throw e;
   }
 };
+
+export const getAllClientsByReferenceId = async ({referenceId}: {referenceId: string}): Promise<Client[]> => {
+  try {
+    return await dbClient.fetch(queryAllClientsByRefenceId, {referenceId});
+  } catch (e) {
+    console.log(e);
+    throw e;
+  }
+}
 
 export const createClient = async (client: Client) => {
 
@@ -77,8 +155,15 @@ export const createClient = async (client: Client) => {
   if (!client.name || !client.store._id || !client.createdBy._id)
     throw new Error("Missing required fields");
 
+  async function getNewClientNumber():Promise<number> {
+    const data = await increaseClientCode();
+    console.log('number',data);
+    return data.clientNumber;
+  }
+
   let clientObject = {
     _type: "client",
+    clientNumber: client.clientNumber || await getNewClientNumber(),
     createdAt: moment().format("YYYY-MM-DD"),
     clientNumber: client.clientNumber || null,
     inactive: (client.inactive && client.inactive) || false,
@@ -248,7 +333,6 @@ export const getClientById = async (clientID: string) => {
   try {
     return await dbClient.fetch(q);
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };

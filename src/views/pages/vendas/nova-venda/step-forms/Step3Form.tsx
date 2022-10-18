@@ -1,40 +1,28 @@
 // ** React Imports
-import LocalOfferTwoToneIcon from "@mui/icons-material/LocalOfferTwoTone";
-import React, { Fragment, useEffect, useState } from "react";
-
-// ** MUI Imports
-import {
-  Alert,
-  Box,
-  Button,
-  Divider,
-  Grid,
-  Typography,
-  FormGroup,
-  FormControlLabel,
-  Switch,
-  FormControl
-} from "@mui/material";
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 
 // ** MUI Icons
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+
+// ** MUI Imports
+import { Button, FormControl, FormControlLabel, FormGroup, Grid, Switch, Typography } from "@mui/material";
 
 // ** Import Components
 import AutocompleteInputControlled from "components/inputs/AutocompleteInputControlled";
 import TextInputControlled from "components/inputs/TextInputControlled";
-
-// ** Third Party Imports
-import * as yup from "yup";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
+import React, { Fragment, useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
 // ** Import Hooks
-import { useAuth } from "src/hooks/useAuth";
 
 // ** Import Context and Queries
 import * as salesQ from "src/queries/sales";
+
+// ** Third Party Imports
+import * as yup from "yup";
 
 // ** Rendered Element
 interface Step3FormProps {
@@ -43,6 +31,7 @@ interface Step3FormProps {
   handleStepBack: any;
   steps: Array<{ title: string, subtitle: string }>;
   step3Data: any;
+  mode: "create" | "edit";
 }
 
 const Step3Form = (props: Step3FormProps): JSX.Element => {
@@ -53,7 +42,8 @@ const Step3Form = (props: Step3FormProps): JSX.Element => {
     onSubmit,
     handleStepBack,
     steps,
-    step3Data
+    step3Data,
+    mode
   } = props;
 
   // ** Fetchs
@@ -87,15 +77,13 @@ const Step3Form = (props: Step3FormProps): JSX.Element => {
     scheduleDiscounted: yup.boolean()
   });
 
-  // *** Step 3 Form Hook
+  // ** Step 3 Form Hook
   const {
     reset: resetStep3,
     control: controlStep3,
     handleSubmit: handleSubmitStep3,
-    getValues: getValuesStep3,
     setValue: setValueStep3,
     watch: watchStep3,
-    clearErrors: clearErrorsStep3,
     formState: {
       errors: errorsStep3,
       isDirty: isDirtyStep3,
@@ -109,6 +97,13 @@ const Step3Form = (props: Step3FormProps): JSX.Element => {
   });
 
 // *** Step 3 Functions
+  // ** Reset Form
+  useEffect(() => {
+    if (step3Data === null) {
+      resetStep3();
+    }
+  }, [step3Data]);
+
   // ** Set Validation Step
   useEffect(() => {
     if (!isValidStep3 && submitCountStep3 > 0) {
@@ -226,6 +221,16 @@ const Step3Form = (props: Step3FormProps): JSX.Element => {
             >
               Voltar
             </Button>
+            {mode === "edit" &&
+              <Button
+                size="large"
+                variant="outlined"
+                color="secondary"
+                endIcon={<RestartAltIcon />}
+                onClick={() => resetStep3()}
+              >
+                Desfazer
+              </Button>}
             <Button size="large" endIcon={<ChevronRightIcon />} type="submit" variant="contained" form={"formStep3"}>
               Próximo
             </Button>

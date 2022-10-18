@@ -1,4 +1,6 @@
 // ** React Imports
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import AlertTitle from "@mui/material/AlertTitle";
 import React, { useEffect, Fragment } from "react";
 
 // ** MUI Imports
@@ -31,7 +33,7 @@ import * as salesQ from "src/queries/sales";
 import { useAuth } from "src/hooks/useAuth";
 import { calculateSales, getPrincipalPaymentMethod } from "../hooks";
 import calcSalesScore from "./scoreCalculation";
-import { formattedCurrency } from "@core/utils/formatCurrency";
+import { formattedCurrency } from "src/@utils/formatCurrency";
 
 
 // ** Rendered Element
@@ -41,6 +43,7 @@ interface Step2FormProps {
   handleStepBack: any;
   steps: Array<{ title: string, subtitle: string }>;
   step2Data: any;
+  mode?: "create" | "edit";
 }
 
 const Step2Form = (props: Step2FormProps): JSX.Element => {
@@ -51,11 +54,14 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
     handleStepBack,
     steps,
     step2Data,
-    setHasErrors
+    setHasErrors,
+    mode,
   } = props;
 
+  console.log("step2Data", step2Data);
+
   // ** Api and Context
-  const { user: userDB, selectedStore } = useAuth();
+  const { selectedStore } = useAuth();
   const { data: allProducts } = salesQ
     .useAllProductsByReferenceQuery(selectedStore!._id,
       {
@@ -69,8 +75,9 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
         enabled: !!selectedStore
       });
 
-  // ** Step 2 Dependencies
-  // Step 2 Default Values
+  // *** Step 2 Dependencies
+
+  // ** Step 2 Default Values
   const step2DefaultValueFields = {
     products: [
       {
@@ -109,6 +116,7 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
     profit: 0,
     markup: 0
   };
+
   const step2DefaultValueProducts = [
     {
       product: {
@@ -120,6 +128,7 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
       cost: 0
     }
   ];
+
   const step2DefaultValueSalePayments = [
     {
       paymentMethod: {
@@ -130,7 +139,7 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
     }
   ];
 
-  // Step 2 Schema
+  // ** Step 2 Schema
   const step2Schema = yup.object().shape({
     products: yup.array().of(
       yup.object().shape({
@@ -212,7 +221,6 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
     getValues: getValuesStep2,
     watch: watchStep2,
     setError: setErrorStep2,
-    clearErrors: clearErrorsStep2,
     formState: {
       errors: errorsStep2,
       isValid: isValidStep2,
@@ -240,13 +248,19 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
     fields: salePaymentsFields,
     append: appendSalePayments,
     remove: removeSalePayments,
-    replace: replaceSalePayments
   } = useFieldArray({
     control: controlStep2,
     name: "salePayments"
   });
 
   // ** Step 2 Functions
+
+  // ** Reset Form
+  useEffect(() => {
+    if (step2Data === null) {
+      resetStep2();
+    }
+  }, [step2Data]);
 
   // ** Set Validation Step
   useEffect(() => {
@@ -258,6 +272,13 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
 
   // * Watch form step 2 for make the calculations
   useEffect(() => {
+    // If on edit mode, set the initial values
+    if (mode === "edit") {
+      setValueStep2("saleAmountDisplay", formattedCurrency(step2Data?.saleAmount));
+      setValueStep2("totalCostDisplay", formattedCurrency(step2Data?.totalCost));
+      setValueStep2("totalDiscountDisplay", formattedCurrency(step2Data?.totalDiscount));
+    }
+
     // Create the watch subscription
     const watchSubscription = watchStep2((values, { name }) => {
       // Set saleAmount value dynamically
@@ -295,7 +316,7 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
     });
     // Cleanup subscription on unmount
     return () => watchSubscription.unsubscribe();
-  }, [watchStep2]);
+  }, [watchStep2, mode]);
 
   const onSubmitStep2 = (data: any) => {
     console.log(data);
@@ -346,6 +367,23 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
               {steps[1].subtitle}
             </Typography>
           </Grid>
+
+          {/* Edit Mode Alert */}
+          {
+            mode === "edit" && (
+              <Grid item xs={12}>
+                <Alert severity="info">
+                  <AlertTitle>Modo de edição</AlertTitle>
+                  <Typography variant="body2">
+                    <strong>Atenção:</strong> Alterações feitas aqui afetarão a venda original.
+                  </Typography>
+                  <Typography variant="body2">
+                    Somente alguns campos podem ser editados.
+                  </Typography>
+                </Alert>
+              </Grid>
+            )
+          }
 
           {/* Step 2 Fields */}
 
@@ -647,6 +685,16 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
             >
               Voltar
             </Button>
+            {mode === "edit" &&
+              <Button
+              size="large"
+              variant="outlined"
+              color="secondary"
+              endIcon={<RestartAltIcon />}
+              onClick={() => resetStep2()}
+            >
+              Desfazer
+            </Button>}
             <Button size="large" endIcon={<ChevronRightIcon />} type="submit" variant="contained" form={"formStep2"}>
               Próximo
             </Button>
@@ -655,8 +703,6 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
       </form>
     </Fragment>
   );
-
 };
-
 
 export default Step2Form;

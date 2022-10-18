@@ -25,6 +25,7 @@ export const getSaleNumber = async (): Promise<number> => {
   // Create New Promise
   return new Promise(async (resolve, reject) => {
     const { actualSaleNumber, lastSaleNumber } = await lastSalesNumbers();
+    // Check if the last sale number is the same as the actual sale number
     if (actualSaleNumber === lastSaleNumber) {
       // Increment the sale number by 1 and return it
       dbClient
@@ -32,12 +33,16 @@ export const getSaleNumber = async (): Promise<number> => {
         .inc({ saleNumber: 1 })
         .commit()
         .then((res) => {
-          resolve(res.saleNumber);
+          console.log("Sale number updated");
+          console.log(res.saleNumber);
+          return resolve(res.saleNumber);
         })
         .catch((err) => {
-          reject(err);
+          return reject(err);
         });
     }
+
+    // If the last sale number is not the same as the actual sale number
     if (actualSaleNumber < lastSaleNumber) {
       // Set the sale number to the last sale number + 1 and return it
       dbClient
@@ -45,27 +50,35 @@ export const getSaleNumber = async (): Promise<number> => {
         .set({ saleNumber: lastSaleNumber + 1 })
         .commit()
         .then((res) => {
-          resolve(res.saleNumber);
+          return resolve(res.saleNumber);
         })
         .catch((err) => {
-          reject(err);
+          return reject(err);
         });
     }
 
     // If the sale number is greater than the last sale number, return the actual sale number
-    resolve(actualSaleNumber);
+    if (actualSaleNumber > lastSaleNumber) {
+      return resolve(actualSaleNumber);
+    }
   });
 };
 
 // Validate the P.D.V. number
 export const validatePDVNumber = async (PDVNumber: any): Promise<boolean> => {
 
-  const intPDVNumber = parseInt(PDVNumber);
-
+  // const intPDVNumber = parseInt(PDVNumber);
   try {
     const data = await dbClient.fetch(
-      `count(*[_type=="sale" && PDVNumber==${intPDVNumber}])`
+      `count(
+      *[
+      _type=="sale" 
+      && PDVNumber=="${PDVNumber.toUpperCase()}" 
+      && canceled!=true
+      && excluded!=true
+      ])`
     );
+    console.log(data);
     return data === 0;
   } catch (err) {
     return false;
@@ -92,11 +105,9 @@ const allProductsByReferenceQuery = `
 
 export const getAllProductsByReference = async (referenceID: string): Promise<Product[]> => {
   try {
-    const data = await dbClient.fetch(allProductsByReferenceQuery, {
+    return dbClient.fetch(allProductsByReferenceQuery, {
       storeRef: referenceID as string
     });
-    console.log(data);
-    return data;
   } catch (err) {
     throw err;
   }
@@ -123,11 +134,9 @@ const allPaymentMethodByReferenceQuery = `
 
 export const getAllPaymentMethodByReference = async (referenceID: string): Promise<Product[]> => {
   try {
-    const data = await dbClient.fetch(allPaymentMethodByReferenceQuery, {
+    return dbClient.fetch(allPaymentMethodByReferenceQuery, {
       storeRef: referenceID as string
     });
-    console.log(data);
-    return data;
   } catch (err) {
     throw err;
   }
@@ -206,16 +215,21 @@ const getOneSaleByIdQ = `
 *[_type=="sale" && _id==$saleID]{
   ...,
   "origin": userReferrer[]->,
+  userReferrer[]->,
   user->,
   "vendor": user->,
   client->,
   store->,
   paymentMethod->,
+  salePayments[]{
+    ...,
+    paymentMethod->,
+    },
   products[] {
     ...,
     product->,
   }
-}[0]
+  }[0]
 `;
 
 export const getOneSaleById = async (id: string): Promise<Sale> => {
@@ -225,6 +239,50 @@ export const getOneSaleById = async (id: string): Promise<Sale> => {
     throw err;
   }
 };
+
+// Get Sales By Store by Date Range
+const getSalesByReferenceByDateRangeQ = `
+*[_type=="sale" 
+&& references($storeRef) 
+&& canceled!=true 
+&& excluded!=true 
+&& date >= $startDate 
+&& date <= $endDate
+]{
+  ...,
+  "origin": userReferrer[]->,
+  userReferrer[]->,
+  user->,
+  "vendor": user->,
+  client->,
+  store->,
+  paymentMethod->,
+  salePayments[]{
+    ...,
+    paymentMethod->,
+    },
+  products[] {
+    ...,
+    product->,
+  }
+  }
+  `;
+
+export const getSalesByReferenceByDateRange = async (
+  storeRef: string,
+  { startDate, endDate }: { startDate: string; endDate: string }
+): Promise<Sale[]> => {
+  console.log(startDate, endDate, storeRef);
+  try {
+    return dbClient.fetch(getSalesByReferenceByDateRangeQ, {
+      storeRef: storeRef,
+      startDate: startDate,
+      endDate: endDate
+    });
+  } catch (err) {
+    throw err;
+  }
+}
 
 // Create a new sale
 export const createSale = async (sale: Sale): Promise<Sale> => {
@@ -277,6 +335,61 @@ export const createSale = async (sale: Sale): Promise<Sale> => {
   }
 
 };
+
+// Create a new sale
+export const updateEntireSale = async (sale: Sale): Promise<Sale> => {
+
+  const saleObject = {
+    _type: "sale",
+    _id: sale._id,
+    saleNumber: sale.saleNumber,
+    PDVNumber: sale.PDVNumber,
+    auditStatus: sale.auditStatus || "pending",
+    date: moment(sale.date).format("YYYY-MM-DD"),
+    client: {
+      _ref: sale.client._id,
+      _type: "reference"
+    },
+    products: prepareProductsObject(sale.products),
+    salePayments: preparePaymentsObject(sale.salePayments),
+    saleAmount: sale.saleAmount,
+    totalDiscount: sale.totalDiscount,
+    totalCost: sale.totalCost,
+    totalQuantity: sale.totalQuantity,
+    profit: sale.profit,
+    markup: sale.markup,
+    score: sale.score,
+    paymentMethod: {
+      _ref: sale.paymentMethod._id,
+      _type: "reference"
+    },
+    splitQuantity: sale.splitQuantity,
+    userReferrer: prepareOriginsObject(sale.origin),
+    schedule: sale.schedule,
+    scheduleDiscount: sale.scheduleDiscount,
+    observations: sale.observations,
+    user: {
+      // @ts-ignore
+      _ref: sale.vendor._id,
+      _type: "reference"
+    },
+    store: {
+      _ref: sale.store._id,
+      _type: "reference"
+    }
+  };
+
+  try {
+    const newSale = await dbClient.createOrReplace(saleObject);
+    // fetch the new sale
+    return getOneSaleById(newSale._id);
+  } catch (err) {
+    throw err;
+  }
+
+};
+
+
 
 // Get pending sales
 const getPendingSalesQ = `

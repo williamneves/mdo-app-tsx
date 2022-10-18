@@ -16,18 +16,21 @@ import {
   Checkbox,
   InputAdornment
 } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton";
+
 
 // ** MUI Icons
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import UpdateIcon from '@mui/icons-material/Update';
 
 // ** Third Party Imports
 import moment from "moment";
 
 // ** Import Hooks
-import { formattedCurrency } from "@core/utils/formatCurrency";
+import { formattedCurrency } from "src/@utils/formatCurrency";
 
 
 // ** Rendered Element
@@ -37,6 +40,8 @@ interface Step4FormProps {
   steps: Array<{ title: string, subtitle: string }>;
   step4Data: any;
   setActiveStep: (value: number) => void;
+  isSubmitting: boolean;
+  mode: "create" | "edit";
 }
 
 const Step4Form = (props: Step4FormProps): JSX.Element => {
@@ -47,10 +52,14 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
     handleStepBack,
     steps,
     step4Data,
-    setActiveStep
+    setActiveStep,
+    isSubmitting,
+    mode
   } = props;
 
-  // Functions
+  console.log(step4Data);
+
+  // ** Functions
   // Paid Amount
   const paidAmount = (payments: any) => {
     let sum = 0;
@@ -413,7 +422,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
             <b>Origens:</b>
           </Typography>
           <FormGroup row>
-            {step4Data["origin"]?.map((item: any, index: number) => {
+            {step4Data["origin"]?.map((item: any) => {
               return (
                 <Fragment key={item._id}>
                   <FormControlLabel
@@ -484,8 +493,19 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
           <Alert severity="info" sx={{ marginBottom: 5 }}>
             <Typography variant="body2">
               Se todos os datos estiverem corretos, clique em{" "}
-              <b>LANÇAR VENDA</b>
-              <AddShoppingCartIcon sx={{ fontSize: "16px" }} />{" "}
+              {
+                mode !== "edit" ?
+                  (<>
+                      <b>LANÇAR VENDA</b>
+                      <AddShoppingCartIcon sx={{ fontSize: "16px" }} />{" "}
+                  </>)
+                    :
+                  (<>
+                    <b>ATUALIZAR VENDA</b>
+                    <UpdateIcon sx={{ fontSize: "16px" }} />{" "}
+                  </>)
+              }
+
             </Typography>
           </Alert>
         </Grid>
@@ -578,18 +598,26 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
             color="secondary"
             startIcon={<ChevronLeftIcon />}
             onClick={handleStepBack}
+            disabled={isSubmitting}
           >
             Voltar
           </Button>
-          <Button
+          <LoadingButton
             size="large"
             type="submit"
             variant="contained"
-            endIcon={<AddShoppingCartIcon />}
+            endIcon={mode !== "edit" ? <AddShoppingCartIcon /> : <UpdateIcon />}
+            loadingPosition={"end"}
+            loading={isSubmitting}
             onClick={handleFinalStep}
           >
-            Lançar Venda
-          </Button>
+            {
+              mode === "edit" ?
+              (isSubmitting ? "Atualizando..." : "Atualizar Venda")
+              :
+              (isSubmitting ? "Lançando Venda" : "Lançar Venda")
+            }
+          </LoadingButton>
         </Grid>
       </Grid>
     </div>

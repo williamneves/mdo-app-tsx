@@ -15,6 +15,7 @@ import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
 import StarTwoToneIcon from '@mui/icons-material/StarTwoTone';
 import PendingTwoToneIcon from '@mui/icons-material/PendingTwoTone';
+import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 
 
 // ** Type import
@@ -92,6 +93,15 @@ const navigation = (): VerticalNavItemsType => {
           subject: "vendor-page",
           badgeContent: 'Novo',
           badgeColor: 'primary'
+        },
+        {
+          title: "Editar Venda",
+          path: "/vendas/editar",
+          icon: PublishedWithChangesIcon,
+          action: "read",
+          subject: "vendor-page",
+          badgeColor: 'primary',
+          disabled: true
         },
         {
           title: "Minhas Vendas",

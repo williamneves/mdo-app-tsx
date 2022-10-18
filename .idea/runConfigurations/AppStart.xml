@@ -2,7 +2,6 @@
   <configuration default="false" name="AppStart" type="CompoundRunConfigurationType">
     <toRun name="nextjs dev" type="js.build_tools.npm" />
     <toRun name="sanity start" type="js.build_tools.npm" />
-    <toRun name="storybook" type="js.build_tools.npm" />
     <method v="2" />
   </configuration>
 </component>
