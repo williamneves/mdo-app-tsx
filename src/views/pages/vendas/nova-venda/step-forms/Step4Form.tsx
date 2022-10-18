@@ -30,7 +30,7 @@ import UpdateIcon from '@mui/icons-material/Update';
 import moment from "moment";
 
 // ** Import Hooks
-import { formattedCurrency } from "@core/utils/formatCurrency";
+import { formattedCurrency } from "src/@utils/formatCurrency";
 
 
 // ** Rendered Element

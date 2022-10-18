@@ -33,7 +33,7 @@ import * as salesQ from "src/queries/sales";
 import { useAuth } from "src/hooks/useAuth";
 import { calculateSales, getPrincipalPaymentMethod } from "../hooks";
 import calcSalesScore from "./scoreCalculation";
-import { formattedCurrency } from "@core/utils/formatCurrency";
+import { formattedCurrency } from "src/@utils/formatCurrency";
 
 
 // ** Rendered Element

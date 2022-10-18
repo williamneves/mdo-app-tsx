@@ -139,3 +139,24 @@ export const useGetSaleByIDQuery = (saleID: string, options?: Object) => {
       ...options
     });
 };
+
+interface dateRange {
+  startDate: string,
+  endDate: string
+}
+
+// Get All Sales By Reference (Store) and Date Range
+export const useAllSalesByReferenceAndDateRangeQuery = (storeRef: string, dateRange: dateRange, options?: Object) => {
+  return useQuery(["sales", storeRef, dateRange],
+    () => api.getSalesByReferenceByDateRange(storeRef, dateRange),
+    {
+      // 1hr stale time
+      staleTime: 1000 * 60 * 60,
+      // 12hr cache time
+      cacheTime: 1000 * 60 * 60 * 12,
+      //
+      placeholderData: [],
+      enabled: !!storeRef && !!dateRange,
+      ...options
+    });
+}

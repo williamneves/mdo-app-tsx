@@ -32,7 +32,7 @@ import * as salesQ from "src/queries/sales";
 import * as salesHooks from "src/queries/sales/hooks";
 
 // ** Import Hooks
-import { getAllObjectKeys, filterListByKeyValue } from "src/@core/utils/filters";
+import { getAllObjectKeys, filterListByKeyValue } from "src/@utils/filters";
 
 
 // ** Rendered Element

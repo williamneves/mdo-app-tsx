@@ -242,6 +242,50 @@ export const getOneSaleById = async (id: string): Promise<Sale> => {
   }
 };
 
+// Get Sales By Store by Date Range
+const getSalesByReferenceByDateRangeQ = `
+*[_type=="sale" 
+&& references($storeRef) 
+&& canceled!=true 
+&& excluded!=true 
+&& date >= $startDate 
+&& date <= $endDate
+]{
+  ...,
+  "origin": userReferrer[]->,
+  userReferrer[]->,
+  user->,
+  "vendor": user->,
+  client->,
+  store->,
+  paymentMethod->,
+  salePayments[]{
+    ...,
+    paymentMethod->,
+    },
+  products[] {
+    ...,
+    product->,
+  }
+  }
+  `;
+
+export const getSalesByReferenceByDateRange = async (
+  storeRef: string,
+  { startDate, endDate }: { startDate: string; endDate: string }
+): Promise<Sale[]> => {
+  console.log(startDate, endDate, storeRef);
+  try {
+    return dbClient.fetch(getSalesByReferenceByDateRangeQ, {
+      storeRef: storeRef,
+      startDate: startDate,
+      endDate: endDate
+    });
+  } catch (err) {
+    throw err;
+  }
+}
+
 // Create a new sale
 export const createSale = async (sale: Sale): Promise<Sale> => {
 

@@ -31,7 +31,7 @@ import { validateCPF, validatePhone } from "validations-br";
 
 // ** Import Hooks
 import { useAuth } from "src/hooks/useAuth";
-import { verifyDuplicatedName } from "@core/utils/verifyDuplicatedName";
+import { verifyDuplicatedName } from "src/@utils/verifyDuplicatedName";
 
 // Import Interfaces
 import { useQueryClient } from "@tanstack/react-query";
