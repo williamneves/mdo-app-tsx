@@ -1,5 +1,6 @@
 // ** React Imports
-// ** MUI Icons
+import moment from "moment/moment";
+import { Fragment, useState, useEffect } from "react";
 
 // ** MUI Imports
 import {
@@ -19,14 +20,14 @@ import {
 // ** Import Queries
 import { useQueryClient } from "@tanstack/react-query";
 import { SaleCardList } from "@views/pages/vendas/nova-venda/NewSaleMockup";
-// ** MUI Imports
-import { Fragment, useState } from "react";
 
 // ** Import Third Party Libraries
 import toast from "react-hot-toast";
 
 // ** Styled Components
 import StepperWrapper from "src/@core/styles/mui/stepper";
+import FallBackSpinner from "@core/components/spinner";
+
 
 // ** Import Interfaces
 import Sale from "src/interfaces/Sale";
@@ -62,13 +63,17 @@ const steps = [
   }
 ];
 
-const NovaVendaWizard = () => {
+interface NovaVendaWizardProps {
+  mode?: "create" | "edit";
+  editSale?: Sale | null;
+}
+
+const NovaVendaWizard = ({ mode, editSale }: NovaVendaWizardProps) => {
   // ** States
-  const [activeStep, setActiveStep] = useState<number>(0);
+  const [activeStep, setActiveStep] = useState<number>(mode === "edit" ? 3 : 0);
   const [hasErrorsStep1, setHasErrorsStep1] = useState<boolean>(false);
   const [hasErrorsStep2, setHasErrorsStep2] = useState<boolean>(false);
   const [hasErrorsStep3, setHasErrorsStep3] = useState<boolean>(false);
-  const [resetAll, setResetAll] = useState<boolean>(false);
   const [step1Data, setStep1Data] = useState<Partial<Sale> | null>(null);
   const [step2Data, setStep2Data] = useState<Partial<Sale> | null>(null);
   const [step3Data, setStep3Data] = useState<Partial<Sale> | null>(null);
@@ -76,14 +81,68 @@ const NovaVendaWizard = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [newSale, setNewSale] = useState<Sale | null>(null);
 
-  // ** Fetchs
+  // ** Fetchers
   const queryClient = useQueryClient();
   const createNewSale = salesQ.useCreateSaleMutation(queryClient);
+  const editSaleMutation = salesQ.useUpdateEntireSaleMutation(queryClient);
+
+  // If edit mode, set initial data
+  useEffect(() => {
+    if (mode === "edit") {
+      // ** Set initial data
+      // ** Step 1
+      setStep1Data({
+        _id: editSale?._id,
+        saleNumber: editSale?.saleNumber,
+        PDVNumber: editSale?.PDVNumber,
+        // @ts-ignore
+        date: moment(editSale?.date).tz("America/Belem"),
+        client: editSale?.client,
+        vendor: editSale?.vendor,
+        store: editSale?.store
+      });
+      // ** Step 2
+      setStep2Data({
+        products: editSale?.products,
+        salePayments: editSale?.salePayments,
+        // Readonly fields
+        // @ts-ignore
+        saleAmountDisplay: editSale?.saleAmount,
+        totalCostDisplay: editSale?.totalCost,
+        totalDiscountDisplay: editSale?.totalDiscount,
+        // Invisible fields
+        saleAmount: editSale?.saleAmount,
+        totalQuantity: editSale?.totalQuantity,
+        totalCost: editSale?.totalCost,
+        totalDiscount: editSale?.totalDiscount,
+        paymentMethod: editSale?.paymentMethod,
+        splitQuantity: editSale?.splitQuantity,
+        score: editSale?.score,
+        profit: editSale?.profit,
+        markup: editSale?.markup
+      });
+      // ** Step 3
+      setStep3Data({
+        origin: editSale?.origin,
+        schedule: editSale?.schedule,
+        scheduleDiscount: editSale?.scheduleDiscount,
+        observations: editSale?.observations,
+      });
+      setSaleObject(editSale);
+    }
+  }, [mode]);
+
+  if (
+    mode === "edit" &&
+    !step1Data &&
+    !step2Data &&
+    !step3Data) {
+    return <FallBackSpinner />;
+  }
 
   // ** Handlers
   // Handle Submit
   const onSubmit = async (data: any): Promise<void> => {
-    console.log(data);
     if (activeStep === 0) {
       setStep1Data(data);
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -101,11 +160,7 @@ const NovaVendaWizard = () => {
       });
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     }
-    if (activeStep === 3) {
-      // console.log("income data", data);
-      // console.log("SaleObject", saleObject);
-      // const newSale = await createSale(saleObject);
-      // console.log("newSale", newSale);
+    if (activeStep === 3 && mode !== "edit") {
       setIsSubmitting(true);
       const newSaleToast = toast.loading("Salvando Venda...");
 
@@ -120,7 +175,27 @@ const NovaVendaWizard = () => {
         console.log(err);
         setIsSubmitting(false);
       }
+    }
 
+    if (activeStep === 3 && mode === "edit") {
+      console.log("Edit Sale");
+      console.log(saleObject);
+
+      setIsSubmitting(true);
+      const newSaleToast = toast.loading("Atualizando Venda...");
+
+      try {
+        const data = await editSaleMutation.mutateAsync(saleObject);
+        setNewSale(data);
+        toast.success("Venda atualizada com sucesso!", { id: newSaleToast, duration: 4000 });
+        setIsSubmitting(false);
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      }
+      catch (err) {
+        toast.error("Erro ao atualizar venda!", { id: newSaleToast, duration: 4000 });
+        console.log(err);
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -151,7 +226,6 @@ const NovaVendaWizard = () => {
         return (
           <Step1Form
             steps={steps}
-            resetAll={resetAll}
             setHasErrors={setHasErrorsStep1}
             handleNext={handleNext}
             handleBack={handleBack}
@@ -159,6 +233,7 @@ const NovaVendaWizard = () => {
             setSaleObject={setSaleObject}
             step1Data={step1Data}
             setStep1Data={setStep1Data}
+            mode={mode}
           />
         );
       case 1:
@@ -169,6 +244,7 @@ const NovaVendaWizard = () => {
             handleStepBack={handleBack}
             steps={steps}
             step2Data={step2Data}
+            mode={mode}
           />
         );
       case 2:
@@ -179,6 +255,7 @@ const NovaVendaWizard = () => {
             handleStepBack={handleBack}
             steps={steps}
             step3Data={step3Data}
+            mode={mode!}
           />
         );
       case 3:
@@ -190,6 +267,7 @@ const NovaVendaWizard = () => {
             steps={steps}
             setActiveStep={setActiveStep}
             step4Data={saleObject}
+            mode={mode!}
           />
         );
       default:
@@ -261,10 +339,16 @@ const NovaVendaWizard = () => {
   else return (
     <Fragment>
       <Card>
-        <CardHeader
+        {mode === "edit" ?
+          <CardHeader
+            title={`👏 Parabéns! Venda #${newSale?.saleNumber || 2222} foi atualizada!`}
+            subtitle="A venda foi atualizada!"
+          />
+          :
+          <CardHeader
           title={`👏 Parabéns! Venda #${newSale?.saleNumber || 2222} criada com sucesso!`}
           subtitle="A venda foi criada com sucesso!"
-        />
+        />}
         <Divider sx={{ paddingY: 0, marginY: 0, width: "100%" }} />
         <CardContent>
 

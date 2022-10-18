@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 // ** MUI Icons
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
 
 // ** MUI Imports
 import { Button, FormControl, FormControlLabel, FormGroup, Grid, Switch, Typography } from "@mui/material";
@@ -30,6 +31,7 @@ interface Step3FormProps {
   handleStepBack: any;
   steps: Array<{ title: string, subtitle: string }>;
   step3Data: any;
+  mode: "create" | "edit";
 }
 
 const Step3Form = (props: Step3FormProps): JSX.Element => {
@@ -40,7 +42,8 @@ const Step3Form = (props: Step3FormProps): JSX.Element => {
     onSubmit,
     handleStepBack,
     steps,
-    step3Data
+    step3Data,
+    mode
   } = props;
 
   // ** Fetchs
@@ -218,6 +221,16 @@ const Step3Form = (props: Step3FormProps): JSX.Element => {
             >
               Voltar
             </Button>
+            {mode === "edit" &&
+              <Button
+                size="large"
+                variant="outlined"
+                color="secondary"
+                endIcon={<RestartAltIcon />}
+                onClick={() => resetStep3()}
+              >
+                Desfazer
+              </Button>}
             <Button size="large" endIcon={<ChevronRightIcon />} type="submit" variant="contained" form={"formStep3"}>
               Próximo
             </Button>

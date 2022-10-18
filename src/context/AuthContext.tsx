@@ -17,6 +17,7 @@ import authConfig from "src/configs/auth";
 import { AuthValuesType, RegisterParams, LoginParams, ErrCallbackType } from "./types";
 import AuthUser from "src/interfaces/authUser";
 import SelectedStore from "@src/interfaces/SelectedStore";
+import User from "@src/interfaces/User";
 
 
 // ** Defaults
@@ -24,6 +25,8 @@ const defaultProvider: AuthValuesType = {
   loading: true,
   user: null,
   setUser: () => null,
+  selectedUser: null,
+  setSelectedUser: () => null,
   selectedStore: null,
   setSelectedStore: () => null,
   setLoading: () => Boolean,
@@ -49,6 +52,7 @@ type Props = {
 const AuthProvider = ({ children }: Props) => {
   // ** States
   const [user, setUser] = useState<AuthUser | null>(defaultProvider.user);
+  const [selectedUser, setSelectedUser] = useState<Partial<User> | null>(defaultProvider.selectedUser);
   const [selectedStore, setSelectedStore] = useState<SelectedStore | null>(null);
   const [loading, setLoading] = useState<boolean>(defaultProvider.loading);
   const [isInitialized, setIsInitialized] = useState<boolean>(defaultProvider.isInitialized);
@@ -186,8 +190,10 @@ const AuthProvider = ({ children }: Props) => {
 
   const values = {
     user,
-    loading,
     setUser,
+    selectedUser,
+    setSelectedUser,
+    loading,
     setLoading,
     selectedStore,
     setSelectedStore,

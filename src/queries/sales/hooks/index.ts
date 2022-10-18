@@ -67,13 +67,13 @@ export const getSaleNumber = async (): Promise<number> => {
 // Validate the P.D.V. number
 export const validatePDVNumber = async (PDVNumber: any): Promise<boolean> => {
 
-  const intPDVNumber = parseInt(PDVNumber);
+  // const intPDVNumber = parseInt(PDVNumber);
   try {
     const data = await dbClient.fetch(
       `count(
       *[
       _type=="sale" 
-      && PDVNumber=="${intPDVNumber}" 
+      && PDVNumber=="${PDVNumber.toUpperCase()}" 
       && canceled!=true
       && excluded!=true
       ])`
@@ -217,16 +217,21 @@ const getOneSaleByIdQ = `
 *[_type=="sale" && _id==$saleID]{
   ...,
   "origin": userReferrer[]->,
+  userReferrer[]->,
   user->,
   "vendor": user->,
   client->,
   store->,
   paymentMethod->,
+  salePayments[]{
+    ...,
+    paymentMethod->,
+    },
   products[] {
     ...,
     product->,
   }
-}[0]
+  }[0]
 `;
 
 export const getOneSaleById = async (id: string): Promise<Sale> => {
@@ -236,6 +241,50 @@ export const getOneSaleById = async (id: string): Promise<Sale> => {
     throw err;
   }
 };
+
+// Get Sales By Store by Date Range
+const getSalesByReferenceByDateRangeQ = `
+*[_type=="sale" 
+&& references($storeRef) 
+&& canceled!=true 
+&& excluded!=true 
+&& date >= $startDate 
+&& date <= $endDate
+]{
+  ...,
+  "origin": userReferrer[]->,
+  userReferrer[]->,
+  user->,
+  "vendor": user->,
+  client->,
+  store->,
+  paymentMethod->,
+  salePayments[]{
+    ...,
+    paymentMethod->,
+    },
+  products[] {
+    ...,
+    product->,
+  }
+  }
+  `;
+
+export const getSalesByReferenceByDateRange = async (
+  storeRef: string,
+  { startDate, endDate }: { startDate: string; endDate: string }
+): Promise<Sale[]> => {
+  console.log(startDate, endDate, storeRef);
+  try {
+    return dbClient.fetch(getSalesByReferenceByDateRangeQ, {
+      storeRef: storeRef,
+      startDate: startDate,
+      endDate: endDate
+    });
+  } catch (err) {
+    throw err;
+  }
+}
 
 // Create a new sale
 export const createSale = async (sale: Sale): Promise<Sale> => {
@@ -281,6 +330,59 @@ export const createSale = async (sale: Sale): Promise<Sale> => {
 
   try {
     const newSale = await dbClient.create(saleObject);
+    // fetch the new sale
+    return getOneSaleById(newSale._id);
+  } catch (err) {
+    throw err;
+  }
+
+};
+
+// Create a new sale
+export const updateEntireSale = async (sale: Sale): Promise<Sale> => {
+
+  const saleObject = {
+    _type: "sale",
+    _id: sale._id,
+    saleNumber: sale.saleNumber,
+    PDVNumber: sale.PDVNumber,
+    auditStatus: sale.auditStatus || "pending",
+    date: moment(sale.date).format("YYYY-MM-DD"),
+    client: {
+      _ref: sale.client._id,
+      _type: "reference"
+    },
+    products: prepareProductsObject(sale.products),
+    salePayments: preparePaymentsObject(sale.salePayments),
+    saleAmount: sale.saleAmount,
+    totalDiscount: sale.totalDiscount,
+    totalCost: sale.totalCost,
+    totalQuantity: sale.totalQuantity,
+    profit: sale.profit,
+    markup: sale.markup,
+    score: sale.score,
+    paymentMethod: {
+      _ref: sale.paymentMethod._id,
+      _type: "reference"
+    },
+    splitQuantity: sale.splitQuantity,
+    userReferrer: prepareOriginsObject(sale.origin),
+    schedule: sale.schedule,
+    scheduleDiscount: sale.scheduleDiscount,
+    observations: sale.observations,
+    user: {
+      // @ts-ignore
+      _ref: sale.vendor._id,
+      _type: "reference"
+    },
+    store: {
+      _ref: sale.store._id,
+      _type: "reference"
+    }
+  };
+
+  try {
+    const newSale = await dbClient.createOrReplace(saleObject);
     // fetch the new sale
     return getOneSaleById(newSale._id);
   } catch (err) {

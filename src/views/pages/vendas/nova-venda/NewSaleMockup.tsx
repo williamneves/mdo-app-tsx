@@ -1,4 +1,4 @@
-import { formattedCurrency } from "@core/utils/formatCurrency";
+import { formattedCurrency } from "src/@utils/formatCurrency";
 import FaceIcon from "@mui/icons-material/Face";
 import Face3Icon from "@mui/icons-material/Face3";
 import PaidIcon from "@mui/icons-material/Paid";
