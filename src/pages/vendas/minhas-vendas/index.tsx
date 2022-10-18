@@ -9,53 +9,33 @@ import { Fragment, useState, useEffect, ReactElement } from "react";
 import {
   Box,
   Grid,
-  Typography
+  Typography,
+  useMediaQuery
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+
 
 // ** MUI Imports Icons
 import AddShoppingCartTwoToneIcon from "@mui/icons-material/AddShoppingCartTwoTone";
-import ReceiptIcon from '@mui/icons-material/Receipt';
+import ReceiptIcon from "@mui/icons-material/Receipt";
 
 // ** Api Imports
 import * as salesQ from "src/queries/sales";
 import { useAuth } from "src/hooks/useAuth";
 
+
 // ** Utils
-import { createDateRange } from "src/@utils/createDateRange";
+import { GetDateRange, createDateRange } from "src/@utils/createDateRange";
 
 // ** Third Party Imports
 import moment from "moment";
 import timezone from "moment-timezone";
 
 // ** Import Component
-import CardStatisticsSales from "components/cards/CardStatisticsSales";
+import SalesOverview from "@views/pages/vendas/minhas-vendas/SalesOverview";
 import { SaleDataType } from "components/cards/CardStatisticsSales";
+import SelectVendor from "@views/components/selectors/SelectVendor";
 
-const salesData: SaleDataType[] = [
-  {
-    stats: '8,458',
-    color: 'primary',
-    title: 'Customers',
-    icon: <AccountOutline />
-  },
-  {
-    stats: '$28.5k',
-    color: 'warning',
-    title: 'Total Profit',
-    icon: <Poll />,
-  },
-  {
-    stats: '$28.5k',
-    color: 'warning',
-    title: 'Total Profit',
-    icon: <Poll />,
-  },
-  {
-    color: 'info',
-    stats: '2,450k',
-    title: 'Transactions',
-    icon: <TrendingUp />,
-  }];
 
 // ** Rendered Element
 const MinhasVendas = () => {
@@ -63,16 +43,18 @@ const MinhasVendas = () => {
   const { user, selectedStore } = useAuth();
 
   // ** States
-  const [dateRange, setDateRange] = useState({
-    startDate: moment().startOf("month").format("YYYY-MM-DD"),
-    endDate: moment().endOf("month").format("YYYY-MM-DD")
-  });
+  const [dateRange, setDateRange] = useState<GetDateRange>(createDateRange("thisMonth"));
+
+  // ** Hooks
+  const theme = useTheme();
+  // Get the media query
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   // ** React Query
   const {
     data: vendorSales,
     isLoading
-  } = salesQ.useAllSalesByReferenceAndDateRangeQuery(selectedStore!._id, dateRange);
+  } = salesQ.useAllSalesByReferenceAndDateRangeQuery(selectedStore!._id, dateRange.range);
 
   console.log(user?._id, dateRange);
   console.log(vendorSales);
@@ -80,24 +62,37 @@ const MinhasVendas = () => {
   return (
     <Fragment>
       <Grid container spacing={5}>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={4}>
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
-              gap: 3,
+              gap: 3
             }}
           >
             <ReceiptIcon sx={{ fontSize: 30, color: "primary.main" }} />
-          <Typography variant="h5">
-            Minhas Vendas
-          </Typography>
+            <Typography variant="h5">
+              Minhas Vendas
+            </Typography>
           </Box>
         </Grid>
+        <Grid item xs={12} sm={8}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: isMobile ? "flex-start" : "flex-end",
+              gap: 3
+            }}
+          >
+            {user?.role === "admin" && (
+              <SelectVendor />
+            )}
+          </Box>
+
+        </Grid>
         <Grid item xs={12}>
-          <CardStatisticsSales
-            data={salesData}
-          />
+          <SalesOverview dateRange={dateRange} />
         </Grid>
       </Grid>
     </Fragment>

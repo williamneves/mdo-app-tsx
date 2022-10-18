@@ -2,6 +2,8 @@ export type ErrCallbackType = (err: { [key: string]: string }) => void
 
 import SelectedStore from "@src/interfaces/SelectedStore";
 import AuthUser from "src/interfaces/authUser";
+import User from "@src/interfaces/User";
+
 
 export type LoginParams = {
   email: string
@@ -31,6 +33,8 @@ export type AuthValuesType = {
   isInitialized: boolean
   user: AuthUser | null
   setUser: (value: AuthUser | null) => void
+  selectedUser: Partial<User> | null
+  setSelectedUser: (value: Partial<User> | null) => void
   selectedStore: SelectedStore | null
   setSelectedStore: (value: SelectedStore | null) => void
   setIsInitialized: (value: boolean) => void

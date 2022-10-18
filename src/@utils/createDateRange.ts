@@ -17,7 +17,7 @@ export type CustomPeriod = {
   endDate: Moment | Date | string;
 }
 
-interface getDateRange {
+export interface GetDateRange {
   range: {
     startDate: string;
     endDate: string;
@@ -37,7 +37,7 @@ interface getDateRange {
   totalDays?: number;
 }
 
-export const createDateRange = (options: DateRangeOptions, customPeriod: CustomPeriod): getDateRange => {
+export const createDateRange = (options: DateRangeOptions, customPeriod?: CustomPeriod): GetDateRange => {
   let startDate: Moment;
   let endDate: Moment;
   let pastStartDate: Moment;
@@ -320,22 +320,22 @@ export const createDateRange = (options: DateRangeOptions, customPeriod: CustomP
       }
 
     case "customPeriod":
-      startDate = moment(customPeriod.startDate)
-      endDate = moment(customPeriod.endDate)
-      pastMonthStartDate = moment(customPeriod.startDate).subtract(1, "days").subtract(1, "months").startOf("day")
-      pastMonthEndDate = moment(customPeriod.startDate).subtract(1, "days")
-      pastYearStartDate = moment(customPeriod.startDate).subtract(1, "days").subtract(1, "years").startOf("day")
-      pastYearEndDate = moment(customPeriod.startDate).subtract(1, "days")
-      totalDays = moment(customPeriod.endDate).diff(moment(customPeriod.startDate), "days") + 1
+      startDate = moment(customPeriod?.startDate);
+      endDate = moment(customPeriod?.endDate);
+      pastMonthStartDate = moment(customPeriod?.startDate).subtract(1, "days").subtract(1, "months").startOf("day");
+      pastMonthEndDate = moment(customPeriod?.startDate).subtract(1, "days");
+      pastYearStartDate = moment(customPeriod?.startDate).subtract(1, "days").subtract(1, "years").startOf("day");
+      pastYearEndDate = moment(customPeriod?.startDate).subtract(1, "days");
+      totalDays = moment(customPeriod?.endDate).diff(moment(customPeriod?.startDate), "days") + 1;
 
       return {
         range: {
           startDate: startDate.format("YYYY-MM-DD"),
-          endDate: endDate.format("YYYY-MM-DD"),
+          endDate: endDate.format("YYYY-MM-DD")
         },
         pastMonthRange: {
           startDate: pastMonthStartDate.format("YYYY-MM-DD"),
-          endDate: pastMonthEndDate.format("YYYY-MM-DD"),
+          endDate: pastMonthEndDate.format("YYYY-MM-DD")
         },
         pastYearRange: {
           startDate: pastYearStartDate.format("YYYY-MM-DD"),
