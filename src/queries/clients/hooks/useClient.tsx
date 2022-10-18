@@ -1,5 +1,6 @@
 import { dbClient } from "src/configs/sanityConfig";
 import Client from "src/interfaces/Client";
+import moment from "moment";
 
 const queryAllClients = `
   *[
@@ -7,7 +8,8 @@ const queryAllClients = `
     && inactive != true
     && !(_id in path('drafts.**'))
   ]{
-     _id,
+      _id,
+      _createdAt,
       inactive,
       clientNumber,
       name,
@@ -75,6 +77,7 @@ const queryAllClientsByRefenceId = `
       gender,
       hearAboutUs,
       cpf,
+      _createdAt,
       address {
         street,
         number,
@@ -160,12 +163,13 @@ export const createClient = async (client: Client) => {
 
   let clientObject = {
     _type: "client",
-    clientNumber: client.clientNumber || await getNewClientNumber(),
+    createdAt: moment().format("YYYY-MM-DD"),
+    clientNumber: client.clientNumber || null,
     inactive: (client.inactive && client.inactive) || false,
     name: client.name, // required
     phone: (client.phone && client.phone) || "",
     email: (client.email && client.email) || "",
-    birthday: (client.birthday && client.birthday) || "",
+    birthday: client.birthday ? moment(client.birthday).format("YYYY-MM-DD") : null,
     gender: (client.gender && client.gender) || "",
     hearAboutUs: (client.hearAboutUs && client.hearAboutUs) || "",
     cpf: (client.cpf && client.cpf) || "",
@@ -191,6 +195,9 @@ export const createClient = async (client: Client) => {
   };
 
   try {
+    // Increment client number
+    const { clientNumber } = await increaseClientCode();
+    clientObject.clientNumber = clientNumber;
     // Create client
     const result = await dbClient.create(clientObject);
     console.log("success", result);
@@ -223,7 +230,7 @@ export const updateClient = async (client: Client) => {
     name: client.name, // required
     phone: (client.phone && client.phone) || "",
     email: (client.email && client.email) || "",
-    birthday: (client.birthday && client.birthday) || "",
+    birthday: client.birthday ? moment(client.birthday).format("YYYY-MM-DD") : null,
     gender: (client.gender && client.gender) || "",
     hearAboutUs: (client.hearAboutUs && client.hearAboutUs) || "",
     cpf: (client.cpf && client.cpf) || "",
@@ -249,9 +256,81 @@ export const updateClient = async (client: Client) => {
   };
 
   try {
-    // Update client
-    return dbClient.patch(client._id).set(clientObject).commit();
+    const result = await dbClient.patch(client._id).set(clientObject).commit();
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
 
+export const deleteClient = async (clientID: string) => {
+  try {
+    const response = await dbClient.delete(clientID);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getClientById = async (clientID: string) => {
+  const q = `
+  *[
+    _type == "client"
+    && _id == "${clientID}"
+  ]{
+     _id,
+      inactive,
+      clientNumber,
+      name,
+      phone,
+      email,
+      birthday,
+      gender,
+      hearAboutUs,
+      cpf,
+      address {
+        street,
+        number,
+        complement,
+        city,
+        state,
+        zipCode,
+      },
+    store -> {
+    _id,
+    inactive,
+    name,
+    taxID,
+    imageURL,
+    address {
+       street,
+       number,
+       complement,
+       city,
+       state,
+       zipCode,
+    },
+  },
+    createdBy-> {
+        _id,
+        name,
+        email,
+        imageURL,
+        imageAsset,
+        role,
+        profile {
+           jobTitle,
+           birthDay,
+           gender,
+           phoneNumbers,
+           bio,
+        }
+    },
+  }
+  `;
+
+  try {
+    return await dbClient.fetch(q);
   } catch (error) {
     throw error;
   }

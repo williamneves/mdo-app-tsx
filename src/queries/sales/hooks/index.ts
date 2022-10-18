@@ -105,10 +105,9 @@ const allProductsByReferenceQuery = `
 
 export const getAllProductsByReference = async (referenceID: string): Promise<Product[]> => {
   try {
-    const data = await dbClient.fetch(allProductsByReferenceQuery, {
+    return dbClient.fetch(allProductsByReferenceQuery, {
       storeRef: referenceID as string
     });
-    return data;
   } catch (err) {
     throw err;
   }
@@ -135,10 +134,9 @@ const allPaymentMethodByReferenceQuery = `
 
 export const getAllPaymentMethodByReference = async (referenceID: string): Promise<Product[]> => {
   try {
-    const data = await dbClient.fetch(allPaymentMethodByReferenceQuery, {
+    return dbClient.fetch(allPaymentMethodByReferenceQuery, {
       storeRef: referenceID as string
     });
-    return data;
   } catch (err) {
     throw err;
   }
@@ -389,4 +387,41 @@ export const updateEntireSale = async (sale: Sale): Promise<Sale> => {
     throw err;
   }
 
+};
+
+
+
+// Get pending sales
+const getPendingSalesQ = `
+*[_type=="sale" && auditStatus=="pending"]{
+  ...,
+  "origin": userReferrer[]->,
+  user->,
+  "vendor": user->,
+  client->,
+  store->,
+  paymentMethod->,
+  products[] {
+    ...,
+    product->,
+  }
+}
+`;
+
+export const getPendingSales = async (): Promise<Sale[]> => {
+  try {
+    return dbClient.fetch(getPendingSalesQ);
+  } catch (err) {
+    throw err;
+  }
+};
+
+// Change sale audit status
+export const changeSaleAuditStatus = async (saleID: string, status: "approved" | "rejected"): Promise<Sale> => {
+  try {
+    const sale = await dbClient.patch(saleID).set({ auditStatus: status }).commit();
+    return getOneSaleById(sale._id);
+  } catch (err) {
+    throw err;
+  }
 };

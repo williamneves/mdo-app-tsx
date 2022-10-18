@@ -1,16 +1,16 @@
 import User from 'src/interfaces/User';
-import Sale from 'src/interfaces/Sale';
-import { SanityDefaultObject } from "src/interfaces/SanityDefaultInterfaces";
+import { SanityDefaultObject, SanityDefaultReference } from "src/interfaces/SanityDefaultInterfaces";
 import Store from "src/interfaces/Store";
 
 export default interface StreetDailyReport extends SanityDefaultObject {
-  street: User
+  inactive: boolean;
+  excluded: boolean;
+  reporter: User
   auditStatus: "pending" | "approved" | "rejected"
   clientsApproached: number
-  clientsRegistered: number
-  sales: Array<Sale>
-  activityReport?: string
-  date: Date
+  clientsRegistered: Array<SanityDefaultReference>
+  activitiesReport?: string
+  reportDate: Date
   scheduledAppointments: number
   store: Store
 }

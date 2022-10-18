@@ -1,5 +1,7 @@
+import * as salesQ from "src/queries/sales";
+
 // ** React Imports
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 // ** MUI Imports
 import Box from "@mui/material/Grid";
@@ -25,15 +27,15 @@ import UpdateIcon from "@mui/icons-material/Update";
 import moment from "moment";
 import toast from "react-hot-toast";
 import QuickDialog from "components/QuickDialog";
+import { formattedCurrencyWithSymbol } from "@core/utils/formatCurrency";
 
 // ** Hooks Imports
-import * as useDailyReport from "src/queries/streetDailyReport";
 import { useQueryClient } from "@tanstack/react-query";
 
 // ** Types
-import StreetDailyReport from "src/interfaces/StreetDailyReport";
+import Sale from "src/interfaces/Sale";
 
-const ApproveDailyReport = () => {
+const ApproveSales = () => {
 
   // ** States
   const [rangeDateStart, setRangeDateStart] = useState<Date>(new Date());
@@ -42,64 +44,51 @@ const ApproveDailyReport = () => {
   const [dialogData, setDialogData] = useState({});
 
   // ** React Query Hooks
-  const {
-    data: reportsData,
-    isLoading: reportsIsLoading
-  } = useDailyReport.useGetAllDailyReportsQuery();
+  const { data: pendingSales, isLoading: isLoadingSales } = salesQ.usePendingSalesQuery();
   const queryClient = useQueryClient();
-  const changeReportStatus = useDailyReport.useChangeAuditStatusQuery(queryClient);
-
-  // Get only reports that are pending
-  const pendingReports = reportsData?.filter((report: StreetDailyReport) => report.auditStatus === "pending");
-
-  // Get the first day of the month
-  useEffect(() => {
-    console.log(moment().startOf("month"));
-    const today = new Date();
-    const firstDay = new Date(today.getFullYear(), today.getMonth(), 2);
-    setRangeDateStart(firstDay);
-  }, []);
+  const changeSaleStatus = salesQ.useChangeSaleAuditStatusQuery(queryClient);
 
   const handleUpdateDates = () => {
     setRangeDateStart(rangeDateStart);
     setRangeDateEnd(rangeDateEnd);
   };
 
-  const changeAuditStatus = async (reportID: string, action: "approved" | "rejected") => {
+  const changeAuditStatus = async (saleID: string, status: "approved" | "rejected") => {
     const toastId = toast.loading("Aguarde...");
+    const statusName = status === "approved" ? "Aprovada" : "Rejeitada";
     try {
-      await changeReportStatus.mutateAsync({ reportID, status: action });
-      toast.success("Status do relatório atualizado com sucesso!", { id: toastId });
+      await changeSaleStatus.mutateAsync({ saleID, status });
+      toast.success(`Venda ${statusName} com sucesso!`, { id: toastId });
       setOpenDialog(false);
     } catch (e) {
-      toast.error("Erro ao atualizar status do relatório!", { id: toastId });
+      toast.error(`Erro ao ${statusName} venda!`, { id: toastId });
     }
   };
 
-  const approveAllReports = async () => {
+  const approveAllSales = async () => {
     const toastId = toast.loading("Aguarde...");
     try {
-      await Promise.all(pendingReports.map(async (report: StreetDailyReport) => {
-        await changeReportStatus.mutateAsync({ reportID: report._id, status: "approved" });
+      await Promise.all((pendingSales as Sale[]).map(async (sale: Sale) => {
+        await changeSaleStatus.mutateAsync({ saleID: sale._id, status: "approved" });
       }));
-      toast.success("Relatórios aprovados com sucesso!", { id: toastId });
+      toast.success(`Vendas aprovadas com sucesso!`, { id: toastId });
       setOpenDialog(false);
     } catch (e) {
-      toast.error("Erro ao aprovar todos os relatórios!", { id: toastId });
+      toast.error(`Erro ao aprovar vendas!`, { id: toastId });
     }
   };
 
-  const handleApproveAllReports = () => {
+  const handleApproveAllSales = () => {
     setDialogData({
-      headerTitle: "Aprovar todos os relatórios",
-      content: "Realmente deseja aprovar todos os relatórios?",
+      headerTitle: "Aprovar todas as vendas",
+      content: "Realmente deseja aprovar todas as vendas?",
       actions: [{
         mode: "button",
         props: {
           label: "confirmar",
           color: "primary",
           variant: "contained",
-          onClick: () => approveAllReports()
+          onClick: () => approveAllSales()
         }
       }, {
         mode: "button",
@@ -115,20 +104,21 @@ const ApproveDailyReport = () => {
     setOpenDialog(true);
   };
 
-  const handleApproveRejectReport = (report: StreetDailyReport, action: "Aprovar" | "Recusar") => {
+  const handleApproveRejectSale = (sale: Sale, action: "Aprovar" | "Recusar") => {
 
     setDialogData({
-      id: report._id,
-      report: report,
-      headerTitle: `${action} relatório`,
-      content: `Realmente deseja ${action} o relatório do dia ${moment(report.reportDate).format("DD/MM/YYYY")} feito por ${report.reporter.name}?`,
+      id: sale._id,
+      sale: sale,
+      headerTitle: `${action} venda`,
+      content: `Realmente deseja ${action} a venda do dia ${moment(sale.date).format("DD/MM/YYYY")}
+       feita por ${sale.user.name} no valor de ${formattedCurrencyWithSymbol(sale.saleAmount)}?`,
       actions: [{
         mode: "button",
         props: {
           label: "confirmar",
           color: "primary",
           variant: "contained",
-          onClick: () => changeAuditStatus(report._id, action === "Aprovar" ? "approved" : "rejected")
+          onClick: () => changeAuditStatus(sale._id, action === "Aprovar" ? "approved" : "rejected")
         }
       }, {
         mode: "button",
@@ -145,66 +135,80 @@ const ApproveDailyReport = () => {
   };
 
   interface RowData {
-    row: StreetDailyReport;
+    row: Sale;
   }
 
   // ** Columns
   const columns = [
+    {
+      headerName: "N. Venda",
+      field: "saleNumber",
+      minWidth: 90,
+      valueGetter: ({ row }: RowData) => row.saleNumber,
+      renderCell: ({ row }: RowData) => (
+        <Typography variant={"body2"}>{row.saleNumber}</Typography>
+      )
+    },
     {
       minWidth: 100,
       headerAlign: "center",
       headerName: "Data",
       type: "date",
       field: "date",
-      valueGetter: ({ row }: RowData) => moment(row.reportDate).format("DD/MM/YY"),
+      valueGetter: ({ row }: RowData) => moment(row.date).format("DD/MM/YY"),
       renderCell: ({ row }: RowData) => (
         <Typography variant={"body2"}>
-          {moment(row.reportDate).format("DD/MM/YY")}
+          {moment(row.date).format("DD/MM/YY")}
         </Typography>
       )
     },
     {
       minWidth: 150,
-      headerName: "Reporter",
-      flex: 0.125,
-      align: "center",
-      field: "reporter",
-      valueGetter: ({ row }: RowData) => row.reporter.name,
+      headerName: "Cliente",
+      field: "client",
+      valueGetter: ({ row }: RowData) => row.client.name,
       renderCell: ({ row }: RowData) => (
-        <Typography variant={"body2"}>{row.reporter.name}</Typography>
+        <Typography variant={"body2"}>{row.client.name}</Typography>
+      )
+    },
+    {
+      minWidth: 80,
+      headerName: "#PDV",
+      field: "numberPDV",
+      renderCell: ({ row }: RowData) => (
+        <Typography variant={"body2"}>
+          {`#${row.PDVNumber || "N/A"}`}
+        </Typography>
       )
     },
     {
       minWidth: 120,
-      flex: 0.125,
-      headerName: "Clientes Abordados",
-      field: "clientsApproached",
+      headerName: "Valor",
+      field: "saleAmount",
       type: "number",
-      align: "center",
+      valueGetter: ({ row }: RowData) => row.saleAmount,
       renderCell: ({ row }: RowData) => (
         <Typography variant={"body2"}>
-          {row.clientsApproached}
+          {formattedCurrencyWithSymbol(row.saleAmount)}
         </Typography>
       )
     },
     {
       minWidth: 140,
-      headerName: "Clientes Cadastrados",
-      flex: 0.125,
-      field: "clientsRegistered",
-      align: "center",
+      headerName: "Vendedor",
+      field: "user",
       renderCell: ({ row }: RowData) => (
-        <Typography variant={"body2"}>{row.clientsRegistered.length}</Typography>
-      )
+        <Typography variant={"body2"}>{row.user.name}</Typography>
+      ),
+      valueGetter: ({ row }: RowData) => row.user.name
     },
     {
-      minWidth: 140,
-      headerName: "Consultas Agendadas",
-      field: "sales",
-      align: "center",
-      valueGetter: ({ row }: RowData) => row.scheduledAppointments,
+      minWidth: 170,
+      headerName: "Forma de Pagamento",
+      field: "paymentMethod",
+      valueGetter: ({ row }: RowData) => row.paymentMethod.title,
       renderCell: ({ row }: RowData) => (
-        <Typography variant={"body2"}>{row.scheduledAppointments}</Typography>
+        <Typography variant={"body2"}>{row.paymentMethod.title}</Typography>
       )
     },
     {
@@ -215,7 +219,7 @@ const ApproveDailyReport = () => {
       sortable: false,
       headerAlign: "center",
       disableColumnMenu: true,
-      minWidth: 120,
+      minWidth: 180,
       renderCell: ({ row }: RowData) => (
         <Box display="flex" justifyContent="center" gap={3} alignItems="center">
           <Fab
@@ -226,7 +230,7 @@ const ApproveDailyReport = () => {
               width: "35px",
               height: "35px"
             }}
-            onClick={() => handleApproveRejectReport(row, "Aprovar")}
+            onClick={() => handleApproveRejectSale(row, "Aprovar")}
           >
             <ThumbUpAltTwoToneIcon fontSize={"small"} />
           </Fab>
@@ -239,9 +243,7 @@ const ApproveDailyReport = () => {
               width: "33px",
               height: "35px"
             }}
-            onClick={() => {
-              handleApproveRejectReport(row, "Recusar");
-            }}
+            onClick={() => handleApproveRejectSale(row, "Recusar")}
           >
             <ThumbDownAltTwoToneIcon fontSize={"small"} />
           </Fab>
@@ -258,7 +260,7 @@ const ApproveDailyReport = () => {
             <Grid item xs={12}>
               <Button
                 variant={"outlined"}
-                onClick={() => handleApproveAllReports()}
+                onClick={() => handleApproveAllSales()}
               >
                 Aprovar tudo
               </Button>
@@ -266,7 +268,7 @@ const ApproveDailyReport = () => {
             <Grid item xs={12} md={6}>
               <CardHeader
                 sx={{ textAlign: { xs: "center", md: "left" } }}
-                title="Aprovar Reports Diários"
+                title="Aprovar Vendas"
               />
             </Grid>
             <Grid
@@ -325,10 +327,10 @@ const ApproveDailyReport = () => {
             }}
             autoHeight
             getRowId={(row) => row._id}
-            loading={reportsIsLoading}
+            loading={isLoadingSales}
             // @ts-ignore
             columns={columns}
-            rows={pendingReports || []}
+            rows={pendingSales || []}
             rowsPerPageOptions={[10, 20, 30, 50, 100]}
           />
         </Card>
@@ -336,7 +338,7 @@ const ApproveDailyReport = () => {
       <QuickDialog
         open={openDialog}
         handleClose={() => setOpenDialog(false)}
-        contentText={"Deseja realmente aprovar este report?"}
+        contentText={"Deseja realmente aprovar essa venda?"}
         fullWidth={true}
         maxWidth={"sm"}
         // @ts-ignore
@@ -346,4 +348,4 @@ const ApproveDailyReport = () => {
   );
 };
 
-export default ApproveDailyReport;
+export default ApproveSales;
