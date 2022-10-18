@@ -63,7 +63,7 @@ export const useAllOriginQuery = (options?: Object) => {
 
 // Get Pending Sales
 export const usePendingSalesQuery = (options?: Object) => {
-  return useQuery(["sales", "pending"],
+  return useQuery(["sales", "all"],
     api.getPendingSales,
     {
       // 1hr stale time
