@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import * as api from "./hooks";
 
 // Get SaleNumber
@@ -73,5 +73,31 @@ export const usePendingSalesQuery = (options?: Object) => {
       //
       refetchOnWindowFocus: true,
       ...options
+    });
+};
+
+// Change sale audit status
+interface ChangeSaleAuditStatusParams {
+  saleID: string;
+  status: "approved" | "rejected";
+}
+
+export const useChangeSaleAuditStatusQuery = (queryClient: any) => {
+  return useMutation(({ saleID, status }: ChangeSaleAuditStatusParams) => api.changeSaleAuditStatus(saleID, status),
+    {
+      onSuccess: (updatedSale) => {
+        queryClient.setQueryData(["sales", "all"], (old: any) => {
+          if (old) {
+            return old.map((dailyReport: any) => {
+              if (dailyReport._id === updatedSale?._id) {
+                return updatedSale;
+              }
+              return dailyReport;
+            });
+          }
+          return [updatedSale];
+        });
+        queryClient.invalidateQueries(["sales", "all"]);
+      }
     });
 };
