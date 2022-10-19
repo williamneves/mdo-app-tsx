@@ -3,6 +3,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  updatePassword,
 } from "src/configs/firebase"
 
 import AuthUser from "src/interfaces/authUser"
@@ -52,4 +53,25 @@ export const isAuthenticated = async ():Promise<userUID> => {
       }
     })
   })
+}
+
+// Change user password
+
+export const changePassword = async (oldPassword: string, newPassword: string) => {
+  const { currentUser } = authInstance;
+  console.log("currentUser", currentUser)
+
+  try {
+    await signInWithEmailAndPassword(authInstance, currentUser!.email!, oldPassword);
+  } catch (e) {
+    throw "Login inválido";
+  }
+
+  try {
+    await updatePassword(currentUser!, newPassword);
+    return await signInWithEmailAndPassword(authInstance, currentUser!.email!, newPassword);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
