@@ -14,6 +14,18 @@ import { GetDateRange, createDateRange } from "src/@utils/createDateRange";
 import * as salesQ from "src/queries/sales";
 import { useAuth } from "src/hooks/useAuth";
 
+// ** Import Utils
+import { formattedCurrency, formattedCurrencyWithSymbol } from "src/@utils/formatCurrency";
+
+// ** Sales Results Functions
+const getTotalSalesAmount = (sales: any) => {
+  let totalSales = 0;
+  sales.forEach((sale: any) => {
+    totalSales += sale.saleAmount;
+  });
+  return totalSales;
+};
+
 // ** Rendered Element
 import User from "src/interfaces/User";
 
@@ -49,22 +61,14 @@ const SalesOverview = (props: SalesOverviewProps): JSX.Element => {
   const {
     data: vendorSales,
     isLoading: vendorSalesLoading,
-    refetch: refetchVendorSales
   } = salesQ.useAllSalesByReferenceAndDateRangeQuery(selectedUser && selectedUser?._id ? selectedUser._id : user!._id, dateRange && dateRange.range ? dateRange.range : {
     startDate: defaultDateRange.range.startDate,
     endDate: defaultDateRange.range.endDate
   });
 
-  // ** Effects
-  useEffect(() => {
-    if (selectedUser && selectedUser?._id) {
-      refetchVendorSales();
-    }
-  }, [selectedUser]);
-
   const salesDataDefault: SaleDataType[] = [
     {
-      stats: "8,478",
+      stats: formattedCurrencyWithSymbol(getTotalSalesAmount(vendorSales ? vendorSales : [])),
       color: "primary",
       title: "Customers",
       icon: <AccountOutline />

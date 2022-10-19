@@ -1,8 +1,5 @@
 // ** React Imports
-import { ThemeColor } from "@core/layouts/types";
-import AccountOutline from "mdi-material-ui/AccountOutline";
-import Poll from "mdi-material-ui/Poll";
-import TrendingUp from "mdi-material-ui/TrendingUp";
+import DateRangeSelector from "components/selectors/DateRangeSelector";
 import { Fragment, useState, useEffect, ReactElement } from "react";
 
 // ** MUI Imports
@@ -16,7 +13,6 @@ import { useTheme } from "@mui/material/styles";
 
 
 // ** MUI Imports Icons
-import AddShoppingCartTwoToneIcon from "@mui/icons-material/AddShoppingCartTwoTone";
 import ReceiptIcon from "@mui/icons-material/Receipt";
 
 // ** Api Imports
@@ -25,7 +21,12 @@ import { useAuth } from "src/hooks/useAuth";
 
 
 // ** Utils
-import { GetDateRange, createDateRange } from "src/@utils/createDateRange";
+import { GetDateRange, createDateRange, CustomPeriod } from "src/@utils/createDateRange";
+
+interface dateRange {
+  startDate: string,
+  endDate: string
+}
 
 // ** Third Party Imports
 import moment from "moment";
@@ -54,7 +55,7 @@ const MinhasVendas = () => {
   const {
     data: vendorSales,
     isLoading
-  } = salesQ.useAllSalesByReferenceAndDateRangeQuery(selectedStore!._id, dateRange.range);
+  } = salesQ.useAllSalesByReferenceAndDateRangeQuery(selectedStore!._id, dateRange.range as dateRange);
 
   console.log(user?._id, dateRange);
   console.log(vendorSales);
@@ -88,6 +89,10 @@ const MinhasVendas = () => {
             {user?.role === "admin" && (
               <SelectVendor />
             )}
+            <DateRangeSelector
+              dateRange={dateRange}
+              setDateRange={setDateRange}
+            />
           </Box>
 
         </Grid>
