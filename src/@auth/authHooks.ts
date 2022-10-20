@@ -56,7 +56,6 @@ export const isAuthenticated = async (): Promise<userUID> => {
 // Change user password
 export const changePassword = async (oldPassword: string, newPassword: string) => {
   const { currentUser } = authInstance;
-  console.log("currentUser", currentUser);
 
   try {
     await signInWithEmailAndPassword(authInstance, currentUser!.email!, oldPassword);
@@ -66,9 +65,9 @@ export const changePassword = async (oldPassword: string, newPassword: string) =
 
   try {
     await updatePassword(currentUser!, newPassword);
+    await signOutUser();
     return await signInWithEmailAndPassword(authInstance, currentUser!.email!, newPassword);
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };
