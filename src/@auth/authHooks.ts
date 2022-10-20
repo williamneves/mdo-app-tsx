@@ -59,13 +59,13 @@ export const changePassword = async (oldPassword: string, newPassword: string) =
 
   try {
     await signInWithEmailAndPassword(authInstance, currentUser!.email!, oldPassword);
+    await signOutUser();
   } catch (e) {
     throw "Login inválido";
   }
 
   try {
     await updatePassword(currentUser!, newPassword);
-    await signOutUser();
     return await signInWithEmailAndPassword(authInstance, currentUser!.email!, newPassword);
   } catch (error) {
     throw error;
