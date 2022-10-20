@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { useState } from "react";
+import React, { useState, Fragment, ChangeEvent } from "react";
 
 // ** MUI Imports
 import Box from "@mui/material/Box";
@@ -9,12 +9,16 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
+import { LoadingButton } from "@mui/lab";
 
 // ** Third Party Imports
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+
+// ** Hooks
+import { useForm } from "react-hook-form";
+import { changeUserInfo } from "src/@auth/authHooks";
 
 // ** Custom Components
 import TextInputControlled from "components/inputs/TextInputControlled";
@@ -22,7 +26,6 @@ import TextInputControlled from "components/inputs/TextInputControlled";
 // ** Import Sanity Config
 import { dbClient } from "src/configs/sanityConfig";
 import AuthUser from "src/interfaces/authUser";
-import { LoadingButton } from "@mui/lab";
 
 const ImgStyled = styled("img")(({ theme }) => ({
   width: 120,
@@ -66,7 +69,7 @@ const TabAccount = ({ userDB }: Props) => {
     handleSubmit,
     formState: { errors },
     control,
-    reset,
+    reset
   } = useForm({
     resolver: yupResolver(schema),
     mode: "onBlur",
@@ -78,11 +81,10 @@ const TabAccount = ({ userDB }: Props) => {
 
   // ** States
   const [imgSrc, setImgSrc] = useState(initialProfilePhoto);
-  const [newImage, setNewImage] = useState(null);
-  const [userName, setUserName] = useState(name);
-  const [imageUploading, setImageUploading] = useState(false);
+  const [newImage, setNewImage] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const onChange = async (file) => {
+  const onChangeFile = async (file: ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
     const { files } = file.target;
 
@@ -94,12 +96,52 @@ const TabAccount = ({ userDB }: Props) => {
 
       setImgSrc(files[0]);
       setNewImage(files[0]);
-
-      console.log(files[0]);
     }
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: { name: string, position: string }) => {
+    const toastId = toast.loading("Atualizando informações...");
+    setIsLoading(true);
+
+    const newDataObj: {
+      name: string
+      profile: {
+        jobTitle: string
+      }
+      imageAsset?: any
+    } = {
+      name: data.name,
+      profile: {
+        jobTitle: data.position
+      }
+    };
+
+    if (newImage) {
+      try {
+        dbClient.assets.upload("image", newImage).then((imageAsset) => {
+          newDataObj.imageAsset = imageAsset;
+          changeUserInfo({
+            newInfo: newDataObj
+          });
+          toast.success("Informações atualizadas com sucesso!", { id: toastId });
+        });
+      } catch (e) {
+        toast.error("Erro ao atualizar informações", { id: toastId });
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      try {
+        await changeUserInfo({
+          newInfo: newDataObj
+        });
+        toast.success("Informações atualizadas com sucesso!", { id: toastId });
+      } catch (e) {
+        toast.error("Erro ao atualizar informações", { id: toastId });
+      } finally {
+        setIsLoading(false);
+      }
+    }
   };
 
   return (
@@ -111,21 +153,21 @@ const TabAccount = ({ userDB }: Props) => {
               <ImgStyled src={imgSrc} alt={name} />
               <Box>
                 <ButtonStyled
+                  // @ts-ignore
                   component={"label"}
-                  loading={imageUploading}
                   variant={"contained"}
-                  htmlFor={"account-settings-upload-image"}
+                  disabled={isLoading}
                 >
                   Trocar Foto
                   <input
                     hidden
-                    type="file"
-                    onChange={onChange}
-                    accept="image/png, image/jpeg"
-                    id="account-settings-upload-image"
+                    type={"file"}
+                    onChange={onChangeFile}
+                    accept={"image/png, image/jpeg"}
+                    id={"account-settings-upload-image"}
                   />
                 </ButtonStyled>
-                <ResetButtonStyled color="error" variant="outlined" onClick={() => {
+                <ResetButtonStyled disabled={isLoading} color="error" variant="outlined" onClick={() => {
                   setImgSrc(initialProfilePhoto);
                   setNewImage(null);
                 }}>
@@ -177,10 +219,22 @@ const TabAccount = ({ userDB }: Props) => {
           </Grid>
 
           <Grid item xs={12}>
-            <LoadingButton type="submit" variant="contained" sx={{ mr: 4 }}>
+            <LoadingButton
+              type={"submit"}
+              variant={"contained"}
+              sx={{ mr: 4 }}
+              loading={isLoading}
+            >
               Salvar mudanças
             </LoadingButton>
-            <LoadingButton onClick={reset} variant="outlined" color="secondary">
+            <Fragment></Fragment>
+            <LoadingButton
+              onClick={() => reset()}
+              variant={"outlined"}
+              color={"secondary"}
+              loading={isLoading}
+              component={"button"}
+            >
               Cancelar mudanças
             </LoadingButton>
           </Grid>
