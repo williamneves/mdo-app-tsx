@@ -6,15 +6,16 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-interface DataDialog {
-  id: string | number;
+export interface DataDialog {
+  // id: string | number;
   title: string;
-  message: string;
+  message: string | React.ReactNode;
   confirm: string;
-  cancel: string;
-  confirmColor: "error" | "success" | "info" | "warning" | undefined;
-  cancelColor: "primary" | "secondary" | "error" | "info" | "success" | "warning" | undefined;
+  cancel: string | null;
+  confirmColor: "primary" | "error" | "success" | "info" | "warning" | undefined;
+  cancelColor?: "primary" | "secondary" | "error" | "info" | "success" | "warning" | undefined;
   confirmAction: () => void;
+  any?: any;
 }
 
 interface SimpleDialogProps {
@@ -31,6 +32,11 @@ export default function SimpleDialog({ open, setOpen, data }: SimpleDialogProps)
     setOpen(false);
   };
 
+  if (!data) {
+    return null;
+  }
+
+  if (data)
   return (
     <div>
       <Dialog
@@ -48,9 +54,11 @@ export default function SimpleDialog({ open, setOpen, data }: SimpleDialogProps)
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpen(false)} color={data.cancelColor} autoFocus>
-            {data.cancel}
-          </Button>
+          {data.cancel &&
+            <Button onClick={() => setOpen(false)} color={data.cancelColor} autoFocus>
+              {data.cancel}
+            </Button>
+          }
           <Button variant={"outlined"} onClick={handleClose} color={data.confirmColor}>
             {data.confirm}
           </Button>

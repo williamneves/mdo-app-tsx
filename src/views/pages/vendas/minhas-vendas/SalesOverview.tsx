@@ -16,15 +16,7 @@ import { useAuth } from "src/hooks/useAuth";
 
 // ** Import Utils
 import { formattedCurrency, formattedCurrencyWithSymbol } from "src/@utils/formatCurrency";
-
-// ** Sales Results Functions
-const getTotalSalesAmount = (sales: any) => {
-  let totalSales = 0;
-  sales.forEach((sale: any) => {
-    totalSales += sale.saleAmount;
-  });
-  return totalSales;
-};
+import * as salesFunc from "src/@utils/salesStatistics";
 
 // ** Rendered Element
 import User from "src/interfaces/User";
@@ -66,28 +58,75 @@ const SalesOverview = (props: SalesOverviewProps): JSX.Element => {
     endDate: defaultDateRange.range.endDate
   });
 
+  // Vendor Sales Last Period
+  const {
+    data: vendorSalesLastPeriod,
+    isLoading: vendorSalesLastPeriodLoading,
+  } = salesQ.useAllSalesByReferenceAndDateRangeQuery(selectedUser && selectedUser?._id ? selectedUser._id : user!._id, dateRange && dateRange.pastRange ? dateRange.pastRange : {
+    startDate: defaultDateRange!.pastRange!.startDate,
+    endDate: defaultDateRange!.pastRange!.endDate
+  })
+
+  const caption = () => {
+    return `Total de ${formattedCurrencyWithSymbol(salesFunc.totalSaleAmount(vendorSales!))} em vendas`;
+  }
+
+  useEffect(() => {
+    console.log(vendorSalesLoading, vendorSalesLastPeriodLoading);
+  }, [vendorSalesLoading]);
+
+  const captionLastPeriod = () => {
+    let output : {type: string, percentage: string} = {
+      type: "",
+      percentage: ""
+    }
+    const totalSaleAmount = salesFunc.totalSaleAmount(vendorSales!);
+    const totalSaleAmountLastPeriod = salesFunc.totalSaleAmount(vendorSalesLastPeriod!);
+
+    // Return just % of increase or decrease with no decimal places
+    if (totalSaleAmount > totalSaleAmountLastPeriod) {
+      output.type = "increase";
+      output.percentage = totalSaleAmount / totalSaleAmountLastPeriod * 100 - 100 + "%";
+      console.log(totalSaleAmount / totalSaleAmountLastPeriod)
+    }
+
+    if (totalSaleAmount < totalSaleAmountLastPeriod) {
+      output.type = "decrease";
+      output.percentage = 100 - totalSaleAmount / totalSaleAmountLastPeriod * 100 + "%";
+      console.log(totalSaleAmount / totalSaleAmountLastPeriod)
+
+    }
+
+    if (totalSaleAmount === totalSaleAmountLastPeriod) {
+      output.type = "increase";
+      output.percentage = "0%";
+    }
+
+    return output;
+  }
+
   const salesDataDefault: SaleDataType[] = [
     {
-      stats: formattedCurrencyWithSymbol(getTotalSalesAmount(vendorSales ? vendorSales : [])),
+      stats: formattedCurrencyWithSymbol(salesFunc.averageSaleAmount(vendorSales!)),
       color: "primary",
-      title: "Customers",
+      title: "Ticket Médio",
       icon: <AccountOutline />
     },
     {
-      stats: "$28.5k",
+      stats: formattedCurrencyWithSymbol(salesFunc.highestSaleAmount(vendorSales!)),
       color: "warning",
-      title: "Total Profit",
+      title: "Maior Venda",
       icon: <Poll />
     }, {
-      stats: "$28.5k",
+      stats: salesFunc.scoreAverage(vendorSales!).toFixed(2),
       color: "warning",
-      title: "Total Profit",
+      title: "Score Médio",
       icon: <Poll />
     },
     {
-      color: "info",
-      stats: "2,450k",
-      title: "Transactions",
+      stats: formattedCurrencyWithSymbol(salesFunc.totalSaleAmount(storeSales!)),
+      color: "secondary",
+      title: "Vendas da Loja",
       icon: <TrendingUp />
     }
   ];
@@ -96,6 +135,8 @@ const SalesOverview = (props: SalesOverviewProps): JSX.Element => {
     <Fragment>
       <CardStatisticsSales
         data={salesData.length > 0 ? salesData : salesDataDefault}
+        caption={caption()}
+        percentage={captionLastPeriod()}
       />
     </Fragment>
   );

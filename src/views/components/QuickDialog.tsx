@@ -1,5 +1,5 @@
 // ** React Imports
-import { Fragment, forwardRef } from "react";
+import React, { Fragment, forwardRef } from "react";
 import Link from "next/link";
 
 // ** MUI Imports
@@ -22,6 +22,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 
 // ** Transition
 const Transition = forwardRef(function Transition(props, ref) {
+  // @ts-ignore
   return <Slide direction={"up"} ref={ref} {...props} />;
 });
 
@@ -126,7 +127,8 @@ const QuickDialog = (props: QuickDialogProps) => {
   return (
     <Fragment>
       <Dialog
-        // TransitionComponent={Transition}
+        // @ts-ignore
+        TransitionComponent={Transition}
         fullScreen={fullScreen}
         fullWidth={fullWidth || false}
         maxWidth={maxWidth || "md"}

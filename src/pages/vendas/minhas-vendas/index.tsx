@@ -1,10 +1,14 @@
 // ** React Imports
+import SalesDataGrid from "components/data-grid/SalesDataGrid";
 import DateRangeSelector from "components/selectors/DateRangeSelector";
 import { Fragment, useState, useEffect, ReactElement } from "react";
 
 // ** MUI Imports
 import {
   Box,
+  Card,
+  CardHeader,
+  CardContent,
   Grid,
   Typography,
   useMediaQuery
@@ -41,7 +45,7 @@ import SelectVendor from "@views/components/selectors/SelectVendor";
 // ** Rendered Element
 const MinhasVendas = () => {
   // ** Use Auth
-  const { user, selectedStore } = useAuth();
+  const { user, selectedStore, selectedUser } = useAuth();
 
   // ** States
   const [dateRange, setDateRange] = useState<GetDateRange>(createDateRange("thisMonth"));
@@ -51,18 +55,20 @@ const MinhasVendas = () => {
   // Get the media query
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const getUser = selectedUser ? selectedUser : user;
+
   // ** React Query
   const {
     data: vendorSales,
     isLoading
-  } = salesQ.useAllSalesByReferenceAndDateRangeQuery(selectedStore!._id, dateRange.range as dateRange);
+  } = salesQ.useAllSalesByReferenceAndDateRangeQuery(getUser!._id!, dateRange.range as dateRange);
 
   console.log(user?._id, dateRange);
   console.log(vendorSales);
 
   return (
     <Fragment>
-      <Grid container spacing={5}>
+      <Grid container spacing={6}>
         <Grid item xs={12} sm={4}>
           <Box
             sx={{
@@ -98,6 +104,12 @@ const MinhasVendas = () => {
         </Grid>
         <Grid item xs={12}>
           <SalesOverview dateRange={dateRange} />
+        </Grid>
+        <Grid item xs={12}>
+          <SalesDataGrid
+            sales={vendorSales!}
+            loading={isLoading}
+          />
         </Grid>
       </Grid>
     </Fragment>
