@@ -132,7 +132,7 @@ const AuthProvider = ({ children }: Props) => {
 
   // ** Login
   const handleLogin = async (params: LoginParams, errorCallback?: ErrCallbackType) => {
-    const loginToast = toast.loading("Logging in...");
+    const loginToast = toast.loading("Entrando...");
 
     try {
       // ** Sign the user
@@ -148,14 +148,14 @@ const AuthProvider = ({ children }: Props) => {
 
       const returnUrl = router.query.returnUrl;
       const redirectURL = returnUrl && returnUrl !== "/" ? returnUrl : "/";
-      toast.success("Logged in successfully!", { id: loginToast });
+      toast.success("Login efetuado com sucesso!", { id: loginToast });
 
       // ** Redirect to Home Page
       await router.replace(redirectURL as string);
 
     } catch (err) {
       console.error("err", err);
-      toast.error("Login failed!", { id: loginToast });
+      toast.error("Erro no login!", { id: loginToast });
       // @ts-ignore
       errorCallback({ message: "error" });
     }
