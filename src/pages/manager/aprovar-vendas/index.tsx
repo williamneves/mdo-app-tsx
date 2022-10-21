@@ -17,17 +17,26 @@ import Divider from "@mui/material/Divider";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import TextField from "@mui/material/TextField";
 import { DataGrid } from "@mui/x-data-grid";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 // ** MUI Icons
 import ThumbUpAltTwoToneIcon from "@mui/icons-material/ThumbUpAltTwoTone";
 import ThumbDownAltTwoToneIcon from "@mui/icons-material/ThumbDownAltTwoTone";
 import UpdateIcon from "@mui/icons-material/Update";
+import RotateLeftIcon from "@mui/icons-material/RotateLeft";
+import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 
 // ** Third Party Imports
 import moment from "moment";
 import toast from "react-hot-toast";
 import QuickDialog from "components/QuickDialog";
-import { formattedCurrencyWithSymbol } from "@core/utils/formatCurrency";
+
+// ** Utils
+import { formattedCurrencyWithSymbol } from "src/@utils/formatCurrency";
+import { DateRangeOptions, CustomPeriod, createDateRange } from "src/@utils/createDateRange";
 
 // ** Hooks Imports
 import { useQueryClient } from "@tanstack/react-query";
@@ -42,6 +51,8 @@ const ApproveSales = () => {
   const [rangeDateEnd, setRangeDateEnd] = useState<Date>(new Date());
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [dialogData, setDialogData] = useState({});
+  const [filteredData, setFilteredData] = useState<Sale[] | null>(null);
+  const [dateRange, setDateRange] = useState<DateRangeOptions | "">("");
 
   // ** React Query Hooks
   const { data: pendingSales, isLoading: isLoadingSales } = salesQ.usePendingSalesQuery();
@@ -51,6 +62,10 @@ const ApproveSales = () => {
   const handleUpdateDates = () => {
     setRangeDateStart(rangeDateStart);
     setRangeDateEnd(rangeDateEnd);
+    setFilteredData(filterSalesByDate("customPeriod", {
+      startDate: rangeDateStart,
+      endDate: rangeDateEnd
+    }));
   };
 
   const changeAuditStatus = async (saleID: string, status: "approved" | "rejected") => {
@@ -111,7 +126,7 @@ const ApproveSales = () => {
       sale: sale,
       headerTitle: `${action} venda`,
       content: `Realmente deseja ${action} a venda do dia ${moment(sale.date).format("DD/MM/YYYY")}
-       feita por ${sale.user.name} no valor de ${formattedCurrencyWithSymbol(sale.saleAmount)}?`,
+       feita por ${sale.user?.name} no valor de ${formattedCurrencyWithSymbol(sale.saleAmount)}?`,
       actions: [{
         mode: "button",
         props: {
@@ -134,6 +149,20 @@ const ApproveSales = () => {
     setOpenDialog(true);
   };
 
+  const filterSalesByDate = (period: DateRangeOptions, customPeriod?: CustomPeriod) => {
+    const { startDate, endDate } = createDateRange(period, customPeriod).range;
+    return (pendingSales as Sale[]).filter(sale => {
+      // @ts-ignore
+      return sale.date >= startDate && sale.date <= endDate;
+    });
+  };
+
+  const getRowData = (): Sale[] => {
+    if (filteredData) return filteredData;
+    if (pendingSales) return pendingSales as Sale[];
+    return [];
+  };
+
   interface RowData {
     row: Sale;
   }
@@ -143,7 +172,7 @@ const ApproveSales = () => {
     {
       headerName: "N. Venda",
       field: "saleNumber",
-      minWidth: 90,
+      minWidth: 50,
       valueGetter: ({ row }: RowData) => row.saleNumber,
       renderCell: ({ row }: RowData) => (
         <Typography variant={"body2"}>{row.saleNumber}</Typography>
@@ -184,6 +213,7 @@ const ApproveSales = () => {
     {
       minWidth: 120,
       headerName: "Valor",
+      headerAlign: "center",
       field: "saleAmount",
       type: "number",
       valueGetter: ({ row }: RowData) => row.saleAmount,
@@ -198,9 +228,9 @@ const ApproveSales = () => {
       headerName: "Vendedor",
       field: "user",
       renderCell: ({ row }: RowData) => (
-        <Typography variant={"body2"}>{row.user.name}</Typography>
+        <Typography variant={"body2"}>{row.user?.name}</Typography>
       ),
-      valueGetter: ({ row }: RowData) => row.user.name
+      valueGetter: ({ row }: RowData) => row.user?.name
     },
     {
       minWidth: 170,
@@ -219,7 +249,7 @@ const ApproveSales = () => {
       sortable: false,
       headerAlign: "center",
       disableColumnMenu: true,
-      minWidth: 180,
+      minWidth: 150,
       renderCell: ({ row }: RowData) => (
         <Box display="flex" justifyContent="center" gap={3} alignItems="center">
           <Fab
@@ -257,19 +287,65 @@ const ApproveSales = () => {
       <Grid item xs={12}>
         <Card>
           <Grid container sx={{ paddingTop: 4, paddingX: 3 }} spacing={6}>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
+              <CardHeader
+                sx={{ textAlign: { xs: "center", md: "left" } }}
+                title={
+                  <Typography variant={"h6"} color={"text.primary"}>
+                    <PriceCheckIcon />
+                    Aprovar Vendas
+                  </Typography>
+                }
+              />
+            </Grid>
+            <Grid
+              item xs={12} md={6} spacing={6} sx={{
+              paddingTop: 4,
+              paddingX: 3,
+              display: "flex",
+              flexDirection: { xs: "column", md: "row" },
+              gap: 3,
+              justifyContent: "flex-end",
+              alignItems: "center"
+            }}>
+              <FormControl sx={{ minWidth: 280 }}>
+                <InputLabel>Selecionar intervalo de tempo</InputLabel>
+                <Select
+                  value={dateRange}
+                  label={"Selecionar intervalo de tempo"}
+                  onChange={(e) => {
+                    setDateRange(e.target.value as DateRangeOptions);
+                    setFilteredData(filterSalesByDate(e.target.value as DateRangeOptions));
+                  }}
+                >
+                  <MenuItem value={"today"}>Hoje</MenuItem>
+                  <MenuItem value={"yesterday"}>Ontem</MenuItem>
+                  <MenuItem value={"thisWeek"}>Esta semana</MenuItem>
+                  <MenuItem value={"lastWeek"}>Última semana</MenuItem>
+                  <MenuItem value={"thisMonth"}>Este mês</MenuItem>
+                  <MenuItem value={"lastMonth"}>Último mês</MenuItem>
+                  <MenuItem value={"lastThreeMonths"}>Últimos três meses</MenuItem>
+                </Select>
+              </FormControl>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => {
+                  setDateRange("");
+                  setFilteredData(null);
+                }}
+                startIcon={<RotateLeftIcon />}
+              >
+                Resetar filtro
+              </Button>
+            </Grid>
+            <Grid item xs={6} sx={{ margin: "auto" }}>
               <Button
                 variant={"outlined"}
                 onClick={() => handleApproveAllSales()}
               >
                 Aprovar tudo
               </Button>
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <CardHeader
-                sx={{ textAlign: { xs: "center", md: "left" } }}
-                title="Aprovar Vendas"
-              />
             </Grid>
             <Grid
               item
@@ -330,7 +406,7 @@ const ApproveSales = () => {
             loading={isLoadingSales}
             // @ts-ignore
             columns={columns}
-            rows={pendingSales || []}
+            rows={getRowData()}
             rowsPerPageOptions={[10, 20, 30, 50, 100]}
           />
         </Card>
