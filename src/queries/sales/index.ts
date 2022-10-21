@@ -180,10 +180,11 @@ export const usePendingSalesQuery = (options?: Object) => {
 interface ChangeSaleAuditStatusParams {
   saleID: string;
   status: "approved" | "rejected";
+  auditFeedBack: string;
 }
 
 export const useChangeSaleAuditStatusQuery = (queryClient: any) => {
-  return useMutation(({ saleID, status }: ChangeSaleAuditStatusParams) => api.changeSaleAuditStatus(saleID, status),
+  return useMutation(({ saleID, status, auditFeedBack }: ChangeSaleAuditStatusParams) => api.changeSaleAuditStatus(saleID, status, auditFeedBack),
     {
       onSuccess: (updatedSale) => {
         queryClient.setQueryData(["sales", "all"], (old: any) => {

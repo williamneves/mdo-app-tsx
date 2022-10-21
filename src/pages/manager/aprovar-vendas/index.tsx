@@ -53,6 +53,7 @@ const ApproveSales = () => {
   const [dialogData, setDialogData] = useState({});
   const [filteredData, setFilteredData] = useState<Sale[] | null>(null);
   const [dateRange, setDateRange] = useState<DateRangeOptions | "">("");
+  const [auditFeedBack, setAuditFeedback] = useState<string>("");
 
   // ** React Query Hooks
   const { data: pendingSales, isLoading: isLoadingSales } = salesQ.usePendingSalesQuery();
@@ -68,11 +69,38 @@ const ApproveSales = () => {
     }));
   };
 
+  interface PopUpContentProps {
+    message: string;
+  }
+
+  const AuditFeedbackInput = ({ message }: PopUpContentProps) => {
+    return (
+      <Box>
+        <Typography variant={"subtitle1"}>
+          {message}
+        </Typography>
+        <FormControl fullWidth sx={{ mt: 3 }}>
+          <TextField
+            label={"Feedback (Opcional)"}
+            id="audit-feedback"
+            multiline
+            rows={3}
+            onChange={(e) => {
+            console.log(e.target.value)
+            setAuditFeedback(e.target.value)
+            }
+            }
+          />
+        </FormControl>
+      </Box>
+    );
+  };
+
   const changeAuditStatus = async (saleID: string, status: "approved" | "rejected") => {
     const toastId = toast.loading("Aguarde...");
     const statusName = status === "approved" ? "Aprovada" : "Rejeitada";
     try {
-      await changeSaleStatus.mutateAsync({ saleID, status });
+      await changeSaleStatus.mutateAsync({ saleID, status, auditFeedBack });
       toast.success(`Venda ${statusName} com sucesso!`, { id: toastId });
       setOpenDialog(false);
     } catch (e) {
@@ -84,7 +112,7 @@ const ApproveSales = () => {
     const toastId = toast.loading("Aguarde...");
     try {
       await Promise.all((pendingSales as Sale[]).map(async (sale: Sale) => {
-        await changeSaleStatus.mutateAsync({ saleID: sale._id, status: "approved" });
+        await changeSaleStatus.mutateAsync({ saleID: sale._id, status: "approved", auditFeedBack: "" });
       }));
       toast.success(`Vendas aprovadas com sucesso!`, { id: toastId });
       setOpenDialog(false);
@@ -125,8 +153,10 @@ const ApproveSales = () => {
       id: sale._id,
       sale: sale,
       headerTitle: `${action} venda`,
-      content: `Realmente deseja ${action} a venda do dia ${moment(sale.date).format("DD/MM/YYYY")}
-       feita por ${sale.user?.name} no valor de ${formattedCurrencyWithSymbol(sale.saleAmount)}?`,
+      content: <AuditFeedbackInput
+        message={`Realmente deseja ${action} a venda do dia ${moment(sale.date).format("DD/MM/YYYY")}
+       feita por ${sale.user?.name} no valor de ${formattedCurrencyWithSymbol(sale.saleAmount)}?`}
+      />,
       actions: [{
         mode: "button",
         props: {
