@@ -34,7 +34,8 @@ const defaultProvider: AuthValuesType = {
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   setIsInitialized: () => Boolean,
-  register: () => Promise.resolve()
+  register: () => Promise.resolve(),
+  updateUser: () => Promise.resolve(),
 };
 
 // ** AuthHooks Imports
@@ -188,6 +189,15 @@ const AuthProvider = ({ children }: Props) => {
       .catch((err: { [key: string]: string }) => (errorCallback ? errorCallback(err) : null));
   };
 
+  const handleChangeUser = async ({ newInfo }: auth.ChangeUserParams) => {
+    try {
+      const newUser = await auth.changeUserInfo({ newInfo });
+      setUser(newUser);
+    } catch (e) {
+      throw e;
+    }
+  }
+
   const values = {
     user,
     setUser,
@@ -201,7 +211,8 @@ const AuthProvider = ({ children }: Props) => {
     setIsInitialized,
     login: handleLogin,
     logout: handleLogout,
-    register: handleRegister
+    register: handleRegister,
+    updateUser: handleChangeUser,
   };
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
