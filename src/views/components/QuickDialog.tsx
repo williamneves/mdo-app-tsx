@@ -1,5 +1,5 @@
 // ** React Imports
-import { Fragment, forwardRef } from "react";
+import { Fragment } from "react";
 import Link from "next/link";
 
 // ** MUI Imports
@@ -7,23 +7,15 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Dialog from "@mui/material/Dialog";
-import { useTheme } from "@mui/material/styles";
 import DialogTitle from "@mui/material/DialogTitle";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
-import Slide from "@mui/material/Slide";
 import IconButton from "@mui/material/IconButton";
 
 // ** MUI Icons
 import Close from "@mui/icons-material/Close";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-
-// ** Transition
-const Transition = forwardRef(function Transition(props, ref) {
-  return <Slide direction={"up"} ref={ref} {...props} />;
-});
 
 interface QuickDialogAction {
   mode: "button" | "link" | "loadingButton";
@@ -39,7 +31,7 @@ interface QuickDialogAction {
     disabled?: boolean;
     loading?: boolean;
     loadingPosition?: "start" | "center" | "end";
-  }
+  };
 }
 
 interface QuickDialogProps {
@@ -49,19 +41,20 @@ interface QuickDialogProps {
   fullScreenBreakPoint?: "xs" | "sm" | "md" | "lg" | "xl";
   customCloseComponent?: React.ReactNode;
   fullWidth?: boolean;
+  fullScreen?: boolean;
   maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | false;
   helpPopover?: {
     body: string;
     title: string;
     content: string;
-  }
+  };
   data: {
     headerTitle: string;
     headerIcon?: React.ReactNode;
     title: string;
     content: string | React.ReactNode;
     actions: QuickDialogAction[];
-  }
+  };
 }
 
 const QuickDialog = (props: QuickDialogProps) => {
@@ -72,19 +65,16 @@ const QuickDialog = (props: QuickDialogProps) => {
     blockClose,
     fullScreenBreakPoint,
     fullWidth,
+    fullScreen,
     maxWidth,
     customCloseComponent,
     helpPopover,
     data
   } = props;
 
-  // ** Hooks
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down(fullScreenBreakPoint || "sm"));
-
   // Switch Actions
   const mappingActions = (action: QuickDialogAction, index: number) => {
-    // Desconstruct Action
+    // Deconstruct Action
     const { mode } = action;
     const { label } = action.props;
 
@@ -126,8 +116,7 @@ const QuickDialog = (props: QuickDialogProps) => {
   return (
     <Fragment>
       <Dialog
-        // TransitionComponent={Transition}
-        fullScreen={fullScreen}
+        fullScreen={fullScreen || false}
         fullWidth={fullWidth || false}
         maxWidth={maxWidth || "md"}
         open={open}
@@ -184,8 +173,9 @@ const QuickDialog = (props: QuickDialogProps) => {
           </Box>
         </DialogActions>
       </Dialog>
-      {/*<HelpPopover*/}
-      {/*  // anchorEl={popoverElementInstructions}*/}
+      {/*<Popover*/}
+      {/*  anchorEl={popoverElementInstructions}*/}
+      {/*  open={false}*/}
       {/*  onClose={() => setActiveElement(null)}*/}
       {/*  title={helpPopover?.title || "Instructions"}*/}
       {/*  body={helpPopover?.body || "The instructions body is missing"}*/}

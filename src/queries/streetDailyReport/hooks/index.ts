@@ -88,7 +88,7 @@ export const getAllDailyReports = async () => {
   }
 }
 
-export const changeAuditStatus = async (reportID: string, status: "approved" | "rejected") => {
+export const changeAuditStatus = async (reportID: string, status: "approved" | "rejected", auditFeedBack: string) => {
   const query = `
   *[_type == "streetDailyReport" && _id == "${reportID}"]{
     _id,
@@ -106,7 +106,7 @@ export const changeAuditStatus = async (reportID: string, status: "approved" | "
   try {
     const report = await dbClient.fetch(query);
     if (report.length > 0) {
-      return await dbClient.patch(report[0]._id).set({ auditStatus: status }).commit();
+      return await dbClient.patch(report[0]._id).set({ auditStatus: status, auditFeedBack: auditFeedBack }).commit();
     }
   } catch (err) {
     throw err;

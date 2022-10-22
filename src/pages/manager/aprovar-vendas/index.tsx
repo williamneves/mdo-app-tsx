@@ -33,6 +33,7 @@ import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 import moment from "moment";
 import toast from "react-hot-toast";
 import QuickDialog from "components/QuickDialog";
+import DialogContent from "components/DialogContent";
 
 // ** Utils
 import { formattedCurrencyWithSymbol } from "src/@utils/formatCurrency";
@@ -40,6 +41,7 @@ import { DateRangeOptions, CustomPeriod, createDateRange } from "src/@utils/crea
 
 // ** Hooks Imports
 import { useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 
 // ** Types
 import Sale from "src/interfaces/Sale";
@@ -53,7 +55,6 @@ const ApproveSales = () => {
   const [dialogData, setDialogData] = useState({});
   const [filteredData, setFilteredData] = useState<Sale[] | null>(null);
   const [dateRange, setDateRange] = useState<DateRangeOptions | "">("");
-  const [auditFeedBack, setAuditFeedback] = useState<string>("");
 
   // ** React Query Hooks
   const { data: pendingSales, isLoading: isLoadingSales } = salesQ.usePendingSalesQuery();
@@ -69,40 +70,25 @@ const ApproveSales = () => {
     }));
   };
 
-  interface PopUpContentProps {
-    message: string;
-  }
-
-  const AuditFeedbackInput = ({ message }: PopUpContentProps) => {
-    return (
-      <Box>
-        <Typography variant={"subtitle1"}>
-          {message}
-        </Typography>
-        <FormControl fullWidth sx={{ mt: 3 }}>
-          <TextField
-            label={"Feedback (Opcional)"}
-            id="audit-feedback"
-            multiline
-            rows={3}
-            onChange={(e) => {
-            console.log(e.target.value)
-            setAuditFeedback(e.target.value)
-            }
-            }
-          />
-        </FormControl>
-      </Box>
-    );
-  };
+  const {
+    control,
+    formState: { errors },
+    reset,
+    getValues
+  } = useForm({
+    defaultValues: {
+      feedback: ""
+    }
+  });
 
   const changeAuditStatus = async (saleID: string, status: "approved" | "rejected") => {
     const toastId = toast.loading("Aguarde...");
     const statusName = status === "approved" ? "Aprovada" : "Rejeitada";
     try {
-      await changeSaleStatus.mutateAsync({ saleID, status, auditFeedBack });
+      await changeSaleStatus.mutateAsync({ saleID, status, auditFeedBack: getValues("feedback") });
       toast.success(`Venda ${statusName} com sucesso!`, { id: toastId });
       setOpenDialog(false);
+      reset();
     } catch (e) {
       toast.error(`Erro ao ${statusName} venda!`, { id: toastId });
     }
@@ -153,9 +139,17 @@ const ApproveSales = () => {
       id: sale._id,
       sale: sale,
       headerTitle: `${action} venda`,
-      content: <AuditFeedbackInput
-        message={`Realmente deseja ${action} a venda do dia ${moment(sale.date).format("DD/MM/YYYY")}
+      content: <DialogContent
+        headerMessage={`Realmente deseja ${action} a venda do dia ${moment(sale.date).format("DD/MM/YYYY")}
        feita por ${sale.user?.name} no valor de ${formattedCurrencyWithSymbol(sale.saleAmount)}?`}
+        inputProps={{
+          control: control,
+          errors: errors,
+          name: "feedback",
+          label: "Feedback (Opcional)",
+          multiline: true,
+          rows: 3
+        }}
       />,
       actions: [{
         mode: "button",
