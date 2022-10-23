@@ -8,6 +8,9 @@ import { Grid, Typography } from "@mui/material";
 import AddShoppingCartTwoToneIcon from "@mui/icons-material/AddShoppingCartTwoTone";
 import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 
+// ** Third Party Imports
+import toast from "react-hot-toast";
+
 // ** Component Imports
 import NovaVendaWizard from "@views/pages/vendas/nova-venda/NovaVendaWizard";
 import FallBackSpinner from "@core/components/spinner";
@@ -32,6 +35,17 @@ const EditarVenda = () => {
   }
 
   console.log(sale);
+
+  if (sale?.auditStatus === "approved") {
+    toast.error("Venda já aprovada, não é possível editar", {
+      icon: "🚫",
+      duration: 5000,
+      position: "top-center",
+    });
+
+    router.push("/vendas/minhas-vendas");
+    return <FallBackSpinner />;
+  }
 
   return (
     <Grid container spacing={6}>

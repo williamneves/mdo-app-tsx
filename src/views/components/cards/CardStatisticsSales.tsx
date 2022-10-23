@@ -80,11 +80,16 @@ const renderStats = (salesData: SaleDataType[]) => {
 
 interface CardStatisticsSalesProps {
   data: SaleDataType[];
+  caption: string;
+  percentage: {
+    type: string;
+    percentage: string;
+  };
 }
 
 const CardStatisticsSales = (props: CardStatisticsSalesProps) => {
   // ** Props
-  const { data } = props;
+  const { data, caption, percentage } = props;
 
   // ** States
   const [collapsed, setCollapsed] = useState<boolean>(true);
@@ -93,7 +98,7 @@ const CardStatisticsSales = (props: CardStatisticsSalesProps) => {
   return (
     <Card>
       <CardHeader
-        title="Sales Overview"
+        title="Resumo de Vendas"
         titleTypographyProps={{ variant: "h6" }}
         action={
           <IconButton
@@ -107,13 +112,13 @@ const CardStatisticsSales = (props: CardStatisticsSalesProps) => {
         }
         subheader={
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Typography variant="caption" sx={{ mr: 1.5 }}>
-              Total 42.5k Sales
+            <Typography variant="subtitle2" sx={{ mr: 1.5 }}>
+              {caption}
             </Typography>
-            <Typography variant="subtitle2" sx={{ color: "success.main" }}>
-              +18%
-            </Typography>
-            <ChevronUp fontSize="small" sx={{ color: "success.main" }} />
+            {/*<Typography variant="subtitle2" sx={{ color: percentage.type === "decrease" ? 'error.main' : "success.main" }}>*/}
+            {/*  {percentage.percentage}*/}
+            {/*</Typography>*/}
+            {/*<ChevronUp fontSize="small" sx={{ color: "success.main" }} />*/}
           </Box>
         }
       />

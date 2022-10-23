@@ -5,16 +5,18 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import FallbackSpinner from "@core/components/spinner";
 
-interface DataDialog {
-  id: string | number;
+export interface DataDialog {
+  // id: string | number;
   title: string;
-  message: string;
+  message: string | React.ReactNode;
   confirm: string;
-  cancel: string;
-  confirmColor: "error" | "success" | "info" | "warning" | undefined;
-  cancelColor: "primary" | "secondary" | "error" | "info" | "success" | "warning" | undefined;
+  cancel: string | null;
+  confirmColor: "primary" | "error" | "success" | "info" | "warning" | undefined;
+  cancelColor?: "primary" | "secondary" | "error" | "info" | "success" | "warning" | undefined;
   confirmAction: () => void;
+  any?: any;
 }
 
 interface SimpleDialogProps {
@@ -31,31 +33,38 @@ export default function SimpleDialog({ open, setOpen, data }: SimpleDialogProps)
     setOpen(false);
   };
 
-  return (
-    <div>
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {data.title}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText component={'div'} id="alert-dialog-description">
-            {data.message}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)} color={data.cancelColor} autoFocus>
-            {data.cancel}
-          </Button>
-          <Button variant={"outlined"} onClick={handleClose} color={data.confirmColor}>
-            {data.confirm}
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
-  );
+  if (!data) {
+    return <FallbackSpinner />;
+  }
+
+  else
+    return (
+      <React.Fragment>
+        <Dialog
+          open={open}
+          onClose={() => setOpen(false)}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {data.title}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText component={'div'} id="alert-dialog-description">
+              {data.message}
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            {data.cancel &&
+              <Button onClick={() => setOpen(false)} color={data.cancelColor} autoFocus>
+                {data.cancel}
+              </Button>
+            }
+            <Button variant={"outlined"} onClick={handleClose} color={data.confirmColor}>
+              {data.confirm}
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </React.Fragment>
+    );
 }
