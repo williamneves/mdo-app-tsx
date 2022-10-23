@@ -3,7 +3,7 @@ import AuthUser from "src/interfaces/authUser";
 
 
 // ** Get User by AuthID **
-const Q_userByAuthUID = `
+export const Q_userByAuthUID = `
  *[
     _type == 'user' 
     && authUID==$authUID 

@@ -202,31 +202,33 @@ const ClientList = () => {
   return (
     <Fragment>
       <Grid container spacing={6}>
-        <Card sx={{ width: "100%" }}>
-          <CardHeader title={
-            <Typography variant={"h6"} sx={{ display: "flex", alignItems: "center" }}>
-              <GroupsIcon sx={{ mr: 2, fontSize: 40 }} />
-              Lista de Clientes
-            </Typography>
-          } />
-          <DataGrid
-            getRowId={(row) => row._id}
-            autoHeight={true}
-            loading={isLoading}
-            rows={clientList && clientList.length > 0 && matchSearchFilter(clientList!, searchValue, [...getAllObjectKeys(clientList), "createdBy.name"]) || []}
-            columns={columns}
-            components={{
-              Toolbar: QuickSearchToolbar
-            }}
-            componentsProps={{
-              toolbar: {
-                value: searchValue,
-                clearSearch: () => setSearchValue(""),
-                onChange: (event: React.ChangeEvent<HTMLInputElement>) => setSearchValue(event.target.value)
-              }
-            }}
-          />
-        </Card>
+        <Grid item xs={12}>
+          <Card sx={{ width: "100%" }}>
+            <CardHeader title={
+              <Typography variant={"h6"} sx={{ display: "flex", alignItems: "center" }}>
+                <GroupsIcon sx={{ mr: 2, fontSize: 40 }} />
+                Lista de Clientes
+              </Typography>
+            } />
+            <DataGrid
+              getRowId={(row) => row._id}
+              autoHeight={true}
+              loading={isLoading}
+              rows={clientList && clientList.length > 0 && matchSearchFilter(clientList!, searchValue, [...getAllObjectKeys(clientList), "createdBy.name"]) || []}
+              columns={columns}
+              components={{
+                Toolbar: QuickSearchToolbar
+              }}
+              componentsProps={{
+                toolbar: {
+                  value: searchValue,
+                  clearSearch: () => setSearchValue(""),
+                  onChange: (event: React.ChangeEvent<HTMLInputElement>) => setSearchValue(event.target.value)
+                }
+              }}
+            />
+          </Card>
+        </Grid>
       </Grid>
       <SimpleDialog
         open={openDialog}

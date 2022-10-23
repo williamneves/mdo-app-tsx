@@ -118,12 +118,17 @@ const TabAccount = ({ userDB }: Props) => {
 
     if (newImage) {
       try {
-        dbClient.assets.upload("image", newImage).then((imageAsset) => {
+        dbClient.assets
+          .upload("image", newImage)
+          .then((imageAsset) => {
           newDataObj.imageAsset = imageAsset;
           changeUserInfo({
             newInfo: newDataObj
-          });
-          toast.success("Informações atualizadas com sucesso!", { id: toastId });
+          })
+            .then((res) => {
+              console.log(res);
+              toast.success("Informações atualizadas com sucesso!", { id: toastId });
+            })
         });
       } catch (e) {
         toast.error("Erro ao atualizar informações", { id: toastId });
@@ -132,9 +137,10 @@ const TabAccount = ({ userDB }: Props) => {
       }
     } else {
       try {
-        await changeUserInfo({
+        const updatedUser = await changeUserInfo({
           newInfo: newDataObj
         });
+        console.log(updatedUser);
         toast.success("Informações atualizadas com sucesso!", { id: toastId });
       } catch (e) {
         toast.error("Erro ao atualizar informações", { id: toastId });
