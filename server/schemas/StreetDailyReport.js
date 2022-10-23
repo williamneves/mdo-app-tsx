@@ -28,6 +28,11 @@ export default {
             to: [{type: "user"}],
         },
         {
+            title: "FeedBack de Auditoria",
+            name: "auditFeedBack",
+            type: "string"
+        },
+        {
             title: "Status de Auditoria",
             name: "auditStatus",
             type: "string",

@@ -18,7 +18,7 @@ import toast from "react-hot-toast";
 
 // ** Hooks
 import { useForm } from "react-hook-form";
-import { changeUserInfo } from "src/@auth/authHooks";
+import { useAuth } from "src/hooks/useAuth";
 
 // ** Custom Components
 import TextInputControlled from "components/inputs/TextInputControlled";
@@ -59,6 +59,8 @@ const TabAccount = ({ userDB }: Props) => {
 
   const { name, email, role, imageAsset, imageURL, profile, stores } = userDB;
   const initialProfilePhoto = imageAsset ? imageAsset.url : imageURL;
+
+  const { updateUser } = useAuth();
 
   const schema = yup.object().shape({
     name: yup.string().required("O Nome não pode estar vazio"),
@@ -118,17 +120,12 @@ const TabAccount = ({ userDB }: Props) => {
 
     if (newImage) {
       try {
-        dbClient.assets
-          .upload("image", newImage)
-          .then((imageAsset) => {
+        dbClient.assets.upload("image", newImage).then((imageAsset) => {
           newDataObj.imageAsset = imageAsset;
-          changeUserInfo({
+          updateUser({
             newInfo: newDataObj
-          })
-            .then((res) => {
-              console.log(res);
-              toast.success("Informações atualizadas com sucesso!", { id: toastId });
-            })
+          });
+          toast.success("Informações atualizadas com sucesso!", { id: toastId });
         });
       } catch (e) {
         toast.error("Erro ao atualizar informações", { id: toastId });
@@ -137,10 +134,9 @@ const TabAccount = ({ userDB }: Props) => {
       }
     } else {
       try {
-        const updatedUser = await changeUserInfo({
+        await updateUser({
           newInfo: newDataObj
         });
-        console.log(updatedUser);
         toast.success("Informações atualizadas com sucesso!", { id: toastId });
       } catch (e) {
         toast.error("Erro ao atualizar informações", { id: toastId });

@@ -50,10 +50,11 @@ export const useGetAllDailyReportsQuery = (options?: Object) => {
 interface ChangeAuditStatusParams {
   reportID: string;
   status: "approved" | "rejected";
+  auditFeedBack: string;
 }
 
 export const useChangeAuditStatusQuery = (queryClient: any) => {
-  return useMutation(({ reportID, status }: ChangeAuditStatusParams) => useStreetDailyReport.changeAuditStatus(reportID, status),
+  return useMutation(({ reportID, status, auditFeedBack }: ChangeAuditStatusParams) => useStreetDailyReport.changeAuditStatus(reportID, status, auditFeedBack),
     {
       onSuccess: (updatedDailyReport) => {
         queryClient.setQueryData(["dailyReports", "all"], (old: any) => {

@@ -3,9 +3,10 @@ import { SanityDefaultObject, SanityDefaultReference } from "src/interfaces/Sani
 import Store from "src/interfaces/Store";
 
 export default interface StreetDailyReport extends SanityDefaultObject {
-  inactive: boolean;
-  excluded: boolean;
+  inactive: boolean
+  excluded: boolean
   reporter: User
+  auditFeedback?: string
   auditStatus: "pending" | "approved" | "rejected"
   clientsApproached: number
   clientsRegistered: Array<SanityDefaultReference>

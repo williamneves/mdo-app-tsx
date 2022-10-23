@@ -7,13 +7,10 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import LoadingButton from "@mui/lab/LoadingButton";
 import Dialog from "@mui/material/Dialog";
-import { useTheme } from "@mui/material/styles";
 import DialogTitle from "@mui/material/DialogTitle";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
-import Slide from "@mui/material/Slide";
 import IconButton from "@mui/material/IconButton";
 
 // ** MUI Icons
@@ -50,6 +47,7 @@ interface QuickDialogProps {
   fullScreenBreakPoint?: "xs" | "sm" | "md" | "lg" | "xl";
   customCloseComponent?: React.ReactNode;
   fullWidth?: boolean;
+  fullScreen?: boolean;
   maxWidth?: "xs" | "sm" | "md" | "lg" | "xl" | false;
   helpPopover?: {
     body: string;
@@ -85,7 +83,7 @@ const QuickDialog = (props: QuickDialogProps) => {
 
   // Switch Actions
   const mappingActions = (action: QuickDialogAction, index: number) => {
-    // Desconstruct Action
+    // Deconstruct Action
     const { mode } = action;
     const { label } = action.props;
 
@@ -186,8 +184,9 @@ const QuickDialog = (props: QuickDialogProps) => {
           </Box>
         </DialogActions>
       </Dialog>
-      {/*<HelpPopover*/}
-      {/*  // anchorEl={popoverElementInstructions}*/}
+      {/*<Popover*/}
+      {/*  anchorEl={popoverElementInstructions}*/}
+      {/*  open={false}*/}
       {/*  onClose={() => setActiveElement(null)}*/}
       {/*  title={helpPopover?.title || "Instructions"}*/}
       {/*  body={helpPopover?.body || "The instructions body is missing"}*/}
