@@ -25,10 +25,12 @@ import UpdateIcon from "@mui/icons-material/Update";
 import moment from "moment";
 import toast from "react-hot-toast";
 import QuickDialog from "components/QuickDialog";
+import DialogContent from "components/DialogContent";
 
 // ** Hooks Imports
 import * as useDailyReport from "src/queries/streetDailyReport";
 import { useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 
 // ** Types
 import StreetDailyReport from "src/interfaces/StreetDailyReport";
@@ -40,6 +42,17 @@ const ApproveDailyReport = () => {
   const [rangeDateEnd, setRangeDateEnd] = useState<Date>(new Date());
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [dialogData, setDialogData] = useState({});
+
+  const {
+    control,
+    formState: { errors },
+    reset,
+    getValues
+  } = useForm({
+    defaultValues: {
+      feedback: ""
+    }
+  });
 
   // ** React Query Hooks
   const {
@@ -68,9 +81,10 @@ const ApproveDailyReport = () => {
   const changeAuditStatus = async (reportID: string, action: "approved" | "rejected") => {
     const toastId = toast.loading("Aguarde...");
     try {
-      await changeReportStatus.mutateAsync({ reportID, status: action });
+      await changeReportStatus.mutateAsync({ reportID, status: action, auditFeedBack: getValues("feedback") });
       toast.success("Status do relatório atualizado com sucesso!", { id: toastId });
       setOpenDialog(false);
+      reset();
     } catch (e) {
       toast.error("Erro ao atualizar status do relatório!", { id: toastId });
     }
@@ -80,7 +94,7 @@ const ApproveDailyReport = () => {
     const toastId = toast.loading("Aguarde...");
     try {
       await Promise.all(pendingReports.map(async (report: StreetDailyReport) => {
-        await changeReportStatus.mutateAsync({ reportID: report._id, status: "approved" });
+        await changeReportStatus.mutateAsync({ reportID: report._id, status: "approved", auditFeedBack: "" });
       }));
       toast.success("Relatórios aprovados com sucesso!", { id: toastId });
       setOpenDialog(false);
@@ -121,7 +135,18 @@ const ApproveDailyReport = () => {
       id: report._id,
       report: report,
       headerTitle: `${action} relatório`,
-      content: `Realmente deseja ${action} o relatório do dia ${moment(report.reportDate).format("DD/MM/YYYY")} feito por ${report.reporter.name}?`,
+      content: <DialogContent
+        headerMessage={`Realmente deseja ${action.toLocaleLowerCase()} o relatório do dia ${moment(report.reportDate).format("DD/MM/YYYY")} 
+        feito por ${report.reporter.name}?`}
+        inputProps={{
+          control: control,
+          errors: errors,
+          name: "feedback",
+          label: "Feedback (Opcional)",
+          multiline: true,
+          rows: 3
+        }}
+      />,
       actions: [{
         mode: "button",
         props: {

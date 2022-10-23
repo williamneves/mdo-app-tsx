@@ -33,6 +33,7 @@ import PriceCheckIcon from "@mui/icons-material/PriceCheck";
 import moment from "moment";
 import toast from "react-hot-toast";
 import QuickDialog from "components/QuickDialog";
+import DialogContent from "components/DialogContent";
 
 // ** Utils
 import { formattedCurrencyWithSymbol } from "src/@utils/formatCurrency";
@@ -40,6 +41,7 @@ import { DateRangeOptions, CustomPeriod, createDateRange } from "src/@utils/crea
 
 // ** Hooks Imports
 import { useQueryClient } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
 
 // ** Types
 import Sale from "src/interfaces/Sale";
@@ -68,13 +70,25 @@ const ApproveSales = () => {
     }));
   };
 
+  const {
+    control,
+    formState: { errors },
+    reset,
+    getValues
+  } = useForm({
+    defaultValues: {
+      feedback: ""
+    }
+  });
+
   const changeAuditStatus = async (saleID: string, status: "approved" | "rejected") => {
     const toastId = toast.loading("Aguarde...");
     const statusName = status === "approved" ? "Aprovada" : "Rejeitada";
     try {
-      await changeSaleStatus.mutateAsync({ saleID, status });
+      await changeSaleStatus.mutateAsync({ saleID, status, auditFeedBack: getValues("feedback") });
       toast.success(`Venda ${statusName} com sucesso!`, { id: toastId });
       setOpenDialog(false);
+      reset();
     } catch (e) {
       toast.error(`Erro ao ${statusName} venda!`, { id: toastId });
     }
@@ -84,7 +98,7 @@ const ApproveSales = () => {
     const toastId = toast.loading("Aguarde...");
     try {
       await Promise.all((pendingSales as Sale[]).map(async (sale: Sale) => {
-        await changeSaleStatus.mutateAsync({ saleID: sale._id, status: "approved" });
+        await changeSaleStatus.mutateAsync({ saleID: sale._id, status: "approved", auditFeedBack: "" });
       }));
       toast.success(`Vendas aprovadas com sucesso!`, { id: toastId });
       setOpenDialog(false);
@@ -125,8 +139,18 @@ const ApproveSales = () => {
       id: sale._id,
       sale: sale,
       headerTitle: `${action} venda`,
-      content: `Realmente deseja ${action} a venda do dia ${moment(sale.date).format("DD/MM/YYYY")}
-       feita por ${sale.user?.name} no valor de ${formattedCurrencyWithSymbol(sale.saleAmount)}?`,
+      content: <DialogContent
+        headerMessage={`Realmente deseja ${action} a venda do dia ${moment(sale.date).format("DD/MM/YYYY")}
+       feita por ${sale.user?.name} no valor de ${formattedCurrencyWithSymbol(sale.saleAmount)}?`}
+        inputProps={{
+          control: control,
+          errors: errors,
+          name: "feedback",
+          label: "Feedback (Opcional)",
+          multiline: true,
+          rows: 3
+        }}
+      />,
       actions: [{
         mode: "button",
         props: {

@@ -73,7 +73,7 @@ export const changePassword = async (oldPassword: string, newPassword: string) =
 };
 
 // Change user info
-interface ChangeUserParams {
+export interface ChangeUserParams {
   newInfo: Partial<AuthUser>;
 }
 
@@ -82,10 +82,8 @@ export const changeUserInfo = async ({ newInfo }: ChangeUserParams) => {
   const dbUser = await fetchUser(currentUser!.uid);
 
   try {
-    return await dbClient
-      .patch(dbUser._id)
-      .set(newInfo)
-      .commit();
+    await dbClient.patch(dbUser._id).set(newInfo).commit();
+    return fetchUser(currentUser!.uid);
   } catch (e) {
     throw e;
   }

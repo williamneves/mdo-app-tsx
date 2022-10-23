@@ -22,6 +22,7 @@ export default interface Sale extends Partial<SanityDefaultObject> {
   _id: string;
   saleNumber: number;
   PDVNumber: string;
+  auditFeedback?: string;
   auditStatus: "pending" | "approved" | "rejected";
   canceled: boolean;
   excluded: boolean;

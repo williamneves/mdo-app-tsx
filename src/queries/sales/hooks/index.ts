@@ -417,10 +417,9 @@ export const getPendingSales = async (): Promise<Sale[]> => {
 };
 
 // Change sale audit status
-export const changeSaleAuditStatus = async (saleID: string, status: "approved" | "rejected"): Promise<Sale> => {
+export const changeSaleAuditStatus = async (saleID: string, status: "approved" | "rejected", auditFeedBack: string): Promise<Sale> => {
   try {
-    const sale = await dbClient.patch(saleID).set({ auditStatus: status }).commit();
-    return getOneSaleById(sale._id);
+    return await dbClient.patch(saleID).set({ auditStatus: status, auditFeedBack: auditFeedBack }).commit();
   } catch (err) {
     throw err;
   }

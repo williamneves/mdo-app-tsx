@@ -15,6 +15,11 @@ export default {
       type: "string"
     },
     {
+      title: "FeedBack de Auditoria",
+      name: "auditFeedBack",
+      type: "string"
+    },
+    {
       title: "Status de Auditoria",
       name: "auditStatus",
       type: "string",
