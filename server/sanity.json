@@ -2,7 +2,7 @@
   "root": true,
   "api": {
     "projectId": "6zwtm47o",
-    "dataset": "development"
+    "dataset": "production"
   },
   "project": {
     "name": "optics-manager"
