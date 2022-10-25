@@ -12,6 +12,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import { useTheme, useMediaQuery } from "@mui/material";
 
 // ** MUI Icons
 import Close from "@mui/icons-material/Close";
@@ -73,7 +74,7 @@ const QuickDialog = (props: QuickDialogProps) => {
     fullWidth,
     maxWidth,
     customCloseComponent,
-    helpPopover,
+    // helpPopover,
     data
   } = props;
 
