@@ -74,26 +74,26 @@ const CreditCardWrapper = styled(Box)(({ theme }) => ({
 
 const TabBilling = () => {
   // ** States
-  const [name, setName] = useState('')
-  const [cvc, setCvc] = useState('')
-  const [cardNumber, setCardNumber] = useState('')
-  const [focus, setFocus] = useState()
-  const [expiry, setExpiry] = useState('')
-  const [paymentMethod, setPaymentMethod] = useState('card')
-  const handleBlur = () => setFocus(undefined)
+  const [name, setName] = useState<any>("");
+  const [cvc, setCvc] = useState<any>("");
+  const [cardNumber, setCardNumber] = useState<any>("");
+  const [focus, setFocus] = useState<any>();
+  const [expiry, setExpiry] = useState<any>("");
+  const [paymentMethod, setPaymentMethod] = useState<any>("card");
+  const handleBlur = () => setFocus(undefined);
 
-  const handleInputChange = ({ target }) => {
-    if (target.name === 'number') {
-      target.value = formatCreditCardNumber(target.value, Payment)
-      setCardNumber(target.value)
-    } else if (target.name === 'expiry') {
-      target.value = formatExpirationDate(target.value)
-      setExpiry(target.value)
-    } else if (target.name === 'cvc') {
-      target.value = formatCVC(target.value, cardNumber, Payment)
-      setCvc(target.value)
+  const handleInputChange = ({ target }: any) => {
+    if (target.name === "number") {
+      target.value = formatCreditCardNumber(target.value, Payment);
+      setCardNumber(target.value);
+    } else if (target.name === "expiry") {
+      target.value = formatExpirationDate(target.value);
+      setExpiry(target.value);
+    } else if (target.name === "cvc") {
+      target.value = formatCVC(target.value, cardNumber, Payment);
+      setCvc(target.value);
     }
-  }
+  };
 
   return (
     <CardContent>
