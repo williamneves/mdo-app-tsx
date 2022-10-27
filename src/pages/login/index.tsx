@@ -98,13 +98,13 @@ const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ t
 }));
 
 const schema = yup.object().shape({
-  email: yup.string().email("Insira um email válido").required(),
-  password: yup.string().min(5).required()
+  email: yup.string().email("Insira um email válido").required("Email é obrigatório"),
+  password: yup.string().min(6, "Mínimo 6 dígitos").required("Senha é obrigatória")
 });
 
 const defaultValues = {
-  password: "123456",
-  email: "teste@mdo.com"
+  password: "",
+  email: ""
 };
 
 interface FormData {
@@ -263,10 +263,10 @@ const LoginPage = () => {
             </Box>
             <Alert icon={false} sx={{ py: 3, mb: 6, ...bgClasses.primaryLight, "& .MuiAlert-message": { p: 0 } }}>
               <Typography variant="caption" sx={{ mb: 2, display: "block", color: "primary.main" }}>
-                Admin: <strong>admin@materialize.com</strong> / Senha: <strong>admin</strong>
+                O seu email é seu primeiro nome + ultimo nome + _mdo@wisefam.com.br
               </Typography>
               <Typography variant="caption" sx={{ display: "block", color: "primary.main" }}>
-                Cliente: <strong>client@materialize.com</strong> / Senha: <strong>client</strong>
+                Exemplo: <strong>anamaria_mdo@wisefam.com.br</strong>
               </Typography>
             </Alert>
             <form noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
@@ -283,7 +283,7 @@ const LoginPage = () => {
                       onBlur={onBlur}
                       onChange={onChange}
                       error={Boolean(errors.email)}
-                      placeholder="admin@materialize.com"
+                      placeholder="seunome_mdo@wisefam.com.br"
                     />
                   )}
                 />
