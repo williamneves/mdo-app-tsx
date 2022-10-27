@@ -79,3 +79,7 @@ export const useDeleteClientQuery = (queryClient: any) => {
 export const useGetClientByIdQuery = (id: string, options?: Object) => {
   return useQuery(["clients", id], () => useClient.getClientById(id), options);
 }
+
+export const useGetClientByClientNumberQuery = (clientNumber: number, options?: Object) => {
+  return useQuery(["clients", clientNumber], () => useClient.getClientByClientNumber(clientNumber), options);
+}

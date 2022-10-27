@@ -256,8 +256,7 @@ export const updateClient = async (client: Client) => {
   };
 
   try {
-    const result = await dbClient.patch(client._id).set(clientObject).commit();
-    return result;
+    return dbClient.patch(client._id).set(clientObject).commit();
   } catch (error) {
     throw error;
   }
@@ -265,8 +264,7 @@ export const updateClient = async (client: Client) => {
 
 export const deleteClient = async (clientID: string) => {
   try {
-    const response = await dbClient.delete(clientID);
-    return response;
+    return await dbClient.delete(clientID);
   } catch (error) {
     throw error;
   }
@@ -334,4 +332,69 @@ export const getClientById = async (clientID: string) => {
   } catch (error) {
     throw error;
   }
+};
+export const getClientByClientNumber = async (clientNumber: number) => {
+
+  const q = `
+  *[
+    _type == "client"
+    && clientNumber == ${clientNumber}
+  ]{
+     _id,
+      inactive,
+      clientNumber,
+      name,
+      phone,
+      email,
+      birthday,
+      gender,
+      hearAboutUs,
+      cpf,
+      address {
+        street,
+        number,
+        complement,
+        city,
+        state,
+        zipCode,
+      },
+    store -> {
+    _id,
+    inactive,
+    name,
+    taxID,
+    imageURL,
+    address {
+       street,
+       number,
+       complement,
+       city,
+       state,
+       zipCode,
+    },
+  },
+    createdBy-> {
+        _id,
+        name,
+        email,
+        imageURL,
+        imageAsset,
+        role,
+        profile {
+           jobTitle,
+           birthDay,
+           gender,
+           phoneNumbers,
+           bio,
+        }
+    },
+  }
+  `;
+
+  try {
+    return await dbClient.fetch(q);
+  } catch (e) {
+    throw e;
+  }
+
 };
