@@ -29,6 +29,7 @@ const DatePickerInputControlled = (props: DatePickerProps) => {
   } = props;
 
   return (
+    // @ts-ignore
     <InputController
       name={name}
       control={control}

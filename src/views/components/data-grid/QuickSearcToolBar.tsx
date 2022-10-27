@@ -36,7 +36,7 @@ const QuickSearchToolbar = ({ value, onChange, clearSearch }: QuickSearchToolbar
         variant={"standard"}
         value={value}
         onChange={onChange}
-        placeholder="Search…"
+        placeholder="Pesquisar…"
         InputProps={{
           startAdornment: <Magnify fontSize="small" />,
           endAdornment: (

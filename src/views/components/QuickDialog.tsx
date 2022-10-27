@@ -1,5 +1,5 @@
 // ** React Imports
-import { Fragment } from "react";
+import React, { Fragment, forwardRef } from "react";
 import Link from "next/link";
 
 // ** MUI Imports
@@ -12,10 +12,17 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import { useTheme, useMediaQuery } from "@mui/material";
 
 // ** MUI Icons
 import Close from "@mui/icons-material/Close";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+
+// ** Transition
+const Transition = forwardRef(function Transition(props, ref) {
+  // @ts-ignore
+  return <Slide direction={"up"} ref={ref} {...props} />;
+});
 
 interface QuickDialogAction {
   mode: "button" | "link" | "loadingButton";
@@ -31,7 +38,7 @@ interface QuickDialogAction {
     disabled?: boolean;
     loading?: boolean;
     loadingPosition?: "start" | "center" | "end";
-  };
+  }
 }
 
 interface QuickDialogProps {
@@ -47,14 +54,14 @@ interface QuickDialogProps {
     body: string;
     title: string;
     content: string;
-  };
+  }
   data: {
     headerTitle: string;
     headerIcon?: React.ReactNode;
     title: string;
     content: string | React.ReactNode;
     actions: QuickDialogAction[];
-  };
+  }
 }
 
 const QuickDialog = (props: QuickDialogProps) => {
@@ -65,12 +72,15 @@ const QuickDialog = (props: QuickDialogProps) => {
     blockClose,
     fullScreenBreakPoint,
     fullWidth,
-    fullScreen,
     maxWidth,
     customCloseComponent,
-    helpPopover,
+    // helpPopover,
     data
   } = props;
+
+  // ** Hooks
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down(fullScreenBreakPoint || "sm"));
 
   // Switch Actions
   const mappingActions = (action: QuickDialogAction, index: number) => {
@@ -116,7 +126,9 @@ const QuickDialog = (props: QuickDialogProps) => {
   return (
     <Fragment>
       <Dialog
-        fullScreen={fullScreen || false}
+        // @ts-ignore
+        TransitionComponent={Transition}
+        fullScreen={fullScreen}
         fullWidth={fullWidth || false}
         maxWidth={maxWidth || "md"}
         open={open}

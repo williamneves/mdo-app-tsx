@@ -43,7 +43,7 @@ const EditClient = () => {
 };
 
 EditClient.acl = {
-  action: "read",
+  action: "write",
   subject: "street-page"
 };
 

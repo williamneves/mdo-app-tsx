@@ -90,6 +90,8 @@ const NovaVendaWizard = ({ mode, editSale }: NovaVendaWizardProps) => {
   useEffect(() => {
     if (mode === "edit") {
       // ** Set initial data
+      // Force auditStatus to be "pending" if it's "rejected"
+      editSale?.auditStatus === "rejected" && (editSale.auditStatus = "pending");
       // ** Step 1
       setStep1Data({
         _id: editSale?._id,

@@ -62,6 +62,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
   // ** Functions
   // Paid Amount
   const paidAmount = (payments: any) => {
+    if (!payments) return 0;
     let sum = 0;
     payments.forEach((payment: any) => {
       sum += parseFloat(payment.paymentAmount);

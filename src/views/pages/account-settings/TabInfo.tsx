@@ -28,7 +28,7 @@ const CustomInput = forwardRef((props, ref) => {
 
 const TabInfo = () => {
   // ** State
-  const [date, setDate] = useState(null)
+  const [date, setDate] = useState<any>(null)
 
   return (
     <CardContent>

@@ -7,7 +7,7 @@ export type DateRangeOptions =
   | "lastWeek"
   | "thisMonth"
   | "lastMonth"
-  | "lastThreeMonths"
+  | "last3Months"
   | "thisYear"
   | "lastYear"
   | "customPeriod";
@@ -229,7 +229,7 @@ export const createDateRange = (options: DateRangeOptions, customPeriod?: Custom
         totalDays,
       }
 
-    case "lastThreeMonths":
+    case "last3Months":
       startDate = moment().subtract(3, "months").startOf("month");
       endDate = moment().subtract(1, "months").endOf("month");
       pastStartDate = moment().subtract(6, "months").startOf("month");

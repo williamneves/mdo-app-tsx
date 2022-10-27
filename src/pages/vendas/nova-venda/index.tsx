@@ -25,8 +25,8 @@ const NovaVenda = () => {
 }
 
 NovaVenda.acl = {
-  action: 'read',
-  subject: 'acl-page'
+  action: 'create',
+  subject: 'vendor-page'
 }
 
 export default NovaVenda

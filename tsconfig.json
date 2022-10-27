@@ -48,6 +48,9 @@
       "components/*": [
         "./src/views/components/*"
       ],
+      "interfaces/*": [
+        "./src/interfaces/*"
+      ],
     }
   },
   "include": [
