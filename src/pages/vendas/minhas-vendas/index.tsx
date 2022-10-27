@@ -116,4 +116,9 @@ const MinhasVendas = () => {
   );
 };
 
+MinhasVendas.acl = {
+  action: 'read',
+  subject: 'vendor-page'
+}
+
 export default MinhasVendas;

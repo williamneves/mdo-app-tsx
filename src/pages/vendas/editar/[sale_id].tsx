@@ -64,7 +64,7 @@ const EditarVenda = () => {
 
 EditarVenda.acl = {
   action: "read",
-  subject: "acl-page"
+  subject: "vendor-page"
 };
 
 export default EditarVenda;

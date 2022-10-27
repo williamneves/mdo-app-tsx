@@ -251,7 +251,7 @@ const StreetDailyReport = () => {
 
 StreetDailyReport.acl = {
   action: "read",
-  subject: "StreetDailyReport"
+  subject: "street-page"
 };
 
 export default StreetDailyReport;

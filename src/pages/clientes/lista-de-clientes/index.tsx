@@ -242,7 +242,7 @@ const ClientList = () => {
 
 ClientList.acl = {
   action: "read",
-  subject: "street-page"
+  subject: "general-page"
 };
 
 export default ClientList;

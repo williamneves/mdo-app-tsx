@@ -33,13 +33,13 @@ const navigation = (): VerticalNavItemsType => {
       icon: EmailOutline,
       path: '/second-page'
     },
-    {
-      title: 'Access Control',
-      icon: ShieldOutline,
-      path: '/acl',
-      action: 'read',
-      subject: 'acl-page'
-    },
+    // {
+    //   title: 'Access Control',
+    //   icon: ShieldOutline,
+    //   path: '/acl',
+    //   action: 'read',
+    //   subject: 'acl-page'
+    // },
     {
       sectionTitle: "Clientes",
       action: "read",
@@ -78,13 +78,13 @@ const navigation = (): VerticalNavItemsType => {
       action: "read",
       subject: "vendor-page",
       children: [
-        {
-          title: "Dashboard",
-          path: "/vendas/dashboard",
-          icon: DashboardTwoToneIcon,
-          action: "read",
-          subject: "vendor-page",
-        },
+        // {
+        //   title: "Dashboard",
+        //   path: "/vendas/dashboard",
+        //   icon: DashboardTwoToneIcon,
+        //   action: "read",
+        //   subject: "vendor-page",
+        // },
         {
           title: "Nova Venda",
           path: "/vendas/nova-venda",
@@ -115,7 +115,7 @@ const navigation = (): VerticalNavItemsType => {
     {
       sectionTitle: "Administração",
       action: "manage",
-      subject: "acl-page",
+      subject: "manager-page",
     },
     {
       title: "Vendedores",
