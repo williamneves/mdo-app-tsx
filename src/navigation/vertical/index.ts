@@ -16,6 +16,8 @@ import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
 import StarTwoToneIcon from '@mui/icons-material/StarTwoTone';
 import PendingTwoToneIcon from '@mui/icons-material/PendingTwoTone';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import PostAddIcon from '@mui/icons-material/PostAdd';
+import ArticleIcon from '@mui/icons-material/Article';
 
 
 // ** Type import
@@ -66,6 +68,26 @@ const navigation = (): VerticalNavItemsType => {
           subject: "street-page",
         },
       ],
+    },
+    {
+      sectionTitle: "Street",
+      action: "read",
+      subject: "street-page",
+    },
+    {
+      title: "Reports",
+      icon: ArticleIcon,
+      action: "read",
+      subject: "street-page",
+      children: [
+        {
+          title: "Novo Report Diário",
+          path: "/street/daily-report",
+          icon: PostAddIcon,
+          action: "read",
+          subject: "street-page",
+        },
+      ]
     },
     {
       sectionTitle: "Vendedor",
@@ -136,6 +158,16 @@ const navigation = (): VerticalNavItemsType => {
           path: "/manager/comissoes/vendedores",
           icon: VerifiedTwoToneIcon,
         },
+      ],
+    },{
+      title: "Streets",
+      icon: SettingsTwoToneIcon,
+      children: [
+        {
+          title: "Aprovar Report Diário",
+          path: "/manager/aprovar-daily-report",
+          icon: VerifiedTwoToneIcon,
+        }
       ],
     },
     {
