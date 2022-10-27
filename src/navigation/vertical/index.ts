@@ -49,7 +49,7 @@ const navigation = (): VerticalNavItemsType => {
       title: "Clientes",
       icon: LocalMallTwoToneIcon,
       action: "read",
-      subject: "vendor-page",
+      subject: "street-page",
       children: [
         {
           title: "Novo Cliente",
@@ -89,7 +89,7 @@ const navigation = (): VerticalNavItemsType => {
           title: "Nova Venda",
           path: "/vendas/nova-venda",
           icon: AddCircleTwoToneIcon,
-          action: "read",
+          action: "create",
           subject: "vendor-page",
           badgeContent: 'Novo',
           badgeColor: 'primary'
@@ -98,7 +98,7 @@ const navigation = (): VerticalNavItemsType => {
           title: "Editar Venda",
           path: "/vendas/editar",
           icon: PublishedWithChangesIcon,
-          action: "read",
+          action: "update",
           subject: "vendor-page",
           badgeColor: 'primary',
           disabled: true

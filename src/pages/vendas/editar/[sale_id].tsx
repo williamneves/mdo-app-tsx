@@ -63,7 +63,7 @@ const EditarVenda = () => {
 };
 
 EditarVenda.acl = {
-  action: "read",
+  action: "update",
   subject: "vendor-page"
 };
 

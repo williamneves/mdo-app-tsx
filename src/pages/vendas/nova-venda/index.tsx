@@ -25,7 +25,7 @@ const NovaVenda = () => {
 }
 
 NovaVenda.acl = {
-  action: 'read',
+  action: 'create',
   subject: 'vendor-page'
 }
 
