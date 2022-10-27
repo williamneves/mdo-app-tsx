@@ -424,3 +424,29 @@ export const changeSaleAuditStatus = async (saleID: string, status: "approved" |
     throw err;
   }
 };
+
+// Get sales by sale number
+export const getSaleBySaleNumber = async (saleNumber: number): Promise<Sale[]> => {
+  try {
+    const sale = await dbClient.fetch(
+      `*[_type=="sale" && saleNumber==${saleNumber}]{
+        ...,
+        "origin": userReferrer[]->,
+        user->,
+        "vendor": user->,
+        client->,
+        store->,
+        paymentMethod->,
+        products[] {
+          ...,
+          product->,
+        }
+      }`,
+      { saleNumber: saleNumber }
+    );
+    console.log(sale);
+    return sale;
+  } catch (err) {
+    throw err;
+  }
+};

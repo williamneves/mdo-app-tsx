@@ -202,3 +202,16 @@ export const useChangeSaleAuditStatusQuery = (queryClient: any) => {
       }
     });
 };
+
+export const useGetSaleBySaleNumberQuery = (saleNumber: number, options?: Object) => {
+  return useQuery(["sale", saleNumber],
+    () => api.getSaleBySaleNumber(saleNumber),
+    {
+      // 1hr stale time
+      staleTime: 1000 * 60 * 60,
+      // 12hr cache time
+      cacheTime: 1000 * 60 * 60 * 12,
+      //
+      ...options
+    });
+};
