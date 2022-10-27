@@ -389,8 +389,6 @@ export const updateEntireSale = async (sale: Sale): Promise<Sale> => {
 
 };
 
-
-
 // Get pending sales
 const getPendingSalesQ = `
 *[_type=="sale" && auditStatus=="pending"]{
@@ -446,6 +444,14 @@ export const getSaleBySaleNumber = async (saleNumber: number): Promise<Sale[]> =
     );
     console.log(sale);
     return sale;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const updateSaleClient = async (saleID: string, clientID: string): Promise<Sale> => {
+  try {
+    return await dbClient.patch(saleID).set({ client: { _ref: clientID, _type: "reference" } }).commit();
   } catch (err) {
     throw err;
   }
