@@ -143,6 +143,9 @@ const AuthProvider = ({ children }: Props) => {
       // ** Set the user
       setUser(user);
 
+      // ** Set the selected store
+      setSelectedStore(user.stores[0]);
+
       // ** Store User in Local Storage
       // Create Expiration Date with 12 hours expiration in milliseconds
       setLocalStorageUser(user)
