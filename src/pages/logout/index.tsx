@@ -4,6 +4,8 @@ import {useEffect} from "react";
 // ** Import Next router
 import {useRouter} from "next/router";
 
+import FallbackSpinner from "src/@core/components/spinner";
+
 // ** Import authHook
 import { useAuth } from "src/hooks/useAuth";
 
@@ -16,7 +18,7 @@ const LogoutPage = () => {
     router.push("/login");
   } , []);
 
-  return null;
+  return <FallbackSpinner />;
 }
 
 LogoutPage.acl = {

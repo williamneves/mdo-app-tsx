@@ -146,6 +146,8 @@ const AuthProvider = ({ children }: Props) => {
       // ** Store User in Local Storage
       // Create Expiration Date with 12 hours expiration in milliseconds
       setLocalStorageUser(user)
+      setSelectedStore(user.stores[0]) // Set selected store
+
 
       const returnUrl = router.query.returnUrl;
       const redirectURL = returnUrl && returnUrl !== "/" ? returnUrl : "/";
