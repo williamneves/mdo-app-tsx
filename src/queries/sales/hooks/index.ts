@@ -424,3 +424,21 @@ export const changeSaleAuditStatus = async (saleID: string, status: "approved" |
     throw err;
   }
 };
+
+// Remove sale
+export const removeSale = async (saleID: string): Promise<Sale> => {
+  try {
+    return await dbClient.delete(saleID);
+  } catch (err) {
+    throw err;
+  }
+};
+
+// Update sale by key and value
+export const updateSaleByKeyAndValue = async (saleID: string, key: string, value: any): Promise<Sale> => {
+  try {
+    return await dbClient.patch(saleID).set({ [key]: value }).commit();
+  } catch (err) {
+    throw err;
+  }
+};

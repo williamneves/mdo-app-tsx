@@ -288,8 +288,8 @@ export default {
   ],
   preview: {
     select: {
-      title: "saleAmount",
-      subtitle: "date",
+      title: "saleNumber",
+      subtitle: "saleAmount",
     },
   },
   orderings: [
@@ -313,5 +313,15 @@ export default {
         },
       ],
     },
+    {
+      title: "Numero da Venda",
+      name: "saleNumber",
+      by: [
+        {
+          field: "saleNumber",
+          direction: "desc",
+        }
+      ]
+    }
   ],
 };

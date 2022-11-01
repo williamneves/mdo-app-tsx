@@ -202,3 +202,46 @@ export const useChangeSaleAuditStatusQuery = (queryClient: any) => {
       }
     });
 };
+
+// Remove Sale
+export const useRemoveSaleMutation = (queryClient: any) => {
+  return useMutation((saleID: string) => api.removeSale(saleID),
+    {
+      onSuccess: (saleID) => {
+        queryClient.setQueryData(["sales", "all"], (old: any) => {
+          if (old) {
+            return old.filter((sale: any) => sale._id !== saleID);
+          }
+          return [];
+        });
+        queryClient.invalidateQueries(["sales", "all"]);
+      }
+    });
+};
+
+// Update Sale by key value
+interface UpdateSaleByKeyValueParams {
+  saleID: string;
+  key: string;
+  value: any;
+}
+
+export const useUpdateSaleByKeyValueMutation = (queryClient: any) => {
+  return useMutation(({ saleID, key, value }: UpdateSaleByKeyValueParams) => api.updateSaleByKeyAndValue(saleID, key, value),
+    {
+      onSuccess: (updatedSale) => {
+        queryClient.setQueryData(["sales", "all"], (old: any) => {
+          if (old) {
+            return old.map((sale: any) => {
+              if (sale._id === updatedSale?._id) {
+                return updatedSale;
+              }
+              return sale;
+            });
+          }
+          return [updatedSale];
+        });
+        queryClient.invalidateQueries(["sales", "all"]);
+      }
+    });
+};

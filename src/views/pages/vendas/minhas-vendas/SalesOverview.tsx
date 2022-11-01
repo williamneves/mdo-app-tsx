@@ -68,7 +68,7 @@ const SalesOverview = (props: SalesOverviewProps): JSX.Element => {
   })
 
   const caption = () => {
-    return `Total de ${formattedCurrencyWithSymbol(salesFunc.totalSaleAmount(vendorSales!))} em vendas`;
+    return `Total da Loja: ${formattedCurrencyWithSymbol(salesFunc.totalSaleAmount(storeSales!))}`;
   }
 
   useEffect(() => {
@@ -108,25 +108,25 @@ const SalesOverview = (props: SalesOverviewProps): JSX.Element => {
   const salesDataDefault: SaleDataType[] = [
     {
       stats: formattedCurrencyWithSymbol(salesFunc.averageSaleAmount(vendorSales!)),
-      color: "primary",
+      color: "secondary",
       title: "Ticket Médio",
       icon: <AccountOutline />
     },
     {
       stats: formattedCurrencyWithSymbol(salesFunc.highestSaleAmount(vendorSales!)),
-      color: "warning",
+      color: "success",
       title: "Maior Venda",
       icon: <Poll />
     }, {
       stats: salesFunc.scoreAverage(vendorSales!).toFixed(2),
-      color: "warning",
+      color: "secondary",
       title: "Score Médio",
       icon: <Poll />
     },
     {
-      stats: formattedCurrencyWithSymbol(salesFunc.totalSaleAmount(storeSales!)),
-      color: "secondary",
-      title: "Vendas da Loja",
+      stats: formattedCurrencyWithSymbol(salesFunc.totalSaleAmount(vendorSales!)),
+      color: "success",
+      title: "Minhas Vendas",
       icon: <TrendingUp />
     }
   ];

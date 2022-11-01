@@ -1,4 +1,5 @@
 // ** React Imports
+import AlertAction from "components/AlertAction";
 import React, { Fragment, useEffect, useState } from "react";
 
 // ** Next Router
@@ -30,19 +31,25 @@ import HourglassTopTwoToneIcon from "@mui/icons-material/HourglassTopTwoTone";
 import ThumbDownAltTwoToneIcon from "@mui/icons-material/ThumbDownAltTwoTone";
 import VisibilityTwoToneIcon from "@mui/icons-material/VisibilityTwoTone";
 import BorderColorTwoToneIcon from "@mui/icons-material/BorderColorTwoTone";
+import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteForeverTwoToneIcon from "@mui/icons-material/DeleteForeverTwoTone";
 
 // ** Interface
 import Sale from "interfaces/Sale";
 
 
 // Third Party Imports
-import moment from "moment";
+import toast from "react-hot-toast";
 import { filterSales, matchSearchFilterByKeys } from "src/@utils/filters";
 import { formattedCurrencyWithSymbol } from "src/@utils/formatCurrency";
 
 // ** Components
 import SimpleDialog, { DataDialog } from "components/SimpleDialog";
 import { SaleCardList } from "src/views/pages/vendas/nova-venda/NewSaleMockup";
+
+// ** Api Imports
+import {useQueryClient} from "@tanstack/react-query";
+import * as salesQ from "src/queries/sales";
 
 // ** Rendered Element
 interface SalesDataGridProps {
@@ -93,6 +100,10 @@ const auditStatusColors = (status: "pending" | "approved" | "rejected") => {
 const SalesDataGrid = (props: SalesDataGridProps): JSX.Element => {
 
   const router = useRouter();
+  const queryClient = useQueryClient();
+
+  // ** Api
+  const deleteSale = salesQ.useUpdateSaleByKeyValueMutation(queryClient);
 
   // ** Props
   const {
@@ -107,22 +118,52 @@ const SalesDataGrid = (props: SalesDataGridProps): JSX.Element => {
   const filteredData = sales.length > 0 ? filterSales(sales, searchText) : [];
   const [viewSaleData, setViewSaleData] = useState<DataDialog | null>(null);
   const [openViewSaleDialog, setOpenViewSaleDialog] = useState<boolean>(false);
+  const [selectedSaleId, setSelectedSaleId] = useState<string>("");
+  const [deleteSalesAlert, setDeleteSalesAlert] = useState<boolean>(false);
 
   // ** Handlers
   const handleSaleOpen = (id: string) => {
+    setSelectedSaleId(id);
     const sale = sales.find((sale) => sale._id === id);
     const dialogData: DataDialog = {
       title: "Detalhes da Venda",
       message: <SaleCardList newSaleMockup={sale!} />,
       confirm: sale?.auditStatus === "approved" ? "Fechar" : "Editar",
-      cancel: sale?.auditStatus === "approved" ? null: "Fechar",
+      cancel: sale?.auditStatus === "approved" ? null : "Fechar",
       confirmColor: "primary",
       cancelColor: "secondary",
-      confirmAction: () => sale?.auditStatus === "approved" ? () => setOpenViewSaleDialog(true): router.push(`/vendas/editar/${id}`),
-    }
+      confirmAction: () => sale?.auditStatus === "approved" ? () => setOpenViewSaleDialog(true) : router.push(`/vendas/editar/${id}`),
+      extraAction: {
+        label: "Venda",
+        color: "error",
+        action: () => setDeleteSalesAlert(true),
+        variant: "outlined",
+        endIcon: <DeleteIcon />
+      }
+    };
     setViewSaleData(dialogData);
     setOpenViewSaleDialog(true);
   };
+
+  const handleDeleteSales = async () => {
+    const deleteSalesToast = toast.loading("Excluindo venda...");
+    setDeleteSalesAlert(true);
+    try {
+      await deleteSale.mutateAsync({saleID: selectedSaleId, key: "excluded", value: true});
+      toast.success("Venda excluída com sucesso!", {
+        id: deleteSalesToast
+      });
+      setOpenViewSaleDialog(false);
+      setDeleteSalesAlert(false);
+      setSelectedSaleId("");
+    }
+    catch (error) {
+      toast.error("Erro ao excluir venda!", {
+        id: deleteSalesToast
+      });
+      setDeleteSalesAlert(false);
+    }
+  }
 
   // ** Columns
   const columns: GridColumns = [
@@ -328,6 +369,19 @@ const SalesDataGrid = (props: SalesDataGridProps): JSX.Element => {
         open={Boolean(viewSaleData) && openViewSaleDialog}
         setOpen={setOpenViewSaleDialog}
         data={viewSaleData!}
+      />
+      <AlertAction
+        open={deleteSalesAlert}
+        setOpen={setDeleteSalesAlert}
+        alertType={"warning"}
+        title={"Aviso de exclusão!"}
+        content={"Você tem certeza que quer excluir essa venda?"}
+        closeText={"Fechar"}
+        agreeAction={handleDeleteSales}
+        agreeText={"Excluir Venda"}
+        agreeColor={"error"}
+        agreeVariant={"contained"}
+        agreeIcon={<DeleteForeverTwoToneIcon />}
       />
     </Fragment>
   );
