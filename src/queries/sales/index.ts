@@ -1,3 +1,4 @@
+import { reference } from "@popperjs/core";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import * as api from "./hooks";
 import Sale from "src/interfaces/Sale";
@@ -162,9 +163,9 @@ export const useAllSalesByReferenceAndDateRangeQuery = (storeRef: string, dateRa
 }
 
 // Get Pending Sales
-export const usePendingSalesQuery = (options?: Object) => {
+export const usePendingSalesQuery = (referenceID: string, options?: Object) => {
   return useQuery(["sales", "all"],
-    api.getPendingSales,
+    () => api.getPendingSales(referenceID),
     {
       // 1hr stale time
       staleTime: 1000 * 60 * 60,

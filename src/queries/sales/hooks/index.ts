@@ -393,7 +393,13 @@ export const updateEntireSale = async (sale: Sale): Promise<Sale> => {
 
 // Get pending sales
 const getPendingSalesQ = `
-*[_type=="sale" && auditStatus=="pending"]{
+*[
+  _type=="sale" 
+   && auditStatus=="pending"
+   && canceled!=true
+   && excluded!=true
+   && references($storeRef)
+   ]{
   ...,
   "origin": userReferrer[]->,
   user->,
@@ -408,7 +414,7 @@ const getPendingSalesQ = `
 }
 `;
 
-export const getPendingSales = async (): Promise<Sale[]> => {
+export const getPendingSales = async (referenceID: string): Promise<Sale[]> => {
   try {
     return dbClient.fetch(getPendingSalesQ);
   } catch (err) {

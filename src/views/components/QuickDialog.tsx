@@ -12,6 +12,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
+import Slide from "@mui/material/Slide";
 import { useTheme, useMediaQuery } from "@mui/material";
 
 // ** MUI Icons
