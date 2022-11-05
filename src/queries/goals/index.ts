@@ -4,7 +4,7 @@ import Goal from "@src/interfaces/Goal";
 import Store from "@src/interfaces/Store";
 
 // Get All Goals
-const useGetAllGoalsQuery = (options?: Object) => {
+export const useGetAllGoalsQuery = (options?: Object) => {
   return useQuery(["goals", "all"], goalsApi.getAllGoals, {
     // 1hr stale time
     staleTime: 1000 * 60 * 60,
@@ -17,7 +17,7 @@ const useGetAllGoalsQuery = (options?: Object) => {
 }
 
 // Get Goals By Reference
-const useGetGoalsByStoreQuery = (storeId: string, options?: Object) => {
+export const useGetGoalsByStoreQuery = (storeId: string, options?: Object) => {
   return useQuery(["goals", "store", storeId], () => goalsApi.getGoalsByStore(storeId), {
     // 1hr stale time
     staleTime: 1000 * 60 * 60,
@@ -31,8 +31,23 @@ const useGetGoalsByStoreQuery = (storeId: string, options?: Object) => {
   });
 }
 
+// Get Main Goals By Reference
+export const useGetMainGoalsByStoreQuery = (storeId: string, dateStart: string, dateEnd: string, options?: Object) => {
+  return useQuery(["goals", "main", storeId], () => goalsApi.getMainGoalsByStore(storeId, dateStart, dateEnd), {
+    // 1hr stale time
+    staleTime: 1000 * 60 * 60,
+    // 6hr cache time
+    cacheTime: 1000 * 60 * 60 * 6,
+    //
+    refetchOnWindowFocus: true,
+    ...options,
+    
+    enabled: !!storeId && !!dateStart && !!dateEnd,
+  });
+}
+
 // Get Goal By Id
-const useGetGoalByIdQuery = (id: string, options?: Object) => {
+export const useGetGoalByIdQuery = (id: string, options?: Object) => {
   return useQuery(["goals", "id", id], () => goalsApi.getGoalById(id), {
     // 1hr stale time
     staleTime: 1000 * 60 * 60,
@@ -46,7 +61,7 @@ const useGetGoalByIdQuery = (id: string, options?: Object) => {
 }
 
 // Create Goal
-const useCreateGoalMutation = (queryClient: any) => {
+export const useCreateGoalMutation = (queryClient: any) => {
   return useMutation((goal: Goal) => goalsApi.createGoal(goal), {
     onSuccess: (newGoal: Goal) => {
       const goals = queryClient.getQueryData(["goals", "all"]);
@@ -71,7 +86,7 @@ const useCreateGoalMutation = (queryClient: any) => {
 }
 
 // Update Goal
-const useUpdateGoalMutation = (queryClient: any) => {
+export const useUpdateGoalMutation = (queryClient: any) => {
   return useMutation(({id, goal}: {id: string, goal:Partial<Goal>}) => goalsApi.updateGoal(id, goal), {
     onSuccess: (updatedGoal: Goal) => {
       const goals = queryClient.getQueryData(["goals", "all"]);

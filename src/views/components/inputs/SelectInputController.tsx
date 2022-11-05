@@ -67,6 +67,7 @@ export const SelectInputController = (props: SelectInputProps) => {
             {...rest}
             select
             variant={variant}
+            label={props.label}
             value={value}
             onChange={onChange}
             error={invalid}

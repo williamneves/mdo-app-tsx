@@ -35,7 +35,8 @@ export const TextInputControlled = (props: TextInputProps) => {
     startAdornment,
     endAdornment,
     variant,
-    readOnly
+    readOnly,
+    ...rest
   } = props;
 
   // @ts-ignore
@@ -46,10 +47,11 @@ export const TextInputControlled = (props: TextInputProps) => {
         errors={errors}
         render={({ field: { value, onChange }, fieldState: { invalid } }) => (
           <TextField
-            {...props}
+            {...rest}
             variant={variant}
             value={value}
             onChange={onChange}
+            label={label}
             placeholder={placeholder || label}
             error={invalid}
             aria-describedby={`${name}-text-input-form`}

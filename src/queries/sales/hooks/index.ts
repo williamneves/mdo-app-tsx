@@ -272,7 +272,7 @@ export const getSalesByReferenceByDateRange = async (
   storeRef: string,
   { startDate, endDate }: { startDate: string; endDate: string }
 ): Promise<Sale[]> => {
-  console.log(startDate, endDate, storeRef);
+  console.log('dateRange',startDate, endDate, storeRef);
   try {
     return dbClient.fetch(getSalesByReferenceByDateRangeQ, {
       storeRef: storeRef,

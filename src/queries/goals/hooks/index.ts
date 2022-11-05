@@ -35,6 +35,24 @@ const goalsByStoreGROQ =  groq`
     },
   }`
 
+const mainGoalsByStoreGROQ =  groq`
+*[_type == "goal" 
+&& $storeId in targetStores[]->_id
+&& mainStoreGoal == true
+&& goalRange.dateStart <= $dateStart
+&& goalRange.dateEnd >= $dateEnd
+] {
+  ...,
+  targetStores[]->{
+    _id,
+    inactive,
+    name,
+    taxID,
+    imageURL,
+    address,
+  },
+}`
+
 const goalById = groq`
   *[_type == "goal" && _id == $id] {
     ...,
@@ -52,12 +70,36 @@ const goalById = groq`
 // ** Hooks **
 // * All Goals
 export const getAllGoals = async () => {
-  return dbClient.fetch<Goal[]>(allGoalsGROQ)
+  try {
+    return dbClient.fetch<Goal[]>(allGoalsGROQ)
+  }
+  catch (error) {
+    throw error
+  }
 }
 
 // * Goals by Store
 export const getGoalsByStore = async (storeId: string) => {
-  return dbClient.fetch<Goal[]>(goalsByStoreGROQ, {storeId})
+
+  try {
+    return dbClient.fetch<Goal[]>(goalsByStoreGROQ, { storeId })
+  }
+  catch (error) {
+    throw error
+  }
+}
+
+// * Main Goals by Store
+export const getMainGoalsByStore = async (storeId: string, dateStart: string, dateEnd: string) => {
+  console.log("🚀 ~ file: index.ts ~ line 97 ~ getMainGoalsByStore ~ mainGoalsByStoreGROQ, { storeId, dateStart, dateEnd }", mainGoalsByStoreGROQ, { storeId, dateStart, dateEnd })
+  
+  try {
+    return dbClient.fetch<Goal[]>(mainGoalsByStoreGROQ, { storeId, dateStart, dateEnd })
+  }
+  catch (error) {
+    throw error
+  }
+
 }
 
 // * Get one Goal by ID

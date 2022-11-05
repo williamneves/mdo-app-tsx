@@ -48,7 +48,7 @@ export default {
     },
     {
       title: 'Tipo de Comissão',
-      name: 'type',
+      name: 'paymentType',
       type: 'string',
       options: {
         list: [
@@ -67,23 +67,40 @@ export default {
           type: 'object',
           fields: [
             {
-              title: 'Descrição do Lançamento',
-              name: 'description',
-              type: 'string',
-            },
-            {
               title: 'Tipo de Lançamento',
               name: 'type',
               type: 'string',
               options: {
                 list: [
+                  { title: 'Vendas', value: 'sales' },
+                  { title: 'Clientes Abordados', value: 'clientsTaken' },
+                  { title: 'Consultas Agendadas', value: 'appointmentsCreated' },
+                  { title: 'Comissão de Participação', value: 'shareBonus' },
+                  { title: 'Metas Gerenciais', value: 'managerBonus' },
+                  { title: 'Outros', value: 'others' },
+                  { title: 'Plano de Saúde', value: 'healthCare' },
+                  { title: 'Desconto de ajuste', value: 'generalDiscount' },
+                ],
+              },
+            },
+            {
+              title: 'Descrição do Lançamento',
+              name: 'description',
+              type: 'string',
+            },
+            {
+              title: 'Tipo de Operação',
+              name: 'operation',
+              type: 'string',
+              options: {
+                list: [
                   {
                     title: 'Entrada',
-                    value: 'bonus',
+                    value: 'add',
                   },
                   {
                     title: 'Saída',
-                    value: 'discount',
+                    value: 'subtract',
                   }
                 ]
               }

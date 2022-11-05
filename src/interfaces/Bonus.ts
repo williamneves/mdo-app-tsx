@@ -5,8 +5,9 @@ import User from "./User"
 import Goal from "./Goal"
 
 export interface IBonusEntries {
+  type: "sales" | "clientsTaken" | "appointmentsCreated" | "shareBonus" | "managerBonus" | "others" | "healthCare" | "generalDiscount"
   description: string
-  type: "bonus" | "discount"
+  operation: "add" | "subtract"
   value: number
 }
 
@@ -15,7 +16,7 @@ export interface IBOnusRange {
   dateEnd: Date | Moment
 }
 
-export type TBonusType = "cash" | "points" | "others";
+export type TBonusPaymentType = "cash" | "points" | "others";
 
 export default interface IBonus extends Partial<SanityDefaultObject> {
   inactive?: boolean
@@ -23,8 +24,8 @@ export default interface IBonus extends Partial<SanityDefaultObject> {
   name: string
   description: string
   bonusRange: IBOnusRange
-  type: TBonusType
   bonusEntries: IBonusEntries[]
+  paymentType: TBonusPaymentType
   bonusAmount: number
   goal: Partial<Goal> | SanityDefaultReference
   user: Partial<User> | SanityDefaultReference
