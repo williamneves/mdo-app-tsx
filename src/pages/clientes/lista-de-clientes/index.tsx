@@ -79,6 +79,7 @@ const ClientList = () => {
   const [dialogData, setDialogData] = useState({});
   const [searchValue, setSearchValue] = useState("");
   const [clientsInReport, setClientsInReport] = useState<string[]>([]);
+  const [onlyStreetClients, setOnlyStreetClients] = useState<boolean>(false);
 
   // Effects
   useEffect(() => {
@@ -89,6 +90,13 @@ const ClientList = () => {
       setClientsInReport(reportClients);
     }
   }, [dailyReports]);
+
+  const getStreetClients = () => {
+    if (user?.role === "streetVendor") {
+      return clientList?.filter((client) => client?.createdBy?._id === user?._id);
+    }
+    return clientList;
+  };
 
   const deleteClientData = (clientID: string) => {
     const toastId = toast.loading("Deletando cliente...");
@@ -219,7 +227,7 @@ const ClientList = () => {
               getRowId={(row) => row._id}
               autoHeight={true}
               loading={isLoading}
-              rows={clientList && clientList.length > 0 && matchSearchFilter(clientList!, searchValue, [...getAllObjectKeys(clientList), "createdBy.name"]) || []}
+              rows={onlyStreetClients ? getStreetClients() : clientList && clientList.length > 0 && matchSearchFilter(clientList!, searchValue, [...getAllObjectKeys(clientList), "createdBy.name"]) || []}
               columns={columns}
               components={{
                 Toolbar: QuickSearchToolbar
@@ -228,7 +236,13 @@ const ClientList = () => {
                 toolbar: {
                   value: searchValue,
                   clearSearch: () => setSearchValue(""),
-                  onChange: (event: React.ChangeEvent<HTMLInputElement>) => setSearchValue(event.target.value)
+                  onChange: (event: React.ChangeEvent<HTMLInputElement>) => setSearchValue(event.target.value),
+                  checkBoxProps: user?.role === "streetVendor" ? {
+                    label: "Meus clientes",
+                    onChange: (event: React.ChangeEvent<HTMLInputElement>) => setOnlyStreetClients(event.target.checked),
+                    checked: onlyStreetClients
+                  }
+                  : null
                 }
               }}
             />
