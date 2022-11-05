@@ -21,15 +21,15 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
-import User from '@src/interfaces/User';
-import Goal from '@src/interfaces/Goal';
-import Store from '@src/interfaces/Store';
-import Sale from '@src/interfaces/Sale';
+import User from 'interfaces/User';
+import Goal from 'interfaces/Goal';
+import Store from 'interfaces/Store';
+import Sale from 'interfaces/Sale';
 
 // ** Import Components
-import BonusForm from './BonusForm';
+import BonusForm from 'src/views/pages/manager/bonus/vendedores/BonusForm';
 
-import { getImageUrl } from '@src/configs/sanityConfig';
+import { getImageUrl } from 'src/configs/sanityConfig';
 
 import { formattedCurrencyWithSymbol} from "src/@utils/formatCurrency";
 

@@ -8,9 +8,9 @@ import {
   MenuItem
 } from '@mui/material';
 import ManageSearchTwoToneIcon from '@mui/icons-material/ManageSearchTwoTone';
-import { monthsOfTheYear, IMonthsOfTheYear, years } from './lancar';
+import { monthsOfTheYear, IMonthsOfTheYear, years } from 'src/pages/manager/bonus/vendedores/lancar';
 
-import Goal from '@src/interfaces/Goal';
+import Goal from 'interfaces/Goal';
 
 interface SelectPeriodAndGoalProps {
   selectedGoalId?: string;

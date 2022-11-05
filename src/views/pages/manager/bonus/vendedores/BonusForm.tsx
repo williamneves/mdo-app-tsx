@@ -2,20 +2,20 @@
 import { useEffect, useState } from "react";
 
 // ** Interfaces Imports
-import User from "@src/interfaces/User";
-import IBonus, { IBonusEntries } from "@src/interfaces/Bonus";
-import Goal from "@src/interfaces/Goal";
-import Store from "@src/interfaces/Store";
-import Sale from "@src/interfaces/Sale";
+import User from "interfaces/User";
+import IBonus, { IBonusEntries } from "interfaces/Bonus";
+import Goal from "interfaces/Goal";
+import Store from "interfaces/Store";
+import Sale from "interfaces/Sale";
 
 // ** MUI Imports
 import { Grid, Box, Button, IconButton, Divider, Typography, Alert } from "@mui/material";
-import Chip from "src/@core/components/mui/chip/index";
+import Chip from "@core/components/mui/chip";
 
 // ** Components Imports
-import TextInputControlled from "@views/components/inputs/TextInputControlled";
-import CurrencyMaskInputControlled from "@views/components/inputs/CurrencyMaskInputControlled";
-import SelectInputController from "@views/components/inputs/SelectInputController";
+import TextInputControlled from "components/inputs/TextInputControlled";
+import CurrencyMaskInputControlled from "components/inputs/CurrencyMaskInputControlled";
+import SelectInputController from "components/inputs/SelectInputController";
 import ControlPointTwoToneIcon from "@mui/icons-material/ControlPointTwoTone";
 import RemoveCircleTwoToneIcon from "@mui/icons-material/RemoveCircleTwoTone";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
@@ -30,7 +30,7 @@ import moment from "moment";
 import "moment-timezone";
 
 
-import saleBonusPerVendor from "@src/@utils/bonusUtils";
+import saleBonusPerVendor from "src/@utils/bonusUtils";
 
 interface IBonusBrief {
   bonusAmount: number;

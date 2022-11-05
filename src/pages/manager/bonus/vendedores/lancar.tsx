@@ -7,7 +7,7 @@ import { Grid, Card, CardContent, CardActions, Typography, Divider } from "@mui/
 // ** MUI Icons Imports
 
 // ** Import Components
-import CardUser from "./CardUser";
+import CardUser from "@views/pages/manager/bonus/vendedores/CardUser";
 
 // ** Import Third Party Components
 import moment, { Moment } from "moment";
@@ -20,7 +20,7 @@ import { useAuth } from "src/hooks/useAuth";
 import * as salesQ from "src/queries/sales";
 import * as goalsQ from "src/queries/goals";
 import { useQueryClient } from "@tanstack/react-query";
-import { SelectPeriodAndGoal } from "./SelectPeriodAndGoal";
+import { SelectPeriodAndGoal } from "@views/pages/manager/bonus/vendedores/SelectPeriodAndGoal";
 
 // Months of the year
 export type IMonthsOfTheYear =
