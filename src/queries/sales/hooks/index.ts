@@ -272,7 +272,7 @@ export const getSalesByReferenceByDateRange = async (
   storeRef: string,
   { startDate, endDate }: { startDate: string; endDate: string }
 ): Promise<Sale[]> => {
-  console.log(startDate, endDate, storeRef);
+  console.log('dateRange',startDate, endDate, storeRef);
   try {
     return dbClient.fetch(getSalesByReferenceByDateRangeQ, {
       storeRef: storeRef,
@@ -389,9 +389,17 @@ export const updateEntireSale = async (sale: Sale): Promise<Sale> => {
 
 };
 
+
+
 // Get pending sales
 const getPendingSalesQ = `
-*[_type=="sale" && auditStatus=="pending"]{
+*[
+  _type=="sale" 
+   && auditStatus=="pending"
+   && canceled!=true
+   && excluded!=true
+   && references($storeRef)
+   ]{
   ...,
   "origin": userReferrer[]->,
   user->,
@@ -406,7 +414,7 @@ const getPendingSalesQ = `
 }
 `;
 
-export const getPendingSales = async (): Promise<Sale[]> => {
+export const getPendingSales = async (referenceID: string): Promise<Sale[]> => {
   try {
     return dbClient.fetch(getPendingSalesQ);
   } catch (err) {
@@ -423,35 +431,19 @@ export const changeSaleAuditStatus = async (saleID: string, status: "approved" |
   }
 };
 
-// Get sales by sale number
-export const getSaleBySaleNumber = async (saleNumber: number): Promise<Sale[]> => {
+// Remove sale
+export const removeSale = async (saleID: string): Promise<Sale> => {
   try {
-    const sale = await dbClient.fetch(
-      `*[_type=="sale" && saleNumber==${saleNumber}]{
-        ...,
-        "origin": userReferrer[]->,
-        user->,
-        "vendor": user->,
-        client->,
-        store->,
-        paymentMethod->,
-        products[] {
-          ...,
-          product->,
-        }
-      }`,
-      { saleNumber: saleNumber }
-    );
-    console.log(sale);
-    return sale;
+    return await dbClient.delete(saleID);
   } catch (err) {
     throw err;
   }
 };
 
-export const updateSaleClient = async (saleID: string, clientID: string): Promise<Sale> => {
+// Update sale by key and value
+export const updateSaleByKeyAndValue = async (saleID: string, key: string, value: any): Promise<Sale> => {
   try {
-    return await dbClient.patch(saleID).set({ client: { _ref: clientID, _type: "reference" } }).commit();
+    return await dbClient.patch(saleID).set({ [key]: value }).commit();
   } catch (err) {
     throw err;
   }

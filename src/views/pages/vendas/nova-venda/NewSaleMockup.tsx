@@ -3,6 +3,9 @@ import FaceIcon from "@mui/icons-material/Face";
 import Face3Icon from "@mui/icons-material/Face3";
 import PaidIcon from "@mui/icons-material/Paid";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
+import FindInPageTwoToneIcon from "@mui/icons-material/FindInPageTwoTone";
+import LocalHospitalTwoToneIcon from "@mui/icons-material/LocalHospitalTwoTone";
+import FormatColorTextTwoToneIcon from "@mui/icons-material/FormatColorTextTwoTone";
 import TagIcon from "@mui/icons-material/Tag";
 import TodayIcon from "@mui/icons-material/Today";
 import { Avatar, List, ListItem, ListItemButton, ListItemIcon, ListItemText, ListSubheader } from "@mui/material";
@@ -13,6 +16,22 @@ import Sale from "src/interfaces/Sale";
 interface SaleCardProps {
   newSaleMockup: Sale | null;
 }
+
+const outputOrigins = (origins: any[]) => {
+  let output = "";
+
+  origins.forEach((origin, index) => {
+    console.log(origin);
+    output += origin.displayName;
+    if (index < origins.length - 1) {
+      output += ", ";
+    }
+  });
+
+  console.log(output);
+
+  return output;
+};
 
 export function SaleCardList({ newSaleMockup }: SaleCardProps) {
   return <List dense subheader={<ListSubheader>Resumo da Venda</ListSubheader>}>
@@ -100,8 +119,45 @@ export function SaleCardList({ newSaleMockup }: SaleCardProps) {
         </ListItemIcon>
         <ListItemText
           primary={`Forma de pagamento: ${newSaleMockup?.paymentMethod?.title || "Dinheiro"}`}
+          secondary={
+            newSaleMockup?.paymentMethod?.paymentType === "creditCard" || newSaleMockup?.paymentMethod?.paymentType === "installment" || newSaleMockup?.paymentMethod?.paymentType === "other"
+              ? `Parcelas: ${newSaleMockup?.splitQuantity || 1}`
+              : null
+          }
         />
       </ListItemButton>
     </ListItem>
+    <ListItem disablePadding>
+      <ListItemButton>
+        <ListItemIcon>
+          <FindInPageTwoToneIcon />
+        </ListItemIcon>
+        <ListItemText
+          primary={`Origem do Cliente: ${outputOrigins(newSaleMockup?.origin!) || "Indefinido"}`}
+        />
+      </ListItemButton>
+    </ListItem>
+    <ListItem disablePadding>
+      <ListItemButton>
+        <ListItemIcon>
+          <LocalHospitalTwoToneIcon />
+        </ListItemIcon>
+        <ListItemText
+          primary={newSaleMockup?.schedule ? `Cliente Fez Consulta` : `Cliente Não Fez Consulta`}
+          secondary={newSaleMockup?.scheduleDiscount ? `Teve desconto na consulta` : null}
+        />
+      </ListItemButton>
+    </ListItem>
+    {newSaleMockup && newSaleMockup.observations &&
+      <ListItem disablePadding>
+        <ListItemButton>
+          <ListItemIcon>
+            <LocalHospitalTwoToneIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary={newSaleMockup.observations}
+          />
+        </ListItemButton>
+      </ListItem>}
   </List>;
 }

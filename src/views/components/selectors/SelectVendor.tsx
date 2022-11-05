@@ -40,12 +40,13 @@ const SelectVendor = ({ selectedUser: preSelectedUser }: SelectVendorProps): JSX
         disabled={user!.role !== "admin"}
       >
         {usersStoreList.map((user: User) => {
-          return (
-            // @ts-ignore
-            <MenuItem key={user._id} value={user}>
-              {user.name}
-            </MenuItem>
-          );
+          if (user.role === "vendor")
+            return (
+              // @ts-ignore
+              <MenuItem key={user._id} value={user}>
+                {user.name}
+              </MenuItem>
+            );
         })
         }
       </TextField>

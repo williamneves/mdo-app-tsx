@@ -29,7 +29,7 @@ const defineRulesFor = (role: string, subject: string) => {
     can(["read"], "street-page");
     can(["read"], "acl-page");
     can(["read"], "acl-page2");
-  } else if (role === "street") {
+  } else if (role === "streetVendor") {
     // can('manage', 'all')
     can(["manage"], "street-page");
     can(["manage"], "user-page");

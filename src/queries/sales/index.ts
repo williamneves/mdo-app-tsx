@@ -1,3 +1,4 @@
+import { reference } from "@popperjs/core";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import * as api from "./hooks";
 import Sale from "src/interfaces/Sale";
@@ -162,9 +163,9 @@ export const useAllSalesByReferenceAndDateRangeQuery = (storeRef: string, dateRa
 }
 
 // Get Pending Sales
-export const usePendingSalesQuery = (options?: Object) => {
+export const usePendingSalesQuery = (referenceID: string, options?: Object) => {
   return useQuery(["sales", "all"],
-    api.getPendingSales,
+    () => api.getPendingSales(referenceID),
     {
       // 1hr stale time
       staleTime: 1000 * 60 * 60,
@@ -203,25 +204,45 @@ export const useChangeSaleAuditStatusQuery = (queryClient: any) => {
     });
 };
 
-export const useGetSaleBySaleNumberQuery = (saleNumber: number, options?: Object) => {
-  return useQuery(["sale", saleNumber],
-    () => api.getSaleBySaleNumber(saleNumber),
+// Remove Sale
+export const useRemoveSaleMutation = (queryClient: any) => {
+  return useMutation((saleID: string) => api.removeSale(saleID),
     {
-      // 1hr stale time
-      staleTime: 1000 * 60 * 60,
-      // 12hr cache time
-      cacheTime: 1000 * 60 * 60 * 12,
-      //
-      ...options
+      onSuccess: (saleID) => {
+        queryClient.setQueryData(["sales", "all"], (old: any) => {
+          if (old) {
+            return old.filter((sale: any) => sale._id !== saleID);
+          }
+          return [];
+        });
+        queryClient.invalidateQueries(["sales", "all"]);
+      }
     });
 };
 
-export const useUpdateClientSaleQuery = (queryClient: any) => {
-  return useMutation(({ saleID, clientID }: { saleID: string, clientID: string }) => api.updateSaleClient(saleID, clientID),
+// Update Sale by key value
+interface UpdateSaleByKeyValueParams {
+  saleID: string;
+  key: string;
+  value: any;
+}
+
+export const useUpdateSaleByKeyValueMutation = (queryClient: any) => {
+  return useMutation(({ saleID, key, value }: UpdateSaleByKeyValueParams) => api.updateSaleByKeyAndValue(saleID, key, value),
     {
       onSuccess: (updatedSale) => {
-        queryClient.setQueryData(["sales"], () => [updatedSale]);
-        queryClient.invalidateQueries(["sales"]);
+        queryClient.setQueryData(["sales", "all"], (old: any) => {
+          if (old) {
+            return old.map((sale: any) => {
+              if (sale._id === updatedSale?._id) {
+                return updatedSale;
+              }
+              return sale;
+            });
+          }
+          return [updatedSale];
+        });
+        queryClient.invalidateQueries(["sales", "all"]);
       }
     });
 };

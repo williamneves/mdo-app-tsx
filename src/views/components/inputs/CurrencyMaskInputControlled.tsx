@@ -14,7 +14,7 @@ import { FieldErrors } from "react-hook-form";
 const numericSetup = {
   thousandSeparator: ".",
   allowNegative: false,
-  allowedDecimalSeparators: ["%", ",", "/", " ", "-"],
+  allowedDecimalSeparators: ["%", ",", "/", " ", "-", "."],
   decimalScale: 2,
   decimalSeparator: ","
 };

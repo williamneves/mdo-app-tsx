@@ -1,7 +1,7 @@
 import * as salesQ from "src/queries/sales";
 
 // ** React Imports
-import { useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 
 // ** MUI Imports
 import Box from "@mui/material/Grid";
@@ -37,16 +37,20 @@ import DialogContent from "components/DialogContent";
 
 // ** Utils
 import { formattedCurrencyWithSymbol } from "src/@utils/formatCurrency";
-import { DateRangeOptions, CustomPeriod, createDateRange } from "src/@utils/createDateRange";
+import { DateRangeOptions, CustomPeriod, createDateRange, GetDateRange } from "src/@utils/createDateRange";
 
 // ** Hooks Imports
 import { useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import { useAuth } from "src/hooks/useAuth";
 
 // ** Types
 import Sale from "src/interfaces/Sale";
 
 const ApproveSales = () => {
+
+  // ** StoreSelected
+  const { selectedStore } = useAuth();
 
   // ** States
   const [rangeDateStart, setRangeDateStart] = useState<Date>(new Date());
@@ -54,10 +58,18 @@ const ApproveSales = () => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [dialogData, setDialogData] = useState({});
   const [filteredData, setFilteredData] = useState<Sale[] | null>(null);
-  const [dateRange, setDateRange] = useState<DateRangeOptions | "">("");
+  const [dateRange, setDateRange] = useState<DateRangeOptions | "">("thisMonth");
+  const [rangeDate, setRangeDate] = useState<GetDateRange>(createDateRange("thisMonth"));
+
+  useEffect(() => {
+    if (dateRange !== "") {
+      setRangeDate(createDateRange(dateRange));
+    }
+  }, [dateRange]);
 
   // ** React Query Hooks
-  const { data: pendingSales, isLoading: isLoadingSales } = salesQ.usePendingSalesQuery();
+  const { data: pendingSales, isLoading: isLoadingSales } = salesQ
+    .useAllSalesByReferenceAndDateRangeQuery(selectedStore ? selectedStore._id : "", rangeDate.range);
   const queryClient = useQueryClient();
   const changeSaleStatus = salesQ.useChangeSaleAuditStatusQuery(queryClient);
 
@@ -140,8 +152,7 @@ const ApproveSales = () => {
       sale: sale,
       headerTitle: `${action} venda`,
       content: <DialogContent
-        headerMessage={`Realmente deseja ${action} a venda do dia ${moment(sale.date).format("DD/MM/YYYY")}
-       feita por ${sale.user?.name} no valor de ${formattedCurrencyWithSymbol(sale.saleAmount)}?`}
+        headerMessage={`Realmente deseja ${action} a venda do dia ${moment(sale.date).format("DD/MM/YYYY")} feita por ${sale.user?.name} no valor de ${formattedCurrencyWithSymbol(sale.saleAmount)}?`}
         inputProps={{
           control: control,
           errors: errors,
@@ -182,8 +193,10 @@ const ApproveSales = () => {
   };
 
   const getRowData = (): Sale[] => {
-    if (filteredData) return filteredData;
-    if (pendingSales) return pendingSales as Sale[];
+    if (filteredData?.length) {
+      return filteredData;
+    }
+    if (pendingSales?.length) return pendingSales as Sale[];
     return [];
   };
 
@@ -193,15 +206,6 @@ const ApproveSales = () => {
 
   // ** Columns
   const columns = [
-    {
-      headerName: "N. Venda",
-      field: "saleNumber",
-      minWidth: 50,
-      valueGetter: ({ row }: RowData) => row.saleNumber,
-      renderCell: ({ row }: RowData) => (
-        <Typography variant={"body2"}>{row.saleNumber}</Typography>
-      )
-    },
     {
       minWidth: 100,
       headerAlign: "center",
@@ -216,22 +220,31 @@ const ApproveSales = () => {
       )
     },
     {
-      minWidth: 150,
-      headerName: "Cliente",
-      field: "client",
-      valueGetter: ({ row }: RowData) => row.client.name,
-      renderCell: ({ row }: RowData) => (
-        <Typography variant={"body2"}>{row.client.name}</Typography>
-      )
-    },
-    {
-      minWidth: 80,
-      headerName: "#PDV",
-      field: "numberPDV",
-      renderCell: ({ row }: RowData) => (
-        <Typography variant={"body2"}>
-          {`#${row.PDVNumber || "N/A"}`}
-        </Typography>
+      field: "saleNumber",
+      headerName: "N Venda",
+      type: "number",
+      align: "center",
+      headerAlign: "center",
+      minWidth: 140,
+      // @ts-ignore
+      renderCell: ({ row }) => (
+        <Box width={"100%"}>
+          <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <Typography variant="body2">
+              {row.saleNumber}
+            </Typography>
+          </Box>
+          {row.PDVNumber &&
+            <Fragment>
+              <Divider sx={{ paddingY: 0, marginY: 0, width: "100%" }} />
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Typography variant="body2">
+                  PDV: {row.PDVNumber}
+                </Typography>
+              </Box>
+            </Fragment>
+          }
+        </Box>
       )
     },
     {
@@ -245,6 +258,15 @@ const ApproveSales = () => {
         <Typography variant={"body2"}>
           {formattedCurrencyWithSymbol(row.saleAmount)}
         </Typography>
+      )
+    },
+    {
+      minWidth: 150,
+      headerName: "Cliente",
+      field: "client",
+      valueGetter: ({ row }: RowData) => row.client.name,
+      renderCell: ({ row }: RowData) => (
+        <Typography variant={"body2"}>{row.client.name}</Typography>
       )
     },
     {
@@ -310,7 +332,7 @@ const ApproveSales = () => {
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Card>
-          <Grid container sx={{ paddingTop: 4, paddingX: 3 }} spacing={6}>
+          <Grid item container sx={{ paddingTop: 4, paddingX: 3 }} spacing={6}>
             <Grid item xs={12} md={6}>
               <CardHeader
                 sx={{ textAlign: { xs: "center", md: "left" } }}
@@ -324,8 +346,8 @@ const ApproveSales = () => {
             </Grid>
             <Grid
               item xs={12} md={6} spacing={6} sx={{
-              paddingTop: 4,
-              paddingX: 3,
+              paddingTop: 5,
+              paddingX: 5,
               display: "flex",
               flexDirection: { xs: "column", md: "row" },
               gap: 3,
@@ -336,6 +358,7 @@ const ApproveSales = () => {
                 <InputLabel>Selecionar intervalo de tempo</InputLabel>
                 <Select
                   value={dateRange}
+                  size={"small"}
                   label={"Selecionar intervalo de tempo"}
                   onChange={(e) => {
                     setDateRange(e.target.value as DateRangeOptions);
@@ -363,7 +386,7 @@ const ApproveSales = () => {
                 Resetar filtro
               </Button>
             </Grid>
-            <Grid item xs={6} sx={{ margin: "auto" }}>
+            <Grid item xs={12} sx={{ ml: "auto", paddingX:5 }}>
               <Button
                 variant={"outlined"}
                 onClick={() => handleApproveAllSales()}
@@ -371,52 +394,52 @@ const ApproveSales = () => {
                 Aprovar tudo
               </Button>
             </Grid>
-            <Grid
-              item
-              display={"flex"}
-              sx={{
-                flexDirection: { xs: "column", md: "row" },
-                justifyContent: "flex-end",
-                alignItems: "center"
-              }}
-              gap={3}
-              xs={12}
-              md={6}
-            >
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <MUIDatepicker
-                  label="Data Inicial"
-                  value={rangeDateStart}
-                  onChange={(newValue) => {
-                    setRangeDateStart(newValue as Date);
-                  }}
-                  renderInput={(params) => (
-                    <TextField size={"small"} {...params} />
-                  )}
-                />
-              </LocalizationProvider>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <MUIDatepicker
-                  label="Data Final"
-                  value={rangeDateEnd}
-                  onChange={(newValue) => {
-                    setRangeDateEnd(newValue as Date);
-                  }}
-                  renderInput={(params) => (
-                    <TextField size={"small"} {...params} />
-                  )}
-                />
-              </LocalizationProvider>
-              <Button
-                variant="outlined"
-                color="primary"
-                sx={{ minWidth: "130px" }}
-                onClick={handleUpdateDates}
-                startIcon={<UpdateIcon />}
-              >
-                Atualizar
-              </Button>
-            </Grid>
+            {/*<Grid*/}
+            {/*  item*/}
+            {/*  display={"flex"}*/}
+            {/*  sx={{*/}
+            {/*    flexDirection: { xs: "column", md: "row" },*/}
+            {/*    justifyContent: "flex-end",*/}
+            {/*    alignItems: "center"*/}
+            {/*  }}*/}
+            {/*  gap={3}*/}
+            {/*  xs={12}*/}
+            {/*  md={6}*/}
+            {/*>*/}
+            {/*  <LocalizationProvider dateAdapter={AdapterDateFns}>*/}
+            {/*    <MUIDatepicker*/}
+            {/*      label="Data Inicial"*/}
+            {/*      value={rangeDateStart}*/}
+            {/*      onChange={(newValue) => {*/}
+            {/*        setRangeDateStart(newValue as Date);*/}
+            {/*      }}*/}
+            {/*      renderInput={(params) => (*/}
+            {/*        <TextField size={"small"} {...params} />*/}
+            {/*      )}*/}
+            {/*    />*/}
+            {/*  </LocalizationProvider>*/}
+            {/*  <LocalizationProvider dateAdapter={AdapterDateFns}>*/}
+            {/*    <MUIDatepicker*/}
+            {/*      label="Data Final"*/}
+            {/*      value={rangeDateEnd}*/}
+            {/*      onChange={(newValue) => {*/}
+            {/*        setRangeDateEnd(newValue as Date);*/}
+            {/*      }}*/}
+            {/*      renderInput={(params) => (*/}
+            {/*        <TextField size={"small"} {...params} />*/}
+            {/*      )}*/}
+            {/*    />*/}
+            {/*  </LocalizationProvider>*/}
+            {/*  <Button*/}
+            {/*    variant="outlined"*/}
+            {/*    color="primary"*/}
+            {/*    sx={{ minWidth: "130px" }}*/}
+            {/*    onClick={handleUpdateDates}*/}
+            {/*    startIcon={<UpdateIcon />}*/}
+            {/*  >*/}
+            {/*    Atualizar*/}
+            {/*  </Button>*/}
+            {/*</Grid>*/}
           </Grid>
           <Divider />
           <DataGrid

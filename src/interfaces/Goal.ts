@@ -2,15 +2,22 @@ import { SanityDefaultObject, SanityDefaultReference } from "./SanityDefaultInte
 import Store from "./Store"
 
 export default interface Goal extends Partial<SanityDefaultObject> {
-  _id: string
-  name: string
-  description?: string
-  dateStart: Date
-  dateEnd: Date
-  mainStoreGoal: boolean
-  type: "store" | "individual"
+  inactive?: boolean
+  deleted?: boolean
+  mainStoreGoal?: boolean
+  name: string // Goal name
+  description: string // Goal description
+  goalRange: {
+    dateStart: Date,
+    dateEnd: Date,
+  }
+  type: "store" | "product" | "group" | "individual"
+  typeReference: string
+  keyReferencePath: string // Path to the key reference (e.g. "store._ref")
   category: "dateRangeGoals" | "monthlyGoals" | "weeklyGoals" | "dailyGoals" | "specialGoals"
-  targetField: string
-  targetValues: Array<string | number>
-  targetStores: Array<Store | SanityDefaultReference>
+  targetValues: {
+    value: number,
+    description: string,
+  }[]
+  targetStores: Partial<Store[]> | SanityDefaultReference[]
 }

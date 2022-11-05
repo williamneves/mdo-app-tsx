@@ -1,5 +1,5 @@
 export default {
-  title: "Goal",
+  title: "Metas",
   name: "goal",
   type: "document",
   fields: [
@@ -39,7 +39,7 @@ export default {
         {
           title: "Data de Início",
           name: "dateStart",
-          type: "datetime",
+          type: "date",
           options: {
             dateFormat: "DD/MM/YYYY",
           }
@@ -47,7 +47,7 @@ export default {
         {
           title: "Data de Término",
           name: "dateEnd",
-          type: "datetime",
+          type: "date",
           options: {
             dateFormat: "DD/MM/YYYY",
           }
@@ -64,15 +64,8 @@ export default {
           { title: "Produto", value: "product" },
           { title: "Grupo", value: "group" },
           { title: "Individual", value: "individual" },
-          { title: "Outro", value: "other" },
         ],
       }
-    },
-    {
-      title: "Referência do Tipo de Meta",
-      name: "targetField",
-      type: "array",
-      of: [{ type: "string", }],
     },
     {
       title: "Categoria",
@@ -88,6 +81,18 @@ export default {
 
         ],
       }
+    },
+    {
+      title: "Tabela de Referência",
+      description: "Nome (_type) da tabela de referência",
+      name: "typeReference",
+      type: "string",
+    },
+    {
+      title: "Key de Referência",
+      name: "keyReferencePath",
+      description: "Caminho para a key de referência",
+      type: "string",
     },
     {
       title: "Valores Alvos",

@@ -31,6 +31,7 @@ import * as useClient from "src/queries/clients";
 import { useQueryClient } from "@tanstack/react-query";
 import { matchSearchFilter, getAllObjectKeys } from "src/@utils/filters";
 import * as useDailyReport from "src/queries/streetDailyReport";
+import { useAuth } from "src/hooks/useAuth";
 
 // ** Next Imports
 import { useRouter } from "next/router";
@@ -63,10 +64,14 @@ const ClientList = () => {
   // ** Next Router
   const router = useRouter();
 
+  // ** Hooks
+  const { user, selectedStore } = useAuth();
+
   // ** React Query
   const queryClient = useQueryClient();
   const deleteClient = useClient.useDeleteClientQuery(queryClient);
-  const { data: clientList, isLoading } = useClient.useGetClientsQuery();
+  const { data: clientList, isLoading } = useClient.useGetClientsByReferenceIdQuery({ referenceId: selectedStore?._id!
+});
   const { data: dailyReports } = useDailyReport.useGetAllDailyReportsQuery();
 
   // ** States
