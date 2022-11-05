@@ -72,30 +72,31 @@ const ClientList = () => {
   const deleteClient = useClient.useDeleteClientQuery(queryClient);
   const { data: clientList, isLoading } = useClient.useGetClientsByReferenceIdQuery({ referenceId: selectedStore?._id!
 });
-  const { data: dailyReports } = useDailyReport.useGetAllDailyReportsQuery();
+  const { data: refs } = useClient.useGetClientRefQuery(selectedStore?._id!);
 
   // ** States
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogData, setDialogData] = useState({});
   const [searchValue, setSearchValue] = useState("");
-  const [clientsInReport, setClientsInReport] = useState<string[]>([]);
   const [onlyStreetClients, setOnlyStreetClients] = useState<boolean>(false);
+  const [clientsWithRef, setClientsWithRef] = useState<string[]>([]);
 
   // Effects
   useEffect(() => {
-    if (dailyReports) {
-      const reportClients: string[] = [];
-      (dailyReports as StreetDailyReport[]).forEach((report) =>
-        report.clientsRegistered.forEach((client) => reportClients.push(client._ref)));
-      setClientsInReport(reportClients);
+    const refClients: string[] = [];
+    console.log('refs',refs);
+    if (refs) {
+      refClients.push(...refs.filter((ref: any) => ref?.refs?.length > 0).map((ref: any) => ref._id));
+      console.log('refs', refClients);
+      setClientsWithRef(refClients);
     }
-  }, [dailyReports]);
+  }, [refs]);
 
-  const getStreetClients = () => {
+  const getStreetClients = (): Client[] => {
     if (user?.role === "streetVendor") {
-      return clientList?.filter((client) => client?.createdBy?._id === user?._id);
+      return clientList?.filter((client) => client?.createdBy?._id === user?._id) as Client[];
     }
-    return clientList;
+    return clientList as Client[];
   };
 
   const deleteClientData = (clientID: string) => {
@@ -203,7 +204,7 @@ const ClientList = () => {
           </IconButton>
           <IconButton
             color={"error"}
-            disabled={clientsInReport.includes(row._id)}
+            disabled={clientsWithRef.includes(row._id)}
             onClick={() => handleViewClient(row._id)}
           >
             <DeleteForeverTwoToneIcon />

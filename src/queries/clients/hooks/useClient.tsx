@@ -398,3 +398,18 @@ export const getClientByClientNumber = async (clientNumber: number) => {
   }
 
 };
+
+export const getClientsRef = async (storeID: string) => {
+  const q = `
+      *[ _type == "client" && references("${storeID}")]{
+        _id,
+        "refs": *[references(^._id)]._id
+      }
+  `;
+
+  try {
+    return await dbClient.fetch(q);
+  } catch (e) {
+    throw e;
+  }
+}
