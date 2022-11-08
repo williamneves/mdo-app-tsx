@@ -24,6 +24,7 @@ const defineRulesFor = (role: string, subject: string) => {
   } else if (role === "vendor") {
     // can('manage', 'all')
     can(["manage"], "vendor-page");
+    can(["manage"], "finance-page");
     can(["manage"], "user-page");
     can(["read"], "general-page");
     can(["read"], "street-page");
@@ -32,12 +33,14 @@ const defineRulesFor = (role: string, subject: string) => {
   } else if (role === "streetVendor") {
     // can('manage', 'all')
     can(["manage"], "street-page");
+    can(["manage"], "finance-page");
     can(["manage"], "user-page");
     can(["read"], "general-page");
     can(["read"], "acl-page");
     can(["read"], "acl-page2");
   } else if (role === "manager") {
     can(["manage"], "manager-page");
+    can(["manage"], "finance-page");
     // can('manage', 'all')
     can(["manage"], "vendor-page");
     can(["manage"], "user-page");

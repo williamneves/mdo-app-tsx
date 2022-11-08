@@ -111,9 +111,9 @@ type IEmployeeRoles = "admin" | "manager" | "coordinator" | "vendor" | "streetVe
 export interface ICreateBonusVendorProps {
 }
 
-export default function CreateBonusVendor(props: ICreateBonusVendorProps) {
+const CreateBonusVendor = (props: ICreateBonusVendorProps) => {
   // ** Use Auth
-  const { selectedStore } = useAuth();
+  const { selectedStore, user: employee } = useAuth();
 
   // ** Use Client
   const queryClient = useQueryClient();
@@ -146,8 +146,10 @@ export default function CreateBonusVendor(props: ICreateBonusVendorProps) {
 
   // * Filter bonus by vendor
   const bonusVendor = (vendorId: string, bonusList: IBonus[]) => {
-    return bonusList.find((bonus) => (bonus.user as User)._id === vendorId);
+    return bonusList?.find((bonus) => (bonus.user as User)._id === vendorId);
   };
+
+  const bonus = bonusVendor(employee?._id!, bonusList!);
 
 
   // ** Get Date Range
@@ -189,50 +191,44 @@ export default function CreateBonusVendor(props: ICreateBonusVendorProps) {
               mb={2}
             >
               <Typography variant="h6" sx={{ px: 3 }}>
-                Funcionários
+                Premios Lançados
               </Typography>
-              <TextField
-                label="Cargo"
-                name="employeeRole"
-                onChange={(e) => setEmployeeRoleSelected(e.target.value as IEmployeeRoles)}
-                select
-                // SelectProps={{ native: true }}
-                value={employeeRoleSelected}
-                variant="outlined"
-                sx={{ minWidth: 200 }}
-              >
-                <MenuItem value="all">Todos</MenuItem>
-                <MenuItem value="vendor">Vendedor</MenuItem>
-                <MenuItem value="streetVendor">Vendedor de rua</MenuItem>
-                <MenuItem value="coordinator">Coordenador</MenuItem>
-                <MenuItem value="manager">Gerente</MenuItem>
-              </TextField>
             </Box>
 
             <Divider sx={{ px: 3 }} />
           </Grid>
           <Grid container spacing={6}>
-            {employeeRoleSelected && selectedStore?.employees.map((employee) => {
-
-              const bonus = bonusVendor(employee._id!, bonusList!);
-
-              if (employeeRoleSelected === "all" || employee.role === employeeRoleSelected)
-                return (
-                  <Grid item xs={12} key={employee._id}>
-                    <CardUser
-                      employee={employee}
-                      goal={goals?.find((goal) => goal._id === selectedGoalId)!}
-                      // @ts-ignore
-                      store={selectedStore!}
-                      sales={sales?.filter((sale) => sale.user?._id === employee._id)!}
-                      bonus={bonus ? bonus : null}
-                      mode={"edit"}
-                    />
-                  </Grid>
-                );
-            })}
+            <Grid item xs={12}>
+              {
+                selectedGoalId &&
+                bonus && bonus.status !== "draft" ?
+                  <CardUser
+                    employee={employee!}
+                    goal={goals?.find((goal) => goal._id === selectedGoalId)!}
+                    // @ts-ignore
+                    store={selectedStore!}
+                    sales={sales?.filter((sale) => sale.user?._id === employee?._id!)!}
+                    bonus={bonus ? bonus : null}
+                    mode={"view"}
+                  />
+                  :
+                  <Typography
+                    variant="h5"
+                    sx={{ p: 5, textAlign: "center" }}
+                  >
+                    Nenhum prêmio lançado...
+                  </Typography>
+              }
+            </Grid>
           </Grid>
         </Grid>}
     </Grid>
   );
-}
+};
+
+CreateBonusVendor.acl = {
+  action: "edit",
+  subject: "finance-page"
+};
+
+export default CreateBonusVendor;

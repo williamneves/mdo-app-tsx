@@ -18,6 +18,9 @@ import PendingTwoToneIcon from '@mui/icons-material/PendingTwoTone';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import PaidTwoToneIcon from '@mui/icons-material/PaidTwoTone';
 import TrafficTwoToneIcon from '@mui/icons-material/TrafficTwoTone';
+import RedeemTwoToneIcon from '@mui/icons-material/RedeemTwoTone';
+import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
+
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types';
 
@@ -191,6 +194,27 @@ const navigation = (): VerticalNavItemsType => {
 					title: 'Gerenciar Metas',
 					path: '/manager/loja/gerenciar-metas',
 					icon: ListAltTwoToneIcon,
+				},
+			],
+		},
+		{
+			sectionTitle: 'Financeiro',
+			action: 'read',
+			subject: 'finance-page',
+		},
+		{
+			title: 'Prêmios & Bônus',
+			icon: WorkspacePremiumOutlinedIcon,
+			path: '/financeiro/premios',
+			action: 'read',
+			subject: 'finance-page',
+			children: [
+				{
+					title: 'Resgatar',
+					path: '/financeiro/premios/resgatar',
+					icon: RedeemTwoToneIcon,
+					action: 'edit',
+					subject: 'finance-page',
 				},
 			],
 		},
