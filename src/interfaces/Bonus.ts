@@ -21,6 +21,7 @@ export type TBonusPaymentType = "cash" | "points" | "others";
 export default interface IBonus extends Partial<SanityDefaultObject> {
   inactive?: boolean
   deleted?: boolean
+  status: "draft" | "posted" | "paid" | ""
   name: string
   description: string
   bonusRange: IBOnusRange

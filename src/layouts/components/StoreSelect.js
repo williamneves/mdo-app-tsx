@@ -17,6 +17,9 @@ import ArrowDropDownTwoToneIcon from '@mui/icons-material/ArrowDropDownTwoTone';
 import PlaceTwoToneIcon from '@mui/icons-material/PlaceTwoTone';
 
 
+import ls from "src/configs/localStorage";
+
+
 // Styled Menu component
 const Menu = styled(MuiMenu)(({ theme }) => ({
   '& .MuiMenu-paper': {
@@ -53,7 +56,9 @@ const StoreSelect = () => {
     // Set the selected store
     setSelectedStore(store)
     // save the store to local storage
-    localStorage.setItem('selectedStore', JSON.stringify(store))
+    // localStorage.setItem('selectedStore', JSON.stringify(store))
+    ls.set('b3_selectedStore', store)
+
     handleClose()
   }
 

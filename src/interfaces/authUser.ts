@@ -10,12 +10,7 @@ export default interface AuthUser {
   email: string
   imageURL: string
   imageAsset?: any
-  role: 'admin' |
-    'manager' |
-    'coordinator' |
-    'vendor' |
-    'streetVendor' |
-    'customer'
+  role: "admin" | "manager" | "coordinator" | "vendor" | "streetVendor" | "client"
   stores: Array<SelectedStore>
   profile: {
     jobTitle: string

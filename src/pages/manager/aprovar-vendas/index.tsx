@@ -110,7 +110,10 @@ const ApproveSales = () => {
     const toastId = toast.loading("Aguarde...");
     try {
       await Promise.all((pendingSales as Sale[]).map(async (sale: Sale) => {
-        await changeSaleStatus.mutateAsync({ saleID: sale._id, status: "approved", auditFeedBack: "" });
+        // set a timeout to get maximum 10 operation per second
+        setTimeout( () =>(
+         changeSaleStatus.mutate({ saleID: sale._id, status: "approved", auditFeedBack: "" })
+        ), 300);
       }));
       toast.success(`Vendas aprovadas com sucesso!`, { id: toastId });
       setOpenDialog(false);
@@ -196,7 +199,9 @@ const ApproveSales = () => {
     if (filteredData?.length) {
       return filteredData;
     }
-    if (pendingSales?.length) return pendingSales as Sale[];
+    if (pendingSales?.length) return pendingSales.filter(
+      sale => sale.auditStatus === "pending"
+    ) as Sale[];
     return [];
   };
 

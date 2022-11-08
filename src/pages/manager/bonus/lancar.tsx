@@ -2,7 +2,7 @@
 import { Fragment, useState, useEffect } from "react";
 
 // ** MUI Imports
-import { Grid, Card, CardContent, CardActions, Typography, Divider } from "@mui/material";
+import { Grid, Card, CardContent, CardActions, Typography, Divider, Box, TextField } from "@mui/material";
 
 // ** MUI Icons Imports
 
@@ -18,7 +18,12 @@ import { useAuth } from "src/hooks/useAuth";
 
 // ** Import APIs
 import * as salesQ from "src/queries/sales";
+import Sale from "interfaces/Sale";
 import * as goalsQ from "src/queries/goals";
+import Goal from "interfaces/Goal";
+import * as bonusQ from "src/queries/bonus";
+import IBonus from "interfaces/Bonus";
+import User from "interfaces/User";
 import { useQueryClient } from "@tanstack/react-query";
 import { SelectPeriodAndGoal } from "@views/pages/manager/bonus/vendedores/SelectPeriodAndGoal";
 
@@ -101,6 +106,8 @@ const getDateRange = (month: number, year: number): { startDate: string; endDate
   return { startDate, endDate };
 };
 
+type IEmployeeRoles = "admin" | "manager" | "coordinator" | "vendor" | "streetVendor" | "all" | null
+
 export interface ICreateBonusVendorProps {
 }
 
@@ -120,6 +127,7 @@ export default function CreateBonusVendor(props: ICreateBonusVendorProps) {
   const [dateEnd, setDateEnd] = useState<string>("");
   const [selectedGoalId, setSelectedGoalId] = useState<string>("");
   const [blockSelectGoal, setBlockSelectGoal] = useState<boolean>(false);
+  const [employeeRoleSelected, setEmployeeRoleSelected] = useState<IEmployeeRoles>("all");
 
   // ** Api Calls
   const { data: goals, refetch: refetchGoals } = goalsQ.useGetMainGoalsByStoreQuery(
@@ -132,6 +140,15 @@ export default function CreateBonusVendor(props: ICreateBonusVendorProps) {
     selectedStore!._id,
     { startDate: dateStart, endDate: dateEnd }
   );
+
+  const { data: bonusList, refetch: refetchBonus } = bonusQ.useGetBonusByReferenceIdQuery(selectedGoalId)
+
+
+  // * Filter bonus by vendor
+  const bonusVendor = (vendorId: string, bonusList: IBonus[]) => {
+    return bonusList.find((bonus) => (bonus.user as User)._id === vendorId);
+  }
+
 
   // ** Get Date Range
   useEffect(() => {
@@ -165,15 +182,40 @@ export default function CreateBonusVendor(props: ICreateBonusVendorProps) {
         selectedGoalId && blockSelectGoal &&
         <Grid item xs={12}>
           <Grid item xs={12}>
-            <Typography variant="h6" sx={{ px: 3 }}>
-              Vendedores
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              mb={2}
+            >
+              <Typography variant="h6" sx={{ px: 3 }}>
+              Funcionários
             </Typography>
+              <TextField
+                label="Cargo"
+                name="employeeRole"
+                onChange={(e) => setEmployeeRoleSelected(e.target.value as IEmployeeRoles)}
+                select
+                SelectProps={{ native: true }}
+                value={employeeRoleSelected}
+                variant="outlined"
+                sx={{ minWidth: 200 }}
+              >
+                <option value="all">Todos</option>
+                <option value="vendor">Vendedor</option>
+                <option value="streetVendor">Vendedor de rua</option>
+                <option value="coordinator">Coordenador</option>
+                <option value="manager">Gerente</option>
+              </TextField></Box>
+
             <Divider sx={{ px: 3 }} />
           </Grid>
           <Grid container spacing={6}>
-            {selectedStore?.employees.map((employee) => {
+            {employeeRoleSelected &&  selectedStore?.employees.map((employee) => {
 
-              if (employee.role === "vendor")
+              const bonus = bonusVendor(employee._id!, bonusList!);
+
+              if (employeeRoleSelected === "all" || employee.role === employeeRoleSelected)
                 return (
                   <Grid item xs={12} key={employee._id}>
                     <CardUser
@@ -182,6 +224,7 @@ export default function CreateBonusVendor(props: ICreateBonusVendorProps) {
                       // @ts-ignore
                       store={selectedStore!}
                       sales={sales?.filter((sale) => sale.user?._id === employee._id)!}
+                      bonus={bonus ? bonus : null}
                     />
                   </Grid>
                 );

@@ -139,6 +139,11 @@ const clientForm = ({ client }: Props) => {
     if (user && !client) setValue("createdBy", user);
   }, [user, clientsNumber]);
 
+  // Set default store if user has only one store
+  useEffect(() => {
+    if (user && user.stores.length === 1) setValue("store", user.stores[0]);
+  }, [user]);
+
   const setAddressByCep = () => {
     setIsLoadingAddress(true);
     cep(getValues("address.zipCode")!)

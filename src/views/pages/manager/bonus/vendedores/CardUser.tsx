@@ -1,4 +1,5 @@
 // ** React Imports
+import IBonus from "interfaces/Bonus";
 import { useState, useEffect } from 'react';
 
 // ** MUI Imports
@@ -38,6 +39,7 @@ interface ICardUserProps {
 	goal: Goal;
 	store: Partial<Store>;
 	sales?: Sale[];
+	bonus: IBonus | null;
 }
 
 const bannerProfile = (employee: Partial<User>) => {
@@ -61,7 +63,7 @@ interface IBonusBrief {
 
 const CardUser = (props: ICardUserProps) => {
 	// ** Props
-	const { employee, goal, store, sales } = props;
+	const { employee, goal, store, sales, bonus } = props;
 
 	// ** States
 	const [expanded, setExpanded] = useState<boolean>(false);
@@ -95,7 +97,7 @@ const CardUser = (props: ICardUserProps) => {
 					}}>
 					<Box sx={{ mr: 2, mb: 1, display: 'flex', flexDirection: 'column' }}>
 						<Typography variant='h6'>{employee.name}</Typography>
-						<Typography variant='subtitle2'>{employee.profile.jobTitle}</Typography>
+						<Typography variant='subtitle2'>{employee?.profile?.jobTitle}</Typography>
 					</Box>
 					<Box>
 						{
@@ -171,6 +173,7 @@ const CardUser = (props: ICardUserProps) => {
 									goal={goal}
 									store={store}
 									sales={sales}
+									editBonus={bonus}
 								/>
 							</Grid>
 						</Grid>

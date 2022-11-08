@@ -167,35 +167,9 @@ const navigation = (): VerticalNavItemsType => {
 			icon: PaidTwoToneIcon,
       children: [
         {
-          title: 'Vendedores',
-          path: '/manager/bonus/vendedores',
-          children: [
-            {
-              title: 'Lançar Bônus',
-              path: '/manager/bonus/vendedores/lancar',
-            },
-          ],
+					title: 'Lançar Bônus',
+					path: '/manager/bonus/lancar',
         },
-        {
-          title: "Streets",
-          path: "/manager/bonus/streets",
-          children: [
-            {
-              title: "Lançar Bônus",
-              path: "/manager/bonus/streets/lancar",
-            }
-          ]
-        },
-        {
-          title: "Gerentes",
-          path: "/manager/bonus/gerentes",
-          children: [
-            {
-              title: "Lançar Bônus",
-              path: "/manager/bonus/gerentes/lancar",
-            }
-          ]
-        }
 			],
 		},
 		{
