@@ -382,7 +382,15 @@ const CardUser = (props: ICardUserProps) => {
                               }} />
                               <TableCell colSpan={2} align="right">Total</TableCell>
                               <TableCell
-                                align="right">{formattedCurrencyWithSymbol(bonusBrief?.totalBonus!)}</TableCell>
+                                align="right">
+                                <Typography
+                                  variant="subtitle1"
+                                  fontWeight={500}
+                                  color={"text.primary"}
+                                >
+                                {formattedCurrencyWithSymbol(bonusBrief?.bonusAmount!)}
+                                </Typography>
+                                </TableCell>
                             </TableRow>
                           </TableBody>
                         </Table>
