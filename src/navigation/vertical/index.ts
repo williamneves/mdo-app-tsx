@@ -144,23 +144,29 @@ const navigation = (): VerticalNavItemsType => {
 		},
 		{
 			sectionTitle: 'Administração',
-			action: 'manage',
+			action: 'read',
 			subject: 'manager-page',
 		},
 		{
 			title: 'Venda',
 			path: '/manager',
 			icon: SettingsTwoToneIcon,
+			action: 'read',
+			subject: 'manager-page',
 			children: [
 				{
 					title: 'Dashboard',
 					path: '/manager/dashboard',
 					icon: DashboardTwoToneIcon,
+					action: 'read',
+					subject: 'manager-page',
 				},
 				{
 					title: 'Aprovar Vendas',
 					path: '/manager/aprovar-vendas',
 					icon: VerifiedTwoToneIcon,
+					action: 'update',
+					subject: 'manager-page',
 				},
 			],
 		},

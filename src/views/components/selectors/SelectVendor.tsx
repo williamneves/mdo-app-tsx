@@ -25,6 +25,18 @@ const SelectVendor = ({ selectedUser: preSelectedUser }: SelectVendorProps): JSX
 
   const usersStoreList: User[] = selectedStore && selectedStore.employees ? selectedStore.employees : [];
 
+  const disabled = (role: string) => {
+    if (role === "admin") {
+      return false;
+    }
+
+    if (role === "manager") {
+      return false;
+    }
+
+    return true;
+  }
+
   return (
     <Fragment>
       <TextField
@@ -37,7 +49,7 @@ const SelectVendor = ({ selectedUser: preSelectedUser }: SelectVendorProps): JSX
           // @ts-ignore
           setSelectedUser(e.target.value);
         }}
-        disabled={user!.role !== "admin"}
+        disabled={disabled(user!.role)}
       >
         {usersStoreList.map((user: User) => {
           if (user.role === "vendor")

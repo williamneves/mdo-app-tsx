@@ -476,4 +476,9 @@ const ApproveSales = () => {
   );
 };
 
+ApproveSales.acl = {
+  action: 'read',
+  subject: 'manager-page'
+}
+
 export default ApproveSales;

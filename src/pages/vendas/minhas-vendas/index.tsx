@@ -92,7 +92,7 @@ const MinhasVendas = () => {
               gap: 3
             }}
           >
-            {user?.role === "admin" && (
+            {user?.role === "admin" || user?.role === "manager"   && (
               <SelectVendor />
             )}
             <DateRangeSelector

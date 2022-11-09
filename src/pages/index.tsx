@@ -17,6 +17,7 @@ export const getHomeRoute = (role: string) => {
   if (role === 'admin') return '/home'
   if (role === "vendor") return "/vendas/minhas-vendas";
   if (role === "streetVendor") return "/street/daily-report";
+  if (role === "manager") return "/vendas/minhas-vendas/"
   else return '/home'
 }
 
