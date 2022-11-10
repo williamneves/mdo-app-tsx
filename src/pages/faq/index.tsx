@@ -70,25 +70,38 @@ const Faq = () => {
     });
   };
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const filteredData: Question[] = [];
+    data.map((item) => {
+      const questions = item.questions.filter((question) =>
+        question.question.toLowerCase().includes(event.target.value.toLowerCase()));
+      if (questions.length > 0) {
+        filteredData.push({ ...item, questions });
+      }
+    });
+    setQuestionsState(filteredData);
+  };
+
   return (
     <Grid container spacing={6}>
       <Grid item xs={12} sx={{ display: "flex", alignItems: "center", flexDirection: "column", gap: 3 }}>
-          <Typography variant="h4" gutterBottom>Olá, como podemos ajudar?</Typography>
-          <Typography variant="subtitle2" gutterBottom>
-            ou escolha uma categoria para encontrar rapidamente a ajuda de que precisa
-          </Typography>
-          <FormControl>
-            <TextField
-              label={"Faça uma pergunta"}
-              inputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                )
-              }}
-            />
-          </FormControl>
+        <Typography variant="h4" gutterBottom>Olá, como podemos ajudar?</Typography>
+        <Typography variant="subtitle2" gutterBottom>
+          ou escolha uma categoria para encontrar rapidamente a ajuda de que precisa
+        </Typography>
+        <FormControl>
+          <TextField
+            onChange={handleChange}
+            label={"Faça uma pergunta"}
+            inputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              )
+            }}
+          />
+        </FormControl>
       </Grid>
       <Grid item xs={12} md={6} margin={"auto"}>
         {
@@ -105,11 +118,13 @@ const Faq = () => {
                 </Box>
               </Box>
               <Box sx={{ mt: 5 }}>
-
                 {
                   data.questions.map((question) => (
-                    <Accordion key={index} expanded={question.expanded}
-                               onChange={() => handleExpandClick(data.id, question.id)}>
+                    <Accordion
+                      key={index}
+                      expanded={question.expanded}
+                      onChange={() => handleExpandClick(data.id, question.id)}
+                    >
                       <AccordionSummary
                         expandIcon={<ChevronDown />}
                         id={`faq-accordion--header`}
