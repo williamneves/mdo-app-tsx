@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment } from "react";
 
 // ** MUI Imports
 import Box from "@mui/material/Box";
@@ -30,7 +30,6 @@ import moment from "moment";
 import * as useClient from "src/queries/clients";
 import { useQueryClient } from "@tanstack/react-query";
 import { matchSearchFilter, getAllObjectKeys } from "src/@utils/filters";
-import * as useDailyReport from "src/queries/streetDailyReport";
 import { useAuth } from "src/hooks/useAuth";
 
 // ** Next Imports
@@ -38,7 +37,6 @@ import { useRouter } from "next/router";
 
 // ** Types
 import Client from "src/interfaces/Client";
-import StreetDailyReport from "src/interfaces/StreetDailyReport";
 
 interface RowsData {
   row: Client;
@@ -72,25 +70,12 @@ const ClientList = () => {
   const deleteClient = useClient.useDeleteClientQuery(queryClient);
   const { data: clientList, isLoading } = useClient.useGetClientsByReferenceIdQuery({ referenceId: selectedStore?._id!
 });
-  const { data: refs } = useClient.useGetClientRefQuery(selectedStore?._id!);
 
   // ** States
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogData, setDialogData] = useState({});
   const [searchValue, setSearchValue] = useState("");
   const [onlyStreetClients, setOnlyStreetClients] = useState<boolean>(false);
-  const [clientsWithRef, setClientsWithRef] = useState<string[]>([]);
-
-  // Effects
-  useEffect(() => {
-    const refClients: string[] = [];
-    console.log('refs',refs);
-    if (refs) {
-      refClients.push(...refs.filter((ref: any) => ref?.refs?.length > 0).map((ref: any) => ref._id));
-      console.log('refs', refClients);
-      setClientsWithRef(refClients);
-    }
-  }, [refs]);
 
   const getStreetClients = (): Client[] => {
     if (user?.role === "streetVendor") {
@@ -204,7 +189,8 @@ const ClientList = () => {
           </IconButton>
           <IconButton
             color={"error"}
-            disabled={clientsWithRef.includes(row._id)}
+            // @ts-ignore
+            disabled={row.hasRef}
             onClick={() => handleViewClient(row._id)}
           >
             <DeleteForeverTwoToneIcon />

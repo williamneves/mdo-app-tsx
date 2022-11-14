@@ -83,7 +83,3 @@ export const useGetClientByIdQuery = (id: string, options?: Object) => {
 export const useGetClientByClientNumberQuery = (clientNumber: number, options?: Object) => {
   return useQuery(["clients", clientNumber], () => useClient.getClientByClientNumber(clientNumber), options);
 }
-
-export const useGetClientRefQuery = (storeID: string, options?: Object) => {
-  return useQuery(["clients", "all"], () => useClient.getClientsRef(storeID), options);
-}
