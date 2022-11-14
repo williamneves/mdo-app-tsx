@@ -14,6 +14,18 @@ export default {
       type: 'boolean',
     },
     {
+      title: 'status',
+      name: 'status',
+      type: 'string',
+      options: {
+        list: [
+          { title: 'Rascunho', value: 'draft' },
+          { title: 'Publicado', value: 'posted' },
+          { title: 'Pago', value: 'paid' },
+        ],
+      }
+    },
+    {
       title: 'Nome da Comissão',
       name: 'name',
       type: 'string',
@@ -21,7 +33,7 @@ export default {
     {
       title: 'Descrição da Comissão',
       name: 'description',
-      type: 'string',
+      type: 'text',
     },
     {
       title: 'Período da Comissão',
@@ -86,7 +98,7 @@ export default {
             {
               title: 'Descrição do Lançamento',
               name: 'description',
-              type: 'string',
+              type: 'text',
             },
             {
               title: 'Tipo de Operação',

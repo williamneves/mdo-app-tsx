@@ -64,7 +64,6 @@ const AuthProvider = ({ children }: Props) => {
   const getLocalStorageUser = async (authUID: string): Promise<AuthUser> => {
     return new Promise(async (resolve, reject) => {
       const localUser = await ls.get("b3_userData");
-      console.log('getLocalStorageUser', localUser)
       if (
         !localUser
         || moment(localUser.expirationDate).isBefore(moment())
@@ -87,6 +86,21 @@ const AuthProvider = ({ children }: Props) => {
     ls.set("b3_userData", storeUser);
   }
 
+  // Set Selected Store at Local Storage
+  const setLocalStorageSelectedStore = (store: SelectedStore): void => {
+    // Check if it has a selected store in local storage
+    const localSelectedStore = ls.get("b3_selectedStore");
+    // If has a selected store in local storage
+    if (localSelectedStore) {
+      // Set local storage selected store
+      setSelectedStore(localSelectedStore);
+    } else {
+      // If not, set the new one
+      ls.set("b3_selectedStore", store);
+      setSelectedStore(store);
+    }
+  }
+
   /*
     Check if user is logged in
     if yes, set user, redirect to home
@@ -107,7 +121,8 @@ const AuthProvider = ({ children }: Props) => {
         getLocalStorageUser(userUID as string)
           .then((user) => {
             setUser(user) // Set user
-            setSelectedStore(user.stores[0]) // Set selected store
+            // setSelectedStore(user.stores[0]) // Set selected store
+            setLocalStorageSelectedStore(user.stores[0]) // Set selected store
             setLoading(false) // Stop loading
           })
           // If user is not in LocalStorage
@@ -117,7 +132,8 @@ const AuthProvider = ({ children }: Props) => {
               .then((user) => {
                 setLocalStorageUser(user) // Set user in LocalStorage
                 setUser(user) // Set user
-                setSelectedStore(user.stores[0]) // Set selected store
+                // setSelectedStore(user.stores[0]) // Set selected store
+                setLocalStorageSelectedStore(user.stores[0]) // Set selected store
                 setLoading(false) // Stop loading
               })
           })

@@ -1,6 +1,5 @@
 import AuthUser from 'src/interfaces/authUser';
 
-export default interface User extends Omit<AuthUser,
-  'inactive' | 'authUID' | 'provider' | 'stores' | 'role' | 'address' | 'bankAccount'> {
+export default interface User extends Partial<AuthUser> {
   role: "admin" | "manager" | "coordinator" | "vendor" | "streetVendor" | "client"
 }

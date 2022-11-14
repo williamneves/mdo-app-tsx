@@ -9,14 +9,6 @@ import fetchUserDB from "@auth/fetchUserDB";
 
 const Home = () => {
 
-  const { data, isLoading } = useQuery(['authUser', ['ZBj2JfRn74UWOfzgn8zjKusmx7G3']], () => fetchUserDB('ZBj2JfRn74UWOfzgn8zjKusmx7G3'))
-
-  if (!isLoading){
-  console.log(data)
-
-  }
-
-
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>

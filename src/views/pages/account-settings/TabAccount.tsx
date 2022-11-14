@@ -24,7 +24,7 @@ import { useAuth } from "src/hooks/useAuth";
 import TextInputControlled from "components/inputs/TextInputControlled";
 
 // ** Import Sanity Config
-import { dbClient } from "src/configs/sanityConfig";
+import { dbClient, getImageUrl } from "src/configs/sanityConfig";
 import AuthUser from "src/interfaces/authUser";
 
 const ImgStyled = styled("img")(({ theme }) => ({
@@ -58,7 +58,7 @@ interface Props {
 const TabAccount = ({ userDB }: Props) => {
 
   const { name, email, role, imageAsset, imageURL, profile, stores } = userDB;
-  const initialProfilePhoto = imageAsset ? imageAsset.url : imageURL;
+  const initialProfilePhoto = imageAsset ? getImageUrl(imageAsset).url() : imageURL;
 
   const { updateUser } = useAuth();
 
@@ -92,11 +92,11 @@ const TabAccount = ({ userDB }: Props) => {
 
     if (files && files.length !== 0) {
       reader.onload = () => {
-        setImgSrc(reader.result);
+        setImgSrc(reader.result as any);
       };
       reader.readAsDataURL(files[0]);
 
-      setImgSrc(files[0]);
+      setImgSrc(files[0] as any);
       setNewImage(files[0]);
     }
   };
@@ -121,7 +121,13 @@ const TabAccount = ({ userDB }: Props) => {
     if (newImage) {
       try {
         dbClient.assets.upload("image", newImage).then((imageAsset) => {
-          newDataObj.imageAsset = imageAsset;
+          newDataObj.imageAsset = {
+            _type: 'image',
+            asset: {
+              _ref: imageAsset._id,
+              _type: 'reference'
+            }
+          };
           updateUser({
             newInfo: newDataObj
           });

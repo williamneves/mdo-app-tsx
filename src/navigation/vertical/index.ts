@@ -18,6 +18,9 @@ import PendingTwoToneIcon from '@mui/icons-material/PendingTwoTone';
 import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
 import PaidTwoToneIcon from '@mui/icons-material/PaidTwoTone';
 import TrafficTwoToneIcon from '@mui/icons-material/TrafficTwoTone';
+import RedeemTwoToneIcon from '@mui/icons-material/RedeemTwoTone';
+import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
+
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types';
 
@@ -141,23 +144,29 @@ const navigation = (): VerticalNavItemsType => {
 		},
 		{
 			sectionTitle: 'Administração',
-			action: 'manage',
+			action: 'read',
 			subject: 'manager-page',
 		},
 		{
 			title: 'Venda',
 			path: '/manager',
 			icon: SettingsTwoToneIcon,
+			action: 'read',
+			subject: 'manager-page',
 			children: [
 				{
 					title: 'Dashboard',
 					path: '/manager/dashboard',
 					icon: DashboardTwoToneIcon,
+					action: 'read',
+					subject: 'manager-page',
 				},
 				{
 					title: 'Aprovar Vendas',
 					path: '/manager/aprovar-vendas',
 					icon: VerifiedTwoToneIcon,
+					action: 'update',
+					subject: 'manager-page',
 				},
 			],
 		},
@@ -167,35 +176,9 @@ const navigation = (): VerticalNavItemsType => {
 			icon: PaidTwoToneIcon,
       children: [
         {
-          title: 'Vendedores',
-          path: '/manager/bonus/vendedores',
-          children: [
-            {
-              title: 'Lançar Bônus',
-              path: '/manager/bonus/vendedores/lancar',
-            },
-          ],
+					title: 'Lançar Bônus',
+					path: '/manager/bonus/lancar',
         },
-        {
-          title: "Streets",
-          path: "/manager/bonus/streets",
-          children: [
-            {
-              title: "Lançar Bônus",
-              path: "/manager/bonus/streets/lancar",
-            }
-          ]
-        },
-        {
-          title: "Gerentes",
-          path: "/manager/bonus/gerentes",
-          children: [
-            {
-              title: "Lançar Bônus",
-              path: "/manager/bonus/gerentes/lancar",
-            }
-          ]
-        }
 			],
 		},
 		{
@@ -217,6 +200,27 @@ const navigation = (): VerticalNavItemsType => {
 					title: 'Gerenciar Metas',
 					path: '/manager/loja/gerenciar-metas',
 					icon: ListAltTwoToneIcon,
+				},
+			],
+		},
+		{
+			sectionTitle: 'Financeiro',
+			action: 'read',
+			subject: 'finance-page',
+		},
+		{
+			title: 'Prêmios & Bônus',
+			icon: WorkspacePremiumOutlinedIcon,
+			path: '/financeiro/premios',
+			action: 'read',
+			subject: 'finance-page',
+			children: [
+				{
+					title: 'Resgatar',
+					path: '/financeiro/premios/resgatar',
+					icon: RedeemTwoToneIcon,
+					action: 'edit',
+					subject: 'finance-page',
 				},
 			],
 		},
