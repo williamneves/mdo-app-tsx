@@ -376,7 +376,7 @@ const ApproveSales = () => {
                   <MenuItem value={"lastWeek"}>Última semana</MenuItem>
                   <MenuItem value={"thisMonth"}>Este mês</MenuItem>
                   <MenuItem value={"lastMonth"}>Último mês</MenuItem>
-                  <MenuItem value={"lastThreeMonths"}>Últimos três meses</MenuItem>
+                  <MenuItem value={"last3Months"}>Últimos três meses</MenuItem>
                 </Select>
               </FormControl>
               <Button
