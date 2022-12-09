@@ -188,7 +188,7 @@ export const useChangeSaleAuditStatusQuery = (queryClient: any) => {
   return useMutation(({ saleID, status, auditFeedBack }: ChangeSaleAuditStatusParams) => api.changeSaleAuditStatus(saleID, status, auditFeedBack),
     {
       onSuccess: (updatedSale) => {
-        queryClient.setQueryData(["sales", "all"], (old: any) => {
+        queryClient.setQueryData(["sales"], (old: any) => {
           if (old) {
             return old.map((dailyReport: any) => {
               if (dailyReport._id === updatedSale?._id) {

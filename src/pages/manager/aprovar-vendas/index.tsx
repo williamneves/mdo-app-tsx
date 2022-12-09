@@ -68,10 +68,10 @@ const ApproveSales = () => {
   }, [dateRange]);
 
   // ** React Query Hooks
-  const { data: pendingSales, isLoading: isLoadingSales } = salesQ
-    .useAllSalesByReferenceAndDateRangeQuery(selectedStore ? selectedStore._id : "", rangeDate.range);
+    const { data: pendingSales, isLoading: isLoadingSales, refetch } = salesQ
+      .useAllSalesByReferenceAndDateRangeQuery(selectedStore ? selectedStore._id : "", rangeDate.range);
   const queryClient = useQueryClient();
-  const changeSaleStatus = salesQ.useChangeSaleAuditStatusQuery(queryClient);
+  const changeSaleStatus = salesQ.useChangeSaleAuditStatusQuery(queryClient)
 
   const handleUpdateDates = () => {
     setRangeDateStart(rangeDateStart);
@@ -101,6 +101,7 @@ const ApproveSales = () => {
       toast.success(`Venda ${statusName} com sucesso!`, { id: toastId });
       setOpenDialog(false);
       reset();
+      refetch();
     } catch (e) {
       toast.error(`Erro ao ${statusName} venda!`, { id: toastId });
     }
