@@ -1,46 +1,30 @@
 // ** React Imports
-import { Fragment, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 // ** MUI Imports
-import { Grid, Card, CardContent, CardActions, MenuItem, Typography, Divider, Box, TextField } from "@mui/material";
+import { Grid, MenuItem, Typography, Divider, Box, TextField } from "@mui/material";
 
 // ** MUI Icons Imports
 
 // ** Import Components
-import CardUser from "@views/pages/manager/bonus/vendedores/CardUser";
+import CardUser from "@views/pages/manager/bonus/lancar/CardUser";
 
 // ** Import Third Party Components
-import moment, { Moment } from "moment";
-import toast from "react-hot-toast";
+import moment from "moment";
 
 // ** Import useAuth Hook
 import { useAuth } from "src/hooks/useAuth";
 
 // ** Import APIs
 import * as salesQ from "src/queries/sales";
-import Sale from "interfaces/Sale";
 import * as goalsQ from "src/queries/goals";
-import Goal from "interfaces/Goal";
 import * as bonusQ from "src/queries/bonus";
 import IBonus from "interfaces/Bonus";
 import User from "interfaces/User";
-import { useQueryClient } from "@tanstack/react-query";
-import { SelectPeriodAndGoal } from "@views/pages/manager/bonus/vendedores/SelectPeriodAndGoal";
+import { SelectPeriodAndGoal } from "@views/pages/manager/bonus/lancar/SelectPeriodAndGoal";
 
-// Months of the year
-export type IMonthsOfTheYear =
-  | "Janeiro"
-  | "Fevereiro"
-  | "Março"
-  | "Abril"
-  | "Maio"
-  | "Junho"
-  | "Julho"
-  | "Agosto"
-  | "Setembro"
-  | "Outubro"
-  | "Novembro"
-  | "Dezembro";
+// Imports Types
+import { IMonthsOfTheYear, IEmployeeRoles } from "src/@types";
 
 export const years = () => {
   // Get current year and 1 year before and after
@@ -106,17 +90,9 @@ const getDateRange = (month: number, year: number): { startDate: string; endDate
   return { startDate, endDate };
 };
 
-type IEmployeeRoles = "admin" | "manager" | "coordinator" | "vendor" | "streetVendor" | "all" | null
-
-export interface ICreateBonusVendorProps {
-}
-
-export default function CreateBonusVendor(props: ICreateBonusVendorProps) {
+export default function CreateBonus() {
   // ** Use Auth
   const { selectedStore } = useAuth();
-
-  // ** Use Client
-  const queryClient = useQueryClient();
 
   // ** States
   const [selectedMonth, setSelectedMonth] = useState<{ label: IMonthsOfTheYear; value: number }>(
@@ -141,12 +117,12 @@ export default function CreateBonusVendor(props: ICreateBonusVendorProps) {
     { startDate: dateStart, endDate: dateEnd }
   );
 
-  const { data: bonusList, refetch: refetchBonus } = bonusQ.useGetBonusByReferenceIdQuery(selectedGoalId);
+  const { data: bonusList } = bonusQ.useGetBonusByReferenceIdQuery(selectedGoalId);
 
 
   // * Filter bonus by vendor
   const bonusVendor = (vendorId: string, bonusList: IBonus[]) => {
-    return bonusList.find((bonus) => (bonus.user as User)._id === vendorId);
+    return bonusList?.find((bonus) => (bonus.user as User)._id === vendorId);
   };
 
 
