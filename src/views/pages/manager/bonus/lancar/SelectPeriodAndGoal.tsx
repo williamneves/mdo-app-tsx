@@ -8,7 +8,8 @@ import {
   MenuItem
 } from '@mui/material';
 import ManageSearchTwoToneIcon from '@mui/icons-material/ManageSearchTwoTone';
-import { monthsOfTheYear, IMonthsOfTheYear, years } from 'src/pages/manager/bonus/lancar';
+import { monthsOfTheYear, years } from 'src/pages/manager/bonus/lancar';
+import {IMonthsOfTheYear} from 'src/@types';
 
 import Goal from 'interfaces/Goal';
 

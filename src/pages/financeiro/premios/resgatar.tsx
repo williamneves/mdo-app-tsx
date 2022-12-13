@@ -7,7 +7,7 @@ import { Grid, Card, CardContent, CardActions, MenuItem, Typography, Divider, Bo
 // ** MUI Icons Imports
 
 // ** Import Components
-import CardUser from "@views/pages/manager/bonus/vendedores/CardUser";
+import CardUser from "@views/pages/manager/bonus/lancar/CardUser";
 
 // ** Import Third Party Components
 import moment, { Moment } from "moment";
@@ -25,22 +25,10 @@ import * as bonusQ from "src/queries/bonus";
 import IBonus from "interfaces/Bonus";
 import User from "interfaces/User";
 import { useQueryClient } from "@tanstack/react-query";
-import { SelectPeriodAndGoal } from "@views/pages/manager/bonus/vendedores/SelectPeriodAndGoal";
+import { SelectPeriodAndGoal } from "@views/pages/manager/bonus/lancar/SelectPeriodAndGoal";
 
-// Months of the year
-export type IMonthsOfTheYear =
-  | "Janeiro"
-  | "Fevereiro"
-  | "Março"
-  | "Abril"
-  | "Maio"
-  | "Junho"
-  | "Julho"
-  | "Agosto"
-  | "Setembro"
-  | "Outubro"
-  | "Novembro"
-  | "Dezembro";
+// ** Imports Types
+import { IMonthsOfTheYear } from "src/@types";
 
 export const years = () => {
   // Get current year and 1 year before and after
@@ -106,17 +94,10 @@ const getDateRange = (month: number, year: number): { startDate: string; endDate
   return { startDate, endDate };
 };
 
-type IEmployeeRoles = "admin" | "manager" | "coordinator" | "vendor" | "streetVendor" | "all" | null
 
-export interface ICreateBonusVendorProps {
-}
-
-const CreateBonusVendor = (props: ICreateBonusVendorProps) => {
+const RedeemBonus = () => {
   // ** Use Auth
   const { selectedStore, user: employee } = useAuth();
-
-  // ** Use Client
-  const queryClient = useQueryClient();
 
   // ** States
   const [selectedMonth, setSelectedMonth] = useState<{ label: IMonthsOfTheYear; value: number }>(
@@ -127,7 +108,6 @@ const CreateBonusVendor = (props: ICreateBonusVendorProps) => {
   const [dateEnd, setDateEnd] = useState<string>("");
   const [selectedGoalId, setSelectedGoalId] = useState<string>("");
   const [blockSelectGoal, setBlockSelectGoal] = useState<boolean>(false);
-  const [employeeRoleSelected, setEmployeeRoleSelected] = useState<IEmployeeRoles>("all");
 
   // ** Api Calls
   const { data: goals, refetch: refetchGoals } = goalsQ.useGetMainGoalsByStoreQuery(
@@ -141,7 +121,7 @@ const CreateBonusVendor = (props: ICreateBonusVendorProps) => {
     { startDate: dateStart, endDate: dateEnd }
   );
 
-  const { data: bonusList, refetch: refetchBonus } = bonusQ.useGetBonusByReferenceIdQuery(selectedGoalId);
+  const { data: bonusList } = bonusQ.useGetBonusByReferenceIdQuery(selectedGoalId);
 
 
   // * Filter bonus by vendor
@@ -226,9 +206,9 @@ const CreateBonusVendor = (props: ICreateBonusVendorProps) => {
   );
 };
 
-CreateBonusVendor.acl = {
+RedeemBonus.acl = {
   action: "edit",
   subject: "finance-page"
 };
 
-export default CreateBonusVendor;
+export default RedeemBonus;
