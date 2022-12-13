@@ -448,3 +448,37 @@ export const updateSaleByKeyAndValue = async (saleID: string, key: string, value
     throw err;
   }
 };
+
+// Get sales by sale number
+export const getSaleBySaleNumber = async (saleNumber: number): Promise<Sale[]> => {
+  try {
+    const sale = await dbClient.fetch(
+        `*[_type=="sale" && saleNumber==${saleNumber}]{
+        ...,
+        "origin": userReferrer[]->,
+        user->,
+        "vendor": user->,
+        client->,
+        store->,
+        paymentMethod->,
+        products[] {
+          ...,
+          product->,
+        }
+      }`,
+        { saleNumber: saleNumber }
+    );
+    console.log(sale);
+    return sale;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const updateSaleClient = async (saleID: string, clientID: string): Promise<Sale> => {
+  try {
+    return await dbClient.patch(saleID).set({ client: { _ref: clientID, _type: "reference" } }).commit();
+  } catch (err) {
+    throw err;
+  }
+};

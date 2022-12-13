@@ -188,7 +188,7 @@ export const useChangeSaleAuditStatusQuery = (queryClient: any) => {
   return useMutation(({ saleID, status, auditFeedBack }: ChangeSaleAuditStatusParams) => api.changeSaleAuditStatus(saleID, status, auditFeedBack),
     {
       onSuccess: (updatedSale) => {
-        queryClient.setQueryData(["sales", "all"], (old: any) => {
+        queryClient.setQueryData(["sales"], (old: any) => {
           if (old) {
             return old.map((dailyReport: any) => {
               if (dailyReport._id === updatedSale?._id) {
@@ -245,4 +245,14 @@ export const useUpdateSaleByKeyValueMutation = (queryClient: any) => {
         queryClient.invalidateQueries(["sales", "all"]);
       }
     });
+};
+
+export const useUpdateClientSaleQuery = (queryClient: any) => {
+    return useMutation(({ saleID, clientID }: { saleID: string, clientID: string }) => api.updateSaleClient(saleID, clientID),
+        {
+            onSuccess: (updatedSale) => {
+                queryClient.setQueryData(["sales"], () => [updatedSale]);
+                queryClient.invalidateQueries(["sales"]);
+            }
+        });
 };

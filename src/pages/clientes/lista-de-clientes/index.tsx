@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment } from "react";
 
 // ** MUI Imports
 import Box from "@mui/material/Box";
@@ -30,7 +30,6 @@ import moment from "moment";
 import * as useClient from "src/queries/clients";
 import { useQueryClient } from "@tanstack/react-query";
 import { matchSearchFilter, getAllObjectKeys } from "src/@utils/filters";
-import * as useDailyReport from "src/queries/streetDailyReport";
 import { useAuth } from "src/hooks/useAuth";
 
 // ** Next Imports
@@ -38,7 +37,6 @@ import { useRouter } from "next/router";
 
 // ** Types
 import Client from "src/interfaces/Client";
-import StreetDailyReport from "src/interfaces/StreetDailyReport";
 
 interface RowsData {
   row: Client;
@@ -72,23 +70,19 @@ const ClientList = () => {
   const deleteClient = useClient.useDeleteClientQuery(queryClient);
   const { data: clientList, isLoading } = useClient.useGetClientsByReferenceIdQuery({ referenceId: selectedStore?._id!
 });
-  const { data: dailyReports } = useDailyReport.useGetAllDailyReportsQuery();
 
   // ** States
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogData, setDialogData] = useState({});
   const [searchValue, setSearchValue] = useState("");
-  const [clientsInReport, setClientsInReport] = useState<string[]>([]);
+  const [onlyStreetClients, setOnlyStreetClients] = useState<boolean>(false);
 
-  // Effects
-  useEffect(() => {
-    if (dailyReports) {
-      const reportClients: string[] = [];
-      (dailyReports as StreetDailyReport[]).forEach((report) =>
-        report.clientsRegistered.forEach((client) => reportClients.push(client._ref)));
-      setClientsInReport(reportClients);
+  const getStreetClients = (): Client[] => {
+    if (user?.role === "streetVendor") {
+      return clientList?.filter((client) => client?.createdBy?._id === user?._id) as Client[];
     }
-  }, [dailyReports]);
+    return clientList as Client[];
+  };
 
   const deleteClientData = (clientID: string) => {
     const toastId = toast.loading("Deletando cliente...");
@@ -195,7 +189,8 @@ const ClientList = () => {
           </IconButton>
           <IconButton
             color={"error"}
-            disabled={clientsInReport.includes(row._id)}
+            // @ts-ignore
+            disabled={row.hasRef}
             onClick={() => handleViewClient(row._id)}
           >
             <DeleteForeverTwoToneIcon />
@@ -219,7 +214,7 @@ const ClientList = () => {
               getRowId={(row) => row._id}
               autoHeight={true}
               loading={isLoading}
-              rows={clientList && clientList.length > 0 && matchSearchFilter(clientList!, searchValue, [...getAllObjectKeys(clientList), "createdBy.name"]) || []}
+              rows={onlyStreetClients ? getStreetClients() : clientList && clientList.length > 0 && matchSearchFilter(clientList!, searchValue, [...getAllObjectKeys(clientList), "createdBy.name"]) || []}
               columns={columns}
               components={{
                 Toolbar: QuickSearchToolbar
@@ -228,7 +223,13 @@ const ClientList = () => {
                 toolbar: {
                   value: searchValue,
                   clearSearch: () => setSearchValue(""),
-                  onChange: (event: React.ChangeEvent<HTMLInputElement>) => setSearchValue(event.target.value)
+                  onChange: (event: React.ChangeEvent<HTMLInputElement>) => setSearchValue(event.target.value),
+                  checkBoxProps: user?.role === "streetVendor" ? {
+                    label: "Meus clientes",
+                    onChange: (event: React.ChangeEvent<HTMLInputElement>) => setOnlyStreetClients(event.target.checked),
+                    checked: onlyStreetClients
+                  }
+                  : null
                 }
               }}
             />

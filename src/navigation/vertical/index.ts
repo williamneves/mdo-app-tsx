@@ -20,6 +20,7 @@ import PaidTwoToneIcon from '@mui/icons-material/PaidTwoTone';
 import TrafficTwoToneIcon from '@mui/icons-material/TrafficTwoTone';
 import RedeemTwoToneIcon from '@mui/icons-material/RedeemTwoTone';
 import WorkspacePremiumOutlinedIcon from '@mui/icons-material/WorkspacePremiumOutlined';
+import QuizTwoToneIcon from '@mui/icons-material/QuizTwoTone';
 
 // ** Type import
 import { VerticalNavItemsType } from 'src/@core/layouts/types';
@@ -32,9 +33,9 @@ const navigation = (): VerticalNavItemsType => {
 			path: '/home',
 		},
 		{
-			title: 'Second Page',
-			icon: EmailOutline,
-			path: '/second-page',
+			title: 'F.A.Q.',
+			icon: QuizTwoToneIcon,
+			path: '/faq',
 		},
 		{
 			sectionTitle: 'Clientes',
