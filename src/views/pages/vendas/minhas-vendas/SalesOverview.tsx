@@ -44,7 +44,7 @@ const SalesOverview = (props: SalesOverviewProps): JSX.Element => {
   const {
     data: storeSales,
     isLoading: storeSalesLoading
-  } = salesQ.useAllSalesByReferenceAndDateRangeQuery(selectedStore!._id, dateRange && dateRange.range ? dateRange.range : {
+  } = salesQ.useAllSalesByReferenceAndDateRangeQuery(selectedStore?._id!, dateRange && dateRange.range ? dateRange.range : {
     startDate: defaultDateRange.range.startDate,
     endDate: defaultDateRange.range.endDate
   });
