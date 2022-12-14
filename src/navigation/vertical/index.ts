@@ -36,6 +36,8 @@ const navigation = (): VerticalNavItemsType => {
 			title: 'F.A.Q.',
 			icon: QuizTwoToneIcon,
 			path: '/faq',
+			action: 'read',
+			subject: 'general-page',
 		},
 		{
 			sectionTitle: 'Clientes',

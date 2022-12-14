@@ -146,4 +146,9 @@ const Faq = ({faqPosts}: { faqPosts: FaqPost[] }) => {
   );
 };
 
+Faq.acl = {
+  subject: "general-page",
+  action: "read",
+};
+
 export default Faq;
