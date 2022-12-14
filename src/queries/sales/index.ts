@@ -246,3 +246,13 @@ export const useUpdateSaleByKeyValueMutation = (queryClient: any) => {
       }
     });
 };
+
+export const useUpdateClientSaleQuery = (queryClient: any) => {
+    return useMutation(({ saleID, clientID }: { saleID: string, clientID: string }) => api.updateSaleClient(saleID, clientID),
+        {
+            onSuccess: (updatedSale) => {
+                queryClient.setQueryData(["sales"], () => [updatedSale]);
+                queryClient.invalidateQueries(["sales"]);
+            }
+        });
+};
