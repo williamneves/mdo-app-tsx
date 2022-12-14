@@ -1,5 +1,6 @@
 import { dbClient } from "../../../configs/sanityConfig";
 import StreetDailyReport from "src/interfaces/StreetDailyReport";
+import DateRange from "src/interfaces/DateRange";
 import moment from "moment";
 
 export const createDailyReport = async (data: StreetDailyReport) => {
@@ -127,7 +128,7 @@ const getReportsByReferenceAndDateRangeQuery = `
 
 export const getReportsByReferenceAndDateRange = async (
   storeRef: string,
-  { startDate, endDate }: { startDate: string; endDate: string }
+  { startDate, endDate }: DateRange
 ): Promise<StreetDailyReport[]> => {
   try {
     return dbClient.fetch(getReportsByReferenceAndDateRangeQuery, {

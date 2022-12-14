@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import * as useStreetDailyReport from "./hooks/";
 import * as api from "src/queries/sales/hooks";
+import DateRange from "src/interfaces/DateRange";
 
 export const useCreateStreetDailyReportQuery = (queryClient: any) => {
   return useMutation((dailyReport: any) => useStreetDailyReport.createDailyReport(dailyReport),
@@ -74,12 +75,7 @@ export const useChangeAuditStatusQuery = (queryClient: any) => {
     });
 };
 
-interface dateRange {
-  startDate: string,
-  endDate: string
-}
-
-export const useAllReportsByReferenceAndDateRangeQuery = (storeRef: string, dateRange: dateRange, options?: Object) => {
+export const useAllReportsByReferenceAndDateRangeQuery = (storeRef: string, dateRange: DateRange, options?: Object) => {
   return useQuery(["dailyReports", storeRef, dateRange],
     () => useStreetDailyReport.getReportsByReferenceAndDateRange(storeRef, dateRange),
     {

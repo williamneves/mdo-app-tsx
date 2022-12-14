@@ -2,6 +2,7 @@ import { reference } from "@popperjs/core";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import * as api from "./hooks";
 import Sale from "src/interfaces/Sale";
+import DateRange from "src/interfaces/DateRange"
 
 // Get SaleNumber
 export const useGetSaleNumberQuery = (options?: Object) => {
@@ -141,13 +142,8 @@ export const useGetSaleByIDQuery = (saleID: string, options?: Object) => {
     });
 };
 
-interface dateRange {
-  startDate: string,
-  endDate: string
-}
-
 // Get All Sales By Reference (Store) and Date Range
-export const useAllSalesByReferenceAndDateRangeQuery = (storeRef: string, dateRange: dateRange, options?: Object) => {
+export const useAllSalesByReferenceAndDateRangeQuery = (storeRef: string, dateRange: DateRange, options?: Object) => {
   return useQuery(["sales", storeRef, dateRange],
     () => api.getSalesByReferenceByDateRange(storeRef, dateRange),
     {

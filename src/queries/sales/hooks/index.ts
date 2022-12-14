@@ -2,6 +2,7 @@ import { dbClient } from "src/configs/sanityConfig";
 import Product from "src/interfaces/Product";
 import Origin from "src/interfaces/Origin";
 import Sale from "src/interfaces/Sale";
+import DateRange from "interfaces/DateRange";
 import moment from "moment";
 
 // Create the sale number
@@ -269,8 +270,7 @@ const getSalesByReferenceByDateRangeQ = `
   `;
 
 export const getSalesByReferenceByDateRange = async (
-  storeRef: string,
-  { startDate, endDate }: { startDate: string; endDate: string }
+  storeRef: string, { startDate, endDate }: DateRange
 ): Promise<Sale[]> => {
   console.log('dateRange',startDate, endDate, storeRef);
   try {
