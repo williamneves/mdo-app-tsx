@@ -17,6 +17,7 @@ import sequenceNumbers from "./sequenceNumbers";
 import goal from "./goal";
 import StreetDailyReport from "./StreetDailyReport";
 import bonus from "./bonus";
+import faqPost from "./faqPost";
 
 // Then we give our schema to the builder and provide the result to Sanity
 export default createSchema({
@@ -38,5 +39,6 @@ export default createSchema({
     sale,
     bonus,
     StreetDailyReport,
+    faqPost,
   ]),
 });

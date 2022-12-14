@@ -2,6 +2,12 @@ export default {
     title: "Relatório Diário do Street",
     name: "streetDailyReport",
     type: "document",
+    preview: {
+        select: {
+            title: "reportDate",
+            subtitle: "reporter.name",
+        }
+    },
     fields: [
         {
             title: "Inativo",

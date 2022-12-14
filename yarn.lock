@@ -4502,6 +4502,26 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.5.tgz#db5a11bf66bdab39569719555b0f76e138d7bd64"
   integrity sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==
 
+"@portabletext/react@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@portabletext/react/-/react-2.0.0.tgz#188dc7bbd3d02693ceefbeb9115e44ccdf4c3554"
+  integrity sha512-8AaTfRdRAzWxs2ADbMXV32/LTOJaRDp/m89hax/NTbC8F+OBOgHLBl+M7zSJDVIS1k+fuorFCLcOoq+PuAGJvQ==
+  dependencies:
+    "@portabletext/toolkit" "^2.0.0"
+    "@portabletext/types" "^2.0.0"
+
+"@portabletext/toolkit@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@portabletext/toolkit/-/toolkit-2.0.0.tgz#b6675bc4a90c4b0ec92cb66687d149034b38e4b6"
+  integrity sha512-2Ljk7dnofxqam9u4B0h1UmpU18h+6SerSU/UanEHQW/IfjmOi48qZDre6MsOrQJ9/LsmlA8MDrmlCND5r/tg3A==
+  dependencies:
+    "@portabletext/types" "^2.0.0"
+
+"@portabletext/types@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@portabletext/types/-/types-2.0.0.tgz#920d9ffb19ea68c6b0857fe1e97e27c7464d5055"
+  integrity sha512-AjbCPt9x9U0XFwLuVnIxweBrDAlKKcPJRVkpckjMk77VKEQoYvX2dITf5QtQf1TlLIx8zHJFtMcLmiqDJiGuLg==
+
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
