@@ -5,8 +5,8 @@ import moment from "moment";
 export const createDailyReport = async (data: StreetDailyReport) => {
   console.log("data", data);
 
-  if(!data.reportDate || !data.reporter)
-    throw new Error("Missing required fields")
+  if (!data.reportDate || !data.reporter)
+    throw new Error("Missing required fields");
 
   let reportObject = {
     _type: "streetDailyReport",
@@ -34,7 +34,7 @@ export const createDailyReport = async (data: StreetDailyReport) => {
   } catch (err) {
     throw err;
   }
-}
+};
 
 export const getClientsByReporter = async (reporterID: string, reportDate: string) => {
 
@@ -86,7 +86,7 @@ export const getAllDailyReports = async () => {
   } catch (err) {
     throw err;
   }
-}
+};
 
 export const changeAuditStatus = async (reportID: string, status: "approved" | "rejected", auditFeedBack: string) => {
   const query = `
@@ -111,4 +111,31 @@ export const changeAuditStatus = async (reportID: string, status: "approved" | "
   } catch (err) {
     throw err;
   }
-}
+};
+
+const getReportsByReferenceAndDateRangeQuery = `
+*[_type=="streetDailyReport" 
+&& references($storeRef) 
+&& reportDate >= $startDate 
+&& reportDate <= $endDate
+]{
+  ...,
+  reporter->,
+  store->,
+  }
+  `;
+
+export const getReportsByReferenceAndDateRange = async (
+  storeRef: string,
+  { startDate, endDate }: { startDate: string; endDate: string }
+): Promise<StreetDailyReport[]> => {
+  try {
+    return dbClient.fetch(getReportsByReferenceAndDateRangeQuery, {
+      storeRef: storeRef,
+      startDate: startDate,
+      endDate: endDate
+    });
+  } catch (err) {
+    throw err;
+  }
+};
