@@ -191,18 +191,21 @@ const StreetDailyReport = () => {
                 <Grid item xs={12}>
                   <Divider textAlign={"left"}>
                     <Typography variant={"subtitle1"}>Campos automáticos</Typography>
+                    <Typography variant={"subtitle1"}>(Não necessitam de nenhuma ação)</Typography>
                   </Divider>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Typography variant={"h6"}>Clientes cadastrados</Typography>
+                  <Typography variant={"h6"}>Clientes cadastrados: {getValues("clientsRegistered").length}</Typography>
                   <MenuList
                     sx={{
                       width: "100%",
-                      maxWidth: 360,
-                      bgcolor: "background.paper",
                       position: "relative",
                       overflow: "auto",
                       maxHeight: 300,
+                      border: 1,
+                      borderRadius: 1,
+                      borderColor: "secondary.main",
+                      gap: 0,
                       "& ul": { padding: 0 }
                     }}
                     subheader={<li />}
@@ -212,10 +215,13 @@ const StreetDailyReport = () => {
                         <ul>
                           <ListItem key={client._id}>
                             <ListItemText
-                              primary={`${client.name} - ${client.phone ? client.phone : "Sem telefone"}`}
+                                sx={{
+                                  padding: 2,
+                                  borderBottom: 1,
+                                  borderColor: "secondary.main"
+                                }}
+                              primary={`${client.name} - ${client.phone ? client.phone : "Sem Telefone"}`}
                               secondary={`Código: ${client.clientNumber}`} />
-                          </ListItem>
-                          <ListItem>
                           </ListItem>
                         </ul>
                       </li>
