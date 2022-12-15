@@ -75,6 +75,7 @@ export const createBonus = async (bonus: IBonus): Promise<IBonus> => {
       _ref: (bonus.store as Store)._id
     }
   }
+  console.log('newBonus', newBonus)
 
   try{
     bonus._type = "bonus"
