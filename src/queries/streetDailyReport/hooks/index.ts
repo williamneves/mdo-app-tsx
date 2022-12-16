@@ -1,10 +1,10 @@
 import { dbClient } from "../../../configs/sanityConfig";
 import StreetDailyReport from "src/interfaces/StreetDailyReport";
 import DateRange from "src/interfaces/DateRange";
+import Client from "src/interfaces/Client";
 import moment from "moment";
 
 export const createDailyReport = async (data: StreetDailyReport) => {
-  console.log("data", data);
 
   if (!data.reportDate || !data.reporter)
     throw new Error("Missing required fields");
@@ -29,7 +29,7 @@ export const createDailyReport = async (data: StreetDailyReport) => {
       _ref: data.reporter._id
     }
   };
-  console.log("reportObject", reportObject);
+
   try {
     return await dbClient.create(reportObject);
   } catch (err) {
@@ -37,10 +37,10 @@ export const createDailyReport = async (data: StreetDailyReport) => {
   }
 };
 
-export const getClientsByReporter = async (reporterID: string, reportDate: string) => {
-
-  console.log("reporterID", reporterID);
-  console.log("reportDate", reportDate);
+export const getClientsByReporter = async (
+    reporterID: string,
+    reportDate: string
+): Promise<Client> => {
 
   const query = `
   *[
@@ -89,7 +89,12 @@ export const getAllDailyReports = async () => {
   }
 };
 
-export const changeAuditStatus = async (reportID: string, status: "approved" | "rejected", auditFeedBack: string) => {
+export const changeAuditStatus = async (
+    reportID: string,
+    status: "approved" | "rejected",
+    auditFeedBack: string
+): Promise<StreetDailyReport> => {
+
   const query = `
   *[_type == "streetDailyReport" && _id == "${reportID}"]{
     _id,
@@ -106,9 +111,7 @@ export const changeAuditStatus = async (reportID: string, status: "approved" | "
 
   try {
     const report = await dbClient.fetch(query);
-    if (report.length > 0) {
-      return await dbClient.patch(report[0]._id).set({ auditStatus: status, auditFeedBack: auditFeedBack }).commit();
-    }
+    return await dbClient.patch(report[0]._id).set({ auditStatus: status, auditFeedBack: auditFeedBack }).commit();
   } catch (err) {
     throw err;
   }
