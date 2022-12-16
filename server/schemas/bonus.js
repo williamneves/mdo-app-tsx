@@ -2,6 +2,12 @@ export default {
   name: 'bonus',
   title: 'Bônus',
   type: 'document',
+  preview: {
+    select: {
+      title: 'name',
+      subtitle: 'user.name',
+    }
+  },
   fields: [
     {
       title: 'Inativo',
