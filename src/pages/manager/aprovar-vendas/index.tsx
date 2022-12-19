@@ -107,48 +107,6 @@ const ApproveSales = () => {
     }
   };
 
-  const approveAllSales = async () => {
-    const toastId = toast.loading("Aguarde...");
-    try {
-      await Promise.all((pendingSales as Sale[]).map(async (sale: Sale) => {
-        // set a timeout to get maximum 10 operation per second
-        setTimeout( () =>(
-         changeSaleStatus.mutate({ saleID: sale._id, status: "approved", auditFeedBack: "" })
-        ), 300);
-      }));
-      toast.success(`Vendas aprovadas com sucesso!`, { id: toastId });
-      setOpenDialog(false);
-    } catch (e) {
-      toast.error(`Erro ao aprovar vendas!`, { id: toastId });
-    }
-  };
-
-  const handleApproveAllSales = () => {
-    setDialogData({
-      headerTitle: "Aprovar todas as vendas",
-      content: "Realmente deseja aprovar todas as vendas?",
-      actions: [{
-        mode: "button",
-        props: {
-          label: "confirmar",
-          color: "primary",
-          variant: "contained",
-          onClick: () => approveAllSales()
-        }
-      }, {
-        mode: "button",
-        props: {
-          label: "cancelar",
-          color: "error",
-          variant: "outlined",
-          onClick: () => setOpenDialog(false)
-        }
-      }]
-    });
-
-    setOpenDialog(true);
-  };
-
   const handleApproveRejectSale = (sale: Sale, action: "Aprovar" | "Recusar") => {
 
     setDialogData({
@@ -390,14 +348,6 @@ const ApproveSales = () => {
                 startIcon={<RotateLeftIcon />}
               >
                 Resetar filtro
-              </Button>
-            </Grid>
-            <Grid item xs={12} sx={{ ml: "auto", paddingX:5 }}>
-              <Button
-                variant={"outlined"}
-                onClick={() => handleApproveAllSales()}
-              >
-                Aprovar tudo
               </Button>
             </Grid>
             {/*<Grid*/}
