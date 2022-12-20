@@ -252,3 +252,18 @@ export const useUpdateClientSaleQuery = (queryClient: any) => {
             }
         });
 };
+
+export const useGetApprovedSalesInCurrentDay = (storeRef: string, options?: object) => {
+    return useQuery(["sales", storeRef],
+        () => api.getApprovedSalesInCurrentDay(storeRef),
+        {
+            // 1hr stale time
+            staleTime: 1000 * 60 * 60,
+            // 12hr cache time
+            cacheTime: 1000 * 60 * 60 * 12,
+            //
+            placeholderData: [],
+            enabled: !!storeRef,
+            ...options
+        });
+}

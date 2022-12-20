@@ -482,3 +482,32 @@ export const updateSaleClient = async (saleID: string, clientID: string): Promis
     throw err;
   }
 };
+
+export const getApprovedSalesInCurrentDay = async (storeRef: string): Promise<Sale[]> => {
+  try {
+    const query =
+        `*[
+          _type=="sale" 
+          && date=="${moment().format("YYYY-MM-DD")}" 
+          && auditStatus=="approved" 
+          && references($storeRef)
+          ]{
+            ...,
+            "origin": userReferrer[]->,
+            user->,
+            "vendor": user->,
+            client->,
+            store->,
+            paymentMethod->,
+            products[] {
+              ...,
+              product->,
+          }
+      }`;
+    return await dbClient.fetch(query, {
+      storeRef
+    });
+  } catch (err) {
+    throw err;
+  }
+}
