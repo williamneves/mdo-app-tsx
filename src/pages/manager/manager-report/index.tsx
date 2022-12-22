@@ -15,7 +15,6 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuList from "@mui/material/MenuList";
 
 // ** MUI Icons
-import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import SaveAltIcon from "@mui/icons-material/SaveAlt";
 import ContactPageIcon from '@mui/icons-material/ContactPage';
 
@@ -34,7 +33,11 @@ import {useForm} from "react-hook-form";
 import {useAuth} from "src/hooks/useAuth";
 import * as query from "src/queries/sales"
 
+// * Types
+import Sale from "src/interfaces/Sale";
+
 const ManagerReport = () => {
+
     const {selectedStore} = useAuth();
     const {data: approvedSalesInCurrentDay, isLoading} = query.useGetApprovedSalesInCurrentDay(selectedStore?._id!);
 
@@ -53,17 +56,12 @@ const ManagerReport = () => {
     };
 
     const schema = yup.object().shape({
-        reportDate: yup.date().required("Este campo é obrigatório"),
-        clientsApproached: yup.number().required("Este campo é obrigatório"),
-        clientsRegistered: yup.array().of(yup.object().shape({
-            _id: yup.string().required()
-        })),
-        activitiesReport: yup.string(),
+        date: yup.date().required("Este campo é obrigatório"),
+        valueInCash: yup.number().required("Este campo é obrigatório"),
         scheduledAppointments: yup.number().required("Este campo é obrigatório"),
-        reporter: yup.object().shape({
-            _id: yup.string().required(),
-            name: yup.string()
-        }),
+        consultationsMade: yup.number().required("Este campo é obrigatório"),
+        dayDescription: yup.string().required("Este campo é obrigatório"),
+        nextDayPlanning: yup.string().required("Este campo é obrigatório"),
         store: yup.object().shape({
             _id: yup.string().required(),
             name: yup.string()
@@ -97,7 +95,7 @@ const ManagerReport = () => {
                             <Grid container spacing={6}>
                                 <Grid item xs={12} sm={6}>
                                     <DateInputControlled
-                                        name={"reportDate"}
+                                        name={"date"}
                                         control={control}
                                         label={"Data do Relatório"}
                                         errors={errors}
@@ -106,7 +104,7 @@ const ManagerReport = () => {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <CurrencyMaskInputControlled
-                                        name={`.price`}
+                                        name={"valueInCash"}
                                         label={"Valor de fechamento do caixa"}
                                         control={control}
                                         errors={errors}
@@ -117,7 +115,29 @@ const ManagerReport = () => {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextInputControlled
-                                        name={"clientsApproached"}
+                                        name={"scheduledAppointments"}
+                                        control={control}
+                                        label={"Consultas Marcadas"}
+                                        errors={errors}
+                                        disabled={isLoading}
+                                        type={"number"}
+                                        required
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextInputControlled
+                                        name={"consultationsMade"}
+                                        control={control}
+                                        label={"Consultas Realizadas"}
+                                        errors={errors}
+                                        disabled={isLoading}
+                                        type={"number"}
+                                        required
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextInputControlled
+                                        name={"dayDescription"}
                                         control={control}
                                         label={"Descrição do dia"}
                                         errors={errors}
@@ -130,7 +150,7 @@ const ManagerReport = () => {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextInputControlled
-                                        name={"scheduledAppointments"}
+                                        name={"nextDayPlanning"}
                                         control={control}
                                         label={"Planejamento para o dia seguinte"}
                                         errors={errors}
@@ -148,7 +168,7 @@ const ManagerReport = () => {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <Typography variant={"h6"}>
-                                        Vendas aprovadas:
+                                        Vendas aprovadas: {approvedSalesInCurrentDay?.length}
                                     </Typography>
                                     <MenuList
                                         sx={{
@@ -163,18 +183,18 @@ const ManagerReport = () => {
                                         }}
                                         subheader={<li/>}
                                     >
-                                        {approvedSalesInCurrentDay.map((client: Client) => (
-                                            <li key={`section-${client}`}>
+                                        {approvedSalesInCurrentDay?.map((sale: Sale) => (
+                                            <li key={`section-${sale}`}>
                                                 <ul>
-                                                    <ListItem key={client._id}>
+                                                    <ListItem key={sale._id}>
                                                         <ListItemText
                                                             sx={{
                                                                 padding: 2,
                                                                 borderBottom: 1,
                                                                 borderColor: "secondary.main"
                                                             }}
-                                                            primary={`${client.name} - ${client.phone ? client.phone : "Sem Telefone"}`}
-                                                            secondary={`Código: ${client.clientNumber}`}/>
+                                                            primary={`Vendedor: ${sale?.vendor?.name}`}
+                                                            secondary={`Código: ${sale.PDVNumber}`}/>
                                                     </ListItem>
                                                 </ul>
                                             </li>
