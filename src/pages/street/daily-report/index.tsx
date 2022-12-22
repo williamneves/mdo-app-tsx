@@ -110,6 +110,7 @@ const StreetDailyReport = () => {
                 reportDate: moment(getValues("reportDate")).format("YYYY-MM-DD")
             })
                 .then((res) => {
+                    // @ts-ignore
                     setValue("clientsRegistered", res);
                 });
         }
