@@ -42,11 +42,6 @@ export default {
             }],
         },
         {
-            title: "Anexos",
-            name: "docs",
-            type: "",
-        },
-        {
             title: "Consultas Marcadas",
             name: "scheduledAppointments",
             type: "number",
@@ -56,5 +51,11 @@ export default {
             name: "consultationsMade",
             type: "number",
         },
+        {
+            title: "Loja",
+            name: "store",
+            type: "reference",
+            to: [{ type: "store" }],
+        }
     ],
 }
