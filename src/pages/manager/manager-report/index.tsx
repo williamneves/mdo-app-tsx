@@ -1,5 +1,5 @@
 // ** React Imports
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 
 // ** MUI Imports
 import Card from "@mui/material/Card";
@@ -22,6 +22,7 @@ import ContactPageIcon from '@mui/icons-material/ContactPage';
 import * as yup from "yup";
 import {yupResolver} from "@hookform/resolvers/yup/dist/yup";
 import moment from "moment";
+import {toast} from "react-hot-toast";
 
 // ** Third Party Components
 import TextInputControlled from "components/inputs/TextInputControlled";
@@ -31,7 +32,9 @@ import CurrencyMaskInputControlled from "components/inputs/CurrencyMaskInputCont
 // ** Hooks
 import {useForm} from "react-hook-form";
 import {useAuth} from "src/hooks/useAuth";
-import * as query from "src/queries/sales"
+import * as salesQuery from "src/queries/sales";
+import * as managerReportQuery from "src/queries/managerReport"
+import {useQueryClient} from "@tanstack/react-query";
 
 // * Types
 import Sale from "src/interfaces/Sale";
@@ -39,17 +42,19 @@ import Sale from "src/interfaces/Sale";
 const ManagerReport = () => {
 
     const {selectedStore} = useAuth();
-    const {data: approvedSalesInCurrentDay, isLoading} = query.useGetApprovedSalesInCurrentDay(selectedStore?._id!);
+    const queryClient = useQueryClient();
+    const createManagerReport = managerReportQuery.useCreateManagerReportQuery(queryClient);
+    const {data: approvedSalesInCurrentDay} = salesQuery.useGetApprovedSalesInCurrentDay(selectedStore?._id!);
+    const {isLoading} = createManagerReport;
 
     const formDefaultValue = {
-        reportDate: moment(),
-        clientsApproached: "",
-        clientsRegistered: [],
-        scheduledAppointments: "",
-        activitiesReport: "",
-        reporter: {
-            name: ""
-        },
+        date: moment(),
+        valueInCash: 0,
+        scheduledAppointments: 0,
+        consultationsMade: 0,
+        dayDescription: "",
+        nextDayPlanning: "",
+        approvedSales: [],
         store: {
             name: ""
         }
@@ -65,15 +70,16 @@ const ManagerReport = () => {
         store: yup.object().shape({
             _id: yup.string().required(),
             name: yup.string()
-        })
+        }),
+        approvedSales: yup.array().of(yup.object().shape({
+            _id: yup.string()
+        }))
     });
 
     const {
         control,
         handleSubmit,
         setValue,
-        watch,
-        getValues,
         reset,
         formState: {errors}
     } = useForm({
@@ -81,6 +87,28 @@ const ManagerReport = () => {
         resolver: yupResolver(schema),
         mode: "onBlur"
     });
+
+    useEffect(() => {
+        if (selectedStore) {
+            // @ts-ignore
+            setValue("store", selectedStore!);
+        }
+        if (approvedSalesInCurrentDay) {
+            // @ts-ignore
+            setValue("approvedSales", approvedSalesInCurrentDay);
+        }
+    }, [selectedStore, approvedSalesInCurrentDay]);
+
+    const onSubmit = async (data: any) => {
+        const toastId = toast.loading("Salvando relatório diário...");
+        try {
+            await createManagerReport.mutateAsync(data);
+            toast.success("Relatório diário salvo com sucesso!", {id: toastId});
+            reset(formDefaultValue);
+        } catch (error) {
+            toast.error("Erro ao salvar relatório diário!", {id: toastId});
+        }
+    };
 
     return (
         <Grid container spacing={6}>
@@ -91,7 +119,7 @@ const ManagerReport = () => {
                 </Typography>
                 <Card>
                     <CardContent>
-                        <form>
+                        <form onSubmit={handleSubmit(onSubmit)}>
                             <Grid container spacing={6}>
                                 <Grid item xs={12} sm={6}>
                                     <DateInputControlled
@@ -170,36 +198,39 @@ const ManagerReport = () => {
                                     <Typography variant={"h6"}>
                                         Vendas aprovadas: {approvedSalesInCurrentDay?.length}
                                     </Typography>
-                                    <MenuList
-                                        sx={{
-                                            width: "100%",
-                                            position: "relative",
-                                            overflow: "auto",
-                                            maxHeight: 300,
-                                            border: 1,
-                                            borderRadius: 1,
-                                            borderColor: "secondary.main",
-                                            "& ul": {padding: 0}
-                                        }}
-                                        subheader={<li/>}
-                                    >
-                                        {approvedSalesInCurrentDay?.map((sale: Sale) => (
-                                            <li key={`section-${sale}`}>
-                                                <ul>
-                                                    <ListItem key={sale._id}>
-                                                        <ListItemText
-                                                            sx={{
-                                                                padding: 2,
-                                                                borderBottom: 1,
-                                                                borderColor: "secondary.main"
-                                                            }}
-                                                            primary={`Vendedor: ${sale?.vendor?.name}`}
-                                                            secondary={`Código: ${sale.PDVNumber}`}/>
-                                                    </ListItem>
-                                                </ul>
-                                            </li>
-                                        ))}
-                                    </MenuList>
+                                    {
+                                        (approvedSalesInCurrentDay as Sale[]).length > 0 &&
+                                        <MenuList
+                                            sx={{
+                                                width: "100%",
+                                                position: "relative",
+                                                overflow: "auto",
+                                                maxHeight: 300,
+                                                border: 1,
+                                                borderRadius: 1,
+                                                borderColor: "secondary.main",
+                                                "& ul": {padding: 0}
+                                            }}
+                                            subheader={<li/>}
+                                        >
+                                            {approvedSalesInCurrentDay?.map((sale: Sale) => (
+                                                <li key={`section-${sale}`}>
+                                                    <ul>
+                                                        <ListItem key={sale._id}>
+                                                            <ListItemText
+                                                                sx={{
+                                                                    padding: 2,
+                                                                    borderBottom: 1,
+                                                                    borderColor: "secondary.main"
+                                                                }}
+                                                                primary={`Vendedor: ${sale?.vendor?.name}`}
+                                                                secondary={`Código: ${sale.PDVNumber}`}/>
+                                                        </ListItem>
+                                                    </ul>
+                                                </li>
+                                            ))}
+                                        </MenuList>
+                                    }
                                     <Alert severity={"warning"} sx={{mt: 3}}>
                                         <AlertTitle>Aviso</AlertTitle>
                                         Este campo se refere às vendas aprovadas na data deste relatório

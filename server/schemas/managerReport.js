@@ -1,5 +1,5 @@
 export default {
-    title: "Manager Report",
+    title: "Report do Gerente",
     name: "managerReport",
     type: "document",
     preview: {
