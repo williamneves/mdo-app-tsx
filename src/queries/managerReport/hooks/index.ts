@@ -9,6 +9,7 @@ export const createManagerReport = async (data: ManagerReport) => {
         || !data.scheduledAppointments
         || !data.consultationsMade
         || !data.store._id
+        || !data.reporter._id
     ) {
         throw new Error("Missing required fields");
     }
@@ -26,6 +27,11 @@ export const createManagerReport = async (data: ManagerReport) => {
         store: {
             _type: "reference",
             _ref: data.store._id
+        },
+
+        reporter: {
+            _type: "reference",
+            _ref: data.reporter._id
         },
     }
 

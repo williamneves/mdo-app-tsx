@@ -56,6 +56,12 @@ export default {
             name: "store",
             type: "reference",
             to: [{ type: "store" }],
-        }
+        },
+        {
+            title: "Reportado por",
+            name: "reporter",
+            type: "reference",
+            to: [{type: "user"}],
+        },
     ],
 }

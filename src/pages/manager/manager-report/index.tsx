@@ -1,5 +1,5 @@
 // ** React Imports
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 
 // ** MUI Imports
 import Card from "@mui/material/Card";
@@ -41,7 +41,10 @@ import Sale from "src/interfaces/Sale";
 
 const ManagerReport = () => {
 
-    const {selectedStore} = useAuth();
+    // States
+    const [reloadInfo, setReloadInfo] = useState<boolean>(false);
+
+    const {selectedStore, user} = useAuth();
     const queryClient = useQueryClient();
     const createManagerReport = managerReportQuery.useCreateManagerReportQuery(queryClient);
     const {data: approvedSalesInCurrentDay} = salesQuery.useGetApprovedSalesInCurrentDay(selectedStore?._id!);
@@ -56,6 +59,9 @@ const ManagerReport = () => {
         nextDayPlanning: "",
         approvedSales: [],
         store: {
+            name: ""
+        },
+        reporter: {
             name: ""
         }
     };
@@ -73,7 +79,10 @@ const ManagerReport = () => {
         }),
         approvedSales: yup.array().of(yup.object().shape({
             _id: yup.string()
-        }))
+        })),
+        reporter: yup.object().shape({
+            _id: yup.string().required()
+        })
     });
 
     const {
@@ -97,7 +106,10 @@ const ManagerReport = () => {
             // @ts-ignore
             setValue("approvedSales", approvedSalesInCurrentDay);
         }
-    }, [selectedStore, approvedSalesInCurrentDay]);
+        if (user) {
+            setValue("reporter", user);
+        }
+    }, [selectedStore, approvedSalesInCurrentDay, user, reloadInfo]);
 
     const onSubmit = async (data: any) => {
         const toastId = toast.loading("Salvando relatório diário...");
@@ -105,6 +117,7 @@ const ManagerReport = () => {
             await createManagerReport.mutateAsync(data);
             toast.success("Relatório diário salvo com sucesso!", {id: toastId});
             reset(formDefaultValue);
+            setReloadInfo(!reloadInfo);
         } catch (error) {
             toast.error("Erro ao salvar relatório diário!", {id: toastId});
         }
