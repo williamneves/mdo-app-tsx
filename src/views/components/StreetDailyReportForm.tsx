@@ -129,6 +129,13 @@ const StreetDailyReportForm = ({dailyReport}: Props) => {
         // @ts-ignore
     }, [watch("reportDate")]);
 
+    useEffect(() => {
+        if (dailyReport) {
+            // @ts-ignore
+            setValue("reportDate", moment(dailyReport.reportDate))
+        }
+    }, [])
+
     const updateReportAndReturnToReportsList = async (report: StreetDailyReport) => {
         const toastId = toast.loading("Salvando edição do Report Diário...");
 
