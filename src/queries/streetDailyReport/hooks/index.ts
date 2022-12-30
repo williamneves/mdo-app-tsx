@@ -143,3 +143,24 @@ export const getReportsByReferenceAndDateRange = async (
     throw err;
   }
 };
+
+export const getReportsByStreet = async (streetID: string) => {
+  const query = `
+*[_type=="streetDailyReport" 
+&& references($streetRef)
+&& auditStatus != "reproved" 
+]{
+  ...,
+  reporter->,
+  store->,
+  }
+  `;
+
+  try {
+    return dbClient.fetch(getReportsByReferenceAndDateRangeQuery, {
+      streetRef: streetID,
+    });
+  } catch (e) {
+    throw e;
+  }
+}

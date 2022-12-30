@@ -89,3 +89,15 @@ export const useAllReportsByReferenceAndDateRangeQuery = (storeRef: string, date
       ...options
     });
 }
+
+export const useGetReportByStreet = (streetID: string, options?: Object) => {
+  return useQuery(["dailyReports", "street"],
+      () => useStreetDailyReport.getReportsByStreet(streetID),
+      {
+        // 1hr stale time
+        staleTime: 1000 * 60 * 60,
+        // 12hr cache time
+        cacheTime: 1000 * 60 * 60 * 12,
+        ...options
+      });
+}
