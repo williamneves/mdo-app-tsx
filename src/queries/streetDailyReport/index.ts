@@ -90,7 +90,7 @@ export const useAllReportsByReferenceAndDateRangeQuery = (storeRef: string, date
     });
 }
 
-export const useGetReportByStreet = (streetID: string, options?: Object) => {
+export const useGetReportByStreetQuery = (streetID: string, options?: Object) => {
   return useQuery(["dailyReports", "street"],
       () => useStreetDailyReport.getReportsByStreet(streetID),
       {
@@ -102,7 +102,7 @@ export const useGetReportByStreet = (streetID: string, options?: Object) => {
       });
 }
 
-export const useDeleteDailyReport = (queryClient: any) => {
+export const useDeleteDailyReportQuery = (queryClient: any) => {
     return useMutation((reportID: string) => useStreetDailyReport.deleteDailyReport(reportID),
         {
             onSuccess: (newDailyReport) => {
@@ -117,7 +117,7 @@ export const useDeleteDailyReport = (queryClient: any) => {
         });
 }
 
-export const useUpdateDailyReport = (queryClient: any) => {
+export const useUpdateDailyReportQueryQuery = (queryClient: any) => {
     return useMutation((report: StreetDailyReport) => useStreetDailyReport.updateDailyReport(report),
         {
             onSuccess: (newDailyReport) => {
@@ -129,5 +129,17 @@ export const useUpdateDailyReport = (queryClient: any) => {
                 });
                 queryClient.invalidateQueries(["dailyReports", "street"]);
             }
+        });
+}
+
+export const useGetReportByStreetReportIDQuery = (reportID: string, options?: Object) => {
+    return useQuery(["dailyReports", "street"],
+        () => useStreetDailyReport.getDailyReportByID(reportID),
+        {
+            // 1hr stale time
+            staleTime: 1000 * 60 * 60,
+            // 12hr cache time
+            cacheTime: 1000 * 60 * 60 * 12,
+            ...options
         });
 }

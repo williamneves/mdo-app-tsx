@@ -187,3 +187,24 @@ export const updateDailyReport = async (report: StreetDailyReport) => {
     throw e;
   }
 }
+
+export const getDailyReportByID = async (reportID: string) => {
+
+  const query = `
+*[_type=="streetDailyReport" 
+&& _id==$reportID
+]{
+  ...,
+  reporter->,
+  store->,
+  }
+  `;
+
+  try {
+    return await dbClient.fetch(query, {
+      reportID
+    })
+  } catch (e) {
+    throw e;
+  }
+}
