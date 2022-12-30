@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { useState, Fragment } from "react";
+import React, {useState, Fragment} from "react";
 
 // ** MUI Imports
 import Box from "@mui/material/Box";
@@ -7,13 +7,13 @@ import IconButton from "@mui/material/IconButton";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import CardHeader from "@mui/material/CardHeader";
-import { DataGrid } from "@mui/x-data-grid";
+import {DataGrid} from "@mui/x-data-grid";
 import Grid from "@mui/material/Grid";
 
 // ** MUI Icons
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverTwoToneIcon from "@mui/icons-material/DeleteForeverTwoTone";
-import GroupsIcon from "@mui/icons-material/Groups";
+import ListAltIcon from '@mui/icons-material/ListAlt';
 
 // ** Third Party Imports
 import SimpleDialog from "components/SimpleDialog";
@@ -29,12 +29,12 @@ import moment from "moment";
 // ** Hooks Imports
 import * as useClient from "src/queries/clients";
 import * as api from "src/queries/streetDailyReport";
-import { useQueryClient } from "@tanstack/react-query";
-import { matchSearchFilter, getAllObjectKeys } from "src/@utils/filters";
-import { useAuth } from "src/hooks/useAuth";
+import {useQueryClient} from "@tanstack/react-query";
+import {matchSearchFilter, getAllObjectKeys} from "src/@utils/filters";
+import {useAuth} from "src/hooks/useAuth";
 
 // ** Next Imports
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 
 // ** Types
 import StreetDailyReport from "src/interfaces/StreetDailyReport";
@@ -44,13 +44,13 @@ interface RowsData {
 }
 
 const renderCellWithMatchLetters = (row: any, searchValue: string) => {
-    const matchesChar = match(row, searchValue, { insideWords: true });
+    const matchesChar = match(row, searchValue, {insideWords: true});
     const parsesChar = parse(row, matchesChar);
 
     return (<Typography variant="body2" color="textPrimary">
         {
             parsesChar.map((part: any, index: number) => (
-                <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
+                <span key={index} style={{fontWeight: part.highlight ? 700 : 400}}>
                 {part.text}
               </span>
             ))
@@ -64,32 +64,32 @@ const StreetReportsList = () => {
     const router = useRouter();
 
     // ** Hooks
-    const { user, selectedStore } = useAuth();
+    const {user} = useAuth();
 
     // ** React Query
     const queryClient = useQueryClient();
-    const { data: reports, isLoading } = api.useGetReportByStreet(user?._id || "");
+    const deleteDailyReport = api.useDeleteDailyReportQuery(queryClient);
+    const {data: reports, isLoading} = api.useGetReportByStreetQuery(user?._id || "");
 
     // ** States
     const [openDialog, setOpenDialog] = useState(false);
     const [dialogData, setDialogData] = useState({});
     const [searchValue, setSearchValue] = useState("");
 
-    const deleteReportData = (clientID: string) => {
+    const deleteReportData = (reportID: string) => {
         const toastId = toast.loading("Deletando cliente...");
-        // deleteClient.mutateAsync(clientID)
-        //     .then(() => {
-        //         toast.success("Cliente deletado com sucesso!", { id: toastId });
-        //         setOpenDialog(false);
-        //     })
-        //     .catch((err) => {
-        //         console.log(err);
-        //         toast.error(`Erro ao deletar client`, { id: toastId });
-        //     });
+        deleteDailyReport.mutateAsync(reportID)
+            .then(() => {
+                toast.success("Relatório Diário deletado com sucesso!", {id: toastId});
+                setOpenDialog(false);
+            })
+            .catch((err) => {
+                toast.error(`Erro ao deletar Relatório Diário`, {id: toastId});
+            });
     };
 
     const openEditReportForm = (reportID: string) => {
-        router.push(``);
+        router.push(`/street/edit-daily-report/${reportID}`);
     };
 
     const handleViewReport = (reportID: string) => {
@@ -122,7 +122,7 @@ const StreetReportsList = () => {
             field: "reportDate",
             headerName: "Data",
             width: 100,
-            renderCell: ({ row }: RowsData) => (
+            renderCell: ({row}: RowsData) => (
                 <Typography variant="subtitle2">
                     {moment(row.reportDate).format("DD-MM-YYYY")}
                 </Typography>
@@ -133,7 +133,8 @@ const StreetReportsList = () => {
             headerName: "Status",
             flex: 0.15,
             minWidth: 140,
-            renderCell: ({ row }: RowsData) => (
+            align: "center",
+            renderCell: ({row}: RowsData) => (
                 <Typography variant="subtitle2">
                     {translateAuditStatus(row.auditStatus)}
                 </Typography>
@@ -144,7 +145,8 @@ const StreetReportsList = () => {
             headerName: "Clientes Abordados",
             flex: 0.15,
             minWidth: 140,
-            renderCell: ({ row }: RowsData) => (
+            align: "center",
+            renderCell: ({row}: RowsData) => (
                 <Typography variant="subtitle2">
                     {row.clientsApproached}
                 </Typography>
@@ -155,7 +157,8 @@ const StreetReportsList = () => {
             headerName: "Clientes Cadastrados",
             flex: 0.15,
             minWidth: 140,
-            renderCell: ({ row }: RowsData) => (
+            align: "center",
+            renderCell: ({row}: RowsData) => (
                 <Typography variant="subtitle2">
                     {row.clientsRegistered.length}
                 </Typography>
@@ -166,7 +169,8 @@ const StreetReportsList = () => {
             headerName: "Consultas Marcadas",
             flex: 0.15,
             minWidth: 140,
-            renderCell: ({ row }: RowsData) => (
+            align: "center",
+            renderCell: ({row}: RowsData) => (
                 <Typography variant="subtitle2">
                     {row.scheduledAppointments}
                 </Typography>
@@ -177,7 +181,7 @@ const StreetReportsList = () => {
             headerName: "Criado por",
             flex: 0.15,
             minWidth: 140,
-            renderCell: ({ row }: RowsData) => (
+            renderCell: ({row}: RowsData) => (
                 <Typography variant="body2" color="textPrimary">
                     {row.reporter.name}
                 </Typography>
@@ -188,13 +192,14 @@ const StreetReportsList = () => {
             headerName: "Ações",
             flex: 0.15,
             minWidth: 140,
-            renderCell: ({ row }: RowsData) => (
-                <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
+            renderCell: ({row}: RowsData) => (
+                <Box sx={{display: "flex", alignItems: "center", gap: 3}}>
                     <IconButton
                         color={"primary"}
                         disabled={row.auditStatus === "approved"}
+                        onClick={() => openEditReportForm(row._id)}
                     >
-                        <EditIcon />
+                        <EditIcon/>
                     </IconButton>
                     <IconButton
                         color={"error"}
@@ -202,23 +207,24 @@ const StreetReportsList = () => {
                         disabled={row.auditStatus === "approved"}
                         onClick={() => handleViewReport(row._id)}
                     >
-                        <DeleteForeverTwoToneIcon />
+                        <DeleteForeverTwoToneIcon/>
                     </IconButton>
                 </Box>
             )
         }
     ];
+
     return (
         <Fragment>
             <Grid container spacing={6}>
                 <Grid item xs={12}>
-                    <Card sx={{ width: "100%", marginBottom: "100px" }}>
+                    <Card sx={{width: "100%", marginBottom: "100px"}}>
                         <CardHeader title={
-                            <Typography variant={"h6"} sx={{ display: "flex", alignItems: "center" }}>
-                                <GroupsIcon sx={{ mr: 2, fontSize: 40 }} />
+                            <Typography variant={"h6"} sx={{display: "flex", alignItems: "center"}}>
+                                <ListAltIcon sx={{mr: 2, fontSize: 40}}/>
                                 Lista de Relatórios Diários
                             </Typography>
-                        } />
+                        }/>
                         <DataGrid
                             sx={{
                                 // Remove border Radius
@@ -230,6 +236,7 @@ const StreetReportsList = () => {
                             autoHeight={true}
                             loading={isLoading}
                             rows={reports || []}
+                            // @ts-ignore
                             columns={columns}
                             components={{
                                 Toolbar: QuickSearchToolbar

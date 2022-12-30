@@ -117,7 +117,7 @@ export const useDeleteDailyReportQuery = (queryClient: any) => {
         });
 }
 
-export const useUpdateDailyReportQueryQuery = (queryClient: any) => {
+export const useUpdateDailyReportQuery = (queryClient: any) => {
     return useMutation((report: StreetDailyReport) => useStreetDailyReport.updateDailyReport(report),
         {
             onSuccess: (newDailyReport) => {
@@ -132,8 +132,8 @@ export const useUpdateDailyReportQueryQuery = (queryClient: any) => {
         });
 }
 
-export const useGetReportByStreetReportIDQuery = (reportID: string, options?: Object) => {
-    return useQuery(["dailyReports", "street"],
+export const useGetDailyReportByIDQuery = (reportID: string, options?: Object) => {
+    return useQuery(["dailyReports", "reportID"],
         () => useStreetDailyReport.getDailyReportByID(reportID),
         {
             // 1hr stale time
