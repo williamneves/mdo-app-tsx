@@ -190,7 +190,7 @@ const ClientList = () => {
           <IconButton
             color={"error"}
             // @ts-ignore
-            disabled={row.hasRef}
+            disabled={row.hasRef || (row.createdBy._id !== user._id && user.role !== "admin")}
             onClick={() => handleViewClient(row._id)}
           >
             <DeleteForeverTwoToneIcon />
@@ -203,7 +203,7 @@ const ClientList = () => {
     <Fragment>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <Card sx={{ width: "100%" }}>
+          <Card sx={{ width: "100%", marginBottom: "100px" }}>
             <CardHeader title={
               <Typography variant={"h6"} sx={{ display: "flex", alignItems: "center" }}>
                 <GroupsIcon sx={{ mr: 2, fontSize: 40 }} />
@@ -211,6 +211,12 @@ const ClientList = () => {
               </Typography>
             } />
             <DataGrid
+                sx={{
+                  // Remove border Radius
+                  "& .MuiDataGrid-columnHeaders": {
+                    borderRadius: 0
+                  }
+                }}
               getRowId={(row) => row._id}
               autoHeight={true}
               loading={isLoading}

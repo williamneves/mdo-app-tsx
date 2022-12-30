@@ -1,5 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import * as useStreetDailyReport from "./hooks/";
+import StreetDailyReport from "interfaces/StreetDailyReport";
+import DateRange from "src/interfaces/DateRange";
 
 export const useCreateStreetDailyReportQuery = (queryClient: any) => {
   return useMutation((dailyReport: any) => useStreetDailyReport.createDailyReport(dailyReport),
@@ -72,3 +74,72 @@ export const useChangeAuditStatusQuery = (queryClient: any) => {
       }
     });
 };
+
+export const useAllReportsByReferenceAndDateRangeQuery = (storeRef: string, dateRange: DateRange, options?: Object) => {
+  return useQuery(["dailyReports", storeRef, dateRange],
+    () => useStreetDailyReport.getReportsByReferenceAndDateRange(storeRef, dateRange),
+    {
+      // 1hr stale time
+      staleTime: 1000 * 60 * 60,
+      // 12hr cache time
+      cacheTime: 1000 * 60 * 60 * 12,
+      //
+      placeholderData: [],
+      enabled: !!storeRef && !!dateRange,
+      ...options
+    });
+}
+
+export const useGetReportByStreetQuery = (streetID: string, options?: Object) => {
+  return useQuery(["dailyReports", "street"],
+      () => useStreetDailyReport.getReportsByStreet(streetID),
+      {
+        // 1hr stale time
+        staleTime: 1000 * 60 * 60,
+        // 12hr cache time
+        cacheTime: 1000 * 60 * 60 * 12,
+        ...options
+      });
+}
+
+export const useDeleteDailyReportQuery = (queryClient: any) => {
+    return useMutation((reportID: string) => useStreetDailyReport.deleteDailyReport(reportID),
+        {
+            onSuccess: (newDailyReport) => {
+                queryClient.setQueryData(["dailyReports", "street"], (old: any) => {
+                    if (old) {
+                        return [...old, newDailyReport];
+                    }
+                    return [newDailyReport];
+                });
+                queryClient.invalidateQueries(["dailyReports", "street"]);
+            }
+        });
+}
+
+export const useUpdateDailyReportQuery = (queryClient: any) => {
+    return useMutation((report: StreetDailyReport) => useStreetDailyReport.updateDailyReport(report),
+        {
+            onSuccess: (newDailyReport) => {
+                queryClient.setQueryData(["dailyReports", "street"], (old: any) => {
+                    if (old) {
+                        return [...old, newDailyReport];
+                    }
+                    return [newDailyReport];
+                });
+                queryClient.invalidateQueries(["dailyReports", "street"]);
+            }
+        });
+}
+
+export const useGetDailyReportByIDQuery = (reportID: string, options?: Object) => {
+    return useQuery(["dailyReports", "reportID"],
+        () => useStreetDailyReport.getDailyReportByID(reportID),
+        {
+            // 1hr stale time
+            staleTime: 1000 * 60 * 60,
+            // 12hr cache time
+            cacheTime: 1000 * 60 * 60 * 12,
+            ...options
+        });
+}

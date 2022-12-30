@@ -90,45 +90,6 @@ const ApproveDailyReport = () => {
     }
   };
 
-  const approveAllReports = async () => {
-    const toastId = toast.loading("Aguarde...");
-    try {
-      await Promise.all(pendingReports.map(async (report: StreetDailyReport) => {
-        await changeReportStatus.mutateAsync({ reportID: report._id, status: "approved", auditFeedBack: "" });
-      }));
-      toast.success("Relatórios aprovados com sucesso!", { id: toastId });
-      setOpenDialog(false);
-    } catch (e) {
-      toast.error("Erro ao aprovar todos os relatórios!", { id: toastId });
-    }
-  };
-
-  const handleApproveAllReports = () => {
-    setDialogData({
-      headerTitle: "Aprovar todos os relatórios",
-      content: "Realmente deseja aprovar todos os relatórios?",
-      actions: [{
-        mode: "button",
-        props: {
-          label: "confirmar",
-          color: "primary",
-          variant: "contained",
-          onClick: () => approveAllReports()
-        }
-      }, {
-        mode: "button",
-        props: {
-          label: "cancelar",
-          color: "error",
-          variant: "outlined",
-          onClick: () => setOpenDialog(false)
-        }
-      }]
-    });
-
-    setOpenDialog(true);
-  };
-
   const handleApproveRejectReport = (report: StreetDailyReport, action: "Aprovar" | "Recusar") => {
 
     setDialogData({
@@ -280,14 +241,6 @@ const ApproveDailyReport = () => {
       <Grid item xs={12}>
         <Card>
           <Grid container sx={{ paddingTop: 4, paddingX: 3 }} spacing={6}>
-            <Grid item xs={12}>
-              <Button
-                variant={"outlined"}
-                onClick={() => handleApproveAllReports()}
-              >
-                Aprovar tudo
-              </Button>
-            </Grid>
             <Grid item xs={12} md={6}>
               <CardHeader
                 sx={{ textAlign: { xs: "center", md: "left" } }}
