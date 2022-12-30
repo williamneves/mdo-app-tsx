@@ -148,7 +148,7 @@ export const getReportsByStreet = async (streetID: string) => {
   const query = `
 *[_type=="streetDailyReport" 
 && references($streetRef)
-&& auditStatus != "reproved" 
+&& auditStatus != "rejected" 
 ]{
   ...,
   reporter->,
@@ -157,9 +157,17 @@ export const getReportsByStreet = async (streetID: string) => {
   `;
 
   try {
-    return dbClient.fetch(getReportsByReferenceAndDateRangeQuery, {
+    return dbClient.fetch(query, {
       streetRef: streetID,
     });
+  } catch (e) {
+    throw e;
+  }
+}
+
+export const deleteDailyReport = async (reportID: string) => {
+  try {
+    return await dbClient.delete(reportID);
   } catch (e) {
     throw e;
   }

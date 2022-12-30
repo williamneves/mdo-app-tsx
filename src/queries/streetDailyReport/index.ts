@@ -101,3 +101,18 @@ export const useGetReportByStreet = (streetID: string, options?: Object) => {
         ...options
       });
 }
+
+export const useDeleteDailyReport = (queryClient: any) => {
+    return useMutation((reportID: string) => useStreetDailyReport.deleteDailyReport(reportID),
+        {
+            onSuccess: (newDailyReport) => {
+                queryClient.setQueryData(["dailyReports", "street"], (old: any) => {
+                    if (old) {
+                        return [...old, newDailyReport];
+                    }
+                    return [newDailyReport];
+                });
+                queryClient.invalidateQueries(["dailyReports", "street"]);
+            }
+        });
+}
