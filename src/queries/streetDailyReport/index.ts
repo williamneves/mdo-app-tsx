@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import * as useStreetDailyReport from "./hooks/";
-import * as api from "src/queries/sales/hooks";
+import StreetDailyReport from "interfaces/StreetDailyReport";
 import DateRange from "src/interfaces/DateRange";
 
 export const useCreateStreetDailyReportQuery = (queryClient: any) => {
@@ -104,6 +104,21 @@ export const useGetReportByStreet = (streetID: string, options?: Object) => {
 
 export const useDeleteDailyReport = (queryClient: any) => {
     return useMutation((reportID: string) => useStreetDailyReport.deleteDailyReport(reportID),
+        {
+            onSuccess: (newDailyReport) => {
+                queryClient.setQueryData(["dailyReports", "street"], (old: any) => {
+                    if (old) {
+                        return [...old, newDailyReport];
+                    }
+                    return [newDailyReport];
+                });
+                queryClient.invalidateQueries(["dailyReports", "street"]);
+            }
+        });
+}
+
+export const useUpdateDailyReport = (queryClient: any) => {
+    return useMutation((report: StreetDailyReport) => useStreetDailyReport.updateDailyReport(report),
         {
             onSuccess: (newDailyReport) => {
                 queryClient.setQueryData(["dailyReports", "street"], (old: any) => {

@@ -4,31 +4,34 @@ import DateRange from "src/interfaces/DateRange";
 import Client from "src/interfaces/Client";
 import moment from "moment";
 
+const prepareReportObject = (report: StreetDailyReport) => {
+  return {
+    _type: "streetDailyReport",
+    auditStatus: (report.auditStatus && report.auditStatus) || "pending",
+    clientsApproached: (report.clientsApproached && report.clientsApproached) || 0,
+    clientsRegistered: (report.clientsRegistered && report.clientsRegistered) || [],
+    activitiesReport: (report.activitiesReport && report.activitiesReport) || "",
+    reportDate: moment(report.reportDate).format("YYYY-MM-DD"),
+    scheduledAppointments: (report.scheduledAppointments && report.scheduledAppointments) || 0,
+
+    store: {
+      _type: "reference",
+      _ref: report.store._id
+    },
+
+    reporter: {
+      _type: "reference",
+      _ref: report.reporter._id
+    }
+  };
+}
+
 export const createDailyReport = async (data: StreetDailyReport) => {
 
   if (!data.reportDate || !data.reporter)
     throw new Error("Missing required fields");
 
-  let reportObject = {
-    _type: "streetDailyReport",
-    auditStatus: (data.auditStatus && data.auditStatus) || "pending",
-    clientsApproached: (data.clientsApproached && data.clientsApproached) || 0,
-    clientsRegistered: (data.clientsRegistered && data.clientsRegistered) || [],
-    activitiesReport: (data.activitiesReport && data.activitiesReport) || "",
-    reportDate: moment(data.reportDate).format("YYYY-MM-DD"),
-    scheduledAppointments: (data.scheduledAppointments && data.scheduledAppointments) || 0,
-
-    store: {
-      // required
-      _type: "reference",
-      _ref: data.store._id
-    },
-    reporter: {
-      // required
-      _type: "reference",
-      _ref: data.reporter._id
-    }
-  };
+  const reportObject = prepareReportObject(data);
 
   try {
     return await dbClient.create(reportObject);
@@ -168,6 +171,18 @@ export const getReportsByStreet = async (streetID: string) => {
 export const deleteDailyReport = async (reportID: string) => {
   try {
     return await dbClient.delete(reportID);
+  } catch (e) {
+    throw e;
+  }
+}
+
+export const updateDailyReport = async (report: StreetDailyReport) => {
+  if (!report._id) throw new Error("Missing required fields");
+
+  const reportObject = prepareReportObject(report);
+
+  try {
+    return await dbClient.patch(report._id).set(reportObject).commit();
   } catch (e) {
     throw e;
   }
