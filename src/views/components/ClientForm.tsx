@@ -29,7 +29,7 @@ import {useQueryClient} from "@tanstack/react-query"
 
 // ** Third Party Imports
 import * as yup from "yup"
-import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
+import {yupResolver} from "@hookform/resolvers/yup"
 import toast from "react-hot-toast"
 import {validateCPF, validatePhone} from "validations-br"
 import cep from "cep-promise"

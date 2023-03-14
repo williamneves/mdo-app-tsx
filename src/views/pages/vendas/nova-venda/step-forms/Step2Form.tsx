@@ -18,7 +18,7 @@ import CalculateIcon from "@mui/icons-material/Calculate"
 // ** Third Party Imports
 import * as yup from "yup"
 import {useForm, useFieldArray} from "react-hook-form"
-import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
+import {yupResolver} from "@hookform/resolvers/yup"
 import toast from "react-hot-toast"
 
 // ** Import Components

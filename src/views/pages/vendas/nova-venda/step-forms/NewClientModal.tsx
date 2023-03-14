@@ -25,7 +25,7 @@ import CloseTwoToneIcon from "@mui/icons-material/CloseTwoTone"
 import * as yup from "yup"
 import toast from "react-hot-toast"
 import {useForm} from "react-hook-form"
-import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
+import {yupResolver} from "@hookform/resolvers/yup"
 import {validateCPF, validatePhone} from "validations-br"
 
 // ** Import Hooks

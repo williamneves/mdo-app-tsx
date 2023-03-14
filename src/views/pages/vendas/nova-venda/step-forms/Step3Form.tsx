@@ -1,5 +1,5 @@
 // ** React Imports
-import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
+import {yupResolver} from "@hookform/resolvers/yup"
 
 // ** MUI Icons
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"

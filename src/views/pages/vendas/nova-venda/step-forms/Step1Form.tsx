@@ -4,7 +4,7 @@ import React, {useState, useEffect, Fragment} from "react"
 // ** Third Party Imports
 import * as yup from "yup"
 import {useForm} from "react-hook-form"
-import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
+import {yupResolver} from "@hookform/resolvers/yup"
 import toast from "react-hot-toast"
 
 import moment from "moment"

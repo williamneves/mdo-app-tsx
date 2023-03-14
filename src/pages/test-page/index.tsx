@@ -10,7 +10,7 @@ import Button from "@mui/lab/LoadingButton"
 // ** Component Imports
 import {useForm} from "react-hook-form"
 import * as yup from "yup"
-import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
+import {yupResolver} from "@hookform/resolvers/yup"
 import TextInputControlled from "src/views/components/inputs/TextInputControlled"
 import CurrencyMaskInputControlled from "src/views/components/inputs/CurrencyMaskInputControlled"
 import SelectInputController from "src/views/components/inputs/SelectInputController"

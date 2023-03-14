@@ -20,7 +20,7 @@ import SaveAltIcon from "@mui/icons-material/SaveAlt"
 
 // ** Third Party Imports
 import * as yup from "yup"
-import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
+import {yupResolver} from "@hookform/resolvers/yup"
 import moment from "moment"
 import {toast} from "react-hot-toast"
 

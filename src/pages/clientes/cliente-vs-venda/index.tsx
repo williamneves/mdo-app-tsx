@@ -24,7 +24,7 @@ import {getClientByClientNumber} from "src/queries/clients/hooks/useClient"
 
 // ** Third Party Imports
 import * as yup from "yup"
-import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
+import {yupResolver} from "@hookform/resolvers/yup"
 import toast from "react-hot-toast"
 
 // ** Third Party Components
