@@ -1,9 +1,9 @@
-import { ReactElement } from "react"
-import { FieldErrors } from "react-hook-form"
-import { TextField, OutlinedTextFieldProps, MenuItem } from "@mui/material"
+import {ReactElement} from "react"
+import {FieldErrors} from "react-hook-form"
+import {TextField, OutlinedTextFieldProps, MenuItem} from "@mui/material"
 import InputAdornment from "@mui/material/InputAdornment"
 
-import { InputController } from "./InputController"
+import {InputController} from "./InputController"
 
 export interface menuItems {
   key: string | number
@@ -55,7 +55,7 @@ export const SelectInputController = (props: SelectInputProps) => {
       name={name}
       control={control}
       errors={errors}
-      render={({ field: { value, onChange }, fieldState: { invalid } }) => (
+      render={({field: {value, onChange}, fieldState: {invalid}}) => (
         <TextField
           {...rest}
           select
@@ -68,19 +68,19 @@ export const SelectInputController = (props: SelectInputProps) => {
           InputProps={{
             readOnly: readOnly || props.InputProps?.readOnly,
             startAdornment: startAdornment ? (
-              <InputAdornment position='start'>{startAdornment}</InputAdornment>
+              <InputAdornment position="start">{startAdornment}</InputAdornment>
             ) : (
               props.InputProps?.startAdornment
             ),
             endAdornment: startAdornment ? (
-              <InputAdornment position='end'>{endAdornment}</InputAdornment>
+              <InputAdornment position="end">{endAdornment}</InputAdornment>
             ) : (
               props.InputProps?.endAdornment
             )
           }}
         >
           {!selectItems && (
-            <MenuItem key={"NoItemsKey"} disabled value=''>
+            <MenuItem key={"NoItemsKey"} disabled value="">
               <em>No items</em>
             </MenuItem>
           )}
@@ -88,7 +88,7 @@ export const SelectInputController = (props: SelectInputProps) => {
             <MenuItem
               key={"PlaceholderKey"}
               disabled={selectItems.placeholder.disabled}
-              value=' '
+              value=" "
             >
               <em>{selectItems.placeholder.label}</em>
             </MenuItem>

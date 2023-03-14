@@ -1,6 +1,6 @@
 // ** Types
-import { NavGroup, NavLink } from "src/@core/layouts/types"
-import { NextRouter } from "next/router"
+import {NavGroup, NavLink} from "src/@core/layouts/types"
+import {NextRouter} from "next/router"
 
 /**
  * Check for URL queries as well for matching
@@ -34,7 +34,7 @@ export const handleURLQueries = (
  * @param currentURL
  */
 export const hasActiveChild = (item: NavGroup, currentURL: string): boolean => {
-  const { children } = item
+  const {children} = item
 
   if (!children) {
     return false

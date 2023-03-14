@@ -1,4 +1,4 @@
-import { Gender } from "@core/utils/types"
+import {Gender} from "@core/utils/types"
 import SelectedStore from "src/interfaces/SelectedStore"
 
 export default interface AuthUser {

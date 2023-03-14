@@ -1,5 +1,5 @@
 // ** React Imports
-import { ReactNode, ComponentType } from "react"
+import {ReactNode, ComponentType} from "react"
 
 export type RepeaterProps = {
   count: number

@@ -1,4 +1,4 @@
-import { dbClient } from "../../../configs/sanityConfig"
+import {dbClient} from "../../../configs/sanityConfig"
 import StreetDailyReport from "src/interfaces/StreetDailyReport"
 import moment from "moment"
 
@@ -8,7 +8,7 @@ export const createDailyReport = async (data: StreetDailyReport) => {
   if (!data.reportDate || !data.reporter)
     throw new Error("Missing required fields")
 
-  let reportObject = {
+  const reportObject = {
     _type: "streetDailyReport",
     auditStatus: (data.auditStatus && data.auditStatus) || "pending",
     clientsApproached: (data.clientsApproached && data.clientsApproached) || 0,
@@ -115,7 +115,7 @@ export const changeAuditStatus = async (
     if (report.length > 0) {
       return await dbClient
         .patch(report[0]._id)
-        .set({ auditStatus: status, auditFeedBack: auditFeedBack })
+        .set({auditStatus: status, auditFeedBack: auditFeedBack})
         .commit()
     }
   } catch (err) {

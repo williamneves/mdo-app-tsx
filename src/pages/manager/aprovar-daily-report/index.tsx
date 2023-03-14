@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState } from "react"
+import {useEffect, useState} from "react"
 
 // ** MUI Imports
 import Box from "@mui/material/Grid"
@@ -14,7 +14,7 @@ import MUIDatepicker from "@mui/lab/DatePicker"
 import Divider from "@mui/material/Divider"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import TextField from "@mui/material/TextField"
-import { DataGrid } from "@mui/x-data-grid"
+import {DataGrid} from "@mui/x-data-grid"
 
 // ** MUI Icons
 import ThumbUpAltTwoToneIcon from "@mui/icons-material/ThumbUpAltTwoTone"
@@ -29,8 +29,8 @@ import DialogContent from "components/DialogContent"
 
 // ** Hooks Imports
 import * as useDailyReport from "src/queries/streetDailyReport"
-import { useQueryClient } from "@tanstack/react-query"
-import { useForm } from "react-hook-form"
+import {useQueryClient} from "@tanstack/react-query"
+import {useForm} from "react-hook-form"
 
 // ** Types
 import StreetDailyReport from "src/interfaces/StreetDailyReport"
@@ -44,7 +44,7 @@ const ApproveDailyReport = () => {
 
   const {
     control,
-    formState: { errors },
+    formState: {errors},
     reset,
     getValues
   } = useForm({
@@ -54,7 +54,7 @@ const ApproveDailyReport = () => {
   })
 
   // ** React Query Hooks
-  const { data: reportsData, isLoading: reportsIsLoading } =
+  const {data: reportsData, isLoading: reportsIsLoading} =
     useDailyReport.useGetAllDailyReportsQuery()
   const queryClient = useQueryClient()
   const changeReportStatus =
@@ -95,7 +95,7 @@ const ApproveDailyReport = () => {
       setOpenDialog(false)
       reset()
     } catch (e) {
-      toast.error("Erro ao atualizar status do relatório!", { id: toastId })
+      toast.error("Erro ao atualizar status do relatório!", {id: toastId})
     }
   }
 
@@ -111,10 +111,10 @@ const ApproveDailyReport = () => {
           })
         })
       )
-      toast.success("Relatórios aprovados com sucesso!", { id: toastId })
+      toast.success("Relatórios aprovados com sucesso!", {id: toastId})
       setOpenDialog(false)
     } catch (e) {
-      toast.error("Erro ao aprovar todos os relatórios!", { id: toastId })
+      toast.error("Erro ao aprovar todos os relatórios!", {id: toastId})
     }
   }
 
@@ -212,9 +212,9 @@ const ApproveDailyReport = () => {
       headerName: "Data",
       type: "date",
       field: "date",
-      valueGetter: ({ row }: RowData) =>
+      valueGetter: ({row}: RowData) =>
         moment(row.reportDate).format("DD/MM/YY"),
-      renderCell: ({ row }: RowData) => (
+      renderCell: ({row}: RowData) => (
         <Typography variant={"body2"}>
           {moment(row.reportDate).format("DD/MM/YY")}
         </Typography>
@@ -226,8 +226,8 @@ const ApproveDailyReport = () => {
       flex: 0.125,
       align: "center",
       field: "reporter",
-      valueGetter: ({ row }: RowData) => row.reporter.name,
-      renderCell: ({ row }: RowData) => (
+      valueGetter: ({row}: RowData) => row.reporter.name,
+      renderCell: ({row}: RowData) => (
         <Typography variant={"body2"}>{row.reporter.name}</Typography>
       )
     },
@@ -238,7 +238,7 @@ const ApproveDailyReport = () => {
       field: "clientsApproached",
       type: "number",
       align: "center",
-      renderCell: ({ row }: RowData) => (
+      renderCell: ({row}: RowData) => (
         <Typography variant={"body2"}>{row.clientsApproached}</Typography>
       )
     },
@@ -248,7 +248,7 @@ const ApproveDailyReport = () => {
       flex: 0.125,
       field: "clientsRegistered",
       align: "center",
-      renderCell: ({ row }: RowData) => (
+      renderCell: ({row}: RowData) => (
         <Typography variant={"body2"}>
           {row.clientsRegistered.length}
         </Typography>
@@ -259,8 +259,8 @@ const ApproveDailyReport = () => {
       headerName: "Consultas Agendadas",
       field: "sales",
       align: "center",
-      valueGetter: ({ row }: RowData) => row.scheduledAppointments,
-      renderCell: ({ row }: RowData) => (
+      valueGetter: ({row}: RowData) => row.scheduledAppointments,
+      renderCell: ({row}: RowData) => (
         <Typography variant={"body2"}>{row.scheduledAppointments}</Typography>
       )
     },
@@ -273,13 +273,13 @@ const ApproveDailyReport = () => {
       headerAlign: "center",
       disableColumnMenu: true,
       minWidth: 120,
-      renderCell: ({ row }: RowData) => (
-        <Box display='flex' justifyContent='center' gap={3} alignItems='center'>
+      renderCell: ({row}: RowData) => (
+        <Box display="flex" justifyContent="center" gap={3} alignItems="center">
           <Fab
             sx={{
               color: "white",
               backgroundColor: "success.dark",
-              "&:hover": { backgroundColor: "success.main" },
+              "&:hover": {backgroundColor: "success.main"},
               width: "35px",
               height: "35px"
             }}
@@ -292,7 +292,7 @@ const ApproveDailyReport = () => {
             sx={{
               color: "white",
               backgroundColor: "error.dark",
-              "&:hover": { backgroundColor: "error.main" },
+              "&:hover": {backgroundColor: "error.main"},
               width: "33px",
               height: "35px"
             }}
@@ -311,7 +311,7 @@ const ApproveDailyReport = () => {
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Card>
-          <Grid container sx={{ paddingTop: 4, paddingX: 3 }} spacing={6}>
+          <Grid container sx={{paddingTop: 4, paddingX: 3}} spacing={6}>
             <Grid item xs={12}>
               <Button
                 variant={"outlined"}
@@ -322,15 +322,15 @@ const ApproveDailyReport = () => {
             </Grid>
             <Grid item xs={12} md={6}>
               <CardHeader
-                sx={{ textAlign: { xs: "center", md: "left" } }}
-                title='Aprovar Reports Diários'
+                sx={{textAlign: {xs: "center", md: "left"}}}
+                title="Aprovar Reports Diários"
               />
             </Grid>
             <Grid
               item
               display={"flex"}
               sx={{
-                flexDirection: { xs: "column", md: "row" },
+                flexDirection: {xs: "column", md: "row"},
                 justifyContent: "flex-end",
                 alignItems: "center"
               }}
@@ -340,7 +340,7 @@ const ApproveDailyReport = () => {
             >
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <MUIDatepicker
-                  label='Data Inicial'
+                  label="Data Inicial"
                   value={rangeDateStart}
                   onChange={newValue => {
                     setRangeDateStart(newValue as Date)
@@ -352,7 +352,7 @@ const ApproveDailyReport = () => {
               </LocalizationProvider>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <MUIDatepicker
-                  label='Data Final'
+                  label="Data Final"
                   value={rangeDateEnd}
                   onChange={newValue => {
                     setRangeDateEnd(newValue as Date)
@@ -363,9 +363,9 @@ const ApproveDailyReport = () => {
                 />
               </LocalizationProvider>
               <Button
-                variant='outlined'
-                color='primary'
-                sx={{ minWidth: "130px" }}
+                variant="outlined"
+                color="primary"
+                sx={{minWidth: "130px"}}
                 onClick={handleUpdateDates}
                 startIcon={<UpdateIcon />}
               >

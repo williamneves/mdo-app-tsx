@@ -1,7 +1,7 @@
-import { useQuery, useMutation } from "@tanstack/react-query"
+import {useQuery, useMutation} from "@tanstack/react-query"
 import * as useClient from "./hooks/useClient"
 
-export const useGetClientsQuery = (options?: Object) => {
+export const useGetClientsQuery = (options?: any) => {
   return useQuery(["clients", "all"], useClient.getAllClients, {
     // 1hr stale time
     staleTime: 1000 * 60 * 60,
@@ -15,8 +15,8 @@ export const useGetClientsQuery = (options?: Object) => {
 
 // Get All Clientes By ReferenceId
 export const useGetClientsByReferenceIdQuery = (
-  referenceId: { referenceId: string },
-  options?: Object
+  referenceId: {referenceId: string},
+  options?: any
 ) => {
   return useQuery(
     ["clients", "referenceId", `${referenceId.referenceId}`],
@@ -80,13 +80,13 @@ export const useDeleteClientQuery = (queryClient: any) => {
   })
 }
 
-export const useGetClientByIdQuery = (id: string, options?: Object) => {
+export const useGetClientByIdQuery = (id: string, options?: any) => {
   return useQuery(["clients", id], () => useClient.getClientById(id), options)
 }
 
 export const useGetClientByClientNumberQuery = (
   clientNumber: number,
-  options?: Object
+  options?: any
 ) => {
   return useQuery(
     ["clients", clientNumber],

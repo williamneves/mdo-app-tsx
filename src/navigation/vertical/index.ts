@@ -23,7 +23,7 @@ import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOu
 import QuizTwoToneIcon from "@mui/icons-material/QuizTwoTone"
 
 // ** Type import
-import { VerticalNavItemsType } from "src/@core/layouts/types"
+import {VerticalNavItemsType} from "src/@core/layouts/types"
 
 const navigation = (): VerticalNavItemsType => {
   return [

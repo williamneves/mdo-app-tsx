@@ -1,11 +1,11 @@
 // ** MUI Imports
-import { Theme } from "@mui/material/styles"
+import {Theme} from "@mui/material/styles"
 
 // ** Theme Config Imports
 import themeConfig from "src/configs/themeConfig"
 
 // ** Util Import
-import { hexToRGBA } from "src/@core/utils/hex-to-rgba"
+import {hexToRGBA} from "src/@core/utils/hex-to-rgba"
 
 const Button = (theme: Theme) => {
   return {

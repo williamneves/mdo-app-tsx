@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { useState, Fragment } from "react"
+import React, {useState, Fragment} from "react"
 
 // ** MUI Imports
 import Box from "@mui/material/Box"
@@ -7,7 +7,7 @@ import IconButton from "@mui/material/IconButton"
 import Card from "@mui/material/Card"
 import Typography from "@mui/material/Typography"
 import CardHeader from "@mui/material/CardHeader"
-import { DataGrid } from "@mui/x-data-grid"
+import {DataGrid} from "@mui/x-data-grid"
 import Grid from "@mui/material/Grid"
 
 // ** MUI Icons
@@ -28,12 +28,12 @@ import moment from "moment"
 
 // ** Hooks Imports
 import * as useClient from "src/queries/clients"
-import { useQueryClient } from "@tanstack/react-query"
-import { matchSearchFilter, getAllObjectKeys } from "src/@utils/filters"
-import { useAuth } from "src/hooks/useAuth"
+import {useQueryClient} from "@tanstack/react-query"
+import {matchSearchFilter, getAllObjectKeys} from "src/@utils/filters"
+import {useAuth} from "src/hooks/useAuth"
 
 // ** Next Imports
-import { useRouter } from "next/router"
+import {useRouter} from "next/router"
 
 // ** Types
 import Client from "src/interfaces/Client"
@@ -43,13 +43,13 @@ interface RowsData {
 }
 
 const renderCellWithMatchLetters = (row: any, searchValue: string) => {
-  const matchesChar = match(row, searchValue, { insideWords: true })
+  const matchesChar = match(row, searchValue, {insideWords: true})
   const parsesChar = parse(row, matchesChar)
 
   return (
-    <Typography variant='body2' color='textPrimary'>
+    <Typography variant="body2" color="textPrimary">
       {parsesChar.map((part: any, index: number) => (
-        <span key={index} style={{ fontWeight: part.highlight ? 700 : 400 }}>
+        <span key={index} style={{fontWeight: part.highlight ? 700 : 400}}>
           {part.text}
         </span>
       ))}
@@ -62,12 +62,12 @@ const ClientList = () => {
   const router = useRouter()
 
   // ** Hooks
-  const { user, selectedStore } = useAuth()
+  const {user, selectedStore} = useAuth()
 
   // ** React Query
   const queryClient = useQueryClient()
   const deleteClient = useClient.useDeleteClientQuery(queryClient)
-  const { data: clientList, isLoading } =
+  const {data: clientList, isLoading} =
     useClient.useGetClientsByReferenceIdQuery({
       referenceId: selectedStore?._id!
     })
@@ -92,12 +92,12 @@ const ClientList = () => {
     deleteClient
       .mutateAsync(clientID)
       .then(() => {
-        toast.success("Cliente deletado com sucesso!", { id: toastId })
+        toast.success("Cliente deletado com sucesso!", {id: toastId})
         setOpenDialog(false)
       })
       .catch(err => {
         console.log(err)
-        toast.error(`Erro ao deletar client`, { id: toastId })
+        toast.error(`Erro ao deletar client`, {id: toastId})
       })
   }
 
@@ -132,8 +132,8 @@ const ClientList = () => {
       field: "code",
       headerName: "Código",
       width: 100,
-      renderCell: ({ row }: RowsData) => (
-        <Typography variant='subtitle2'>{row.clientNumber}</Typography>
+      renderCell: ({row}: RowsData) => (
+        <Typography variant="subtitle2">{row.clientNumber}</Typography>
       )
     },
     {
@@ -141,7 +141,7 @@ const ClientList = () => {
       headerName: "Nome",
       flex: 0.15,
       minWidth: 140,
-      renderCell: ({ row }: RowsData) =>
+      renderCell: ({row}: RowsData) =>
         renderCellWithMatchLetters(row.name, searchValue)
     },
     {
@@ -149,7 +149,7 @@ const ClientList = () => {
       headerName: "E-mail",
       flex: 0.15,
       minWidth: 140,
-      renderCell: ({ row }: RowsData) =>
+      renderCell: ({row}: RowsData) =>
         renderCellWithMatchLetters(row.email || "", searchValue)
     },
     {
@@ -157,7 +157,7 @@ const ClientList = () => {
       headerName: "Telefone",
       flex: 0.15,
       minWidth: 140,
-      renderCell: ({ row }: RowsData) =>
+      renderCell: ({row}: RowsData) =>
         renderCellWithMatchLetters(row.phone || "", searchValue)
     },
     {
@@ -165,8 +165,8 @@ const ClientList = () => {
       headerName: "Criado por",
       flex: 0.15,
       minWidth: 140,
-      valueSetter: ({ value }: any) => value.name,
-      renderCell: ({ row }: RowsData) =>
+      valueSetter: ({value}: any) => value.name,
+      renderCell: ({row}: RowsData) =>
         renderCellWithMatchLetters(row.createdBy?.name || "", searchValue)
     },
     {
@@ -174,8 +174,8 @@ const ClientList = () => {
       headerName: "Criado em",
       flex: 0.15,
       minWidth: 140,
-      renderCell: ({ row }: RowsData) => (
-        <Typography variant='body2' color='textPrimary'>
+      renderCell: ({row}: RowsData) => (
+        <Typography variant="body2" color="textPrimary">
           {`${moment(row?._createdAt).format("DD/MM/YYYY")}`}
         </Typography>
       )
@@ -185,8 +185,8 @@ const ClientList = () => {
       headerName: "Ações",
       flex: 0.15,
       minWidth: 140,
-      renderCell: ({ row }: RowsData) => (
-        <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
+      renderCell: ({row}: RowsData) => (
+        <Box sx={{display: "flex", alignItems: "center", gap: 3}}>
           <IconButton
             color={"primary"}
             onClick={() => openEditClientForm(row._id)}
@@ -209,14 +209,14 @@ const ClientList = () => {
     <Fragment>
       <Grid container spacing={6}>
         <Grid item xs={12}>
-          <Card sx={{ width: "100%" }}>
+          <Card sx={{width: "100%"}}>
             <CardHeader
               title={
                 <Typography
                   variant={"h6"}
-                  sx={{ display: "flex", alignItems: "center" }}
+                  sx={{display: "flex", alignItems: "center"}}
                 >
-                  <GroupsIcon sx={{ mr: 2, fontSize: 40 }} />
+                  <GroupsIcon sx={{mr: 2, fontSize: 40}} />
                   Lista de Clientes
                 </Typography>
               }

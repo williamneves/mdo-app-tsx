@@ -1,4 +1,4 @@
-import { dbClient } from "src/configs/sanityConfig"
+import {dbClient} from "src/configs/sanityConfig"
 import FaqPost from "interfaces/FaqPost"
 
 const queryPosts = `*[_type == "faqPost" && !(_id in path("drafts.**"))]`

@@ -1,14 +1,14 @@
-import { FieldErrors } from "react-hook-form"
-import { Autocomplete, TextField } from "@mui/material"
+import {FieldErrors} from "react-hook-form"
+import {Autocomplete, TextField} from "@mui/material"
 
 // ** Import Sorters
-import { matchSorter } from "match-sorter"
+import {matchSorter} from "match-sorter"
 // @ts-ignore
 import parse from "autosuggest-highlight/parse"
 // @ts-ignore
 import match from "autosuggest-highlight/match"
 
-import { InputController } from "./InputController"
+import {InputController} from "./InputController"
 
 interface AutocompleteInputControlledProps {
   name: string
@@ -26,9 +26,9 @@ export const AutocompleteInputControlled = (
     options: Array<any>,
     inputValue: string,
     filterKeys: Array<string>
-  ) => matchSorter(options, inputValue, { keys: filterKeys })
+  ) => matchSorter(options, inputValue, {keys: filterKeys})
 
-  const { name, control, errors, options, filterKeys, optionLabel, ...rest } =
+  const {name, control, errors, options, filterKeys, optionLabel, ...rest} =
     props
 
   return (
@@ -37,7 +37,7 @@ export const AutocompleteInputControlled = (
       name={name}
       control={control}
       errors={errors}
-      render={({ field: { value, onChange }, fieldState: { invalid } }) => {
+      render={({field: {value, onChange}, fieldState: {invalid}}) => {
         return (
           <Autocomplete
             {...rest}
@@ -52,17 +52,17 @@ export const AutocompleteInputControlled = (
             }
             filterOptions={
               filterKeys
-                ? (options, { inputValue }) =>
+                ? (options, {inputValue}) =>
                     filterOptions(options, inputValue, filterKeys)
                 : props.filterOptions
             }
             groupBy={(option: any) => option[optionLabel][0]?.toUpperCase()}
             getOptionLabel={
-              !!optionLabel
+              optionLabel
                 ? (option: string) => option[optionLabel]
                 : props.getOptionLabel
             }
-            renderOption={(props, option: any, { inputValue }) => {
+            renderOption={(props, option: any, {inputValue}) => {
               const matchOptionLabel = match(option[optionLabel], inputValue, {
                 insideWords: true
               })
@@ -76,7 +76,7 @@ export const AutocompleteInputControlled = (
                   {parseOptionLabel.map((part: any, index: number) => (
                     <span
                       key={index}
-                      style={{ fontWeight: part.highlight ? 700 : 400 }}
+                      style={{fontWeight: part.highlight ? 700 : 400}}
                     >
                       {part.text}
                     </span>

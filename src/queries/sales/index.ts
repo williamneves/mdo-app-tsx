@@ -1,10 +1,10 @@
-import { reference } from "@popperjs/core"
-import { useQuery, useMutation } from "@tanstack/react-query"
+import {reference} from "@popperjs/core"
+import {useQuery, useMutation} from "@tanstack/react-query"
 import * as api from "./hooks"
 import Sale from "src/interfaces/Sale"
 
 // Get SaleNumber
-export const useGetSaleNumberQuery = (options?: Object) => {
+export const useGetSaleNumberQuery = (options?: any) => {
   return useQuery(["saleNumber", "all"], api.getSaleNumber, {
     // No Stale Time
     staleTime: 0,
@@ -21,7 +21,7 @@ export const useGetSaleNumberQuery = (options?: Object) => {
 // Get All Products By Reference (Store)
 export const useAllProductsByReferenceQuery = (
   storeRef: string,
-  options?: Object
+  options?: any
 ) => {
   return useQuery(
     ["products", storeRef],
@@ -41,7 +41,7 @@ export const useAllProductsByReferenceQuery = (
 // Get All PaymentMethod By Reference (Store)
 export const useAllPaymentMethodsByReferenceQuery = (
   storeRef: string,
-  options?: Object
+  options?: any
 ) => {
   return useQuery(
     ["paymentMethods", storeRef],
@@ -59,7 +59,7 @@ export const useAllPaymentMethodsByReferenceQuery = (
 }
 
 // Get All Origin
-export const useAllOriginQuery = (options?: Object) => {
+export const useAllOriginQuery = (options?: any) => {
   return useQuery(["origin", "all"], api.getAllOrigin, {
     // 1hr stale time
     staleTime: 1000 * 60 * 60,
@@ -141,7 +141,7 @@ export const useUpdateEntireSaleMutation = (queryClient: any) => {
 }
 
 // Get One Sale By ID
-export const useGetSaleByIDQuery = (saleID: string, options?: Object) => {
+export const useGetSaleByIDQuery = (saleID: string, options?: any) => {
   return useQuery(["sale", saleID], () => api.getOneSaleById(saleID), {
     // 1hr stale time
     staleTime: 1000 * 60 * 60,
@@ -161,7 +161,7 @@ interface dateRange {
 export const useAllSalesByReferenceAndDateRangeQuery = (
   storeRef: string,
   dateRange: dateRange,
-  options?: Object
+  options?: any
 ) => {
   return useQuery(
     ["sales", storeRef, dateRange],
@@ -180,7 +180,7 @@ export const useAllSalesByReferenceAndDateRangeQuery = (
 }
 
 // Get Pending Sales
-export const usePendingSalesQuery = (referenceID: string, options?: Object) => {
+export const usePendingSalesQuery = (referenceID: string, options?: any) => {
   return useQuery(["sales", "all"], () => api.getPendingSales(referenceID), {
     // 1hr stale time
     staleTime: 1000 * 60 * 60,
@@ -201,7 +201,7 @@ interface ChangeSaleAuditStatusParams {
 
 export const useChangeSaleAuditStatusQuery = (queryClient: any) => {
   return useMutation(
-    ({ saleID, status, auditFeedBack }: ChangeSaleAuditStatusParams) =>
+    ({saleID, status, auditFeedBack}: ChangeSaleAuditStatusParams) =>
       api.changeSaleAuditStatus(saleID, status, auditFeedBack),
     {
       onSuccess: updatedSale => {
@@ -246,7 +246,7 @@ interface UpdateSaleByKeyValueParams {
 
 export const useUpdateSaleByKeyValueMutation = (queryClient: any) => {
   return useMutation(
-    ({ saleID, key, value }: UpdateSaleByKeyValueParams) =>
+    ({saleID, key, value}: UpdateSaleByKeyValueParams) =>
       api.updateSaleByKeyAndValue(saleID, key, value),
     {
       onSuccess: updatedSale => {
@@ -269,7 +269,7 @@ export const useUpdateSaleByKeyValueMutation = (queryClient: any) => {
 
 export const useUpdateClientSaleQuery = (queryClient: any) => {
   return useMutation(
-    ({ saleID, clientID }: { saleID: string; clientID: string }) =>
+    ({saleID, clientID}: {saleID: string; clientID: string}) =>
       api.updateSaleClient(saleID, clientID),
     {
       onSuccess: updatedSale => {

@@ -1,8 +1,8 @@
 // ** React Imports
-import { ReactNode } from "react"
+import {ReactNode} from "react"
 
 // ** MUI Imports
-import { Theme } from "@mui/material/styles"
+import {Theme} from "@mui/material/styles"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
 // ** Layout Imports
@@ -22,15 +22,15 @@ import VerticalAppBarContent from "./components/vertical/AppBarContent"
 import HorizontalAppBarContent from "./components/horizontal/AppBarContent"
 
 // ** Hook Import
-import { useSettings } from "src/@core/hooks/useSettings"
+import {useSettings} from "src/@core/hooks/useSettings"
 
 interface Props {
   children: ReactNode
 }
 
-const UserLayout = ({ children }: Props) => {
+const UserLayout = ({children}: Props) => {
   // ** Hooks
-  const { settings, saveSettings } = useSettings()
+  const {settings, saveSettings} = useSettings()
 
   /**
    *  The below variable will hide the current layout menu at given screen size.

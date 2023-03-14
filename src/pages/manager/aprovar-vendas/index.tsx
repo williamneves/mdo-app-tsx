@@ -1,7 +1,7 @@
 import * as salesQ from "src/queries/sales"
 
 // ** React Imports
-import React, { Fragment, useState, useEffect } from "react"
+import React, {Fragment, useState, useEffect} from "react"
 
 // ** MUI Imports
 import Box from "@mui/material/Grid"
@@ -16,7 +16,7 @@ import MUIDatepicker from "@mui/lab/DatePicker"
 import Divider from "@mui/material/Divider"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import TextField from "@mui/material/TextField"
-import { DataGrid } from "@mui/x-data-grid"
+import {DataGrid} from "@mui/x-data-grid"
 import InputLabel from "@mui/material/InputLabel"
 import MenuItem from "@mui/material/MenuItem"
 import FormControl from "@mui/material/FormControl"
@@ -36,7 +36,7 @@ import QuickDialog from "components/QuickDialog"
 import DialogContent from "components/DialogContent"
 
 // ** Utils
-import { formattedCurrencyWithSymbol } from "src/@utils/formatCurrency"
+import {formattedCurrencyWithSymbol} from "src/@utils/formatCurrency"
 import {
   DateRangeOptions,
   CustomPeriod,
@@ -45,16 +45,16 @@ import {
 } from "src/@utils/createDateRange"
 
 // ** Hooks Imports
-import { useQueryClient } from "@tanstack/react-query"
-import { useForm } from "react-hook-form"
-import { useAuth } from "src/hooks/useAuth"
+import {useQueryClient} from "@tanstack/react-query"
+import {useForm} from "react-hook-form"
+import {useAuth} from "src/hooks/useAuth"
 
 // ** Types
 import Sale from "src/interfaces/Sale"
 
 const ApproveSales = () => {
   // ** StoreSelected
-  const { selectedStore } = useAuth()
+  const {selectedStore} = useAuth()
 
   // ** States
   const [rangeDateStart, setRangeDateStart] = useState<Date>(new Date())
@@ -98,7 +98,7 @@ const ApproveSales = () => {
 
   const {
     control,
-    formState: { errors },
+    formState: {errors},
     reset,
     getValues
   } = useForm({
@@ -119,12 +119,12 @@ const ApproveSales = () => {
         status,
         auditFeedBack: getValues("feedback")
       })
-      toast.success(`Venda ${statusName} com sucesso!`, { id: toastId })
+      toast.success(`Venda ${statusName} com sucesso!`, {id: toastId})
       setOpenDialog(false)
       reset()
       refetch()
     } catch (e) {
-      toast.error(`Erro ao ${statusName} venda!`, { id: toastId })
+      toast.error(`Erro ao ${statusName} venda!`, {id: toastId})
     }
   }
 
@@ -145,10 +145,10 @@ const ApproveSales = () => {
           )
         })
       )
-      toast.success(`Vendas aprovadas com sucesso!`, { id: toastId })
+      toast.success(`Vendas aprovadas com sucesso!`, {id: toastId})
       setOpenDialog(false)
     } catch (e) {
-      toast.error(`Erro ao aprovar vendas!`, { id: toastId })
+      toast.error(`Erro ao aprovar vendas!`, {id: toastId})
     }
   }
 
@@ -239,7 +239,7 @@ const ApproveSales = () => {
     period: DateRangeOptions,
     customPeriod?: CustomPeriod
   ) => {
-    const { startDate, endDate } = createDateRange(period, customPeriod).range
+    const {startDate, endDate} = createDateRange(period, customPeriod).range
     return (pendingSales as Sale[]).filter(sale => {
       // @ts-ignore
       return sale.date >= startDate && sale.date <= endDate
@@ -269,8 +269,8 @@ const ApproveSales = () => {
       headerName: "Data",
       type: "date",
       field: "date",
-      valueGetter: ({ row }: RowData) => moment(row.date).format("DD/MM/YY"),
-      renderCell: ({ row }: RowData) => (
+      valueGetter: ({row}: RowData) => moment(row.date).format("DD/MM/YY"),
+      renderCell: ({row}: RowData) => (
         <Typography variant={"body2"}>
           {moment(row.date).format("DD/MM/YY")}
         </Typography>
@@ -284,7 +284,7 @@ const ApproveSales = () => {
       headerAlign: "center",
       minWidth: 140,
       // @ts-ignore
-      renderCell: ({ row }) => (
+      renderCell: ({row}) => (
         <Box width={"100%"}>
           <Box
             sx={{
@@ -293,11 +293,11 @@ const ApproveSales = () => {
               justifyContent: "center"
             }}
           >
-            <Typography variant='body2'>{row.saleNumber}</Typography>
+            <Typography variant="body2">{row.saleNumber}</Typography>
           </Box>
           {row.PDVNumber && (
             <Fragment>
-              <Divider sx={{ paddingY: 0, marginY: 0, width: "100%" }} />
+              <Divider sx={{paddingY: 0, marginY: 0, width: "100%"}} />
               <Box
                 sx={{
                   display: "flex",
@@ -305,7 +305,7 @@ const ApproveSales = () => {
                   justifyContent: "center"
                 }}
               >
-                <Typography variant='body2'>PDV: {row.PDVNumber}</Typography>
+                <Typography variant="body2">PDV: {row.PDVNumber}</Typography>
               </Box>
             </Fragment>
           )}
@@ -318,8 +318,8 @@ const ApproveSales = () => {
       headerAlign: "center",
       field: "saleAmount",
       type: "number",
-      valueGetter: ({ row }: RowData) => row.saleAmount,
-      renderCell: ({ row }: RowData) => (
+      valueGetter: ({row}: RowData) => row.saleAmount,
+      renderCell: ({row}: RowData) => (
         <Typography variant={"body2"}>
           {formattedCurrencyWithSymbol(row.saleAmount)}
         </Typography>
@@ -329,8 +329,8 @@ const ApproveSales = () => {
       minWidth: 150,
       headerName: "Cliente",
       field: "client",
-      valueGetter: ({ row }: RowData) => row.client.name,
-      renderCell: ({ row }: RowData) => (
+      valueGetter: ({row}: RowData) => row.client.name,
+      renderCell: ({row}: RowData) => (
         <Typography variant={"body2"}>{row.client.name}</Typography>
       )
     },
@@ -338,17 +338,17 @@ const ApproveSales = () => {
       minWidth: 140,
       headerName: "Vendedor",
       field: "user",
-      renderCell: ({ row }: RowData) => (
+      renderCell: ({row}: RowData) => (
         <Typography variant={"body2"}>{row.user?.name}</Typography>
       ),
-      valueGetter: ({ row }: RowData) => row.user?.name
+      valueGetter: ({row}: RowData) => row.user?.name
     },
     {
       minWidth: 170,
       headerName: "Forma de Pagamento",
       field: "paymentMethod",
-      valueGetter: ({ row }: RowData) => row.paymentMethod.title,
-      renderCell: ({ row }: RowData) => (
+      valueGetter: ({row}: RowData) => row.paymentMethod.title,
+      renderCell: ({row}: RowData) => (
         <Typography variant={"body2"}>{row.paymentMethod.title}</Typography>
       )
     },
@@ -361,13 +361,13 @@ const ApproveSales = () => {
       headerAlign: "center",
       disableColumnMenu: true,
       minWidth: 150,
-      renderCell: ({ row }: RowData) => (
-        <Box display='flex' justifyContent='center' gap={3} alignItems='center'>
+      renderCell: ({row}: RowData) => (
+        <Box display="flex" justifyContent="center" gap={3} alignItems="center">
           <Fab
             sx={{
               color: "white",
               backgroundColor: "success.dark",
-              "&:hover": { backgroundColor: "success.main" },
+              "&:hover": {backgroundColor: "success.main"},
               width: "35px",
               height: "35px"
             }}
@@ -380,7 +380,7 @@ const ApproveSales = () => {
             sx={{
               color: "white",
               backgroundColor: "error.dark",
-              "&:hover": { backgroundColor: "error.main" },
+              "&:hover": {backgroundColor: "error.main"},
               width: "33px",
               height: "35px"
             }}
@@ -397,10 +397,10 @@ const ApproveSales = () => {
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Card>
-          <Grid item container sx={{ paddingTop: 4, paddingX: 3 }} spacing={6}>
+          <Grid item container sx={{paddingTop: 4, paddingX: 3}} spacing={6}>
             <Grid item xs={12} md={6}>
               <CardHeader
-                sx={{ textAlign: { xs: "center", md: "left" } }}
+                sx={{textAlign: {xs: "center", md: "left"}}}
                 title={
                   <Typography variant={"h6"} color={"text.primary"}>
                     <PriceCheckIcon />
@@ -418,13 +418,13 @@ const ApproveSales = () => {
                 paddingTop: 5,
                 paddingX: 5,
                 display: "flex",
-                flexDirection: { xs: "column", md: "row" },
+                flexDirection: {xs: "column", md: "row"},
                 gap: 3,
                 justifyContent: "flex-end",
                 alignItems: "center"
               }}
             >
-              <FormControl sx={{ minWidth: 280 }}>
+              <FormControl sx={{minWidth: 280}}>
                 <InputLabel>Selecionar intervalo de tempo</InputLabel>
                 <Select
                   value={dateRange}
@@ -447,8 +447,8 @@ const ApproveSales = () => {
                 </Select>
               </FormControl>
               <Button
-                variant='outlined'
-                color='primary'
+                variant="outlined"
+                color="primary"
                 onClick={() => {
                   setDateRange("")
                   setFilteredData(null)
@@ -458,7 +458,7 @@ const ApproveSales = () => {
                 Resetar filtro
               </Button>
             </Grid>
-            <Grid item xs={12} sx={{ ml: "auto", paddingX: 5 }}>
+            <Grid item xs={12} sx={{ml: "auto", paddingX: 5}}>
               <Button
                 variant={"outlined"}
                 onClick={() => handleApproveAllSales()}

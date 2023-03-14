@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from "react"
+import {useState} from "react"
 
 // ** MUI Imports
 import Box from "@mui/material/Box"
@@ -7,7 +7,7 @@ import Card from "@mui/material/Card"
 import TabList from "@mui/lab/TabList"
 import TabPanel from "@mui/lab/TabPanel"
 import TabContext from "@mui/lab/TabContext"
-import { styled } from "@mui/material/styles"
+import {styled} from "@mui/material/styles"
 import MuiTab from "@mui/material/Tab"
 
 // ** Icons Imports
@@ -28,9 +28,9 @@ import TabNotifications from "src/views/pages/account-settings/TabNotifications"
 import "react-datepicker/dist/react-datepicker.css"
 
 // ** Import Auth
-import { useAuth } from "src/hooks/useAuth"
+import {useAuth} from "src/hooks/useAuth"
 
-const Tab = styled(MuiTab)(({ theme }) => ({
+const Tab = styled(MuiTab)(({theme}) => ({
   [theme.breakpoints.down("md")]: {
     minWidth: 100
   },
@@ -39,7 +39,7 @@ const Tab = styled(MuiTab)(({ theme }) => ({
   }
 }))
 
-const TabName = styled("span")(({ theme }) => ({
+const TabName = styled("span")(({theme}) => ({
   lineHeight: 1.71,
   marginLeft: theme.spacing(2.5),
   [theme.breakpoints.down("md")]: {
@@ -48,7 +48,7 @@ const TabName = styled("span")(({ theme }) => ({
 }))
 
 const AccountSettings = () => {
-  const { user: userDB } = useAuth()
+  const {user: userDB} = useAuth()
   // ** State
   const [value, setValue] = useState("account")
 
@@ -61,42 +61,42 @@ const AccountSettings = () => {
       <TabContext value={value}>
         <TabList
           onChange={handleChange}
-          aria-label='account-settings tabs'
-          sx={{ borderBottom: theme => `1px solid ${theme.palette.divider}` }}
+          aria-label="account-settings tabs"
+          sx={{borderBottom: theme => `1px solid ${theme.palette.divider}`}}
         >
           <Tab
-            value='account'
+            value="account"
             label={
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <AccountOutline sx={{ fontSize: "1.125rem" }} />
+              <Box sx={{display: "flex", alignItems: "center"}}>
+                <AccountOutline sx={{fontSize: "1.125rem"}} />
                 <TabName>Usuário</TabName>
               </Box>
             }
           />
           <Tab
-            value='security'
+            value="security"
             label={
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <LockOpenOutline sx={{ fontSize: "1.125rem" }} />
+              <Box sx={{display: "flex", alignItems: "center"}}>
+                <LockOpenOutline sx={{fontSize: "1.125rem"}} />
                 <TabName>Segurança</TabName>
               </Box>
             }
           />
         </TabList>
 
-        <TabPanel sx={{ p: 0 }} value='account'>
+        <TabPanel sx={{p: 0}} value="account">
           <TabAccount userDB={userDB!} />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='security'>
+        <TabPanel sx={{p: 0}} value="security">
           <TabSecurity />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='info'>
+        <TabPanel sx={{p: 0}} value="info">
           <TabInfo />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='billing'>
+        <TabPanel sx={{p: 0}} value="billing">
           <TabBilling />
         </TabPanel>
-        <TabPanel sx={{ p: 0 }} value='notifications'>
+        <TabPanel sx={{p: 0}} value="notifications">
           <TabNotifications />
         </TabPanel>
       </TabContext>

@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query"
+import {useMutation, useQuery} from "@tanstack/react-query"
 import * as useStreetDailyReport from "./hooks/"
 
 export const useCreateStreetDailyReportQuery = (queryClient: any) => {
@@ -25,7 +25,7 @@ interface MutationParams {
 
 export const useGetClientsByReporterQuery = (queryClient: any) => {
   return useMutation(
-    ({ reporterID, reportDate }: MutationParams) =>
+    ({reporterID, reportDate}: MutationParams) =>
       useStreetDailyReport.getClientsByReporter(reporterID, reportDate),
     {
       onSuccess: clients => {
@@ -41,7 +41,7 @@ export const useGetClientsByReporterQuery = (queryClient: any) => {
   )
 }
 
-export const useGetAllDailyReportsQuery = (options?: Object) => {
+export const useGetAllDailyReportsQuery = (options?: any) => {
   return useQuery(
     ["dailyReports", "all"],
     useStreetDailyReport.getAllDailyReports,
@@ -65,7 +65,7 @@ interface ChangeAuditStatusParams {
 
 export const useChangeAuditStatusQuery = (queryClient: any) => {
   return useMutation(
-    ({ reportID, status, auditFeedBack }: ChangeAuditStatusParams) =>
+    ({reportID, status, auditFeedBack}: ChangeAuditStatusParams) =>
       useStreetDailyReport.changeAuditStatus(reportID, status, auditFeedBack),
     {
       onSuccess: updatedDailyReport => {

@@ -1,11 +1,11 @@
 // ** React Imports
-import { ReactNode } from "react"
+import {ReactNode} from "react"
 
 // ** MUI Imports
 import Box from "@mui/material/Box"
 
 // ** Type Import
-import { Settings } from "src/@core/context/settingsContext"
+import {Settings} from "src/@core/context/settingsContext"
 
 // ** Footer Content Component
 import FooterContent from "./FooterContent"
@@ -18,10 +18,10 @@ interface Props {
 
 const Footer = (props: Props) => {
   // ** Props
-  const { settings, footerContent: userFooterContent } = props
+  const {settings, footerContent: userFooterContent} = props
 
   // ** Vars
-  const { skin, footer, contentWidth } = settings
+  const {skin, footer, contentWidth} = settings
 
   if (footer === "hidden") {
     return null
@@ -29,18 +29,18 @@ const Footer = (props: Props) => {
 
   return (
     <Box
-      component='footer'
-      className='layout-footer'
+      component="footer"
+      className="layout-footer"
       sx={{
         zIndex: 10,
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        ...(footer === "fixed" && { bottom: 0, px: [4, 6], position: "sticky" })
+        ...(footer === "fixed" && {bottom: 0, px: [4, 6], position: "sticky"})
       }}
     >
       <Box
-        className='footer-content-container'
+        className="footer-content-container"
         sx={{
           py: 4,
           px: [4, 6],
@@ -48,7 +48,7 @@ const Footer = (props: Props) => {
           borderTopLeftRadius: 14,
           borderTopRightRadius: 14,
           ...(contentWidth === "boxed" && {
-            "@media (min-width:1440px)": { maxWidth: 1440 }
+            "@media (min-width:1440px)": {maxWidth: 1440}
           }),
           ...(footer === "fixed" && {
             backgroundColor: theme => theme.palette.background.paper,

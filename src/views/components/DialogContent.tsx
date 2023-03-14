@@ -7,10 +7,10 @@ interface DialogContentProps {
   inputProps?: any
 }
 
-const DialogContent = ({ headerMessage, inputProps }: DialogContentProps) => {
+const DialogContent = ({headerMessage, inputProps}: DialogContentProps) => {
   return (
     <Box>
-      <Typography variant={"subtitle1"} sx={{ mb: 3 }}>
+      <Typography variant={"subtitle1"} sx={{mb: 3}}>
         {headerMessage}
       </Typography>
       <TextInputControlled {...inputProps} />

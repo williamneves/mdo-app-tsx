@@ -1,7 +1,7 @@
 // ** MUI Imports
 import Box from "@mui/material/Box"
 import Link from "@mui/material/Link"
-import { Theme } from "@mui/material/styles"
+import {Theme} from "@mui/material/styles"
 import Typography from "@mui/material/Typography"
 import useMediaQuery from "@mui/material/useMediaQuery"
 
@@ -18,13 +18,13 @@ const FooterContent = () => {
         justifyContent: "space-between"
       }}
     >
-      <Typography sx={{ mr: 2 }}>
+      <Typography sx={{mr: 2}}>
         {`© ${new Date().getFullYear()}, Made with `}
-        <Box component='span' sx={{ color: "error.main" }}>
+        <Box component="span" sx={{color: "error.main"}}>
           ❤️
         </Box>
         {` by `}
-        <Link target='_blank' href='https://pixinvent.com/'>
+        <Link target="_blank" href="https://pixinvent.com/">
           Pixinvent
         </Link>
       </Typography>
@@ -34,28 +34,28 @@ const FooterContent = () => {
             display: "flex",
             flexWrap: "wrap",
             alignItems: "center",
-            "& :not(:last-child)": { mr: 4 }
+            "& :not(:last-child)": {mr: 4}
           }}
         >
           <Link
-            target='_blank'
-            href='https://themeforest.net/licenses/standard'
+            target="_blank"
+            href="https://themeforest.net/licenses/standard"
           >
             License
           </Link>
           <Link
-            target='_blank'
-            href='https://1.envato.market/pixinvent_portfolio'
+            target="_blank"
+            href="https://1.envato.market/pixinvent_portfolio"
           >
             More Themes
           </Link>
           <Link
-            target='_blank'
-            href='https://pixinvent.com/demo/materialize-mui-react-nextjs-admin-template/documentation'
+            target="_blank"
+            href="https://pixinvent.com/demo/materialize-mui-react-nextjs-admin-template/documentation"
           >
             Documentation
           </Link>
-          <Link target='_blank' href='https://pixinvent.ticksy.com/'>
+          <Link target="_blank" href="https://pixinvent.ticksy.com/">
             Support
           </Link>
         </Box>

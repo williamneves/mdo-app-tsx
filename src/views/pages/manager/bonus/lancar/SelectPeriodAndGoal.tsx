@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react"
+import {ChangeEvent} from "react"
 import {
   Grid,
   Card,
@@ -10,16 +10,16 @@ import {
   MenuItem
 } from "@mui/material"
 import ManageSearchTwoToneIcon from "@mui/icons-material/ManageSearchTwoTone"
-import { monthsOfTheYear, years } from "src/pages/manager/bonus/lancar"
-import { IMonthsOfTheYear } from "src/@types"
+import {monthsOfTheYear, years} from "src/pages/manager/bonus/lancar"
+import {IMonthsOfTheYear} from "src/@types"
 
 import Goal from "interfaces/Goal"
 
 interface SelectPeriodAndGoalProps {
   selectedGoalId?: string
   setSelectedGoalId: (goal: string) => void
-  selectedMonth: { label: IMonthsOfTheYear; value: number }
-  setSelectedMonth: (month: { label: IMonthsOfTheYear; value: number }) => void
+  selectedMonth: {label: IMonthsOfTheYear; value: number}
+  setSelectedMonth: (month: {label: IMonthsOfTheYear; value: number}) => void
   selectedYear: number
   setSelectedYear: (year: number) => void
   goals: Goal[]
@@ -47,8 +47,8 @@ export function SelectPeriodAndGoal(props: SelectPeriodAndGoalProps) {
     <Grid item xs={12}>
       <Card>
         <CardHeader
-          title='Selecionar Período e Meta'
-          subheader='Ao clicar selecionar, uma lista com os vendedores e alguns outros dados serão exibidos.'
+          title="Selecionar Período e Meta"
+          subheader="Ao clicar selecionar, uma lista com os vendedores e alguns outros dados serão exibidos."
         />
         <Divider />
         <CardContent>
@@ -72,9 +72,9 @@ export function SelectPeriodAndGoal(props: SelectPeriodAndGoalProps) {
                         monthsOfTheYear[parseInt(e.target.value)]
                       )
                     }
-                    variant='outlined'
-                    label='Mês'
-                    placeholder='Selecione o mês'
+                    variant="outlined"
+                    label="Mês"
+                    placeholder="Selecione o mês"
                     disabled={blockSelectGoal}
                     fullWidth
                   >
@@ -92,9 +92,9 @@ export function SelectPeriodAndGoal(props: SelectPeriodAndGoalProps) {
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>
                       setSelectedYear(parseInt(e.target.value))
                     }
-                    variant='outlined'
-                    label='Ano'
-                    placeholder='Selecione o ano'
+                    variant="outlined"
+                    label="Ano"
+                    placeholder="Selecione o ano"
                     disabled={blockSelectGoal}
                     fullWidth
                   >
@@ -133,9 +133,9 @@ export function SelectPeriodAndGoal(props: SelectPeriodAndGoalProps) {
                     onChange={(e: ChangeEvent<HTMLInputElement>) =>
                       setSelectedGoalId(e.target.value)
                     }
-                    variant='outlined'
-                    label='Meta'
-                    placeholder='Selecione a meta'
+                    variant="outlined"
+                    label="Meta"
+                    placeholder="Selecione a meta"
                     disabled={blockSelectGoal}
                     fullWidth
                   >
@@ -146,16 +146,16 @@ export function SelectPeriodAndGoal(props: SelectPeriodAndGoalProps) {
                         </MenuItem>
                       ))
                     ) : (
-                      <MenuItem value=''>Nenhuma meta encontrada</MenuItem>
+                      <MenuItem value="">Nenhuma meta encontrada</MenuItem>
                     )}
                   </TextField>
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <Button
-                    variant='contained'
-                    color='primary'
+                    variant="contained"
+                    color="primary"
                     fullWidth
-                    size='large'
+                    size="large"
                     onClick={() => setBlockSelectGoal(!blockSelectGoal)}
                     disabled={selectDisabled}
                     endIcon={<ManageSearchTwoToneIcon />}

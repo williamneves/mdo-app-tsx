@@ -1,8 +1,8 @@
+import {createContext, useEffect, useState, ReactNode} from "react"
 // ** React Imports
-import { createContext, useEffect, useState, ReactNode } from "react"
 
 // ** Next Import
-import { useRouter } from "next/router"
+import {useRouter} from "next/router"
 
 // ** Axios
 import axios from "axios"
@@ -54,7 +54,7 @@ type Props = {
   children: ReactNode
 }
 
-const AuthProvider = ({ children }: Props) => {
+const AuthProvider = ({children}: Props) => {
   // ** States
   const [user, setUser] = useState<AuthUser | null>(defaultProvider.user)
   const [selectedUser, setSelectedUser] = useState<Partial<User> | null>(
@@ -70,17 +70,19 @@ const AuthProvider = ({ children }: Props) => {
   const router = useRouter()
 
   const getLocalStorageUser = async (authUID: string): Promise<AuthUser> => {
-    return new Promise(async (resolve, reject) => {
+    try {
       const localUser = await ls.get("b3_userData")
       if (
         !localUser ||
         moment(localUser.expirationDate).isBefore(moment()) ||
         localUser.user.authUID !== authUID
       ) {
-        reject(false)
+        throw "User not found"
       }
-      resolve(localUser.user)
-    })
+      return localUser.user
+    } catch (error) {
+      throw error
+    }
   }
 
   const setLocalStorageUser = (user: AuthUser): void => {
@@ -179,15 +181,15 @@ const AuthProvider = ({ children }: Props) => {
 
       const returnUrl = router.query.returnUrl
       const redirectURL = returnUrl && returnUrl !== "/" ? returnUrl : "/"
-      toast.success("Login efetuado com sucesso!", { id: loginToast })
+      toast.success("Login efetuado com sucesso!", {id: loginToast})
 
       // ** Redirect to Home Page
       await router.replace(redirectURL as string)
     } catch (err) {
       console.error("err", err)
-      toast.error("Erro no login!", { id: loginToast })
+      toast.error("Erro no login!", {id: loginToast})
       // @ts-ignore
-      errorCallback({ message: "error" })
+      errorCallback({message: "error"})
     }
   }
 
@@ -214,17 +216,17 @@ const AuthProvider = ({ children }: Props) => {
         if (res.data.error) {
           if (errorCallback) errorCallback(res.data.error)
         } else {
-          handleLogin({ email: params.email, password: params.password })
+          handleLogin({email: params.email, password: params.password})
         }
       })
-      .catch((err: { [key: string]: string }) =>
+      .catch((err: {[key: string]: string}) =>
         errorCallback ? errorCallback(err) : null
       )
   }
 
-  const handleChangeUser = async ({ newInfo }: auth.ChangeUserParams) => {
+  const handleChangeUser = async ({newInfo}: auth.ChangeUserParams) => {
     try {
-      const newUser = await auth.changeUserInfo({ newInfo })
+      const newUser = await auth.changeUserInfo({newInfo})
       setUser(newUser)
     } catch (e) {
       throw e
@@ -251,4 +253,4 @@ const AuthProvider = ({ children }: Props) => {
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>
 }
 
-export { AuthContext, AuthProvider }
+export {AuthContext, AuthProvider}

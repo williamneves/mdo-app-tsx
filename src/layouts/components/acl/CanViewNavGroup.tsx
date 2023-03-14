@@ -1,11 +1,11 @@
 // ** React Imports
-import { ReactNode, useContext } from "react"
+import {ReactNode, useContext} from "react"
 
 // ** Component Imports
-import { AbilityContext } from "src/layouts/components/acl/Can"
+import {AbilityContext} from "src/layouts/components/acl/Can"
 
 // ** Types
-import { NavGroup, NavLink } from "src/@core/layouts/types"
+import {NavGroup, NavLink} from "src/@core/layouts/types"
 
 interface Props {
   navGroup?: NavGroup
@@ -14,7 +14,7 @@ interface Props {
 
 const CanViewNavGroup = (props: Props) => {
   // ** Props
-  const { children, navGroup } = props
+  const {children, navGroup} = props
 
   // ** Hook
   const ability = useContext(AbilityContext)

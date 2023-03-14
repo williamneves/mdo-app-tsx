@@ -1,8 +1,8 @@
 // ** Next Router
-import { useRouter } from "next/router"
+import {useRouter} from "next/router"
 
 // ** MUI Imports
-import { Grid, Typography } from "@mui/material"
+import {Grid, Typography} from "@mui/material"
 
 // ** MUI Imports Icons
 import AddShoppingCartTwoToneIcon from "@mui/icons-material/AddShoppingCartTwoTone"
@@ -21,16 +21,14 @@ import * as salesQ from "src/queries/sales"
 const EditarVenda = () => {
   // ** Next Router
   const router = useRouter()
-  const { sale_id } = router.query
+  const {sale_id} = router.query
   // If router is not ready, show fallback spinner
   if (!router.isReady) {
     return <FallBackSpinner />
   }
 
   // ** React Query
-  const { data: sale, isLoading } = salesQ.useGetSaleByIDQuery(
-    sale_id as string
-  )
+  const {data: sale, isLoading} = salesQ.useGetSaleByIDQuery(sale_id as string)
 
   if (isLoading) {
     return <FallBackSpinner />
@@ -53,14 +51,13 @@ const EditarVenda = () => {
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Typography
-          variant='h5'
+          variant="h5"
           display={"flex"}
           alignItems={"center"}
           gap={2}
           px={5}
         >
-          <PublishedWithChangesIcon sx={{ color: "primary.main" }} /> Editar
-          Venda
+          <PublishedWithChangesIcon sx={{color: "primary.main"}} /> Editar Venda
         </Typography>
       </Grid>
       <Grid item xs={12}>

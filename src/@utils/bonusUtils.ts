@@ -1,9 +1,9 @@
 import Sale from "@src/interfaces/Sale"
-import { formattedCurrencyWithSymbol } from "src/@utils/formatCurrency"
-import { string } from "yup"
+import {formattedCurrencyWithSymbol} from "src/@utils/formatCurrency"
+import {string} from "yup"
 
 // ** Sale Bonus Range
-type keyNumberNumber = { [key: number]: number }
+type keyNumberNumber = {[key: number]: number}
 export const bonusValueScale = (goalLevel: 1 | 2 | 3 | 4): keyNumberNumber => {
   switch (goalLevel) {
     case 1:
@@ -68,43 +68,42 @@ export const bonusValueScale = (goalLevel: 1 | 2 | 3 | 4): keyNumberNumber => {
   }
 }
 
-export const salesBonusRange: { [key: number]: { min: number; max: number } } =
-  {
-    1: {
-      min: 0,
-      max: 1000
-    },
-    2: {
-      min: 1000,
-      max: 1500
-    },
-    3: {
-      min: 1500,
-      max: 2000
-    },
-    4: {
-      min: 2000,
-      max: 2400
-    },
-    5: {
-      min: 2400,
-      max: 2800
-    },
-    6: {
-      min: 2800,
-      max: 3300
-    },
-    7: {
-      min: 3300,
-      max: 3700
-    },
-    8: {
-      min: 3700,
-      max: Infinity
-    }
+export const salesBonusRange: {[key: number]: {min: number; max: number}} = {
+  1: {
+    min: 0,
+    max: 1000
+  },
+  2: {
+    min: 1000,
+    max: 1500
+  },
+  3: {
+    min: 1500,
+    max: 2000
+  },
+  4: {
+    min: 2000,
+    max: 2400
+  },
+  5: {
+    min: 2400,
+    max: 2800
+  },
+  6: {
+    min: 2800,
+    max: 3300
+  },
+  7: {
+    min: 3300,
+    max: 3700
+  },
+  8: {
+    min: 3700,
+    max: Infinity
   }
+}
 
-type ranges = { [key: number]: { qtd: number; total: number; bonus: number } }
+type ranges = {[key: number]: {qtd: number; total: number; bonus: number}}
 
 export interface ISaleBonusPerVendor {
   bonus: number
@@ -116,18 +115,18 @@ export interface ISaleBonusPerVendor {
 export default function saleBonusPerVendor(
   sales: Sale[],
   goalLevel: 1 | 2 | 3 | 4,
-  vendorID?: String
+  vendorID?: string
 ): ISaleBonusPerVendor {
-  let bonus: number = 0
-  let ranges: ranges = {
-    1: { qtd: 0, total: 0, bonus: 0 },
-    2: { qtd: 0, total: 0, bonus: 0 },
-    3: { qtd: 0, total: 0, bonus: 0 },
-    4: { qtd: 0, total: 0, bonus: 0 },
-    5: { qtd: 0, total: 0, bonus: 0 },
-    6: { qtd: 0, total: 0, bonus: 0 },
-    7: { qtd: 0, total: 0, bonus: 0 },
-    8: { qtd: 0, total: 0, bonus: 0 }
+  let bonus = 0
+  const ranges: ranges = {
+    1: {qtd: 0, total: 0, bonus: 0},
+    2: {qtd: 0, total: 0, bonus: 0},
+    3: {qtd: 0, total: 0, bonus: 0},
+    4: {qtd: 0, total: 0, bonus: 0},
+    5: {qtd: 0, total: 0, bonus: 0},
+    6: {qtd: 0, total: 0, bonus: 0},
+    7: {qtd: 0, total: 0, bonus: 0},
+    8: {qtd: 0, total: 0, bonus: 0}
   }
 
   const bonusScale = bonusValueScale(goalLevel)
@@ -195,5 +194,5 @@ export default function saleBonusPerVendor(
     }\n`
   }
 
-  return { bonus, ranges, description }
+  return {bonus, ranges, description}
 }

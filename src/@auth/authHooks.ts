@@ -8,7 +8,7 @@ import {
 
 import AuthUser from "src/interfaces/authUser"
 import ls from "src/configs/localStorage"
-import { dbClient } from "src/configs/sanityConfig"
+import {dbClient} from "src/configs/sanityConfig"
 import fetchUserDB from "src/@auth/fetchUserDB"
 
 export const fetchUser = fetchUserDB
@@ -21,7 +21,7 @@ export const signInByEmail = async (
   // Try to sign in
   try {
     // Fetch user from Firebase
-    const { user: authUser } = await signInWithEmailAndPassword(
+    const {user: authUser} = await signInWithEmailAndPassword(
       authInstance,
       email,
       password
@@ -65,7 +65,7 @@ export const changePassword = async (
   oldPassword: string,
   newPassword: string
 ) => {
-  const { currentUser } = authInstance
+  const {currentUser} = authInstance
 
   try {
     await signInWithEmailAndPassword(
@@ -95,8 +95,8 @@ export interface ChangeUserParams {
   newInfo: Partial<AuthUser>
 }
 
-export const changeUserInfo = async ({ newInfo }: ChangeUserParams) => {
-  const { currentUser } = authInstance
+export const changeUserInfo = async ({newInfo}: ChangeUserParams) => {
+  const {currentUser} = authInstance
   const dbUser = await fetchUser(currentUser!.uid)
 
   try {

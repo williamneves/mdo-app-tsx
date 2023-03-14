@@ -15,7 +15,7 @@ import {
 import InputAdornment from "@mui/material/InputAdornment"
 import FormHelperText from "@mui/material/FormHelperText"
 
-import { InputController } from "./InputController"
+import {InputController} from "./InputController"
 
 interface TextInputProps extends OutlinedTextFieldProps {
   name: string
@@ -50,7 +50,7 @@ export const TextInputControlled = (props: TextInputProps) => {
       name={name}
       control={control}
       errors={errors}
-      render={({ field: { value, onChange }, fieldState: { invalid } }) => (
+      render={({field: {value, onChange}, fieldState: {invalid}}) => (
         <TextField
           {...rest}
           variant={variant}
@@ -63,12 +63,12 @@ export const TextInputControlled = (props: TextInputProps) => {
           InputProps={{
             readOnly: readOnly || props.InputProps?.readOnly,
             startAdornment: startAdornment ? (
-              <InputAdornment position='start'>{startAdornment}</InputAdornment>
+              <InputAdornment position="start">{startAdornment}</InputAdornment>
             ) : (
               props.InputProps?.startAdornment
             ),
             endAdornment: startAdornment ? (
-              <InputAdornment position='end'>{endAdornment}</InputAdornment>
+              <InputAdornment position="end">{endAdornment}</InputAdornment>
             ) : (
               props.InputProps?.endAdornment
             )

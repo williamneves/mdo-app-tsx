@@ -1,10 +1,10 @@
 // ** MUI imports
-import { styled } from "@mui/material/styles"
+import {styled} from "@mui/material/styles"
 
 // ** KeenSlider CSS
 import "keen-slider/keen-slider.min.css"
 
-const KeenSliderWrapper = styled("div")(({ theme }) => ({
+const KeenSliderWrapper = styled("div")(({theme}) => ({
   "& .keen-slider": {
     "& .keen-slider__slide": {
       "& img": {
@@ -73,7 +73,7 @@ const KeenSliderWrapper = styled("div")(({ theme }) => ({
       transform: "translateY(-50%)",
       color: theme.palette.common.white,
       ...(theme.direction === "rtl"
-        ? { transform: "translateY(-50%) rotate(180deg)" }
+        ? {transform: "translateY(-50%) rotate(180deg)"}
         : {}),
       "&.arrow-disabled": {
         cursor: "not-allowed",

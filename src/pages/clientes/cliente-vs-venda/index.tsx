@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from "react"
+import {useState} from "react"
 
 // ** MUI Imports
 import Card from "@mui/material/Card"
@@ -16,22 +16,22 @@ import StoreIcon from "@mui/icons-material/Store"
 import SaveIcon from "@mui/icons-material/Save"
 
 // ** Hooks Imports
-import { useForm } from "react-hook-form"
-import { useQueryClient } from "@tanstack/react-query"
+import {useForm} from "react-hook-form"
+import {useQueryClient} from "@tanstack/react-query"
 import * as saleQ from "src/queries/sales"
-import { getSaleBySaleNumber } from "src/queries/sales/hooks"
-import { getClientByClientNumber } from "src/queries/clients/hooks/useClient"
+import {getSaleBySaleNumber} from "src/queries/sales/hooks"
+import {getClientByClientNumber} from "src/queries/clients/hooks/useClient"
 
 // ** Third Party Imports
 import * as yup from "yup"
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup"
+import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
 import toast from "react-hot-toast"
 
 // ** Third Party Components
 import TextInputControlled from "components/inputs/TextInputControlled"
 import Client from "interfaces/Client"
 import Sale from "interfaces/Sale"
-import { SaleCardList } from "src/views/pages/vendas/nova-venda/NewSaleMockup"
+import {SaleCardList} from "src/views/pages/vendas/nova-venda/NewSaleMockup"
 import {
   List,
   ListItem,
@@ -56,13 +56,13 @@ const ClientVersusSale = () => {
   // React Query
   const queryClient = useQueryClient()
   const updateSale = saleQ.useUpdateClientSaleQuery(queryClient)
-  const { isLoading } = updateSale
+  const {isLoading} = updateSale
 
   // Hook Form
   const {
     control: saleControl,
     handleSubmit: saleHandleSubmit,
-    formState: { errors: saleErrors },
+    formState: {errors: saleErrors},
     reset: saleReset
   } = useForm({
     resolver: yupResolver(
@@ -78,7 +78,7 @@ const ClientVersusSale = () => {
   const {
     control: clientControl,
     handleSubmit: clientHandleSubmit,
-    formState: { errors: clientErrors },
+    formState: {errors: clientErrors},
     reset: clientReset
   } = useForm({
     resolver: yupResolver(
@@ -186,14 +186,14 @@ const ClientVersusSale = () => {
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Typography
-          variant='h5'
-          sx={{ display: "flex", alignItems: "center" }}
+          variant="h5"
+          sx={{display: "flex", alignItems: "center"}}
           marginBottom={3}
           gap={2}
           px={5}
         >
           <SupervisedUserCircleIcon
-            sx={{ color: "primary.main", fontSize: 30 }}
+            sx={{color: "primary.main", fontSize: 30}}
           />{" "}
           Cliente x Venda
         </Typography>
@@ -202,7 +202,7 @@ const ClientVersusSale = () => {
             <Grid container spacing={6}>
               <Grid item xs={12}>
                 <Typography
-                  variant='h6'
+                  variant="h6"
                   sx={{
                     display: "flex",
                     alignItems: "center",
@@ -215,10 +215,10 @@ const ClientVersusSale = () => {
               <Grid
                 item
                 xs={12}
-                sx={{ display: "flex", gap: 3, justifyContent: "center" }}
+                sx={{display: "flex", gap: 3, justifyContent: "center"}}
               >
                 <form onSubmit={saleHandleSubmit(searchSale)}>
-                  <Typography sx={{ display: "flex", gap: 3 }}>
+                  <Typography sx={{display: "flex", gap: 3}}>
                     <TextInputControlled
                       label={"Código da Venda"}
                       name={"saleNumber"}
@@ -239,13 +239,13 @@ const ClientVersusSale = () => {
               <Grid
                 item
                 xs={12}
-                sx={{ display: "flex", gap: 3, justifyContent: "center" }}
+                sx={{display: "flex", gap: 3, justifyContent: "center"}}
               >
                 {sale && <SaleCardList newSaleMockup={sale} />}
               </Grid>
               <Grid item xs={12}>
                 <Typography
-                  variant='h6'
+                  variant="h6"
                   sx={{
                     display: "flex",
                     alignItems: "center",
@@ -259,10 +259,10 @@ const ClientVersusSale = () => {
               <Grid
                 item
                 xs={12}
-                sx={{ display: "flex", gap: 3, justifyContent: "center" }}
+                sx={{display: "flex", gap: 3, justifyContent: "center"}}
               >
                 <form onSubmit={clientHandleSubmit(searchClient)}>
-                  <Typography sx={{ display: "flex", gap: 3 }}>
+                  <Typography sx={{display: "flex", gap: 3}}>
                     <TextInputControlled
                       label={"Código do Cliente"}
                       name={"clientNumber"}
@@ -283,7 +283,7 @@ const ClientVersusSale = () => {
               <Grid
                 item
                 xs={12}
-                sx={{ display: "flex", gap: 3, justifyContent: "center" }}
+                sx={{display: "flex", gap: 3, justifyContent: "center"}}
               >
                 {client && (
                   <List
@@ -364,7 +364,7 @@ const ClientVersusSale = () => {
               <Grid
                 item
                 xs={12}
-                sx={{ display: "flex", gap: 3, justifyContent: "center" }}
+                sx={{display: "flex", gap: 3, justifyContent: "center"}}
               >
                 <LoadingButton
                   onClick={updateSaleClient}
@@ -372,7 +372,7 @@ const ClientVersusSale = () => {
                   disabled={!client || !sale}
                   variant={"contained"}
                 >
-                  <SaveIcon sx={{ mr: 1 }} />
+                  <SaveIcon sx={{mr: 1}} />
                   Salvar
                 </LoadingButton>
               </Grid>

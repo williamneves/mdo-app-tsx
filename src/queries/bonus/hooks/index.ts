@@ -1,4 +1,4 @@
-import { dbClient } from "src/configs/sanityConfig"
+import {dbClient} from "src/configs/sanityConfig"
 import IBonus from "interfaces/Bonus"
 import User from "interfaces/User"
 import Goal from "interfaces/Goal"
@@ -115,7 +115,7 @@ export const updateAllBonus = async (bonus: IBonus): Promise<IBonus> => {
     return await dbClient
       .patch(bonus._id as string)
       .set(newBonus)
-      .commit({ autoGenerateArrayKeys: true })
+      .commit({autoGenerateArrayKeys: true})
   } catch (err) {
     throw err
   }

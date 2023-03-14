@@ -1,8 +1,8 @@
-import { useState, Fragment } from "react"
+import {useState, Fragment} from "react"
 
 // ** MUI Imports
 import Button from "@mui/material/Button"
-import { styled } from "@mui/material/styles"
+import {styled} from "@mui/material/styles"
 import ListItemIcon from "@mui/material/ListItemIcon"
 import ListItemText from "@mui/material/ListItemText"
 import MuiMenu from "@mui/material/Menu"
@@ -18,14 +18,14 @@ import PlaceTwoToneIcon from "@mui/icons-material/PlaceTwoTone"
 import ls from "src/configs/localStorage"
 
 // Styled Menu component
-const Menu = styled(MuiMenu)(({ theme }) => ({
+const Menu = styled(MuiMenu)(({theme}) => ({
   "& .MuiMenu-paper": {
     border: `1px solid ${theme.palette.divider}`
   }
 }))
 
 // Styled MenuItem component
-const MenuItem = styled(MuiMenuItem)(({ theme }) => ({
+const MenuItem = styled(MuiMenuItem)(({theme}) => ({
   "&:focus": {
     backgroundColor: theme.palette.primary.main,
     "& .MuiListItemIcon-root, & .MuiListItemText-primary": {
@@ -34,10 +34,10 @@ const MenuItem = styled(MuiMenuItem)(({ theme }) => ({
   }
 }))
 
-import { useAuth } from "src/hooks/useAuth"
+import {useAuth} from "src/hooks/useAuth"
 
 const StoreSelect = () => {
-  const { user, selectedStore, setSelectedStore } = useAuth()
+  const {user, selectedStore, setSelectedStore} = useAuth()
 
   const [anchorEl, setAnchorEl] = useState(null)
 
@@ -62,10 +62,10 @@ const StoreSelect = () => {
   return (
     <Fragment>
       <Button
-        variant='text'
-        aria-haspopup='true'
+        variant="text"
+        aria-haspopup="true"
         onClick={handleClick}
-        aria-controls='customized-menu'
+        aria-controls="customized-menu"
       >
         <Box
           sx={{
@@ -75,11 +75,11 @@ const StoreSelect = () => {
           }}
         >
           <StoreMallDirectoryTwoToneIcon />
-          <Typography variant='body2' color={"primary.main"} ml={"0.4rem"}>
+          <Typography variant="body2" color={"primary.main"} ml={"0.4rem"}>
             {selectedStore ? selectedStore.name : "Select Store"}
           </Typography>
           {user.stores.length > 1 && (
-            <ArrowDropDownTwoToneIcon sx={{ marginX: 0 }} />
+            <ArrowDropDownTwoToneIcon sx={{marginX: 0}} />
           )}
         </Box>
       </Button>
@@ -89,7 +89,7 @@ const StoreSelect = () => {
           selected={null}
           elevation={0}
           anchorEl={anchorEl}
-          id='customized-menu'
+          id="customized-menu"
           onClose={handleClose}
           open={Boolean(anchorEl)}
           anchorOrigin={{

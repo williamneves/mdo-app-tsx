@@ -1,9 +1,9 @@
-import { useQuery, useMutation } from "@tanstack/react-query"
+import {useQuery, useMutation} from "@tanstack/react-query"
 import IBonus from "interfaces/Bonus"
 import * as bonusApi from "./hooks"
 
 // Get All Bonuses
-export const useGetAllBonusQuery = (options?: Object) => {
+export const useGetAllBonusQuery = (options?: any) => {
   return useQuery(["bonus", "all"], bonusApi.getAllBonus, {
     // 1hr stale time
     staleTime: 1000 * 60 * 60,
@@ -18,7 +18,7 @@ export const useGetAllBonusQuery = (options?: Object) => {
 // Get Bonus By ReferenceId
 export const useGetBonusByReferenceIdQuery = (
   referenceId: string,
-  options?: Object
+  options?: any
 ) => {
   return useQuery(
     ["bonus", "referenceId", `${referenceId}`],
@@ -76,7 +76,7 @@ export const useUpdateAllBonusQuery = (queryClient: any) => {
 // Update Bonus
 export const useUpdateBonusFieldsQuery = (queryClient: any) => {
   return useMutation(
-    ({ id, bonus }: { id: string; bonus: Partial<IBonus> }) =>
+    ({id, bonus}: {id: string; bonus: Partial<IBonus>}) =>
       bonusApi.updateBonusFields(id, bonus),
     {
       onSuccess: updatedBonus => {

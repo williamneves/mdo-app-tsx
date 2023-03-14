@@ -1,5 +1,5 @@
 // ** React Imports
-import { Fragment, useState, ChangeEvent } from "react"
+import {Fragment, useState, ChangeEvent} from "react"
 
 // ** MUI Imports
 import {
@@ -10,10 +10,10 @@ import {
   TextField,
   MenuItem
 } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
+import {useTheme} from "@mui/material/styles"
 
 // ** Utils
-import { createDateRange } from "src/@utils/createDateRange"
+import {createDateRange} from "src/@utils/createDateRange"
 
 // ** Types
 import {
@@ -83,7 +83,7 @@ const dateRangeOptions: dateRangeOption[] = [
 
 const DateRangeSelector = (props: DateRangeSelectorProps): JSX.Element => {
   // ** Props
-  const { option, dateRange, setDateRange } = props
+  const {option, dateRange, setDateRange} = props
 
   // ** States
   const [selectedOption, setSelectedOption] = useState<DateRangeOptions>(
@@ -98,7 +98,7 @@ const DateRangeSelector = (props: DateRangeSelectorProps): JSX.Element => {
   // Handle change on date range options
   const handleChangeOption = (event: ChangeEvent<HTMLInputElement>) => {
     // Destructure event
-    const { value } = event.target
+    const {value} = event.target
 
     // Set selected option
     // If values is not customPeriod, set enableCustomPeriod to false
@@ -121,7 +121,7 @@ const DateRangeSelector = (props: DateRangeSelectorProps): JSX.Element => {
           <TextField
             select
             fullWidth
-            label='Período'
+            label="Período"
             value={selectedOption}
             onChange={handleChangeOption}
             size={"small"}

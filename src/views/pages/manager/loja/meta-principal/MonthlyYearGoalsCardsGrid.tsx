@@ -1,5 +1,5 @@
 // ** React Imports
-import { Fragment } from "react"
+import {Fragment} from "react"
 
 // ** MUI Imports
 import Grid from "@mui/material/Grid"
@@ -21,7 +21,7 @@ const MonthlyYearGoalsCardsGrid = (
   // Create a array with 12 elements
   const array12 = Array.from(Array(12).keys())
 
-  const { year } = props
+  const {year} = props
 
   return (
     <Grid container spacing={6}>

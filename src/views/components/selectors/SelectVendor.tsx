@@ -1,11 +1,11 @@
 // ** React Imports
-import { Fragment, useEffect } from "react"
+import {Fragment, useEffect} from "react"
 
 // ** MUI Imports
-import { TextField, MenuItem } from "@mui/material"
+import {TextField, MenuItem} from "@mui/material"
 
 // ** Api Imports
-import { useAuth } from "src/hooks/useAuth"
+import {useAuth} from "src/hooks/useAuth"
 
 // ** Types and Interfaces
 import User from "src/interfaces/User"
@@ -19,7 +19,7 @@ const SelectVendor = ({
   selectedUser: preSelectedUser
 }: SelectVendorProps): JSX.Element => {
   // ** Hooks
-  const { user, selectedUser, setSelectedUser, selectedStore } = useAuth()
+  const {user, selectedUser, setSelectedUser, selectedStore} = useAuth()
 
   const usersStoreList: User[] =
     selectedStore && selectedStore.employees ? selectedStore.employees : []
@@ -39,10 +39,10 @@ const SelectVendor = ({
   return (
     <Fragment>
       <TextField
-        sx={{ minWidth: 220 }}
+        sx={{minWidth: 220}}
         select
-        size='small'
-        label='Selecionar Vendedor'
+        size="small"
+        label="Selecionar Vendedor"
         value={selectedUser ? selectedUser : ""}
         onChange={e => {
           // @ts-ignore

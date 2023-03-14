@@ -1,5 +1,5 @@
-import { Gender } from "@core/utils/types"
-import { SanityDefaultObject } from "src/interfaces/SanityDefaultInterfaces"
+import {Gender} from "@core/utils/types"
+import {SanityDefaultObject} from "src/interfaces/SanityDefaultInterfaces"
 
 // Client Interface
 export default interface Client extends Partial<SanityDefaultObject> {

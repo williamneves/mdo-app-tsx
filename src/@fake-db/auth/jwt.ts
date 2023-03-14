@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken"
 import mock from "src/@fake-db/mock"
 
 // ** Types
-import { UserDataType } from "src/context/types"
+import {UserDataType} from "src/context/types"
 
 const users: UserDataType[] = [
   {
@@ -33,7 +33,7 @@ const jwtConfig = {
 }
 
 mock.onPost("/jwt/login").reply(request => {
-  const { email, password } = JSON.parse(request.data)
+  const {email, password} = JSON.parse(request.data)
 
   let error = {
     email: ["Something went wrong"]
@@ -42,7 +42,7 @@ mock.onPost("/jwt/login").reply(request => {
   const user = users.find(u => u.email === email && u.password === password)
 
   if (user) {
-    const accessToken = jwt.sign({ id: user.id }, jwtConfig.secret)
+    const accessToken = jwt.sign({id: user.id}, jwtConfig.secret)
 
     const response = {
       accessToken
@@ -54,13 +54,13 @@ mock.onPost("/jwt/login").reply(request => {
       email: ["email or Password is Invalid"]
     }
 
-    return [400, { error }]
+    return [400, {error}]
   }
 })
 
 mock.onPost("/jwt/register").reply(request => {
   if (request.data.length > 0) {
-    const { email, password, username } = JSON.parse(request.data)
+    const {email, password, username} = JSON.parse(request.data)
     const isEmailAlreadyInUse = users.find(user => user.email === email)
     const isUsernameAlreadyInUse = users.find(
       user => user.username === username
@@ -73,7 +73,7 @@ mock.onPost("/jwt/register").reply(request => {
     }
 
     if (!error.username && !error.email) {
-      const { length } = users
+      const {length} = users
       let lastIndex = 0
       if (length) {
         lastIndex = users[length - 1].id
@@ -90,19 +90,19 @@ mock.onPost("/jwt/register").reply(request => {
 
       users.push(userData)
 
-      const accessToken = jwt.sign({ id: userData.id }, jwtConfig.secret)
+      const accessToken = jwt.sign({id: userData.id}, jwtConfig.secret)
 
-      const user = { ...userData }
+      const user = {...userData}
       delete user.password
 
-      const response = { accessToken }
+      const response = {accessToken}
 
       return [200, response]
     }
 
-    return [200, { error }]
+    return [200, {error}]
   } else {
-    return [401, { error: "Invalid Data" }]
+    return [401, {error: "Invalid Data"}]
   }
 })
 
@@ -111,11 +111,11 @@ mock.onGet("/auth/me").reply(config => {
   const token = config.headers.Authorization as string
 
   // get the decoded payload and header
-  const decoded = jwt.decode(token, { complete: true })
+  const decoded = jwt.decode(token, {complete: true})
 
   if (decoded) {
     // @ts-ignore
-    const { id: userId } = decoded.payload
+    const {id: userId} = decoded.payload
 
     const userData = JSON.parse(
       JSON.stringify(users.find((u: UserDataType) => u.id === userId))
@@ -123,8 +123,8 @@ mock.onGet("/auth/me").reply(config => {
 
     delete userData.password
 
-    return [200, { userData }]
+    return [200, {userData}]
   } else {
-    return [401, { error: { error: "Invalid User" } }]
+    return [401, {error: {error: "Invalid User"}}]
   }
 })

@@ -3,10 +3,10 @@ import Grid from "@mui/material/Grid"
 import CircularProgress from "@mui/material/CircularProgress"
 
 // ** React Imports
-import { Fragment } from "react"
+import {Fragment} from "react"
 
 // ** Next Imports
-import { useRouter } from "next/router"
+import {useRouter} from "next/router"
 
 // ** Third Party Components
 import ClientForm from "components/ClientForm"
@@ -16,9 +16,9 @@ import * as useClient from "src/queries/clients"
 
 const EditClient = () => {
   const router = useRouter()
-  const { clientID } = router.query
+  const {clientID} = router.query
 
-  const { data: client, isLoading } = useClient.useGetClientByIdQuery(
+  const {data: client, isLoading} = useClient.useGetClientByIdQuery(
     clientID as string
   )
 

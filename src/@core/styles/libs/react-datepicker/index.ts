@@ -1,16 +1,16 @@
 // ** MUI imports
-import { styled } from "@mui/material/styles"
-import Box, { BoxProps } from "@mui/material/Box"
+import {styled} from "@mui/material/styles"
+import Box, {BoxProps} from "@mui/material/Box"
 
 // ** Hooks
-import { useSettings } from "src/@core/hooks/useSettings"
+import {useSettings} from "src/@core/hooks/useSettings"
 
 // ** Util Import
-import { hexToRGBA } from "src/@core/utils/hex-to-rgba"
+import {hexToRGBA} from "src/@core/utils/hex-to-rgba"
 
-const DatePickerWrapper = styled(Box)<BoxProps>(({ theme }) => {
+const DatePickerWrapper = styled(Box)<BoxProps>(({theme}) => {
   // ** Hook
-  const { settings } = useSettings()
+  const {settings} = useSettings()
 
   return {
     "& .react-datepicker-popper": {
@@ -298,7 +298,7 @@ const DatePickerWrapper = styled(Box)<BoxProps>(({ theme }) => {
       "& .react-datepicker__input-time-container": {
         display: "flex",
         alignItems: "center",
-        ...(theme.direction === "rtl" ? { flexDirection: "row-reverse" } : {})
+        ...(theme.direction === "rtl" ? {flexDirection: "row-reverse"} : {})
       },
       "& .react-datepicker__today-button": {
         borderRadius: "1rem",
@@ -396,7 +396,7 @@ const DatePickerWrapper = styled(Box)<BoxProps>(({ theme }) => {
     },
     "& .react-datepicker__close-icon": {
       paddingRight: theme.spacing(4),
-      ...(theme.direction === "rtl" ? { right: 0, left: "auto" } : {}),
+      ...(theme.direction === "rtl" ? {right: 0, left: "auto"} : {}),
       "&:after": {
         width: "unset",
         height: "unset",

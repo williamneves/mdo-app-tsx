@@ -1,14 +1,14 @@
 // ** React Imports
-import { ReactNode } from "react"
+import {ReactNode} from "react"
 
 // ** MUI Imports
-import { styled, useTheme } from "@mui/material/styles"
+import {styled, useTheme} from "@mui/material/styles"
 import MuiSwipeableDrawer, {
   SwipeableDrawerProps
 } from "@mui/material/SwipeableDrawer"
 
 // ** Type Import
-import { Settings } from "src/@core/context/settingsContext"
+import {Settings} from "src/@core/context/settingsContext"
 
 interface Props {
   hidden: boolean
@@ -60,7 +60,7 @@ const Drawer = (props: Props) => {
   const theme = useTheme()
 
   // ** Vars
-  const { skin, navCollapsed } = settings
+  const {skin, navCollapsed} = settings
 
   const drawerColor = () => {
     if (skin === "semi-dark" && theme.palette.mode === "light") {
@@ -119,9 +119,9 @@ const Drawer = (props: Props) => {
 
   return (
     <SwipeableDrawer
-      className='layout-vertical-nav'
+      className="layout-vertical-nav"
       variant={hidden ? "temporary" : "permanent"}
-      {...(hidden ? { ...MobileDrawerProps } : { ...DesktopDrawerProps })}
+      {...(hidden ? {...MobileDrawerProps} : {...DesktopDrawerProps})}
       sx={{
         width: navCollapsed ? collapsedNavWidth : navWidth
       }}
@@ -130,7 +130,7 @@ const Drawer = (props: Props) => {
           ...drawerColor(),
           ...drawerBgColor(),
           width: navCollapsed && !navHover ? collapsedNavWidth : navWidth,
-          ...(!hidden && navCollapsed && navHover ? { boxShadow: 10 } : {}),
+          ...(!hidden && navCollapsed && navHover ? {boxShadow: 10} : {}),
           borderRight:
             navigationBorderWidth === 0
               ? 0

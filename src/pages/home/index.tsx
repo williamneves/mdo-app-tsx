@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid"
 import Typography from "@mui/material/Typography"
 import CardHeader from "@mui/material/CardHeader"
 import CardContent from "@mui/material/CardContent"
-import { useQuery } from "@tanstack/react-query"
+import {useQuery} from "@tanstack/react-query"
 import fetchUserDB from "@auth/fetchUserDB"
 
 const Home = () => {
@@ -12,9 +12,9 @@ const Home = () => {
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Card>
-          <CardHeader title='Kick start your project 🚀'></CardHeader>
+          <CardHeader title="Kick start your project 🚀"></CardHeader>
           <CardContent>
-            <Typography sx={{ mb: 2 }}>
+            <Typography sx={{mb: 2}}>
               All the best for your new project.
             </Typography>
             <Typography>
@@ -26,9 +26,9 @@ const Home = () => {
       </Grid>
       <Grid item xs={12}>
         <Card>
-          <CardHeader title='ACL and JWT 🔒'></CardHeader>
+          <CardHeader title="ACL and JWT 🔒"></CardHeader>
           <CardContent>
-            <Typography sx={{ mb: 2 }}>
+            <Typography sx={{mb: 2}}>
               Access Control (ACL) and Authentication (JWT) are the two main
               security features of our template and are implemented in the
               starter-kit as well.

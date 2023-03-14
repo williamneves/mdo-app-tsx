@@ -1,7 +1,7 @@
 // ** React Imports
-import { Fragment, useState } from "react"
-import { PortableText } from "@portabletext/react"
-import { getImageUrl } from "src/configs/sanityConfig"
+import {Fragment, useState} from "react"
+import {PortableText} from "@portabletext/react"
+import {getImageUrl} from "src/configs/sanityConfig"
 import AccordionSummary from "@mui/material/AccordionSummary"
 import ChevronDown from "mdi-material-ui/ChevronDown"
 import Typography from "@mui/material/Typography"
@@ -17,7 +17,7 @@ interface FaqAccordionProps {
 const components = {
   types: {
     image: (props: any) => {
-      const { value } = props
+      const {value} = props
       return (
         <div
           style={{
@@ -47,7 +47,7 @@ const components = {
   }
 }
 
-const FaqAccordion = ({ question }: FaqAccordionProps): JSX.Element => {
+const FaqAccordion = ({question}: FaqAccordionProps): JSX.Element => {
   const [expanded, setExpanded] = useState(false)
 
   return (
@@ -64,7 +64,7 @@ const FaqAccordion = ({ question }: FaqAccordionProps): JSX.Element => {
         >
           <Typography
             variant={"subtitle1"}
-            sx={{ lineHeight: "2rem", fontSize: "1.125rem" }}
+            sx={{lineHeight: "2rem", fontSize: "1.125rem"}}
           >
             {question.question}
           </Typography>

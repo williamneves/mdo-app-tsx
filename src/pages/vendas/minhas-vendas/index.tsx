@@ -1,7 +1,7 @@
 // ** React Imports
 import SalesDataGrid from "components/data-grid/SalesDataGrid"
 import DateRangeSelector from "components/selectors/DateRangeSelector"
-import { Fragment, useState, useEffect, ReactElement } from "react"
+import {Fragment, useState, useEffect, ReactElement} from "react"
 
 // ** MUI Imports
 import {
@@ -13,14 +13,14 @@ import {
   Typography,
   useMediaQuery
 } from "@mui/material"
-import { useTheme } from "@mui/material/styles"
+import {useTheme} from "@mui/material/styles"
 
 // ** MUI Imports Icons
 import ReceiptIcon from "@mui/icons-material/Receipt"
 
 // ** Api Imports
 import * as salesQ from "src/queries/sales"
-import { useAuth } from "src/hooks/useAuth"
+import {useAuth} from "src/hooks/useAuth"
 
 // ** Utils
 import {
@@ -40,13 +40,13 @@ import timezone from "moment-timezone"
 
 // ** Import Component
 import SalesOverview from "@views/pages/vendas/minhas-vendas/SalesOverview"
-import { SaleDataType } from "components/cards/CardStatisticsSales"
+import {SaleDataType} from "components/cards/CardStatisticsSales"
 import SelectVendor from "@views/components/selectors/SelectVendor"
 
 // ** Rendered Element
 const MinhasVendas = () => {
   // ** Use Auth
-  const { user, selectedStore, selectedUser } = useAuth()
+  const {user, selectedStore, selectedUser} = useAuth()
 
   // ** States
   const [dateRange, setDateRange] = useState<GetDateRange>(
@@ -61,7 +61,7 @@ const MinhasVendas = () => {
   const getUser = selectedUser ? selectedUser : user
 
   // ** React Query
-  const { data: vendorSales, isLoading } =
+  const {data: vendorSales, isLoading} =
     salesQ.useAllSalesByReferenceAndDateRangeQuery(
       getUser!._id!,
       dateRange.range as dateRange
@@ -81,8 +81,8 @@ const MinhasVendas = () => {
               gap: 3
             }}
           >
-            <ReceiptIcon sx={{ fontSize: 30, color: "primary.main" }} />
-            <Typography variant='h5'>Minhas Vendas</Typography>
+            <ReceiptIcon sx={{fontSize: 30, color: "primary.main"}} />
+            <Typography variant="h5">Minhas Vendas</Typography>
           </Box>
         </Grid>
         <Grid item xs={12} sm={8}>

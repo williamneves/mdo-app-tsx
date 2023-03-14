@@ -1,10 +1,10 @@
 // ** React Imports
 import RestartAltIcon from "@mui/icons-material/RestartAlt"
 import AlertTitle from "@mui/material/AlertTitle"
-import React, { useEffect, Fragment } from "react"
+import React, {useEffect, Fragment} from "react"
 
 // ** MUI Imports
-import { Button, Grid, Typography, Divider, Box, Alert } from "@mui/material"
+import {Button, Grid, Typography, Divider, Box, Alert} from "@mui/material"
 
 // ** MUI Icons
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
@@ -17,8 +17,8 @@ import CalculateIcon from "@mui/icons-material/Calculate"
 
 // ** Third Party Imports
 import * as yup from "yup"
-import { useForm, useFieldArray } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup"
+import {useForm, useFieldArray} from "react-hook-form"
+import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
 import toast from "react-hot-toast"
 
 // ** Import Components
@@ -30,42 +30,43 @@ import AutocompleteInputControlled from "components/inputs/AutocompleteInputCont
 import * as salesQ from "src/queries/sales"
 
 // ** Import Hooks
-import { useAuth } from "src/hooks/useAuth"
-import { calculateSales, getPrincipalPaymentMethod } from "../hooks"
+import {useAuth} from "src/hooks/useAuth"
+import {calculateSales, getPrincipalPaymentMethod} from "../hooks"
 import calcSalesScore from "./scoreCalculation"
-import { formattedCurrency } from "src/@utils/formatCurrency"
+import {formattedCurrency} from "src/@utils/formatCurrency"
 
 // ** Rendered Element
 interface Step2FormProps {
   setHasErrors: (value: boolean) => void
   onSubmit: any
   handleStepBack: any
-  steps: Array<{ title: string; subtitle: string }>
+  steps: Array<{title: string; subtitle: string}>
   step2Data: any
   mode?: "create" | "edit"
 }
 
 const Step2Form = (props: Step2FormProps): JSX.Element => {
   // ** Props and States
-  const { onSubmit, handleStepBack, steps, step2Data, setHasErrors, mode } =
-    props
+  const {onSubmit, handleStepBack, steps, step2Data, setHasErrors, mode} = props
 
   console.log("step2Data", step2Data)
 
   // ** Api and Context
-  const { selectedStore } = useAuth()
-  const { data: allProducts } = salesQ.useAllProductsByReferenceQuery(
+  const {selectedStore} = useAuth()
+  const {data: allProducts} = salesQ.useAllProductsByReferenceQuery(
     selectedStore!._id,
     {
       placeholder: [],
       enabled: !!selectedStore
     }
   )
-  const { data: allPaymentMethods } =
-    salesQ.useAllPaymentMethodsByReferenceQuery(selectedStore!._id, {
+  const {data: allPaymentMethods} = salesQ.useAllPaymentMethodsByReferenceQuery(
+    selectedStore!._id,
+    {
       placeholder: [],
       enabled: !!selectedStore
-    })
+    }
+  )
 
   // *** Step 2 Dependencies
 
@@ -278,7 +279,7 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
     }
 
     // Create the watch subscription
-    const watchSubscription = watchStep2((values, { name }) => {
+    const watchSubscription = watchStep2((values, {name}) => {
       // Set saleAmount value dynamically
       if (
         name?.split(".")[1] === "price" ||
@@ -371,12 +372,12 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
         <Grid container spacing={5}>
           <Grid item xs={12}>
             <Typography
-              variant='body2'
-              sx={{ fontWeight: 600, color: "text.primary" }}
+              variant="body2"
+              sx={{fontWeight: 600, color: "text.primary"}}
             >
               {steps[1].title}
             </Typography>
-            <Typography variant='caption' component='p'>
+            <Typography variant="caption" component="p">
               {steps[1].subtitle}
             </Typography>
           </Grid>
@@ -384,13 +385,13 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
           {/* Edit Mode Alert */}
           {mode === "edit" && (
             <Grid item xs={12}>
-              <Alert severity='info'>
+              <Alert severity="info">
                 <AlertTitle>Modo de edição</AlertTitle>
-                <Typography variant='body2'>
+                <Typography variant="body2">
                   <strong>Atenção:</strong> Alterações feitas aqui afetarão a
                   venda original.
                 </Typography>
-                <Typography variant='body2'>
+                <Typography variant="body2">
                   Somente alguns campos podem ser editados.
                 </Typography>
               </Alert>
@@ -401,14 +402,14 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
 
           {/* Produtos */}
           <Grid item xs={12}>
-            <Divider textAlign='center' sx={{ marginY: 4 }}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Divider textAlign="center" sx={{marginY: 4}}>
+              <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
                 <LocalOfferTwoToneIcon />
-                <Typography variant='h5'>Produtos</Typography>
+                <Typography variant="h5">Produtos</Typography>
               </Box>
             </Divider>
-            <Alert severity='info'>
-              <Typography variant='body2'>
+            <Alert severity="info">
+              <Typography variant="body2">
                 Adicione cada produto da venda separadamente. Não esqueça de
                 colocar o custo do produto.
               </Typography>
@@ -420,10 +421,10 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
               return (
                 <Fragment key={product.id}>
                   <Grid item xs={12}>
-                    <Divider textAlign='left' sx={{ marginY: 4 }}>
+                    <Divider textAlign="left" sx={{marginY: 4}}>
                       {`Produto #${index + 1}`}
                       <Button
-                        variant='text'
+                        variant="text"
                         onClick={() => removeProducts(index)}
                         color={"error"}
                         size={"small"}
@@ -501,14 +502,14 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
                 </Fragment>
               )
             })}
-            <Divider textAlign='left' sx={{ marginY: 4 }}>
+            <Divider textAlign="left" sx={{marginY: 4}}>
               <Button
-                variant='text'
+                variant="text"
                 size={"small"}
                 color={"primary"}
                 onClick={() => appendProducts(step2DefaultValueProducts)}
               >
-                <AddCircleTwoToneIcon sx={{ marginInlineEnd: 2 }} />
+                <AddCircleTwoToneIcon sx={{marginInlineEnd: 2}} />
                 Novo Produto
               </Button>
             </Divider>
@@ -517,16 +518,16 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
           {/* Pagamentos */}
           <Grid container item spacing={1} xs={12}>
             <Grid item xs={12}>
-              <Divider textAlign='center' sx={{ marginY: 4 }}>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <Divider textAlign="center" sx={{marginY: 4}}>
+                <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
                   <PointOfSaleTwoToneIcon />
                   <Typography variant={"h5"}>Pagamentos</Typography>
                 </Box>
               </Divider>
             </Grid>
             <Grid item xs={12}>
-              <Alert severity='info'>
-                <Typography variant='body2'>
+              <Alert severity="info">
+                <Typography variant="body2">
                   Adicione um ou mais pagamentos para essa venda.
                 </Typography>
               </Alert>
@@ -539,7 +540,7 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
                 return (
                   <Fragment key={salePayment.id}>
                     <Grid item xs={12}>
-                      <Divider textAlign='left'>
+                      <Divider textAlign="left">
                         <Box
                           sx={{
                             display: "flex",
@@ -551,7 +552,7 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
                             {`Pagamento #${index + 1}`}
                           </Typography>
                           <Button
-                            variant='text'
+                            variant="text"
                             onClick={() => removeSalePayments(index)}
                             color={"error"}
                             size={"small"}
@@ -606,15 +607,15 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
               })}
             </Grid>
             <Grid item xs={12}>
-              <Divider textAlign='left' sx={{ marginY: 4 }}>
+              <Divider textAlign="left" sx={{marginY: 4}}>
                 <Button
-                  variant='text'
+                  variant="text"
                   size={"small"}
                   onClick={() =>
                     appendSalePayments(step2DefaultValueSalePayments)
                   }
                 >
-                  <AddCircleTwoToneIcon sx={{ marginInlineEnd: 2 }} />
+                  <AddCircleTwoToneIcon sx={{marginInlineEnd: 2}} />
                   Novo Pagamento
                 </Button>
               </Divider>
@@ -624,16 +625,16 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
           {/* Totais */}
           <Grid container spacing={1} item xs={12}>
             <Grid item xs={12}>
-              <Divider textAlign='center' sx={{ marginY: 4 }}>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              <Divider textAlign="center" sx={{marginY: 4}}>
+                <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
                   <CalculateIcon />
                   <Typography variant={"h5"}>Totais</Typography>
                 </Box>
               </Divider>
             </Grid>
             <Grid item xs={12}>
-              <Alert severity='info' sx={{ marginBottom: 5 }}>
-                <Typography variant='body2'>
+              <Alert severity="info" sx={{marginBottom: 5}}>
+                <Typography variant="body2">
                   Os valores abaixo são calculados automaticamente. Os campos
                   são bloqueados para edição. Use os valores para revisar seus
                   dados.
@@ -694,9 +695,9 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
             }}
           >
             <Button
-              size='large'
-              variant='outlined'
-              color='secondary'
+              size="large"
+              variant="outlined"
+              color="secondary"
               startIcon={<ChevronLeftIcon />}
               onClick={handleStepBack}
             >
@@ -704,9 +705,9 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
             </Button>
             {mode === "edit" && (
               <Button
-                size='large'
-                variant='outlined'
-                color='secondary'
+                size="large"
+                variant="outlined"
+                color="secondary"
                 endIcon={<RestartAltIcon />}
                 onClick={() => resetStep2()}
               >
@@ -714,10 +715,10 @@ const Step2Form = (props: Step2FormProps): JSX.Element => {
               </Button>
             )}
             <Button
-              size='large'
+              size="large"
               endIcon={<ChevronRightIcon />}
-              type='submit'
-              variant='contained'
+              type="submit"
+              variant="contained"
               form={"formStep2"}
             >
               Próximo

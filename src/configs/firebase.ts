@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp, getApps, getApp } from "firebase/app"
+import {initializeApp, getApps, getApp} from "firebase/app"
 
 import {
   getAuth,
@@ -19,7 +19,7 @@ import {
   updatePassword
 } from "firebase/auth"
 
-import { getAnalytics } from "firebase/analytics"
+import {getAnalytics} from "firebase/analytics"
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional

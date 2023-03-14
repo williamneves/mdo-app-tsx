@@ -1,27 +1,25 @@
 // ** React Imports
-import { ElementType, ReactNode } from "react"
+import {ElementType, ReactNode} from "react"
 
 // ** Next Imports
 import Link from "next/link"
-import { useRouter } from "next/router"
+import {useRouter} from "next/router"
 
 // ** MUI Imports
 import Chip from "@mui/material/Chip"
 import ListItem from "@mui/material/ListItem"
 import Typography from "@mui/material/Typography"
-import Box, { BoxProps } from "@mui/material/Box"
+import Box, {BoxProps} from "@mui/material/Box"
 import ListItemIcon from "@mui/material/ListItemIcon"
-import { styled, useTheme } from "@mui/material/styles"
-import ListItemButton, {
-  ListItemButtonProps
-} from "@mui/material/ListItemButton"
+import {styled, useTheme} from "@mui/material/styles"
+import ListItemButton, {ListItemButtonProps} from "@mui/material/ListItemButton"
 
 // ** Configs Import
 import themeConfig from "src/configs/themeConfig"
 
 // ** Types
-import { NavLink, NavGroup } from "src/@core/layouts/types"
-import { Settings } from "src/@core/context/settingsContext"
+import {NavLink, NavGroup} from "src/@core/layouts/types"
+import {Settings} from "src/@core/context/settingsContext"
 
 // ** Custom Components Imports
 import UserIcon from "src/layouts/components/UserIcon"
@@ -29,7 +27,7 @@ import Translations from "src/layouts/components/Translations"
 import CanViewNavLink from "src/layouts/components/acl/CanViewNavLink"
 
 // ** Utils
-import { handleURLQueries } from "src/@core/layouts/utils"
+import {handleURLQueries} from "src/@core/layouts/utils"
 
 interface Props {
   parent?: boolean
@@ -49,7 +47,7 @@ const MenuNavLink = styled(ListItemButton)<
     component?: ElementType
     target?: "_blank" | undefined
   }
->(({ theme }) => ({
+>(({theme}) => ({
   width: "100%",
   borderRadius: 8,
   transition: "padding-left .25s ease-in-out",
@@ -73,7 +71,7 @@ const MenuItemTextMetaWrapper = styled(Box)<BoxProps>({
   alignItems: "center",
   justifyContent: "space-between",
   transition: "opacity .25s ease-in-out",
-  ...(themeConfig.menuTextTruncate && { overflow: "hidden" })
+  ...(themeConfig.menuTextTruncate && {overflow: "hidden"})
 })
 
 const VerticalNavLink = ({
@@ -92,7 +90,7 @@ const VerticalNavLink = ({
   const router = useRouter()
 
   // ** Vars
-  const { skin, navCollapsed } = settings
+  const {skin, navCollapsed} = settings
 
   const IconTag: ReactNode =
     parent && !item.icon ? themeConfig.navSubItemIcon : item.icon
@@ -146,7 +144,7 @@ const VerticalNavLink = ({
     <CanViewNavLink navLink={item}>
       <ListItem
         disablePadding
-        className='nav-link'
+        className="nav-link"
         disabled={item.disabled || false}
         sx={{
           mt: 1.5,
@@ -160,7 +158,7 @@ const VerticalNavLink = ({
           <MenuNavLink
             component={"a"}
             className={isNavLinkActive() ? "active" : ""}
-            {...(item.openInNewTab ? { target: "_blank" } : null)}
+            {...(item.openInNewTab ? {target: "_blank"} : null)}
             onClick={e => {
               if (item.path === undefined) {
                 e.preventDefault()
@@ -174,8 +172,8 @@ const VerticalNavLink = ({
               py: 2.25,
               ...conditionalBgColor(),
               ...(item.disabled
-                ? { pointerEvents: "none" }
-                : { cursor: "pointer" }),
+                ? {pointerEvents: "none"}
+                : {cursor: "pointer"}),
               pr:
                 navCollapsed && !navHover
                   ? (collapsedNavWidth - navigationBorderWidth - 24 - 16) / 8
@@ -191,19 +189,19 @@ const VerticalNavLink = ({
                 sx={{
                   ...conditionalIconColor(),
                   transition: "margin .25s ease-in-out",
-                  ...(navCollapsed && !navHover ? { mr: 0 } : { mr: 2 }),
-                  ...(parent ? { ml: 2, mr: 4 } : {}) // This line should be after (navCollapsed && !navHover) condition for proper styling
+                  ...(navCollapsed && !navHover ? {mr: 0} : {mr: 2}),
+                  ...(parent ? {ml: 2, mr: 4} : {}) // This line should be after (navCollapsed && !navHover) condition for proper styling
                 }}
               >
                 <UserIcon
                   icon={IconTag}
-                  componentType='vertical-menu'
+                  componentType="vertical-menu"
                   iconProps={{
                     sx: {
                       ...(!parent
-                        ? { fontSize: "1.5rem" }
-                        : { fontSize: "0.5rem" }),
-                      ...(parent && item.icon ? { fontSize: "0.875rem" } : {})
+                        ? {fontSize: "1.5rem"}
+                        : {fontSize: "0.5rem"}),
+                      ...(parent && item.icon ? {fontSize: "0.875rem"} : {})
                     }
                   }}
                 />
@@ -212,8 +210,8 @@ const VerticalNavLink = ({
 
             <MenuItemTextMetaWrapper
               sx={{
-                ...(isSubToSub ? { ml: 8 } : {}),
-                ...(navCollapsed && !navHover ? { opacity: 0 } : { opacity: 1 })
+                ...(isSubToSub ? {ml: 8} : {}),
+                ...(navCollapsed && !navHover ? {opacity: 0} : {opacity: 1})
               }}
             >
               <Typography
@@ -228,7 +226,7 @@ const VerticalNavLink = ({
               </Typography>
               {item.badgeContent ? (
                 <Chip
-                  size='small'
+                  size="small"
                   label={item.badgeContent}
                   color={item.badgeColor || "primary"}
                   sx={{

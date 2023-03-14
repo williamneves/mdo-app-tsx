@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState } from "react"
+import {useEffect, useState} from "react"
 
 // ** Import All Icons
 import * as Icons from "mdi-material-ui"
@@ -8,7 +8,7 @@ import * as Icons from "mdi-material-ui"
 import axios from "axios"
 
 // ** Type Import
-import { HorizontalNavItemsType } from "src/@core/layouts/types"
+import {HorizontalNavItemsType} from "src/@core/layouts/types"
 
 const ServerSideNavItems = () => {
   // ** State

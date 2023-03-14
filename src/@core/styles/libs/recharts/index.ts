@@ -1,7 +1,7 @@
 // ** MUI imports
-import { styled } from "@mui/material/styles"
+import {styled} from "@mui/material/styles"
 
-const RechartsWrapper = styled("div")(({ theme }) => ({
+const RechartsWrapper = styled("div")(({theme}) => ({
   "& .recharts-cartesian-grid-vertical, & .recharts-cartesian-grid-horizontal, & .recharts-polar-grid-angle, & .recharts-polar-radius-axis, & .recharts-cartesian-axis":
     {
       "& line": {

@@ -14,22 +14,22 @@ import {
   TableRow,
   Typography
 } from "@mui/material"
-import { IBonusBrief } from "@views/pages/manager/bonus/lancar/CardUser"
+import {IBonusBrief} from "@views/pages/manager/bonus/lancar/CardUser"
 import IBonus from "interfaces/Bonus"
-import { Fragment, SetStateAction } from "react"
-import { formattedCurrencyWithSymbol } from "src/@utils/formatCurrency"
+import {Fragment, SetStateAction} from "react"
+import {formattedCurrencyWithSymbol} from "src/@utils/formatCurrency"
 
 function BonusResumeTableRow(props: {
   onClick: () => void
   numbers: number[]
   searchElement: any
-  bonusTypesLabel: { [p: string]: string }
+  bonusTypesLabel: {[p: string]: string}
   entry: any
 }) {
   return (
     <Fragment>
       <TableRow>
-        <TableCell sx={{ borderBottom: "unset" }} padding='checkbox'>
+        <TableCell sx={{borderBottom: "unset"}} padding="checkbox">
           <IconButton onClick={props.onClick}>
             {props.numbers.includes(props.searchElement) ? (
               <ExpandLessIcon />
@@ -38,14 +38,14 @@ function BonusResumeTableRow(props: {
             )}
           </IconButton>
         </TableCell>
-        <TableCell sx={{ borderBottom: "unset" }} colSpan={4}>
-          <Typography variant='subtitle1'>
+        <TableCell sx={{borderBottom: "unset"}} colSpan={4}>
+          <Typography variant="subtitle1">
             {props.bonusTypesLabel[props.entry.type!]}
           </Typography>
         </TableCell>
-        <TableCell sx={{ borderBottom: "unset" }} align='right'>
+        <TableCell sx={{borderBottom: "unset"}} align="right">
           <Typography
-            variant='subtitle1'
+            variant="subtitle1"
             fontWeight={500}
             color={
               props.entry.operation === "add" ? "primary.main" : "error.main"
@@ -57,13 +57,13 @@ function BonusResumeTableRow(props: {
       </TableRow>
       <TableRow>
         <TableCell
-          style={{ paddingBottom: 0, paddingTop: 0 }}
+          style={{paddingBottom: 0, paddingTop: 0}}
           width={"100%"}
           colSpan={6}
         >
           <Collapse
             in={props.numbers.includes(props.searchElement)}
-            timeout='auto'
+            timeout="auto"
           >
             <Typography
               variant={"body1"}
@@ -88,15 +88,15 @@ export function BonusResume(props: {
   setExpandTableRowIds: (value: SetStateAction<number[]>) => void
   expandTableRowIds: number[]
 }) {
-  const { bonus, bonusBrief, setExpandTableRowIds, expandTableRowIds } = props
+  const {bonus, bonusBrief, setExpandTableRowIds, expandTableRowIds} = props
 
-  const paymentTypesLabel: { [key: string]: string } = {
+  const paymentTypesLabel: {[key: string]: string} = {
     cash: "Reais",
     points: "Pontos",
     others: "Outros"
   }
 
-  const bonusTypesLabel: { [key: string]: string } = {
+  const bonusTypesLabel: {[key: string]: string} = {
     sales: "Vendas",
     clientsTaken: "Clientes Abordados",
     appointmentsCreated: "Consultas Agendadas",
@@ -109,19 +109,19 @@ export function BonusResume(props: {
 
   return (
     <Fragment>
-      <Grid item xs={12} sx={{ paddingY: "0!important" }}>
-        <Divider sx={{ my: 0 }}>
+      <Grid item xs={12} sx={{paddingY: "0!important"}}>
+        <Divider sx={{my: 0}}>
           <Box>
-            <Typography variant='subtitle1'>Resumo dos Lançamentos</Typography>
+            <Typography variant="subtitle1">Resumo dos Lançamentos</Typography>
           </Box>
         </Divider>
       </Grid>
       <Grid item xs={12}>
-        <Typography variant='subtitle1' color={"text.secondary"}>
+        <Typography variant="subtitle1" color={"text.secondary"}>
           <b>Nome do Bonus</b>: {bonus?.name} | (Pgto em{" "}
           {paymentTypesLabel[bonus?.paymentType!]})
         </Typography>
-        <Typography variant='body1' color={"text.secondary"}>
+        <Typography variant="body1" color={"text.secondary"}>
           <b>Descrição do Bonus</b>: {bonus?.description}
         </Typography>
       </Grid>
@@ -136,10 +136,10 @@ export function BonusResume(props: {
           >
             <TableHead>
               <TableRow>
-                <TableCell padding='checkbox' />
+                <TableCell padding="checkbox" />
                 <TableCell>Lançamento</TableCell>
                 <TableCell colSpan={3} />
-                <TableCell align='right'>Valor</TableCell>
+                <TableCell align="right">Valor</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -167,9 +167,9 @@ export function BonusResume(props: {
                   }}
                 />
                 <TableCell colSpan={2}>Entradas</TableCell>
-                <TableCell align='right'>
+                <TableCell align="right">
                   <Typography
-                    variant='subtitle1'
+                    variant="subtitle1"
                     fontWeight={500}
                     color={"primary.main"}
                   >
@@ -185,9 +185,9 @@ export function BonusResume(props: {
                   }}
                 />
                 <TableCell colSpan={2}>Saídas</TableCell>
-                <TableCell align='right'>
+                <TableCell align="right">
                   <Typography
-                    variant='subtitle1'
+                    variant="subtitle1"
                     fontWeight={500}
                     color={"error.main"}
                   >
@@ -204,12 +204,12 @@ export function BonusResume(props: {
                     borderBottom: "unset"
                   }}
                 />
-                <TableCell colSpan={2} align='right'>
+                <TableCell colSpan={2} align="right">
                   Total
                 </TableCell>
-                <TableCell align='right'>
+                <TableCell align="right">
                   <Typography
-                    variant='subtitle1'
+                    variant="subtitle1"
                     fontWeight={500}
                     color={"text.primary"}
                   >

@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { Fragment } from "react"
+import React, {Fragment} from "react"
 
 // ** MUI Imports
 import {
@@ -29,13 +29,13 @@ import UpdateIcon from "@mui/icons-material/Update"
 import moment from "moment"
 
 // ** Import Hooks
-import { formattedCurrency } from "src/@utils/formatCurrency"
+import {formattedCurrency} from "src/@utils/formatCurrency"
 
 // ** Rendered Element
 interface Step4FormProps {
   onSubmit: any
   handleStepBack: any
-  steps: Array<{ title: string; subtitle: string }>
+  steps: Array<{title: string; subtitle: string}>
   step4Data: any
   setActiveStep: (value: number) => void
   isSubmitting: boolean
@@ -77,37 +77,35 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
       <Grid container spacing={5} key={4}>
         <Grid item xs={12}>
           <Typography
-            variant='body2'
-            sx={{ fontWeight: 600, color: "text.primary" }}
+            variant="body2"
+            sx={{fontWeight: 600, color: "text.primary"}}
           >
             {steps[3].title}
           </Typography>
-          <Typography variant='caption' component='p'>
+          <Typography variant="caption" component="p">
             {steps[3].subtitle}
           </Typography>
         </Grid>
         {/* Step 1 Fields */}
         <Grid item xs={12}>
-          <Alert severity='info' sx={{ marginBottom: 5 }}>
-            <Typography variant='body2'>
+          <Alert severity="info" sx={{marginBottom: 5}}>
+            <Typography variant="body2">
               Revise os dados abaixo, e se precisar fazar alguma alteração,
-              clique em <ModeEditIcon sx={{ fontSize: "14px" }} /> <b>EDITAR</b>
-              .
+              clique em <ModeEditIcon sx={{fontSize: "14px"}} /> <b>EDITAR</b>.
             </Typography>
-            <Typography variant='body2'>
+            <Typography variant="body2">
               Se tudo estiver correto, clique em{" "}
-              <AddShoppingCartIcon sx={{ fontSize: "14px" }} /> <b>CONFIRMAR</b>
-              .
+              <AddShoppingCartIcon sx={{fontSize: "14px"}} /> <b>CONFIRMAR</b>.
             </Typography>
           </Alert>
-          <Divider textAlign='center' sx={{ marginTop: 3, marginBottom: 0 }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Divider textAlign="center" sx={{marginTop: 3, marginBottom: 0}}>
+            <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
               <CheckCircleIcon color={"primary"} />
               <Typography variant={"h6"}>01 - Dados Iniciais</Typography>
               <Button
                 size={"small"}
-                variant='outlined'
-                color='primary'
+                variant="outlined"
+                color="primary"
                 startIcon={<ModeEditIcon />}
                 onClick={() => setActiveStep(0)}
               >
@@ -121,7 +119,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
           <TextField
             fullWidth
             size={"small"}
-            id='form-props-required'
+            id="form-props-required"
             label={"Sale Number"}
             defaultValue={step4Data["saleNumber"]}
             inputProps={{
@@ -134,7 +132,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
           <TextField
             fullWidth
             size={"small"}
-            id='form-props-required'
+            id="form-props-required"
             label={"Número no P.D.V"}
             defaultValue={step4Data["PDVNumber"]}
             inputProps={{
@@ -147,7 +145,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
           <TextField
             fullWidth
             size={"small"}
-            id='form-props-required'
+            id="form-props-required"
             label={"Data da Venda"}
             defaultValue={moment(step4Data["date"]).format("DD/MM/YYYY")}
             inputProps={{
@@ -160,7 +158,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
           <TextField
             fullWidth
             size={"small"}
-            id='form-props-required'
+            id="form-props-required"
             label={"Cliente"}
             defaultValue={step4Data["client"]?.name}
             inputProps={{
@@ -173,7 +171,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
           <TextField
             fullWidth
             size={"small"}
-            id='form-props-required'
+            id="form-props-required"
             label={"Vendedor"}
             defaultValue={step4Data["vendor"]?.name}
             inputProps={{
@@ -186,7 +184,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
           <TextField
             fullWidth
             size={"small"}
-            id='form-props-required'
+            id="form-props-required"
             label={"Loja"}
             defaultValue={step4Data["store"]?.name}
             inputProps={{
@@ -196,14 +194,14 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
         </Grid>
         {/* Step 2 Fields */}
         <Grid item xs={12}>
-          <Divider textAlign='center' sx={{ marginTop: 3, marginBottom: 0 }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Divider textAlign="center" sx={{marginTop: 3, marginBottom: 0}}>
+            <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
               <CheckCircleIcon color={"primary"} />
               <Typography variant={"h6"}>02 - Dados da Venda</Typography>
               <Button
                 size={"small"}
-                variant='outlined'
-                color='primary'
+                variant="outlined"
+                color="primary"
                 startIcon={<ModeEditIcon />}
                 onClick={() => setActiveStep(1)}
               >
@@ -217,7 +215,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
             //  Product Name
             <Fragment key={item.product._id}>
               <Grid item xs={12}>
-                <Divider textAlign='left' sx={{ marginY: 0 }}>
+                <Divider textAlign="left" sx={{marginY: 0}}>
                   <Typography variant={"subtitle2"}>
                     {`Produto #${index + 1}`}
                   </Typography>
@@ -229,7 +227,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
                   <TextField
                     fullWidth
                     size={"small"}
-                    id='form-props-required'
+                    id="form-props-required"
                     label={"Produto"}
                     defaultValue={item.product.title}
                     inputProps={{
@@ -242,7 +240,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
                   <TextField
                     fullWidth
                     size={"small"}
-                    id='form-props-required'
+                    id="form-props-required"
                     label={"QTD"}
                     defaultValue={item.quantity}
                     inputProps={{
@@ -255,7 +253,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
                   <TextField
                     fullWidth
                     size={"small"}
-                    id='form-props-required'
+                    id="form-props-required"
                     label={"Preço"}
                     defaultValue={formattedCurrency(item.price)}
                     inputProps={{
@@ -263,7 +261,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
                     }}
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position='start'>R$</InputAdornment>
+                        <InputAdornment position="start">R$</InputAdornment>
                       )
                     }}
                   />
@@ -273,7 +271,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
                   <TextField
                     fullWidth
                     size={"small"}
-                    id='form-props-required'
+                    id="form-props-required"
                     label={"Custo"}
                     defaultValue={formattedCurrency(item.cost)}
                     inputProps={{
@@ -281,7 +279,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
                     }}
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position='start'>R$</InputAdornment>
+                        <InputAdornment position="start">R$</InputAdornment>
                       )
                     }}
                   />
@@ -291,7 +289,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
                   <TextField
                     fullWidth
                     size={"small"}
-                    id='form-props-required'
+                    id="form-props-required"
                     label={"Desconto"}
                     defaultValue={formattedCurrency(item.discount)}
                     inputProps={{
@@ -299,7 +297,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
                     }}
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position='start'>R$</InputAdornment>
+                        <InputAdornment position="start">R$</InputAdornment>
                       )
                     }}
                   />
@@ -313,7 +311,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
             //  Product Name
             <Fragment key={item.paymentMethod._id}>
               <Grid item xs={12}>
-                <Divider textAlign='left' sx={{ marginY: 0 }}>
+                <Divider textAlign="left" sx={{marginY: 0}}>
                   <Typography variant={"subtitle2"}>
                     {`Pagamento #${index + 1}`}
                   </Typography>
@@ -325,7 +323,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
                   <TextField
                     fullWidth
                     size={"small"}
-                    id='form-props-required'
+                    id="form-props-required"
                     label={"Método de Pagamento"}
                     defaultValue={item.paymentMethod.title}
                     inputProps={{
@@ -338,7 +336,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
                   <TextField
                     fullWidth
                     size={"small"}
-                    id='form-props-required'
+                    id="form-props-required"
                     label={"Valor"}
                     defaultValue={formattedCurrency(item.paymentAmount)}
                     inputProps={{
@@ -346,7 +344,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
                     }}
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position='start'>R$</InputAdornment>
+                        <InputAdornment position="start">R$</InputAdornment>
                       )
                     }}
                   />
@@ -356,7 +354,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
                   <TextField
                     fullWidth
                     size={"small"}
-                    id='form-props-required'
+                    id="form-props-required"
                     label={"Parcelas"}
                     defaultValue={item.splitQuantity}
                     inputProps={{
@@ -364,7 +362,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
                     }}
                     InputProps={{
                       startAdornment: (
-                        <InputAdornment position='start'>x</InputAdornment>
+                        <InputAdornment position="start">x</InputAdornment>
                       )
                     }}
                   />
@@ -375,14 +373,14 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
         })}
         {/* Step 2 Fields */}
         <Grid item xs={12}>
-          <Divider textAlign='center' sx={{ marginTop: 3, marginBottom: 0 }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Divider textAlign="center" sx={{marginTop: 3, marginBottom: 0}}>
+            <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
               <CheckCircleIcon color={"primary"} />
               <Typography variant={"h6"}>03 - Outras Informações</Typography>
               <Button
                 size={"small"}
-                variant='outlined'
-                color='primary'
+                variant="outlined"
+                color="primary"
                 startIcon={<ModeEditIcon />}
                 onClick={() => setActiveStep(2)}
               >
@@ -407,7 +405,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
                       <Checkbox
                         disabled={true}
                         defaultChecked
-                        name='basic-checked'
+                        name="basic-checked"
                       />
                     }
                   />
@@ -418,7 +416,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
           {/* Fez Consulta */}
           <FormGroup row>
             <FormControlLabel
-              label='Fez Consulta?'
+              label="Fez Consulta?"
               control={
                 <Switch disabled={true} checked={step4Data["schedule"]} />
               }
@@ -428,7 +426,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
           <FormGroup row>
             {step4Data["schedule"] && (
               <FormControlLabel
-                label='Consulta teve Desconto?'
+                label="Consulta teve Desconto?"
                 control={
                   <Switch
                     disabled={true}
@@ -452,25 +450,25 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
         {/* Revisão da Venda Final*/}
 
         <Grid item xs={12}>
-          <Divider textAlign='center' sx={{ marginTop: 3, marginBottom: 0 }}>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+          <Divider textAlign="center" sx={{marginTop: 3, marginBottom: 0}}>
+            <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
               <Typography variant={"h6"}>Resumo da Venda</Typography>
             </Box>
           </Divider>
         </Grid>
         <Grid item xs={12}>
-          <Alert severity='info' sx={{ marginBottom: 5 }}>
-            <Typography variant='body2'>
+          <Alert severity="info" sx={{marginBottom: 5}}>
+            <Typography variant="body2">
               Se todos os datos estiverem corretos, clique em{" "}
               {mode !== "edit" ? (
                 <>
                   <b>LANÇAR VENDA</b>
-                  <AddShoppingCartIcon sx={{ fontSize: "16px" }} />{" "}
+                  <AddShoppingCartIcon sx={{fontSize: "16px"}} />{" "}
                 </>
               ) : (
                 <>
                   <b>ATUALIZAR VENDA</b>
-                  <UpdateIcon sx={{ fontSize: "16px" }} />{" "}
+                  <UpdateIcon sx={{fontSize: "16px"}} />{" "}
                 </>
               )}
             </Typography>
@@ -481,7 +479,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
           <TextField
             fullWidth
             size={"small"}
-            id='form-props-required'
+            id="form-props-required"
             label={"Data da Venda"}
             defaultValue={moment(step4Data["date"]).format("DD/MM/YYYY")}
             inputProps={{
@@ -494,7 +492,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
           <TextField
             fullWidth
             size={"small"}
-            id='form-props-required'
+            id="form-props-required"
             label={"Valor da Nota Fiscal"}
             defaultValue={formattedCurrency(step4Data["saleAmount"])}
             inputProps={{
@@ -502,7 +500,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
             }}
             InputProps={{
               startAdornment: (
-                <InputAdornment position='start'>R$</InputAdornment>
+                <InputAdornment position="start">R$</InputAdornment>
               )
             }}
           />
@@ -512,7 +510,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
           <TextField
             fullWidth
             size={"small"}
-            id='form-props-required'
+            id="form-props-required"
             label={"Valor Pago"}
             defaultValue={formattedCurrency(
               paidAmount(step4Data["salePayments"])
@@ -522,7 +520,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
             }}
             InputProps={{
               startAdornment: (
-                <InputAdornment position='start'>R$</InputAdornment>
+                <InputAdornment position="start">R$</InputAdornment>
               )
             }}
           />
@@ -532,7 +530,7 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
           <TextField
             fullWidth
             size={"small"}
-            id='form-props-required'
+            id="form-props-required"
             label={"Forma de Pagamento"}
             defaultValue={step4Data["paymentMethod"].title}
             inputProps={{
@@ -552,9 +550,9 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
           }}
         >
           <Button
-            size='large'
-            variant='outlined'
-            color='secondary'
+            size="large"
+            variant="outlined"
+            color="secondary"
             startIcon={<ChevronLeftIcon />}
             onClick={handleStepBack}
             disabled={isSubmitting}
@@ -562,9 +560,9 @@ const Step4Form = (props: Step4FormProps): JSX.Element => {
             Voltar
           </Button>
           <LoadingButton
-            size='large'
-            type='submit'
-            variant='contained'
+            size="large"
+            type="submit"
+            variant="contained"
             endIcon={mode !== "edit" ? <AddShoppingCartIcon /> : <UpdateIcon />}
             loadingPosition={"end"}
             loading={isSubmitting}

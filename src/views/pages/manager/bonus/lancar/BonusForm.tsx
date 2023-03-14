@@ -1,9 +1,9 @@
 // ** React Imports
-import { useEffect, useState } from "react"
+import {useEffect, useState} from "react"
 
 // ** Interfaces Imports
 import User from "interfaces/User"
-import IBonus, { IBonusEntries } from "interfaces/Bonus"
+import IBonus, {IBonusEntries} from "interfaces/Bonus"
 import Goal from "interfaces/Goal"
 import Store from "interfaces/Store"
 import Sale from "interfaces/Sale"
@@ -30,8 +30,8 @@ import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone"
 
 // ** Third Party Imports
 import * as yup from "yup"
-import { useForm, useFieldArray } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup"
+import {useForm, useFieldArray} from "react-hook-form"
+import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
 import toast from "react-hot-toast"
 
 import moment from "moment"
@@ -63,12 +63,12 @@ interface IBonusFormProps {
 }
 
 // ** Api
-import { useQueryClient } from "@tanstack/react-query"
+import {useQueryClient} from "@tanstack/react-query"
 import * as bonusQ from "src/queries/bonus"
 
 export default function BonusForm(props: IBonusFormProps) {
   // ** Props
-  const { employee, setBonusStatus, goal, store, sales, editBonus, display } =
+  const {employee, setBonusStatus, goal, store, sales, editBonus, display} =
     props
 
   // ** States
@@ -158,7 +158,7 @@ export default function BonusForm(props: IBonusFormProps) {
     setError,
     getValues,
     watch: bonusFormWatch,
-    formState: { errors }
+    formState: {errors}
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: defaultValues(),
@@ -282,7 +282,7 @@ export default function BonusForm(props: IBonusFormProps) {
   useEffect(() => {
     console.log("editBonus", editBonus)
     if (editBonus) {
-      let bonusBrief: IBonusBrief = {
+      const bonusBrief: IBonusBrief = {
         bonusAmount: 0,
         totalSales: 0,
         totalBonus: 0,
@@ -308,10 +308,10 @@ export default function BonusForm(props: IBonusFormProps) {
 
   useEffect(() => {
     // @ts-ignore
-    const subscription = bonusFormWatch((value, { name, type }) => {
+    const subscription = bonusFormWatch((value, {name, type}) => {
       if (!name) return
       if (!(name as string)!.includes("bonusEntries")) return
-      let bonusBrief: IBonusBrief = {
+      const bonusBrief: IBonusBrief = {
         bonusAmount: 0,
         totalSales: 0,
         totalBonus: 0,
@@ -423,7 +423,7 @@ export default function BonusForm(props: IBonusFormProps) {
     <form onSubmit={handleSubmit(onSubmit)} id={`bonusForm${employee._id}`}>
       <Grid container spacing={5} display={display}>
         <Grid item xs={12}>
-          <Divider sx={{ my: 2 }} textAlign='center'>
+          <Divider sx={{my: 2}} textAlign="center">
             <Box
               sx={{
                 display: "flex",
@@ -431,12 +431,12 @@ export default function BonusForm(props: IBonusFormProps) {
                 gap: 3
               }}
             >
-              <Typography variant='h6'>
+              <Typography variant="h6">
                 Informações do Bônus
                 <Chip
                   color={switchChipStatusColor(bonusFormWatch("status"))}
                   label={switchChipStatusLabel(bonusFormWatch("status"))}
-                  sx={{ ml: 2 }}
+                  sx={{ml: 2}}
                 />
               </Typography>
             </Box>
@@ -446,18 +446,18 @@ export default function BonusForm(props: IBonusFormProps) {
           <TextInputControlled
             control={control}
             errors={errors}
-            name='name'
-            label='Nome do Bônus'
-            placeholder='Nome do Bônus'
+            name="name"
+            label="Nome do Bônus"
+            placeholder="Nome do Bônus"
           />
         </Grid>
         <Grid item xs={12} md={6}>
           <SelectInputController
             control={control}
             errors={errors}
-            name='paymentType'
-            label='Forma de Bonificação'
-            placeholder='Forma de Bonificação'
+            name="paymentType"
+            label="Forma de Bonificação"
+            placeholder="Forma de Bonificação"
             selectItems={{
               items: paymentTypesArray
             }}
@@ -469,19 +469,19 @@ export default function BonusForm(props: IBonusFormProps) {
             minRows={4}
             control={control}
             errors={errors}
-            name='description'
-            label='Descrição'
-            placeholder='Descrição'
+            name="description"
+            label="Descrição"
+            placeholder="Descrição"
           />
         </Grid>
         <Grid item xs={12}>
-          <Divider sx={{ my: 2 }} textAlign='center'>
-            <Typography variant='h6'>Entradas</Typography>
+          <Divider sx={{my: 2}} textAlign="center">
+            <Typography variant="h6">Entradas</Typography>
           </Divider>
           <Grid container spacing={5} item xs={12}>
             {!bonusEntriesArray.some(entry => entry.operation === "add") && (
               <Grid item xs={12}>
-                <Typography variant='body1' textAlign='center'>
+                <Typography variant="body1" textAlign="center">
                   Você não adicionou nenhuma entrada de <b>bônus</b>.
                 </Typography>
               </Grid>
@@ -504,7 +504,7 @@ export default function BonusForm(props: IBonusFormProps) {
               return (
                 <Grid container spacing={5} item xs={12} key={bonusEntry.id}>
                   <Grid item xs={12}>
-                    <Divider sx={{ my: 2 }} textAlign='left'>
+                    <Divider sx={{my: 2}} textAlign="left">
                       <Box
                         sx={{
                           display: "flex",
@@ -514,10 +514,10 @@ export default function BonusForm(props: IBonusFormProps) {
                       >
                         {`Entrada #${myIndex + 1}`}
                         <Button
-                          size='small'
+                          size="small"
                           onClick={() => remove(index)}
-                          sx={{ ml: 2 }}
-                          color='error'
+                          sx={{ml: 2}}
+                          color="error"
                           startIcon={<DeleteTwoToneIcon />}
                         >
                           Remover
@@ -530,8 +530,8 @@ export default function BonusForm(props: IBonusFormProps) {
                       // @ts-ignore
                       bonusFormWatch(`${fieldName}.type`) === "sales" &&
                         autoGeneratedBonus && (
-                          <Alert severity='info' sx={{ mb: 2 }}>
-                            <Typography variant='body1'>
+                          <Alert severity="info" sx={{mb: 2}}>
+                            <Typography variant="body1">
                               Este bônus foi gerado automaticamente, portanto,
                               não é possível alterar o valor.
                             </Typography>
@@ -544,8 +544,8 @@ export default function BonusForm(props: IBonusFormProps) {
                       control={control}
                       errors={errors}
                       name={`${fieldName}.operation`}
-                      label='Operação'
-                      placeholder='Operação'
+                      label="Operação"
+                      placeholder="Operação"
                       // @ts-ignore
                       readOnly={Boolean(
                         bonusFormWatch(`${fieldName}.type`) === "sales" &&
@@ -572,8 +572,8 @@ export default function BonusForm(props: IBonusFormProps) {
                       control={control}
                       errors={errors}
                       name={`${fieldName}.type`}
-                      label='Tipo'
-                      placeholder='Tipo'
+                      label="Tipo"
+                      placeholder="Tipo"
                       // @ts-ignore
                       readOnly={Boolean(
                         bonusFormWatch(`${fieldName}.type`) === "sales" &&
@@ -589,8 +589,8 @@ export default function BonusForm(props: IBonusFormProps) {
                       control={control}
                       errors={errors}
                       name={`${fieldName}.value`}
-                      label='Valor'
-                      placeholder='Valor'
+                      label="Valor"
+                      placeholder="Valor"
                       startAdornment={"R$"}
                       onFocus={e => e.target.select()}
                       // @ts-ignore
@@ -607,8 +607,8 @@ export default function BonusForm(props: IBonusFormProps) {
                       control={control}
                       errors={errors}
                       name={`${fieldName}.description`}
-                      label='Descrição'
-                      placeholder='Descrição'
+                      label="Descrição"
+                      placeholder="Descrição"
                       // @ts-ignore
                       readOnly={Boolean(
                         bonusFormWatch(`${fieldName}.type`) === "sales" &&
@@ -621,9 +621,9 @@ export default function BonusForm(props: IBonusFormProps) {
                     bonusFormWatch(`${fieldName}.type`) === "sales" && (
                       <Grid item xs={12}>
                         <Button
-                          variant='outlined'
+                          variant="outlined"
                           onClick={() => getAutoGeneratedBonus(index)}
-                          sx={{ float: "right" }}
+                          sx={{float: "right"}}
                         >
                           Gerar Bônus de Vendas
                         </Button>
@@ -634,7 +634,7 @@ export default function BonusForm(props: IBonusFormProps) {
               )
             })}
             <Grid item xs={12}>
-              <Divider textAlign='left'>
+              <Divider textAlign="left">
                 <Box
                   sx={{
                     display: "flex",
@@ -643,8 +643,8 @@ export default function BonusForm(props: IBonusFormProps) {
                   }}
                 >
                   <Button
-                    size='small'
-                    variant='text'
+                    size="small"
+                    variant="text"
                     // @ts-ignore
                     onClick={() => append(bonusEntriesAdd)}
                     endIcon={<ControlPointTwoToneIcon />}
@@ -657,15 +657,15 @@ export default function BonusForm(props: IBonusFormProps) {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <Divider sx={{ my: 2 }} textAlign='center'>
-            <Typography variant='h6'>Saídas</Typography>
+          <Divider sx={{my: 2}} textAlign="center">
+            <Typography variant="h6">Saídas</Typography>
           </Divider>
           <Grid container spacing={5} item xs={12}>
             {!bonusEntriesArray.some(
               entry => entry.operation === "subtract"
             ) && (
               <Grid item xs={12}>
-                <Typography variant='body1' textAlign='center'>
+                <Typography variant="body1" textAlign="center">
                   Você não adicionou nenhuma entrada de <b>desconto</b>.
                 </Typography>
               </Grid>
@@ -688,7 +688,7 @@ export default function BonusForm(props: IBonusFormProps) {
               return (
                 <Grid container spacing={5} item xs={12} key={bonusEntry.id}>
                   <Grid item xs={12}>
-                    <Divider sx={{ my: 2 }} textAlign='left'>
+                    <Divider sx={{my: 2}} textAlign="left">
                       <Box
                         sx={{
                           display: "flex",
@@ -698,10 +698,10 @@ export default function BonusForm(props: IBonusFormProps) {
                       >
                         {`Saída #${myIndex + 1}`}
                         <Button
-                          size='small'
+                          size="small"
                           onClick={() => remove(index)}
-                          sx={{ ml: 2 }}
-                          color='error'
+                          sx={{ml: 2}}
+                          color="error"
                           startIcon={<DeleteTwoToneIcon />}
                         >
                           Remover
@@ -714,8 +714,8 @@ export default function BonusForm(props: IBonusFormProps) {
                       control={control}
                       errors={errors}
                       name={`${fieldName}.operation`}
-                      label='Operação'
-                      placeholder='Operação'
+                      label="Operação"
+                      placeholder="Operação"
                       readOnly={true}
                       selectItems={{
                         items: [
@@ -734,8 +734,8 @@ export default function BonusForm(props: IBonusFormProps) {
                       control={control}
                       errors={errors}
                       name={`${fieldName}.type`}
-                      label='Tipo'
-                      placeholder='Tipo'
+                      label="Tipo"
+                      placeholder="Tipo"
                       selectItems={{
                         items: bonusTypesArray
                       }}
@@ -746,8 +746,8 @@ export default function BonusForm(props: IBonusFormProps) {
                       control={control}
                       errors={errors}
                       name={`${fieldName}.value`}
-                      label='Valor'
-                      placeholder='Valor'
+                      label="Valor"
+                      placeholder="Valor"
                       startAdornment={"R$"}
                       onFocus={e => e.target.select()}
                     />
@@ -759,15 +759,15 @@ export default function BonusForm(props: IBonusFormProps) {
                       control={control}
                       errors={errors}
                       name={`${fieldName}.description`}
-                      label='Descrição'
-                      placeholder='Descrição'
+                      label="Descrição"
+                      placeholder="Descrição"
                     />
                   </Grid>
                 </Grid>
               )
             })}
             <Grid item xs={12}>
-              <Divider textAlign='left'>
+              <Divider textAlign="left">
                 <Box
                   sx={{
                     display: "flex",
@@ -776,8 +776,8 @@ export default function BonusForm(props: IBonusFormProps) {
                   }}
                 >
                   <Button
-                    size='small'
-                    variant='text'
+                    size="small"
+                    variant="text"
                     // @ts-ignore
                     onClick={() => append(bonusEntriesRemove)}
                     endIcon={<ControlPointTwoToneIcon />}

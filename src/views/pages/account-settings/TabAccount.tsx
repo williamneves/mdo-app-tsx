@@ -1,47 +1,47 @@
 // ** React Imports
-import React, { useState, Fragment, ChangeEvent } from "react"
+import React, {useState, Fragment, ChangeEvent} from "react"
 
 // ** MUI Imports
 import Box from "@mui/material/Box"
 import Grid from "@mui/material/Grid"
-import { styled } from "@mui/material/styles"
+import {styled} from "@mui/material/styles"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
 import CardContent from "@mui/material/CardContent"
 import Button from "@mui/material/Button"
-import { LoadingButton } from "@mui/lab"
+import {LoadingButton} from "@mui/lab"
 
 // ** Third Party Imports
 import * as yup from "yup"
-import { yupResolver } from "@hookform/resolvers/yup"
+import {yupResolver} from "@hookform/resolvers/yup"
 import toast from "react-hot-toast"
 
 // ** Hooks
-import { useForm } from "react-hook-form"
-import { useAuth } from "src/hooks/useAuth"
+import {useForm} from "react-hook-form"
+import {useAuth} from "src/hooks/useAuth"
 
 // ** Custom Components
 import TextInputControlled from "components/inputs/TextInputControlled"
 
 // ** Import Sanity Config
-import { dbClient, getImageUrl } from "src/configs/sanityConfig"
+import {dbClient, getImageUrl} from "src/configs/sanityConfig"
 import AuthUser from "src/interfaces/authUser"
 
-const ImgStyled = styled("img")(({ theme }) => ({
+const ImgStyled = styled("img")(({theme}) => ({
   width: 120,
   height: 120,
   marginRight: theme.spacing(5),
   borderRadius: theme.shape.borderRadius
 }))
 
-const ButtonStyled = styled(Button)(({ theme }) => ({
+const ButtonStyled = styled(Button)(({theme}) => ({
   [theme.breakpoints.down("sm")]: {
     width: "100%",
     textAlign: "center"
   }
 }))
 
-const ResetButtonStyled = styled(Button)(({ theme }) => ({
+const ResetButtonStyled = styled(Button)(({theme}) => ({
   marginLeft: theme.spacing(4),
   [theme.breakpoints.down("sm")]: {
     width: "100%",
@@ -55,13 +55,13 @@ interface Props {
   userDB: AuthUser
 }
 
-const TabAccount = ({ userDB }: Props) => {
-  const { name, email, role, imageAsset, imageURL, profile, stores } = userDB
+const TabAccount = ({userDB}: Props) => {
+  const {name, email, role, imageAsset, imageURL, profile, stores} = userDB
   const initialProfilePhoto = imageAsset
     ? getImageUrl(imageAsset).url()
     : imageURL
 
-  const { updateUser } = useAuth()
+  const {updateUser} = useAuth()
 
   const schema = yup.object().shape({
     name: yup.string().required("O Nome não pode estar vazio"),
@@ -70,7 +70,7 @@ const TabAccount = ({ userDB }: Props) => {
 
   const {
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
     control,
     reset
   } = useForm({
@@ -89,7 +89,7 @@ const TabAccount = ({ userDB }: Props) => {
 
   const onChangeFile = async (file: ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader()
-    const { files } = file.target
+    const {files} = file.target
 
     if (files && files.length !== 0) {
       reader.onload = () => {
@@ -102,7 +102,7 @@ const TabAccount = ({ userDB }: Props) => {
     }
   }
 
-  const onSubmit = async (data: { name: string; position: string }) => {
+  const onSubmit = async (data: {name: string; position: string}) => {
     const toastId = toast.loading("Atualizando informações...")
     setIsLoading(true)
 
@@ -132,10 +132,10 @@ const TabAccount = ({ userDB }: Props) => {
           updateUser({
             newInfo: newDataObj
           })
-          toast.success("Informações atualizadas com sucesso!", { id: toastId })
+          toast.success("Informações atualizadas com sucesso!", {id: toastId})
         })
       } catch (e) {
-        toast.error("Erro ao atualizar informações", { id: toastId })
+        toast.error("Erro ao atualizar informações", {id: toastId})
       } finally {
         setIsLoading(false)
       }
@@ -144,9 +144,9 @@ const TabAccount = ({ userDB }: Props) => {
         await updateUser({
           newInfo: newDataObj
         })
-        toast.success("Informações atualizadas com sucesso!", { id: toastId })
+        toast.success("Informações atualizadas com sucesso!", {id: toastId})
       } catch (e) {
-        toast.error("Erro ao atualizar informações", { id: toastId })
+        toast.error("Erro ao atualizar informações", {id: toastId})
       } finally {
         setIsLoading(false)
       }
@@ -157,8 +157,8 @@ const TabAccount = ({ userDB }: Props) => {
     <CardContent>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={6}>
-          <Grid item xs={12} sx={{ my: 5 }}>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Grid item xs={12} sx={{my: 5}}>
+            <Box sx={{display: "flex", alignItems: "center"}}>
               <ImgStyled src={imgSrc} alt={name} />
               <Box>
                 <ButtonStyled
@@ -178,8 +178,8 @@ const TabAccount = ({ userDB }: Props) => {
                 </ButtonStyled>
                 <ResetButtonStyled
                   disabled={isLoading}
-                  color='error'
-                  variant='outlined'
+                  color="error"
+                  variant="outlined"
                   onClick={() => {
                     setImgSrc(initialProfilePhoto)
                     setNewImage(null)
@@ -187,7 +187,7 @@ const TabAccount = ({ userDB }: Props) => {
                 >
                   Cancelar
                 </ResetButtonStyled>
-                <Typography sx={{ mt: 4 }} component='p' variant='caption'>
+                <Typography sx={{mt: 4}} component="p" variant="caption">
                   Permitido apenas imagens de até 2MB
                 </Typography>
               </Box>
@@ -225,7 +225,7 @@ const TabAccount = ({ userDB }: Props) => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label='Loja'
+              label="Loja"
               placeholder={stores[0]?.name}
               defaultValue={stores[0]?.name}
               disabled
@@ -236,7 +236,7 @@ const TabAccount = ({ userDB }: Props) => {
             <LoadingButton
               type={"submit"}
               variant={"contained"}
-              sx={{ mr: 4 }}
+              sx={{mr: 4}}
               loading={isLoading}
             >
               Salvar mudanças

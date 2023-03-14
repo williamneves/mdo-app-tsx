@@ -1,8 +1,8 @@
-import { PatternFormat, PatternFormatProps } from "react-number-format"
+import {PatternFormat, PatternFormatProps} from "react-number-format"
 import InputAdornment from "@mui/material/InputAdornment"
-import { TextField, OutlinedTextFieldProps } from "@mui/material"
-import { InputController } from "./InputController"
-import { FieldErrors } from "react-hook-form"
+import {TextField, OutlinedTextFieldProps} from "@mui/material"
+import {InputController} from "./InputController"
+import {FieldErrors} from "react-hook-form"
 
 const getThePattern = (type: string) => {
   switch (type) {
@@ -74,24 +74,21 @@ const PatternInputControlled = (props: PatternInputControlledProps) => {
       control={control}
       errors={errors}
       name={name}
-      render={({
-        field: { onChange, name, value },
-        fieldState: { invalid }
-      }) => (
+      render={({field: {onChange, name, value}, fieldState: {invalid}}) => (
         <PatternFormat
-          onValueChange={({ value }) => onChange(value)}
+          onValueChange={({value}) => onChange(value)}
           value={value}
           name={name}
           error={invalid}
           InputProps={{
             readOnly: readOnly || props.InputProps?.readOnly,
             startAdornment: startAdornment ? (
-              <InputAdornment position='start'>{startAdornment}</InputAdornment>
+              <InputAdornment position="start">{startAdornment}</InputAdornment>
             ) : (
               props.InputProps?.startAdornment
             ),
             endAdornment: startAdornment ? (
-              <InputAdornment position='end'>{endAdornment}</InputAdornment>
+              <InputAdornment position="end">{endAdornment}</InputAdornment>
             ) : (
               props.InputProps?.endAdornment
             )

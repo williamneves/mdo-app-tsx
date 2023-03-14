@@ -1,6 +1,6 @@
 // Give an array of objects and a key, return an array of unique keys from the array of objects
 // Useful when on AutoComplete or Any searchable component to filter on all objects keys when you type
-import { matchSorter } from "match-sorter"
+import {matchSorter} from "match-sorter"
 
 const getAllObjectKeys = (arrayOfObjects: any): Array<string> => {
   console.log(arrayOfObjects)
@@ -20,6 +20,6 @@ const matchSearchFilter = (
   options: Array<any>,
   inputValue: string,
   filterKeys: Array<string>
-) => matchSorter(options, inputValue, { keys: filterKeys })
+) => matchSorter(options, inputValue, {keys: filterKeys})
 
-export { getAllObjectKeys, filterListByKeyValue, matchSearchFilter }
+export {getAllObjectKeys, filterListByKeyValue, matchSearchFilter}

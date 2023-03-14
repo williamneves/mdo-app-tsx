@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { useState } from "react"
+import React, {useState} from "react"
 
 // ** MUI Imports
 import Box from "@mui/material/Box"
@@ -18,11 +18,11 @@ import TextInputControlled from "components/inputs/TextInputControlled"
 
 // ** Hooks Imports
 import * as auth from "src/@auth/authHooks"
-import { useForm } from "react-hook-form"
+import {useForm} from "react-hook-form"
 
 // ** Yup Imports
 import * as yup from "yup"
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup"
+import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
 
 // ** Third party imports
 import toast from "react-hot-toast"
@@ -58,7 +58,7 @@ const TabSecurity = () => {
 
   const {
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
     control,
     getValues,
     reset
@@ -73,15 +73,15 @@ const TabSecurity = () => {
 
   const onSubmit = async (data: any) => {
     const toastId = toast.loading("Salvando...")
-    const { oldPassword, newPassword } = data
+    const {oldPassword, newPassword} = data
     try {
       await auth.changePassword(oldPassword, newPassword)
-      toast.success("Senha alterada com sucesso!", { id: toastId })
+      toast.success("Senha alterada com sucesso!", {id: toastId})
       reset(defaultValues)
     } catch (e) {
       console.log(e)
       const errorMessage = e === "Login inválido" ? "Login inválido" : ""
-      toast.error(`Erro ao alterar senha! ${errorMessage}`, { id: toastId })
+      toast.error(`Erro ao alterar senha! ${errorMessage}`, {id: toastId})
     }
   }
 
@@ -98,7 +98,7 @@ const TabSecurity = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <CardContent>
         <Grid container spacing={6}>
-          <Grid item xs={12} sm={6} sx={{ mt: 5, mb: [0, 6] }}>
+          <Grid item xs={12} sm={6} sx={{mt: 5, mb: [0, 6]}}>
             <Grid container spacing={6}>
               <Grid item xs={12}>
                 <TextInputControlled
@@ -165,20 +165,20 @@ const TabSecurity = () => {
             }}
           >
             <img
-              alt='avatar'
-              src='/images/pages/account-settings-security-illustration.png'
+              alt="avatar"
+              src="/images/pages/account-settings-security-illustration.png"
             />
           </Grid>
         </Grid>
-        <Divider sx={{ mt: 0, mb: 6 }} />
+        <Divider sx={{mt: 0, mb: 6}} />
         <Box>
-          <Button type={"submit"} variant='contained' sx={{ mr: 4 }}>
+          <Button type={"submit"} variant="contained" sx={{mr: 4}}>
             Mudar Senha
           </Button>
           <Button
-            type='reset'
-            variant='outlined'
-            color='secondary'
+            type="reset"
+            variant="outlined"
+            color="secondary"
             onClick={() => reset()}
           >
             Cancelar

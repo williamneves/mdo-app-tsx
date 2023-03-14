@@ -1,9 +1,9 @@
 // ** Types
-import { RepeaterProps } from "./types"
+import {RepeaterProps} from "./types"
 
 const Repeater = (props: RepeaterProps) => {
   // ** Props
-  const { count, tag, children } = props
+  const {count, tag, children} = props
 
   // ** Custom Tag
   const Tag = tag || "div"

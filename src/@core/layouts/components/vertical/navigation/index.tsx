@@ -1,17 +1,17 @@
 // ** React Import
-import { ReactNode, useRef, useState } from "react"
+import {ReactNode, useRef, useState} from "react"
 
 // ** MUI Import
 import List from "@mui/material/List"
-import Box, { BoxProps } from "@mui/material/Box"
-import { styled, useTheme } from "@mui/material/styles"
+import Box, {BoxProps} from "@mui/material/Box"
+import {styled, useTheme} from "@mui/material/styles"
 
 // ** Third Party Components
 import PerfectScrollbar from "react-perfect-scrollbar"
 
 // ** Type Import
-import { Settings } from "src/@core/context/settingsContext"
-import { VerticalNavItemsType } from "src/@core/layouts/types"
+import {Settings} from "src/@core/context/settingsContext"
+import {VerticalNavItemsType} from "src/@core/layouts/types"
 
 import themeConfig from "src/configs/themeConfig"
 
@@ -21,7 +21,7 @@ import VerticalNavItems from "./VerticalNavItems"
 import VerticalNavHeader from "./VerticalNavHeader"
 
 // ** Util Import
-import { hexToRGBA } from "src/@core/utils/hex-to-rgba"
+import {hexToRGBA} from "src/@core/utils/hex-to-rgba"
 
 interface Props {
   hidden: boolean
@@ -42,7 +42,7 @@ interface Props {
   beforeVerticalNavMenuContent?: (props?: any) => ReactNode
 }
 
-const StyledBoxForShadow = styled(Box)<BoxProps>(({ theme }) => ({
+const StyledBoxForShadow = styled(Box)<BoxProps>(({theme}) => ({
   top: 60,
   left: -8,
   zIndex: 2,
@@ -77,7 +77,7 @@ const Navigation = (props: Props) => {
   const theme = useTheme()
 
   // ** Var
-  const { skin } = settings
+  const {skin} = settings
   const {
     afterVerticalNavMenuContentPosition,
     beforeVerticalNavMenuContentPosition
@@ -93,7 +93,7 @@ const Navigation = (props: Props) => {
         // @ts-ignore
         const original = ref._getBoundingClientRect()
 
-        return { ...original, height: Math.floor(original.height) }
+        return {...original, height: Math.floor(original.height)}
       }
     }
   }
@@ -171,20 +171,20 @@ const Navigation = (props: Props) => {
         !beforeVerticalNavMenuContent) && (
         <StyledBoxForShadow
           ref={shadowRef}
-          sx={{ background: shadowBgColor() }}
+          sx={{background: shadowBgColor()}}
         />
       )}
-      <Box sx={{ position: "relative", overflow: "hidden" }}>
+      <Box sx={{position: "relative", overflow: "hidden"}}>
         {/* @ts-ignore */}
         <ScrollWrapper
           containerRef={(ref: any) => handleInfiniteScroll(ref)}
           {...(hidden
             ? {
                 onScroll: (container: any) => scrollMenu(container),
-                sx: { height: "100%", overflowY: "auto", overflowX: "hidden" }
+                sx: {height: "100%", overflowY: "auto", overflowX: "hidden"}
               }
             : {
-                options: { wheelPropagation: false },
+                options: {wheelPropagation: false},
                 onScrollY: (container: any) => scrollMenu(container)
               })}
         >
@@ -197,8 +197,8 @@ const Navigation = (props: Props) => {
           ) : (
             // <List className='nav-items' sx={{ pt: 0, '& > :first-of-type': { mt: '0' } }}>
             <List
-              className='nav-items'
-              sx={{ pt: 0, "& > :first-of-type": { mt: "0" } }}
+              className="nav-items"
+              sx={{pt: 0, "& > :first-of-type": {mt: "0"}}}
             >
               <VerticalNavItems
                 groupActive={groupActive}

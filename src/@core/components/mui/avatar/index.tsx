@@ -1,20 +1,20 @@
 // ** React Imports
-import { forwardRef, Ref } from "react"
+import {forwardRef, Ref} from "react"
 
 // ** MUI Imports
 import MuiAvatar from "@mui/material/Avatar"
-import { lighten, useTheme } from "@mui/material/styles"
+import {lighten, useTheme} from "@mui/material/styles"
 
 // ** Types
-import { CustomAvatarProps } from "./types"
-import { ThemeColor } from "src/@core/layouts/types"
+import {CustomAvatarProps} from "./types"
+import {ThemeColor} from "src/@core/layouts/types"
 
 // ** Hooks Imports
-import useBgColor, { UseBgColorType } from "src/@core/hooks/useBgColor"
+import useBgColor, {UseBgColorType} from "src/@core/hooks/useBgColor"
 
 const Avatar = forwardRef((props: CustomAvatarProps, ref: Ref<any>) => {
   // ** Props
-  const { sx, src, skin, color } = props
+  const {sx, src, skin, color} = props
 
   // ** Hook
   const theme = useTheme()
@@ -27,14 +27,14 @@ const Avatar = forwardRef((props: CustomAvatarProps, ref: Ref<any>) => {
     let avatarStyles
 
     if (skin === "light") {
-      avatarStyles = { ...bgColors[`${skinColor}Light`] }
+      avatarStyles = {...bgColors[`${skinColor}Light`]}
     } else if (skin === "light-static") {
       avatarStyles = {
         color: bgColors[`${skinColor}Light`].color,
         backgroundColor: lighten(theme.palette[skinColor].main, 0.88)
       }
     } else {
-      avatarStyles = { ...bgColors[`${skinColor}Filled`] }
+      avatarStyles = {...bgColors[`${skinColor}Filled`]}
     }
 
     return avatarStyles

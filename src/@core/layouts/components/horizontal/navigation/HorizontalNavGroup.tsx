@@ -1,8 +1,8 @@
 // ** React Imports
-import { SyntheticEvent, useState, useEffect, Fragment } from "react"
+import {SyntheticEvent, useState, useEffect, Fragment} from "react"
 
 // ** Next Import
-import { useRouter } from "next/router"
+import {useRouter} from "next/router"
 
 // ** MUI Imports
 import Box from "@mui/material/Box"
@@ -12,13 +12,13 @@ import List from "@mui/material/List"
 import Paper from "@mui/material/Paper"
 import Typography from "@mui/material/Typography"
 import ListItemIcon from "@mui/material/ListItemIcon"
-import { styled, useTheme } from "@mui/material/styles"
+import {styled, useTheme} from "@mui/material/styles"
 import ClickAwayListener from "@mui/material/ClickAwayListener"
-import MuiListItem, { ListItemProps } from "@mui/material/ListItem"
+import MuiListItem, {ListItemProps} from "@mui/material/ListItem"
 
 // ** Third Party Imports
 import clsx from "clsx"
-import { usePopper } from "react-popper"
+import {usePopper} from "react-popper"
 
 // ** Icons Imports
 import ChevronDown from "mdi-material-ui/ChevronDown"
@@ -29,8 +29,8 @@ import ChevronRight from "mdi-material-ui/ChevronRight"
 import themeConfig from "src/configs/themeConfig"
 
 // ** Types
-import { NavGroup } from "src/@core/layouts/types"
-import { Settings } from "src/@core/context/settingsContext"
+import {NavGroup} from "src/@core/layouts/types"
+import {Settings} from "src/@core/context/settingsContext"
 
 // ** Custom Components Imports
 import HorizontalNavItems from "./HorizontalNavItems"
@@ -39,8 +39,8 @@ import Translations from "src/layouts/components/Translations"
 import CanViewNavGroup from "src/layouts/components/acl/CanViewNavGroup"
 
 // ** Utils
-import { hexToRGBA } from "src/@core/utils/hex-to-rgba"
-import { hasActiveChild } from "src/@core/layouts/utils"
+import {hexToRGBA} from "src/@core/utils/hex-to-rgba"
+import {hasActiveChild} from "src/@core/layouts/utils"
 
 interface Props {
   item: NavGroup
@@ -49,7 +49,7 @@ interface Props {
 }
 
 // ** Styled Components
-const ListItem = styled(MuiListItem)<ListItemProps>(({ theme }) => ({
+const ListItem = styled(MuiListItem)<ListItemProps>(({theme}) => ({
   cursor: "pointer",
   paddingTop: theme.spacing(2.25),
   paddingBottom: theme.spacing(2.25),
@@ -58,11 +58,11 @@ const ListItem = styled(MuiListItem)<ListItemProps>(({ theme }) => ({
   }
 }))
 
-const NavigationMenu = styled(Paper)(({ theme }) => ({
+const NavigationMenu = styled(Paper)(({theme}) => ({
   overflowY: "auto",
   padding: theme.spacing(2, 0),
   backgroundColor: theme.palette.background.paper,
-  ...(themeConfig.menuTextTruncate ? { width: 260 } : { minWidth: 260 }),
+  ...(themeConfig.menuTextTruncate ? {width: 260} : {minWidth: 260}),
 
   "&::-webkit-scrollbar": {
     width: 6
@@ -90,13 +90,13 @@ const NavigationMenu = styled(Paper)(({ theme }) => ({
 
 const HorizontalNavGroup = (props: Props) => {
   // ** Props
-  const { item, hasParent, settings } = props
+  const {item, hasParent, settings} = props
 
   // ** Hooks & Vars
   const theme = useTheme()
   const router = useRouter()
   const currentURL = router.pathname
-  const { skin, direction } = settings
+  const {skin, direction} = settings
   const {
     navSubItemIcon,
     menuTextTruncate,
@@ -115,7 +115,7 @@ const HorizontalNavGroup = (props: Props) => {
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
   const [referenceElement, setReferenceElement] = useState(null)
 
-  const { styles, attributes, update } = usePopper(
+  const {styles, attributes, update} = usePopper(
     referenceElement,
     popperElement,
     {
@@ -189,23 +189,23 @@ const HorizontalNavGroup = (props: Props) => {
       {/* @ts-ignore */}
       <MainWrapper
         {...(WrapperCondition
-          ? { onClickAway: handleGroupClose }
-          : { onMouseLeave: handleGroupClose })}
+          ? {onClickAway: handleGroupClose}
+          : {onMouseLeave: handleGroupClose})}
       >
         <ChildWrapper>
-          <List component='div' sx={{ py: skin === "bordered" ? 2.625 : 2.75 }}>
+          <List component="div" sx={{py: skin === "bordered" ? 2.625 : 2.75}}>
             <ListItem
-              aria-haspopup='true'
-              {...(WrapperCondition ? {} : { onMouseEnter: handleGroupOpen })}
+              aria-haspopup="true"
+              {...(WrapperCondition ? {} : {onMouseEnter: handleGroupOpen})}
               className={clsx("menu-group", {
                 "Mui-selected": hasActiveChild(item, currentURL)
               })}
               {...(horizontalMenuToggle === "click"
-                ? { onClick: handleMenuToggleOnClick }
+                ? {onClick: handleMenuToggleOnClick}
                 : {})}
               sx={{
                 ...(menuOpen
-                  ? { backgroundColor: theme.palette.action.hover }
+                  ? {backgroundColor: theme.palette.action.hover}
                   : {}),
                 ...(!hasParent
                   ? {
@@ -236,31 +236,29 @@ const HorizontalNavGroup = (props: Props) => {
                     display: "flex",
                     alignItems: "center",
                     flexDirection: "row",
-                    ...(menuTextTruncate && { overflow: "hidden" })
+                    ...(menuTextTruncate && {overflow: "hidden"})
                   }}
                 >
                   <ListItemIcon
-                    sx={{ mr: hasParent ? 3 : 2.5, color: "text.primary" }}
+                    sx={{mr: hasParent ? 3 : 2.5, color: "text.primary"}}
                   >
                     <UserIcon
                       icon={IconTag}
-                      componentType='horizontal-menu'
+                      componentType="horizontal-menu"
                       iconProps={{
                         sx:
-                          IconTag === navSubItemIcon
-                            ? { fontSize: "0.5rem" }
-                            : {}
+                          IconTag === navSubItemIcon ? {fontSize: "0.5rem"} : {}
                       }}
                     />
                   </ListItemIcon>
-                  <Typography {...(menuTextTruncate && { noWrap: true })}>
+                  <Typography {...(menuTextTruncate && {noWrap: true})}>
                     <Translations text={item.title} />
                   </Typography>
                 </Box>
-                <Box sx={{ ml: 1.5, display: "flex", alignItems: "center" }}>
+                <Box sx={{ml: 1.5, display: "flex", alignItems: "center"}}>
                   {item.badgeContent ? (
                     <Chip
-                      size='small'
+                      size="small"
                       label={item.badgeContent}
                       color={item.badgeColor || "primary"}
                       sx={{
@@ -274,9 +272,9 @@ const HorizontalNavGroup = (props: Props) => {
                     />
                   ) : null}
                   {hasParent ? (
-                    <ToggleIcon sx={{ color: "text.secondary" }} />
+                    <ToggleIcon sx={{color: "text.secondary"}} />
                   ) : (
-                    <ChevronDown sx={{ color: "text.secondary" }} />
+                    <ChevronDown sx={{color: "text.secondary"}} />
                   )}
                 </Box>
               </Box>
@@ -284,7 +282,7 @@ const HorizontalNavGroup = (props: Props) => {
             <AnimationWrapper
               {...(horizontalMenuAnimation && {
                 in: menuOpen,
-                timeout: { exit: 300, enter: 400 }
+                timeout: {exit: 300, enter: 400}
               })}
             >
               <Box
@@ -309,8 +307,8 @@ const HorizontalNavGroup = (props: Props) => {
                         : 1.25
                       : 0,
                   ...(hasParent
-                    ? { position: "fixed !important" }
-                    : { pt: skin === "bordered" ? 5.25 : 5.5 })
+                    ? {position: "fixed !important"}
+                    : {pt: skin === "bordered" ? 5.25 : 5.5})
                 }}
               >
                 <NavigationMenu
@@ -320,13 +318,13 @@ const HorizontalNavGroup = (props: Props) => {
                           overflowX: "visible",
                           maxHeight: "calc(100vh - 21rem)"
                         }
-                      : { maxHeight: "calc(100vh - 13rem)" }),
+                      : {maxHeight: "calc(100vh - 13rem)"}),
                     ...(skin === "bordered"
                       ? {
                           boxShadow: theme.shadows[0],
                           border: `1px solid ${theme.palette.divider}`
                         }
-                      : { boxShadow: theme.shadows[4] })
+                      : {boxShadow: theme.shadows[4]})
                   }}
                 >
                   <HorizontalNavItems

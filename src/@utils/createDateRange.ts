@@ -1,4 +1,4 @@
-import moment, { Moment } from "moment"
+import moment, {Moment} from "moment"
 
 export type DateRangeOptions =
   | "today"

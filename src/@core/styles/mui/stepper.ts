@@ -1,11 +1,11 @@
 // ** MUI imports
-import { styled } from "@mui/material/styles"
-import Box, { BoxProps } from "@mui/material/Box"
+import {styled} from "@mui/material/styles"
+import Box, {BoxProps} from "@mui/material/Box"
 
 // ** Util Imports
-import { hexToRGBA } from "src/@core/utils/hex-to-rgba"
+import {hexToRGBA} from "src/@core/utils/hex-to-rgba"
 
-const StepperWrapper = styled(Box)<BoxProps>(({ theme }) => ({
+const StepperWrapper = styled(Box)<BoxProps>(({theme}) => ({
   [theme.breakpoints.down("md")]: {
     "& .MuiStepper-horizontal:not(.MuiStepper-alternativeLabel)": {
       flexDirection: "column",

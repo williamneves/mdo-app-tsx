@@ -1,11 +1,11 @@
 // ** MUI Imports
-import { Theme } from "@mui/material/styles"
+import {Theme} from "@mui/material/styles"
 
 // ** Theme Type Import
-import { Skin } from "src/@core/layouts/types"
+import {Skin} from "src/@core/layouts/types"
 
 // ** Util Import
-import { hexToRGBA } from "src/@core/utils/hex-to-rgba"
+import {hexToRGBA} from "src/@core/utils/hex-to-rgba"
 
 const Dialog = (theme: Theme, skin: Skin) => {
   return {

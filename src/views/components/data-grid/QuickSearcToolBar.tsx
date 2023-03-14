@@ -5,8 +5,8 @@ import React from "react"
 import Box from "@mui/material/Box"
 import TextField from "@mui/material/TextField"
 import IconButton from "@mui/material/IconButton"
-import { GridToolbarFilterButton } from "@mui/x-data-grid"
-import { FormControlLabel } from "@mui/material"
+import {GridToolbarFilterButton} from "@mui/x-data-grid"
+import {FormControlLabel} from "@mui/material"
 import Checkbox from "@mui/material/Checkbox"
 
 // ** Icons Imports
@@ -61,17 +61,17 @@ const QuickSearchToolbar = ({
         variant={"standard"}
         value={value}
         onChange={onChange}
-        placeholder='Pesquisar…'
+        placeholder="Pesquisar…"
         InputProps={{
-          startAdornment: <Magnify fontSize='small' />,
+          startAdornment: <Magnify fontSize="small" />,
           endAdornment: (
             <IconButton
-              size='small'
-              title='Clear'
-              aria-label='Clear'
+              size="small"
+              title="Clear"
+              aria-label="Clear"
               onClick={clearSearch}
             >
-              <Close fontSize='small' />
+              <Close fontSize="small" />
             </IconButton>
           )
         }}

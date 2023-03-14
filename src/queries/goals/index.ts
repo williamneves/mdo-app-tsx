@@ -1,10 +1,10 @@
-import { useMutation, useQuery, QueryClient } from "@tanstack/react-query"
+import {useMutation, useQuery, QueryClient} from "@tanstack/react-query"
 import * as goalsApi from "./hooks/"
 import Goal from "@src/interfaces/Goal"
 import Store from "@src/interfaces/Store"
 
 // Get All Goals
-export const useGetAllGoalsQuery = (options?: Object) => {
+export const useGetAllGoalsQuery = (options?: any) => {
   return useQuery(["goals", "all"], goalsApi.getAllGoals, {
     // 1hr stale time
     staleTime: 1000 * 60 * 60,
@@ -17,7 +17,7 @@ export const useGetAllGoalsQuery = (options?: Object) => {
 }
 
 // Get Goals By Reference
-export const useGetGoalsByStoreQuery = (storeId: string, options?: Object) => {
+export const useGetGoalsByStoreQuery = (storeId: string, options?: any) => {
   return useQuery(
     ["goals", "store", storeId],
     () => goalsApi.getGoalsByStore(storeId),
@@ -40,7 +40,7 @@ export const useGetMainGoalsByStoreQuery = (
   storeId: string,
   dateStart: string,
   dateEnd: string,
-  options?: Object
+  options?: any
 ) => {
   return useQuery(
     ["goals", "main", storeId],
@@ -60,7 +60,7 @@ export const useGetMainGoalsByStoreQuery = (
 }
 
 // Get Goal By Id
-export const useGetGoalByIdQuery = (id: string, options?: Object) => {
+export const useGetGoalByIdQuery = (id: string, options?: any) => {
   return useQuery(["goals", "id", id], () => goalsApi.getGoalById(id), {
     // 1hr stale time
     staleTime: 1000 * 60 * 60,
@@ -104,7 +104,7 @@ export const useCreateGoalMutation = (queryClient: any) => {
 // Update Goal
 export const useUpdateGoalMutation = (queryClient: any) => {
   return useMutation(
-    ({ id, goal }: { id: string; goal: Partial<Goal> }) =>
+    ({id, goal}: {id: string; goal: Partial<Goal>}) =>
       goalsApi.updateGoal(id, goal),
     {
       onSuccess: (updatedGoal: Goal) => {

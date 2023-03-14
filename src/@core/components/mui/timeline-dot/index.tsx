@@ -1,16 +1,16 @@
 // ** MUI Imports
-import { useTheme } from "@mui/material/styles"
+import {useTheme} from "@mui/material/styles"
 import MuiTimelineDot from "@mui/lab/TimelineDot"
 
 // ** Util Import
-import { hexToRGBA } from "src/@core/utils/hex-to-rgba"
+import {hexToRGBA} from "src/@core/utils/hex-to-rgba"
 
 // ** Types
-import { CustomTimelineDotProps, ColorsType } from "./types"
+import {CustomTimelineDotProps, ColorsType} from "./types"
 
 const TimelineDot = (props: CustomTimelineDotProps) => {
   // ** Props
-  const { sx, skin, color, variant } = props
+  const {sx, skin, color, variant} = props
 
   // ** Hook
   const theme = useTheme()

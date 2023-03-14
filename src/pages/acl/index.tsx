@@ -1,8 +1,8 @@
 // ** React Imports
-import { useContext } from "react"
+import {useContext} from "react"
 
 // ** Context Imports
-import { AbilityContext } from "src/layouts/components/acl/Can"
+import {AbilityContext} from "src/layouts/components/acl/Can"
 
 // ** MUI Imports
 import Grid from "@mui/material/Grid"
@@ -19,12 +19,12 @@ const ACLPage = () => {
     <Grid container spacing={6}>
       <Grid item md={6} xs={12}>
         <Card>
-          <CardHeader title='Common' />
+          <CardHeader title="Common" />
           <CardContent>
-            <Typography sx={{ mb: 4 }}>
+            <Typography sx={{mb: 4}}>
               No ability is required to view this card
             </Typography>
-            <Typography sx={{ color: "primary.main" }}>
+            <Typography sx={{color: "primary.main"}}>
               This card is visible to 'user' and 'admin' both
             </Typography>
           </CardContent>
@@ -33,13 +33,13 @@ const ACLPage = () => {
       {ability?.can("read", "analytics") ? (
         <Grid item md={6} xs={12}>
           <Card>
-            <CardHeader title='Analytics' />
+            <CardHeader title="Analytics" />
             <CardContent>
-              <Typography sx={{ mb: 4 }}>
+              <Typography sx={{mb: 4}}>
                 User with 'Analytics' subject's 'Read' ability can view this
                 card
               </Typography>
-              <Typography sx={{ color: "error.main" }}>
+              <Typography sx={{color: "error.main"}}>
                 This card is visible to 'admin' only
               </Typography>
             </CardContent>

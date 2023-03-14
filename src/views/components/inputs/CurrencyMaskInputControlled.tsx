@@ -1,4 +1,4 @@
-import { NumericFormat, NumericFormatProps } from "react-number-format"
+import {NumericFormat, NumericFormatProps} from "react-number-format"
 import InputAdornment from "@mui/material/InputAdornment"
 import {
   TextField,
@@ -7,8 +7,8 @@ import {
   FilledTextFieldProps,
   OutlinedTextFieldProps
 } from "@mui/material"
-import { InputController } from "./InputController"
-import { FieldErrors } from "react-hook-form"
+import {InputController} from "./InputController"
+import {FieldErrors} from "react-hook-form"
 
 const numericSetup = {
   thousandSeparator: ".",
@@ -51,25 +51,22 @@ const CurrencyMaskInputControlled = (
       control={control}
       errors={errors}
       name={name}
-      render={({
-        field: { onChange, name, value },
-        fieldState: { invalid }
-      }) => (
+      render={({field: {onChange, name, value}, fieldState: {invalid}}) => (
         <NumericFormat
           {...numericSetup}
-          onValueChange={({ floatValue }) => onChange(floatValue)}
+          onValueChange={({floatValue}) => onChange(floatValue)}
           value={value}
           name={name}
           error={invalid}
           InputProps={{
             readOnly: readOnly || props.InputProps?.readOnly,
             startAdornment: startAdornment ? (
-              <InputAdornment position='start'>{startAdornment}</InputAdornment>
+              <InputAdornment position="start">{startAdornment}</InputAdornment>
             ) : (
               props.InputProps?.startAdornment
             ),
             endAdornment: startAdornment ? (
-              <InputAdornment position='end'>{endAdornment}</InputAdornment>
+              <InputAdornment position="end">{endAdornment}</InputAdornment>
             ) : (
               props.InputProps?.endAdornment
             )

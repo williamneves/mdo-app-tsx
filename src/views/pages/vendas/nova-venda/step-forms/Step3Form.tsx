@@ -1,5 +1,5 @@
 // ** React Imports
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup"
+import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
 
 // ** MUI Icons
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
@@ -20,8 +20,8 @@ import {
 // ** Import Components
 import AutocompleteInputControlled from "components/inputs/AutocompleteInputControlled"
 import TextInputControlled from "components/inputs/TextInputControlled"
-import React, { Fragment, useEffect } from "react"
-import { Controller, useForm } from "react-hook-form"
+import React, {Fragment, useEffect} from "react"
+import {Controller, useForm} from "react-hook-form"
 import toast from "react-hot-toast"
 
 // ** Import Hooks
@@ -37,18 +37,17 @@ interface Step3FormProps {
   setHasErrors: (value: boolean) => void
   onSubmit: any
   handleStepBack: any
-  steps: Array<{ title: string; subtitle: string }>
+  steps: Array<{title: string; subtitle: string}>
   step3Data: any
   mode: "create" | "edit"
 }
 
 const Step3Form = (props: Step3FormProps): JSX.Element => {
   // ** Props and States
-  const { setHasErrors, onSubmit, handleStepBack, steps, step3Data, mode } =
-    props
+  const {setHasErrors, onSubmit, handleStepBack, steps, step3Data, mode} = props
 
   // ** Fetchs
-  const { data: allOrigins } = salesQ.useAllOriginQuery()
+  const {data: allOrigins} = salesQ.useAllOriginQuery()
 
   // *** Start Step 3 Dependencies
 
@@ -116,7 +115,7 @@ const Step3Form = (props: Step3FormProps): JSX.Element => {
   // * set scheduleDiscount to false if schedule is false
   useEffect(() => {
     // Subscribe to watchStep3
-    const watchSubscription = watchStep3((value, { name }) => {
+    const watchSubscription = watchStep3((value, {name}) => {
       if (name === "schedule" && value.schedule === false) {
         setValueStep3("scheduleDiscount", false)
       }
@@ -134,12 +133,12 @@ const Step3Form = (props: Step3FormProps): JSX.Element => {
         <Grid container spacing={5}>
           <Grid item xs={12}>
             <Typography
-              variant='body2'
-              sx={{ fontWeight: 600, color: "text.primary" }}
+              variant="body2"
+              sx={{fontWeight: 600, color: "text.primary"}}
             >
               {steps[2].title}
             </Typography>
-            <Typography variant='caption' component='p'>
+            <Typography variant="caption" component="p">
               {steps[2].subtitle}
             </Typography>
           </Grid>
@@ -147,12 +146,12 @@ const Step3Form = (props: Step3FormProps): JSX.Element => {
           {/* Step 3 Fields */}
           <Grid item xs={12} lg={9}>
             <AutocompleteInputControlled
-              name='origin'
-              label='Como conheceu a loja?'
-              placeholder='Meio de divulgação'
+              name="origin"
+              label="Como conheceu a loja?"
+              placeholder="Meio de divulgação"
               control={controlStep3}
               options={allOrigins && allOrigins.length > 0 ? allOrigins : []}
-              optionLabel='displayName'
+              optionLabel="displayName"
               filterKeys={["displayName"]}
               multiple
               errors={errorsStep3}
@@ -162,13 +161,13 @@ const Step3Form = (props: Step3FormProps): JSX.Element => {
           <Grid item xs={12}>
             <FormControl fullWidth>
               <Controller
-                name='schedule'
+                name="schedule"
                 control={controlStep3}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
+                rules={{required: true}}
+                render={({field: {value, onChange}}) => (
                   <FormGroup row>
                     <FormControlLabel
-                      label='Fez Consulta?'
+                      label="Fez Consulta?"
                       control={<Switch checked={value} onChange={onChange} />}
                     />
                   </FormGroup>
@@ -179,13 +178,13 @@ const Step3Form = (props: Step3FormProps): JSX.Element => {
           <Grid item xs={12}>
             <FormControl fullWidth>
               <Controller
-                name='scheduleDiscount'
+                name="scheduleDiscount"
                 control={controlStep3}
-                rules={{ required: true }}
-                render={({ field: { value, onChange } }) => (
+                rules={{required: true}}
+                render={({field: {value, onChange}}) => (
                   <FormGroup row>
                     <FormControlLabel
-                      label='Consulta com Desconto?'
+                      label="Consulta com Desconto?"
                       control={
                         <Switch
                           checked={value}
@@ -221,9 +220,9 @@ const Step3Form = (props: Step3FormProps): JSX.Element => {
             }}
           >
             <Button
-              size='large'
-              variant='outlined'
-              color='secondary'
+              size="large"
+              variant="outlined"
+              color="secondary"
               startIcon={<ChevronLeftIcon />}
               onClick={handleStepBack}
             >
@@ -231,9 +230,9 @@ const Step3Form = (props: Step3FormProps): JSX.Element => {
             </Button>
             {mode === "edit" && (
               <Button
-                size='large'
-                variant='outlined'
-                color='secondary'
+                size="large"
+                variant="outlined"
+                color="secondary"
                 endIcon={<RestartAltIcon />}
                 onClick={() => resetStep3()}
               >
@@ -241,10 +240,10 @@ const Step3Form = (props: Step3FormProps): JSX.Element => {
               </Button>
             )}
             <Button
-              size='large'
+              size="large"
               endIcon={<ChevronRightIcon />}
-              type='submit'
-              variant='contained'
+              type="submit"
+              variant="contained"
               form={"formStep3"}
             >
               Próximo

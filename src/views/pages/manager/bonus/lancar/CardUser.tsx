@@ -21,18 +21,18 @@ import {
   IconButton,
   Typography
 } from "@mui/material"
-import { BonusResume } from "@views/pages/manager/bonus/lancar/BonusResume"
+import {BonusResume} from "@views/pages/manager/bonus/lancar/BonusResume"
 import IBonus from "interfaces/Bonus"
 import Goal from "interfaces/Goal"
 import Sale from "interfaces/Sale"
 import Store from "interfaces/Store"
 
 import User from "interfaces/User"
-import { useState } from "react"
+import {useState} from "react"
 
-import { formattedCurrencyWithSymbol } from "src/@utils/formatCurrency"
+import {formattedCurrencyWithSymbol} from "src/@utils/formatCurrency"
 
-import { getImageUrl } from "src/configs/sanityConfig"
+import {getImageUrl} from "src/configs/sanityConfig"
 
 // ** Import Components
 import BonusForm from "@views/pages/manager/bonus/lancar/BonusForm"
@@ -70,7 +70,7 @@ export interface IBonusBrief {
 
 const CardUser = (props: ICardUserProps) => {
   // ** Props
-  const { employee, goal, store, sales, bonus, mode } = props
+  const {employee, goal, store, sales, bonus, mode} = props
 
   // ** States
   const [expanded, setExpanded] = useState<boolean>(false)
@@ -80,8 +80,8 @@ const CardUser = (props: ICardUserProps) => {
   const [expandTableRowIds, setExpandTableRowIds] = useState<number[]>([])
 
   return (
-    <Card sx={{ position: "relative" }}>
-      <CardMedia sx={{ height: 178 }} image={bannerProfile(employee)} />
+    <Card sx={{position: "relative"}}>
+      <CardMedia sx={{height: 178}} image={bannerProfile(employee)} />
       <Avatar
         alt={employee?.name}
         src={
@@ -109,19 +109,19 @@ const CardUser = (props: ICardUserProps) => {
             justifyContent: "space-between"
           }}
         >
-          <Box sx={{ mr: 2, mb: 1, display: "flex", flexDirection: "column" }}>
-            <Typography variant='h6'>{employee.name}</Typography>
-            <Typography variant='subtitle2'>
+          <Box sx={{mr: 2, mb: 1, display: "flex", flexDirection: "column"}}>
+            <Typography variant="h6">{employee.name}</Typography>
+            <Typography variant="subtitle2">
               {employee?.profile?.jobTitle}
             </Typography>
             <Chip
               label={
-                <Typography variant='subtitle2' sx={{ color: "white" }}>
+                <Typography variant="subtitle2" sx={{color: "white"}}>
                   {bonusBrief?.bonusStatus}
                 </Typography>
               }
               color={bonusBrief?.bonusStatus === "Pago" ? "success" : "primary"}
-              sx={{ mt: 3 }}
+              sx={{mt: 3}}
             />
           </Box>
           <Box>
@@ -129,7 +129,7 @@ const CardUser = (props: ICardUserProps) => {
               <Box>
                 {bonusBrief?.totalSales > 0 && bonusBrief?.totalBonus > 0 && (
                   <Typography
-                    variant='body2'
+                    variant="body2"
                     color={"text.secondary"}
                     textAlign={"right"}
                   >{`(Total em vendas ${formattedCurrencyWithSymbol(
@@ -138,7 +138,7 @@ const CardUser = (props: ICardUserProps) => {
                 )}
                 {bonusBrief?.totalBonus > 0 && (
                   <Typography
-                    variant='h6'
+                    variant="h6"
                     color={"text.primary"}
                     textAlign={"right"}
                   >{`Bonus Total ${formattedCurrencyWithSymbol(
@@ -147,7 +147,7 @@ const CardUser = (props: ICardUserProps) => {
                 )}
                 {bonusBrief?.totalDiscounts > 0 && (
                   <Typography
-                    variant='body2'
+                    variant="body2"
                     color={"error.light"}
                     textAlign={"right"}
                   >{`Descontos Totais ${formattedCurrencyWithSymbol(
@@ -156,7 +156,7 @@ const CardUser = (props: ICardUserProps) => {
                 )}
                 {bonusBrief?.bonusAmount > 0 && (
                   <Typography
-                    variant='body1'
+                    variant="body1"
                     color={"success.dark"}
                     textAlign={"right"}
                     fontWeight={"bold"}
@@ -166,14 +166,14 @@ const CardUser = (props: ICardUserProps) => {
                 )}
               </Box>
             ) : (
-              <Typography variant='subtitle2' color='primary'>
+              <Typography variant="subtitle2" color="primary">
                 Sem lançamentos
               </Typography>
             )}
           </Box>
         </Box>
       </CardContent>
-      <Divider sx={{ my: 0 }} />
+      <Divider sx={{my: 0}} />
       <CardContent
         sx={{
           py: "10px !important"
@@ -188,8 +188,8 @@ const CardUser = (props: ICardUserProps) => {
           }}
         >
           <Button
-            variant='text'
-            color='primary'
+            variant="text"
+            color="primary"
             onClick={() => setExpanded(!expanded)}
           >
             {expanded ? "Recolher detalhes" : "Expandir detalhes"}
@@ -197,10 +197,10 @@ const CardUser = (props: ICardUserProps) => {
 
           {expanded && mode === "edit" && (
             <Button
-              variant='text'
-              color='secondary'
+              variant="text"
+              color="secondary"
               onClick={() => setShowResume(!showResume)}
-              sx={{ marginRight: "auto" }}
+              sx={{marginRight: "auto"}}
               endIcon={showResume ? <ArticleIcon /> : <TableRowsOutlinedIcon />}
             >
               {showResume ? "Resumo" : "Formulário"}
@@ -218,7 +218,7 @@ const CardUser = (props: ICardUserProps) => {
           )}
         </Box>
       </CardContent>
-      <Collapse in={expanded} timeout='auto'>
+      <Collapse in={expanded} timeout="auto">
         <CardContent>
           <Box
             sx={{
@@ -257,7 +257,7 @@ const CardUser = (props: ICardUserProps) => {
             </Grid>
           </Box>
         </CardContent>
-        <Divider sx={{ my: 0 }} />
+        <Divider sx={{my: 0}} />
         <CardContent
           sx={{
             py: "10px !important"
@@ -272,8 +272,8 @@ const CardUser = (props: ICardUserProps) => {
             }}
           >
             <Button
-              variant='text'
-              color='primary'
+              variant="text"
+              color="primary"
               onClick={() => setExpanded(!expanded)}
             >
               Recolher Detalhes

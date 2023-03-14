@@ -1,4 +1,4 @@
-import { dbClient } from "src/configs/sanityConfig"
+import {dbClient} from "src/configs/sanityConfig"
 import Product from "src/interfaces/Product"
 import Origin from "src/interfaces/Origin"
 import Sale from "src/interfaces/Sale"
@@ -23,14 +23,15 @@ const lastSalesNumbers = async () => {
 // Handle the sale number creation
 export const getSaleNumber = async (): Promise<number> => {
   // Create New Promise
+  // eslint-disable-next-line
   return new Promise(async (resolve, reject) => {
-    const { actualSaleNumber, lastSaleNumber } = await lastSalesNumbers()
+    const {actualSaleNumber, lastSaleNumber} = await lastSalesNumbers()
     // Check if the last sale number is the same as the actual sale number
     if (actualSaleNumber === lastSaleNumber) {
       // Increment the sale number by 1 and return it
       dbClient
         .patch("8a7d451e-193d-4ebc-92c1-40dfc7725ed8")
-        .inc({ saleNumber: 1 })
+        .inc({saleNumber: 1})
         .commit()
         .then(res => {
           console.log("Sale number updated")
@@ -47,7 +48,7 @@ export const getSaleNumber = async (): Promise<number> => {
       // Set the sale number to the last sale number + 1 and return it
       dbClient
         .patch("8a7d451e-193d-4ebc-92c1-40dfc7725ed8")
-        .set({ saleNumber: lastSaleNumber + 1 })
+        .set({saleNumber: lastSaleNumber + 1})
         .commit()
         .then(res => {
           return resolve(res.saleNumber)
@@ -234,7 +235,7 @@ const getOneSaleByIdQ = `
 
 export const getOneSaleById = async (id: string): Promise<Sale> => {
   try {
-    return dbClient.fetch(getOneSaleByIdQ, { saleID: id })
+    return dbClient.fetch(getOneSaleByIdQ, {saleID: id})
   } catch (err) {
     throw err
   }
@@ -270,7 +271,7 @@ const getSalesByReferenceByDateRangeQ = `
 
 export const getSalesByReferenceByDateRange = async (
   storeRef: string,
-  { startDate, endDate }: { startDate: string; endDate: string }
+  {startDate, endDate}: {startDate: string; endDate: string}
 ): Promise<Sale[]> => {
   console.log("dateRange", startDate, endDate, storeRef)
   try {
@@ -425,7 +426,7 @@ export const changeSaleAuditStatus = async (
   try {
     return await dbClient
       .patch(saleID)
-      .set({ auditStatus: status, auditFeedBack: auditFeedBack })
+      .set({auditStatus: status, auditFeedBack: auditFeedBack})
       .commit()
   } catch (err) {
     throw err
@@ -450,7 +451,7 @@ export const updateSaleByKeyAndValue = async (
   try {
     return await dbClient
       .patch(saleID)
-      .set({ [key]: value })
+      .set({[key]: value})
       .commit()
   } catch (err) {
     throw err
@@ -476,7 +477,7 @@ export const getSaleBySaleNumber = async (
           product->,
         }
       }`,
-      { saleNumber: saleNumber }
+      {saleNumber: saleNumber}
     )
     console.log(sale)
     return sale
@@ -492,7 +493,7 @@ export const updateSaleClient = async (
   try {
     return await dbClient
       .patch(saleID)
-      .set({ client: { _ref: clientID, _type: "reference" } })
+      .set({client: {_ref: clientID, _type: "reference"}})
       .commit()
   } catch (err) {
     throw err

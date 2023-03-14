@@ -1,4 +1,4 @@
-import { dbClient } from "src/configs/sanityConfig"
+import {dbClient} from "src/configs/sanityConfig"
 import Client from "src/interfaces/Client"
 import moment from "moment"
 
@@ -146,7 +146,7 @@ export const getAllClientsByReferenceId = async ({
   referenceId: string
 }): Promise<Client[]> => {
   try {
-    return await dbClient.fetch(queryAllClientsByRefenceId, { referenceId })
+    return await dbClient.fetch(queryAllClientsByRefenceId, {referenceId})
   } catch (e) {
     console.log(e)
     throw e
@@ -164,7 +164,7 @@ export const createClient = async (client: Client) => {
     return data.clientNumber
   }
 
-  let clientObject = {
+  const clientObject = {
     _type: "client",
     createdAt: moment().format("YYYY-MM-DD"),
     clientNumber: client.clientNumber || null,
@@ -201,7 +201,7 @@ export const createClient = async (client: Client) => {
 
   try {
     // Increment client number
-    const { clientNumber } = await increaseClientCode()
+    const {clientNumber} = await increaseClientCode()
     clientObject.clientNumber = clientNumber
     // Create client
     const result = await dbClient.create(clientObject)
@@ -216,7 +216,7 @@ export const increaseClientCode = async () => {
   try {
     return dbClient
       .patch("8a7d451e-193d-4ebc-92c1-40dfc7725ed8")
-      .inc({ clientNumber: 1 })
+      .inc({clientNumber: 1})
       .commit()
   } catch (error) {
     throw error

@@ -6,7 +6,7 @@ import IconButton from "@mui/material/IconButton"
 import MenuIcon from "mdi-material-ui/Menu"
 
 // ** Type Import
-import { Settings } from "src/@core/context/settingsContext"
+import {Settings} from "src/@core/context/settingsContext"
 
 // ** Components
 import ModeToggler from "src/@core/layouts/components/shared-components/ModeToggler"
@@ -22,7 +22,7 @@ interface Props {
 
 const AppBarContent = (props: Props) => {
   // ** Props
-  const { hidden, settings, saveSettings, toggleNavVisibility } = props
+  const {hidden, settings, saveSettings, toggleNavVisibility} = props
 
   return (
     <Box
@@ -34,13 +34,13 @@ const AppBarContent = (props: Props) => {
       }}
     >
       <Box
-        className='actions-left'
-        sx={{ mr: 2, display: "flex", alignItems: "center" }}
+        className="actions-left"
+        sx={{mr: 2, display: "flex", alignItems: "center"}}
       >
         {hidden ? (
           <IconButton
-            color='inherit'
-            sx={{ ml: -2.75 }}
+            color="inherit"
+            sx={{ml: -2.75}}
             onClick={toggleNavVisibility}
           >
             <MenuIcon />
@@ -48,8 +48,8 @@ const AppBarContent = (props: Props) => {
         ) : null}
       </Box>
       <Box
-        className='actions-right'
-        sx={{ display: "flex", alignItems: "center", gap: ".7rem" }}
+        className="actions-right"
+        sx={{display: "flex", alignItems: "center", gap: ".7rem"}}
       >
         <ModeToggler settings={settings} saveSettings={saveSettings} />
         <StoreSelect />

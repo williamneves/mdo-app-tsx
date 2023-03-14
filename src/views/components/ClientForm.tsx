@@ -1,5 +1,5 @@
 // ** React Imports
-import { Fragment, useEffect, useState } from "react"
+import {Fragment, useEffect, useState} from "react"
 
 // ** MUI Imports
 import Card from "@mui/material/Card"
@@ -22,20 +22,20 @@ import SaveAltIcon from "@mui/icons-material/SaveAlt"
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 
 // ** Hooks
-import { Controller, useForm } from "react-hook-form"
-import { useAuth } from "src/hooks/useAuth"
+import {Controller, useForm} from "react-hook-form"
+import {useAuth} from "src/hooks/useAuth"
 import * as useClient from "src/queries/clients"
-import { useQueryClient } from "@tanstack/react-query"
+import {useQueryClient} from "@tanstack/react-query"
 
 // ** Third Party Imports
 import * as yup from "yup"
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup"
+import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
 import toast from "react-hot-toast"
-import { validateCPF, validatePhone } from "validations-br"
+import {validateCPF, validatePhone} from "validations-br"
 import cep from "cep-promise"
 
 // ** Next Imports
-import { useRouter } from "next/router"
+import {useRouter} from "next/router"
 
 // ** Third Party Components
 import TextInputControlled from "components/inputs/TextInputControlled"
@@ -51,15 +51,15 @@ interface Props {
   client?: Client
 }
 
-const clientForm = ({ client }: Props) => {
-  const { user } = useAuth()
+const clientForm = ({client}: Props) => {
+  const {user} = useAuth()
   const router = useRouter()
 
   // React Query
   const queryClient = useQueryClient()
   const createClient = useClient.useCreateClientQuery(queryClient)
   const updateClient = useClient.useUpdateClientQuery(queryClient)
-  const { isLoading } = createClient
+  const {isLoading} = createClient
 
   interface DefaultValues
     extends Omit<
@@ -183,7 +183,7 @@ const clientForm = ({ client }: Props) => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
     setValue,
     getValues,
     reset,
@@ -206,7 +206,7 @@ const clientForm = ({ client }: Props) => {
         `Cliente ${
           client ? `#${client?.clientNumber} editado` : "criado"
         } com sucesso!`,
-        { id: toastId, position: "top-center" }
+        {id: toastId, position: "top-center"}
       )
       if (client) router.push("/clientes/lista-de-clientes")
       reset()
@@ -227,7 +227,7 @@ const clientForm = ({ client }: Props) => {
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Typography
-          variant='h5'
+          variant="h5"
           display={"flex"}
           alignItems={"center"}
           marginBottom={3}
@@ -236,14 +236,12 @@ const clientForm = ({ client }: Props) => {
         >
           {client ? (
             <Fragment>
-              <ManageAccountsIcon
-                sx={{ color: "primary.main", fontSize: 30 }}
-              />{" "}
+              <ManageAccountsIcon sx={{color: "primary.main", fontSize: 30}} />{" "}
               Editar Cliente
             </Fragment>
           ) : (
             <Fragment>
-              <PersonAddIcon sx={{ color: "primary.main", fontSize: 30 }} />{" "}
+              <PersonAddIcon sx={{color: "primary.main", fontSize: 30}} />{" "}
               Cadastro de Cliente
             </Fragment>
           )}
@@ -263,11 +261,11 @@ const clientForm = ({ client }: Props) => {
                       <Controller
                         control={control}
                         name={"inactive"}
-                        rules={{ required: true }}
-                        render={({ field: { value, onChange } }) => (
+                        rules={{required: true}}
+                        render={({field: {value, onChange}}) => (
                           <FormGroup row>
                             <FormControlLabel
-                              label='O cliente está ativo?'
+                              label="O cliente está ativo?"
                               control={
                                 <Switch
                                   disabled={isLoading}
@@ -329,9 +327,9 @@ const clientForm = ({ client }: Props) => {
                     disabled={isLoading}
                     selectItems={{
                       items: [
-                        { key: "male", value: "male", label: "Homem" },
-                        { key: "male", value: "female", label: "Mulher" },
-                        { key: "male", value: "other", label: "Outros" }
+                        {key: "male", value: "male", label: "Homem"},
+                        {key: "male", value: "female", label: "Mulher"},
+                        {key: "male", value: "other", label: "Outros"}
                       ]
                     }}
                   />
@@ -389,8 +387,8 @@ const clientForm = ({ client }: Props) => {
                     <Controller
                       control={control}
                       name={"address.number"}
-                      rules={{ required: true }}
-                      render={({ field: { value, onChange, ref } }) => (
+                      rules={{required: true}}
+                      render={({field: {value, onChange, ref}}) => (
                         <TextField
                           value={value}
                           onChange={onChange}
@@ -437,7 +435,7 @@ const clientForm = ({ client }: Props) => {
                     optionLabel={"name"}
                     errors={errors}
                     options={user?.stores}
-                    loading={!Boolean(user?.stores)}
+                    loading={!user?.stores}
                     disabled={
                       user?.stores.length === 1 ||
                       user?.role !== "admin" ||
@@ -448,10 +446,10 @@ const clientForm = ({ client }: Props) => {
                 <Grid item xs={12}>
                   <Divider variant={"middle"} />
                 </Grid>
-                <Grid item xs={12} sx={{ display: "flex" }}>
+                <Grid item xs={12} sx={{display: "flex"}}>
                   {client && (
                     <Button variant={"outlined"} onClick={() => history.back()}>
-                      <ArrowBackIcon sx={{ mr: 2 }} />
+                      <ArrowBackIcon sx={{mr: 2}} />
                       Voltar
                     </Button>
                   )}
@@ -459,9 +457,9 @@ const clientForm = ({ client }: Props) => {
                     loading={isLoading}
                     type={"submit"}
                     variant={"contained"}
-                    sx={{ marginLeft: "auto" }}
+                    sx={{marginLeft: "auto"}}
                   >
-                    <SaveAltIcon sx={{ marginRight: 1 }} />
+                    <SaveAltIcon sx={{marginRight: 1}} />
                     Salvar
                   </LoadingButton>
                 </Grid>

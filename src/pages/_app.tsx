@@ -1,29 +1,29 @@
 // ** React Imports
-import { ReactNode } from "react"
+import {ReactNode} from "react"
 
 // ** Next Imports
 import Head from "next/head"
-import { Router } from "next/router"
-import type { NextPage } from "next"
-import type { AppProps } from "next/app"
+import {Router} from "next/router"
+import type {NextPage} from "next"
+import type {AppProps} from "next/app"
 
 // ** Loader Import
 import NProgress from "nprogress"
 
 // ** Emotion Imports
-import { CacheProvider } from "@emotion/react"
-import type { EmotionCache } from "@emotion/cache"
+import {CacheProvider} from "@emotion/react"
+import type {EmotionCache} from "@emotion/cache"
 
 // ** Config Imports
 
-import { defaultACLObj } from "src/configs/acl"
+import {defaultACLObj} from "src/configs/acl"
 import themeConfig from "src/configs/themeConfig"
 
 // ** Fake-DB Import
 import "src/@fake-db"
 
 // ** Third Party Import
-import { Toaster } from "react-hot-toast"
+import {Toaster} from "react-hot-toast"
 
 // ** Component Imports
 import UserLayout from "src/layouts/UserLayout"
@@ -37,7 +37,7 @@ import WindowWrapper from "src/@core/components/window-wrapper"
 import Spinner from "src/@core/components/spinner"
 
 // ** Contexts
-import { AuthProvider } from "src/context/AuthContext"
+import {AuthProvider} from "src/context/AuthContext"
 import {
   SettingsConsumer,
   SettingsProvider
@@ -47,7 +47,7 @@ import {
 import ReactHotToast from "src/@core/styles/libs/react-hot-toast"
 
 // ** Utils Imports
-import { createEmotionCache } from "src/@core/utils/create-emotion-cache"
+import {createEmotionCache} from "src/@core/utils/create-emotion-cache"
 
 // ** Prismjs Styles
 import "prismjs"
@@ -62,8 +62,8 @@ import "react-perfect-scrollbar/dist/css/styles.css"
 import "../../styles/globals.css"
 
 // ** React Query Imports
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query"
+import {ReactQueryDevtools} from "@tanstack/react-query-devtools"
 
 // Create a React Query client
 const queryClient = new QueryClient()
@@ -95,7 +95,7 @@ if (themeConfig.routingLoader) {
   })
 }
 
-const Guard = ({ children, authGuard, guestGuard }: GuardProps) => {
+const Guard = ({children, authGuard, guestGuard}: GuardProps) => {
   if (guestGuard) {
     return <GuestGuard fallback={<Spinner />}>{children}</GuestGuard>
   } else if (!guestGuard && !authGuard) {
@@ -107,7 +107,7 @@ const Guard = ({ children, authGuard, guestGuard }: GuardProps) => {
 
 // ** Configure JSS & ClassName
 const App = (props: ExtendedAppProps) => {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
+  const {Component, emotionCache = clientSideEmotionCache, pageProps} = props
 
   // Variables
   const getLayout =
@@ -126,20 +126,18 @@ const App = (props: ExtendedAppProps) => {
       <Head>
         <title>{`${themeConfig.templateName} - Sistema de Gestão`}</title>
         <meta
-          name='description'
+          name="description"
           content={`${themeConfig.templateName} – Sistema de Gestão em vendas e controle de prêmio de funcionários`}
         />
-        <meta name='keywords' content='Sistema de gestão' />
-        <meta name='viewport' content='initial-scale=1, width=device-width' />
+        <meta name="keywords" content="Sistema de gestão" />
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
 
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
-          <SettingsProvider
-            {...(setConfig ? { pageSettings: setConfig() } : {})}
-          >
+          <SettingsProvider {...(setConfig ? {pageSettings: setConfig()} : {})}>
             <SettingsConsumer>
-              {({ settings }) => {
+              {({settings}) => {
                 return (
                   <ThemeComponent settings={settings}>
                     <WindowWrapper>
@@ -155,7 +153,7 @@ const App = (props: ExtendedAppProps) => {
                     <ReactHotToast>
                       <Toaster
                         position={settings.toastPosition}
-                        toastOptions={{ className: "react-hot-toast" }}
+                        toastOptions={{className: "react-hot-toast"}}
                       />
                     </ReactHotToast>
                   </ThemeComponent>

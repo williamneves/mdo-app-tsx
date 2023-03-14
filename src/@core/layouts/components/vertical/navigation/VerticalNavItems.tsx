@@ -1,5 +1,5 @@
 // ** Types Import
-import { Settings } from "src/@core/context/settingsContext"
+import {Settings} from "src/@core/context/settingsContext"
 import {
   NavLink,
   NavGroup,
@@ -38,7 +38,7 @@ const resolveNavItemComponent = (
 
 const VerticalNavItems = (props: Props) => {
   // ** Props
-  const { verticalNavItems } = props
+  const {verticalNavItems} = props
 
   const RenderMenuItems = verticalNavItems?.map(
     (item: NavGroup | NavLink | NavSectionTitle, index: number) => {

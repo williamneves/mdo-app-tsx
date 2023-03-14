@@ -13,17 +13,17 @@ import ChevronUp from "mdi-material-ui/ChevronUp"
 import ChevronDown from "mdi-material-ui/ChevronDown"
 
 // ** Types Imports
-import { CardStatsVerticalProps } from "src/@core/components/card-statistics/types"
+import {CardStatsVerticalProps} from "src/@core/components/card-statistics/types"
 
 const CardStatsVertical = (props: CardStatsVerticalProps) => {
   // ** Props
-  const { title, color, icon, stats, trend, chipText, trendNumber } = props
+  const {title, color, icon, stats, trend, chipText, trendNumber} = props
 
   const TrendIcon = trend === "positive" ? ChevronUp : ChevronDown
 
   return (
     <Card>
-      <CardContent sx={{ display: "flex", flexDirection: "column" }}>
+      <CardContent sx={{display: "flex", flexDirection: "column"}}>
         <Box
           sx={{
             mb: 6,
@@ -33,12 +33,12 @@ const CardStatsVertical = (props: CardStatsVerticalProps) => {
             justifyContent: "space-between"
           }}
         >
-          <CustomAvatar skin='light' variant='rounded' color={color}>
+          <CustomAvatar skin="light" variant="rounded" color={color}>
             {icon}
           </CustomAvatar>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{display: "flex", alignItems: "center"}}>
             <Typography
-              variant='subtitle2'
+              variant="subtitle2"
               sx={{
                 color: trend === "positive" ? "success.main" : "error.main"
               }}
@@ -46,24 +46,24 @@ const CardStatsVertical = (props: CardStatsVerticalProps) => {
               {trendNumber}
             </Typography>
             <TrendIcon
-              fontSize='small'
+              fontSize="small"
               sx={{
                 color: trend === "positive" ? "success.main" : "error.main"
               }}
             />
           </Box>
         </Box>
-        <Typography variant='h6' sx={{ mb: 1 }}>
+        <Typography variant="h6" sx={{mb: 1}}>
           {stats}
         </Typography>
-        <Typography variant='body2' sx={{ mb: 5 }}>
+        <Typography variant="body2" sx={{mb: 5}}>
           {title}
         </Typography>
         <CustomChip
-          skin='light'
-          size='small'
+          skin="light"
+          size="small"
           label={chipText}
-          color='secondary'
+          color="secondary"
           sx={{
             height: 20,
             fontWeight: 500,

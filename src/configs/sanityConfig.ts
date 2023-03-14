@@ -16,4 +16,4 @@ const getImageUrl = (image: any) => {
   return builder.image(image)
 }
 
-export { sanityConfig as dbClient, getImageUrl }
+export {sanityConfig as dbClient, getImageUrl}

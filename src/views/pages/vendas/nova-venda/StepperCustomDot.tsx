@@ -1,17 +1,17 @@
 // ** MUI Imports
-import { styled } from "@mui/material/styles"
-import MuiBox, { BoxProps } from "@mui/material/Box"
-import { StepIconProps } from "@mui/material/StepIcon"
+import {styled} from "@mui/material/styles"
+import MuiBox, {BoxProps} from "@mui/material/Box"
+import {StepIconProps} from "@mui/material/StepIcon"
 
 // ** Icons Imports
 import Alert from "mdi-material-ui/Alert"
 import CheckCircle from "mdi-material-ui/CheckCircle"
 
 // ** Util Imports
-import { hexToRGBA } from "src/@core/utils/hex-to-rgba"
+import {hexToRGBA} from "src/@core/utils/hex-to-rgba"
 
 // Styled Box component
-const Box = styled(MuiBox)<BoxProps>(({ theme }) => ({
+const Box = styled(MuiBox)<BoxProps>(({theme}) => ({
   width: 20,
   height: 20,
   borderWidth: 3,
@@ -22,7 +22,7 @@ const Box = styled(MuiBox)<BoxProps>(({ theme }) => ({
 
 const StepperCustomDot = (props: StepIconProps) => {
   // ** Props
-  const { active, completed, error } = props
+  const {active, completed, error} = props
 
   if (error) {
     return (
@@ -50,7 +50,7 @@ const StepperCustomDot = (props: StepIconProps) => {
     return (
       <Box
         sx={{
-          ...(active && { borderColor: "primary.main" })
+          ...(active && {borderColor: "primary.main"})
         }}
       />
     )

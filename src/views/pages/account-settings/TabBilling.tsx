@@ -1,10 +1,10 @@
 // ** React Imports
-import { useState } from "react"
+import {useState} from "react"
 
 // ** MUI Imports
 import Radio from "@mui/material/Radio"
 import Button from "@mui/material/Button"
-import { styled } from "@mui/material/styles"
+import {styled} from "@mui/material/styles"
 import FormLabel from "@mui/material/FormLabel"
 import TextField from "@mui/material/TextField"
 import RadioGroup from "@mui/material/RadioGroup"
@@ -41,14 +41,14 @@ import {
 import "react-credit-cards/es/styles-compiled.css"
 
 // ** Styled Component
-const StyledGrid = styled(Grid)(({ theme }) => ({
+const StyledGrid = styled(Grid)(({theme}) => ({
   marginTop: theme.spacing(5),
   [theme.breakpoints.down("md")]: {
     order: -1
   }
 }))
 
-const Chip = styled(CustomChip)(({ theme }) => ({
+const Chip = styled(CustomChip)(({theme}) => ({
   height: 20,
   fontWeight: 600,
   fontSize: "0.75rem",
@@ -59,7 +59,7 @@ const Chip = styled(CustomChip)(({ theme }) => ({
   }
 }))
 
-const CreditCardWrapper = styled(Box)(({ theme }) => ({
+const CreditCardWrapper = styled(Box)(({theme}) => ({
   display: "flex",
   flexDirection: "column",
   [theme.breakpoints.down("xl")]: {
@@ -86,7 +86,7 @@ const TabBilling = () => {
   const [paymentMethod, setPaymentMethod] = useState<any>("card")
   const handleBlur = () => setFocus(undefined)
 
-  const handleInputChange = ({ target }: any) => {
+  const handleInputChange = ({target}: any) => {
     if (target.name === "number") {
       target.value = formatCreditCardNumber(target.value, Payment)
       setCardNumber(target.value)
@@ -103,29 +103,29 @@ const TabBilling = () => {
     <CardContent>
       <form>
         <Grid container spacing={6}>
-          <Grid item xs={12} md={8} sx={{ mt: 5 }}>
+          <Grid item xs={12} md={8} sx={{mt: 5}}>
             <Grid container spacing={6}>
               <Grid item xs={12}>
                 <FormControl>
-                  <FormLabel sx={{ mb: 1, color: "text.secondary" }}>
+                  <FormLabel sx={{mb: 1, color: "text.secondary"}}>
                     Payment Method
                   </FormLabel>
                   <RadioGroup
                     row
                     value={paymentMethod}
-                    aria-label='payment method'
-                    name='account-settings-billing-radio'
+                    aria-label="payment method"
+                    name="account-settings-billing-radio"
                     onChange={e => setPaymentMethod(e.target.value)}
                   >
                     <FormControlLabel
-                      value='card'
-                      label='Credit/Debit/ATM Card'
+                      value="card"
+                      label="Credit/Debit/ATM Card"
                       control={<Radio />}
-                      sx={{ mr: 6.75 }}
+                      sx={{mr: 6.75}}
                     />
                     <FormControlLabel
-                      value='cod'
-                      label='COD/Cheque'
+                      value="cod"
+                      label="COD/Cheque"
                       control={<Radio />}
                     />
                   </RadioGroup>
@@ -147,29 +147,29 @@ const TabBilling = () => {
                       <Grid
                         item
                         xs={12}
-                        sx={{ pt: theme => `${theme.spacing(4)} !important` }}
+                        sx={{pt: theme => `${theme.spacing(4)} !important`}}
                       >
                         <TextField
                           fullWidth
-                          name='number'
+                          name="number"
                           value={cardNumber}
-                          autoComplete='off'
-                          label='Card Number'
+                          autoComplete="off"
+                          label="Card Number"
                           onBlur={handleBlur}
                           onChange={handleInputChange}
-                          placeholder='0000 0000 0000 0000'
+                          placeholder="0000 0000 0000 0000"
                           onFocus={e => setFocus(e.target.name)}
                         />
                       </Grid>
                       <Grid item xs={12}>
                         <TextField
                           fullWidth
-                          name='name'
+                          name="name"
                           value={name}
-                          label='Name'
-                          autoComplete='off'
+                          label="Name"
+                          autoComplete="off"
                           onBlur={handleBlur}
-                          placeholder='John Doe'
+                          placeholder="John Doe"
                           onFocus={e => setFocus(e.target.name)}
                           onChange={e => setName(e.target.value)}
                         />
@@ -177,24 +177,24 @@ const TabBilling = () => {
                       <Grid item xs={6}>
                         <TextField
                           fullWidth
-                          name='expiry'
+                          name="expiry"
                           value={expiry}
-                          autoComplete='off'
-                          label='Expiry Date'
-                          placeholder='MM/YY'
+                          autoComplete="off"
+                          label="Expiry Date"
+                          placeholder="MM/YY"
                           onBlur={handleBlur}
                           onChange={handleInputChange}
-                          inputProps={{ maxLength: "5" }}
+                          inputProps={{maxLength: "5"}}
                           onFocus={e => setFocus(e.target.name)}
                         />
                       </Grid>
                       <Grid item xs={6}>
                         <TextField
                           fullWidth
-                          name='cvc'
+                          name="cvc"
                           value={cvc}
-                          label='CVC Code'
-                          autoComplete='off'
+                          label="CVC Code"
+                          autoComplete="off"
                           onBlur={handleBlur}
                           onChange={handleInputChange}
                           onFocus={e => setFocus(e.target.name)}
@@ -220,43 +220,43 @@ const TabBilling = () => {
                 border: theme => `1px solid ${theme.palette.divider}`
               }}
             >
-              <Typography variant='h6' sx={{ mb: 4, color: "text.secondary" }}>
+              <Typography variant="h6" sx={{mb: 4, color: "text.secondary"}}>
                 Your Current Plan
               </Typography>
               <Chip
-                skin='light'
-                size='small'
-                color='primary'
-                label='Basic Plan'
+                skin="light"
+                size="small"
+                color="primary"
+                label="Basic Plan"
               />
-              <Box sx={{ my: 4, display: "flex", alignItems: "center" }}>
-                <AccountOutline sx={{ mr: 1.5 }} />
+              <Box sx={{my: 4, display: "flex", alignItems: "center"}}>
+                <AccountOutline sx={{mr: 1.5}} />
                 <Typography
-                  variant='body2'
-                  sx={{ fontSize: "1rem", lineHeight: 1.5 }}
+                  variant="body2"
+                  sx={{fontSize: "1rem", lineHeight: 1.5}}
                 >
                   5 Users
                 </Typography>
               </Box>
-              <Box sx={{ mb: 4, display: "flex", alignItems: "center" }}>
-                <CloudOutline sx={{ mr: 1.5 }} />
+              <Box sx={{mb: 4, display: "flex", alignItems: "center"}}>
+                <CloudOutline sx={{mr: 1.5}} />
                 <Typography
-                  variant='body2'
-                  sx={{ fontSize: "1rem", lineHeight: 1.5 }}
+                  variant="body2"
+                  sx={{fontSize: "1rem", lineHeight: 1.5}}
                 >
                   10 GB storage
                 </Typography>
               </Box>
-              <Box sx={{ mb: 4, display: "flex", alignItems: "center" }}>
-                <HelpCircleOutline sx={{ mr: 1.5 }} />
+              <Box sx={{mb: 4, display: "flex", alignItems: "center"}}>
+                <HelpCircleOutline sx={{mr: 1.5}} />
                 <Typography
-                  variant='body2'
-                  sx={{ fontSize: "1rem", lineHeight: 1.5 }}
+                  variant="body2"
+                  sx={{fontSize: "1rem", lineHeight: 1.5}}
                 >
                   Basic Support
                 </Typography>
               </Box>
-              <Button fullWidth variant='contained'>
+              <Button fullWidth variant="contained">
                 Upgrade Plan
               </Button>
             </Box>
@@ -265,15 +265,15 @@ const TabBilling = () => {
           <Grid
             item
             xs={12}
-            sx={{ mt: paymentMethod === "card" ? 3 : undefined }}
+            sx={{mt: paymentMethod === "card" ? 3 : undefined}}
           >
-            <Button variant='contained' sx={{ mr: 4 }}>
+            <Button variant="contained" sx={{mr: 4}}>
               Save Changes
             </Button>
             <Button
-              type='reset'
-              variant='outlined'
-              color='secondary'
+              type="reset"
+              variant="outlined"
+              color="secondary"
               onClick={() => {
                 setCvc("")
                 setName("")

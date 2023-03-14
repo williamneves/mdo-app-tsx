@@ -2,7 +2,7 @@
 import dynamic from "next/dynamic"
 
 // ** Types
-import { EditorProps } from "react-draft-wysiwyg"
+import {EditorProps} from "react-draft-wysiwyg"
 
 // ! To avoid 'Window is not defined' error
 const ReactDraftWysiwyg = dynamic<EditorProps>(

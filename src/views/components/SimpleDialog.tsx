@@ -41,11 +41,7 @@ interface SimpleDialogProps {
   data: DataDialog
 }
 
-export default function SimpleDialog({
-  open,
-  setOpen,
-  data
-}: SimpleDialogProps) {
+export default function SimpleDialog({open, setOpen, data}: SimpleDialogProps) {
   const handleClose = () => {
     console.log("closing dialog")
     data.confirmAction()
@@ -57,16 +53,16 @@ export default function SimpleDialog({
       <Dialog
         open={open}
         onClose={() => setOpen(false)}
-        aria-labelledby='alert-dialog-title'
-        aria-describedby='alert-dialog-description'
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
       >
-        {Boolean(data) ? (
+        {data ? (
           <>
-            <DialogTitle id='alert-dialog-title'>{data.title}</DialogTitle>
+            <DialogTitle id="alert-dialog-title">{data.title}</DialogTitle>
             <DialogContent>
               <DialogContentText
                 component={"div"}
-                id='alert-dialog-description'
+                id="alert-dialog-description"
               >
                 {data.message}
               </DialogContentText>

@@ -1,12 +1,12 @@
 // ** React Imports
-import { Fragment, useEffect } from "react"
+import {Fragment, useEffect} from "react"
 
 // ** MUI Imports
 import Backdrop from "@mui/material/Backdrop"
-import Box, { BoxProps } from "@mui/material/Box"
+import Box, {BoxProps} from "@mui/material/Box"
 
 // ** Types
-import { SidebarType } from "./type"
+import {SidebarType} from "./type"
 
 const Sidebar = (props: BoxProps & SidebarType) => {
   // ** Props
@@ -47,10 +47,10 @@ const Sidebar = (props: BoxProps & SidebarType) => {
           position: "absolute",
           transition: "all .25s ease-in-out",
           backgroundColor: "background.paper",
-          ...(show ? { opacity: 1 } : { opacity: 0 }),
+          ...(show ? {opacity: 1} : {opacity: 0}),
           ...(direction === "right"
-            ? { left: "auto", right: show ? 0 : "-100%" }
-            : { right: "auto", left: show ? 0 : "-100%" }),
+            ? {left: "auto", right: show ? 0 : "-100%"}
+            : {right: "auto", left: show ? 0 : "-100%"}),
           ...sx
         }}
       >

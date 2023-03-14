@@ -1,5 +1,5 @@
 // ** React Imports
-import { useEffect, useState } from "react"
+import {useEffect, useState} from "react"
 
 // ** MUI Imports
 import Card from "@mui/material/Card"
@@ -20,25 +20,25 @@ import SaveAltIcon from "@mui/icons-material/SaveAlt"
 
 // ** Third Party Imports
 import * as yup from "yup"
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup"
+import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
 import moment from "moment"
-import { toast } from "react-hot-toast"
+import {toast} from "react-hot-toast"
 
 // ** Third Party Components
 import TextInputControlled from "components/inputs/TextInputControlled"
 import DateInputControlled from "components/inputs/DateInputControlled"
 
 // ** Hooks
-import { useForm } from "react-hook-form"
-import { useAuth } from "src/hooks/useAuth"
-import { useQueryClient } from "@tanstack/react-query"
+import {useForm} from "react-hook-form"
+import {useAuth} from "src/hooks/useAuth"
+import {useQueryClient} from "@tanstack/react-query"
 import * as useDailyReport from "src/queries/streetDailyReport/"
 
 // ** Types
 import Client from "src/interfaces/Client"
 
 const StreetDailyReport = () => {
-  const { user, selectedStore } = useAuth()
+  const {user, selectedStore} = useAuth()
 
   // React Query
   const queryClient = useQueryClient()
@@ -46,7 +46,7 @@ const StreetDailyReport = () => {
     useDailyReport.useCreateStreetDailyReportQuery(queryClient)
   const getClientsByReporter =
     useDailyReport.useGetClientsByReporterQuery(queryClient)
-  const { isLoading } = createDailyReport
+  const {isLoading} = createDailyReport
 
   const defaultValue = {
     reportDate: moment(),
@@ -89,7 +89,7 @@ const StreetDailyReport = () => {
     watch,
     getValues,
     reset,
-    formState: { errors }
+    formState: {errors}
   } = useForm({
     defaultValues: defaultValue,
     resolver: yupResolver(schema),
@@ -128,12 +128,12 @@ const StreetDailyReport = () => {
         _key: client._id
       }))
       await createDailyReport.mutateAsync(data)
-      toast.success("Relatório diário salvo com sucesso!", { id: toastId })
+      toast.success("Relatório diário salvo com sucesso!", {id: toastId})
       reset(defaultValue)
       setReportsCount(reportsCount + 1)
     } catch (error) {
       console.log(error)
-      toast.error("Erro ao salvar relatório diário!", { id: toastId })
+      toast.error("Erro ao salvar relatório diário!", {id: toastId})
     }
   }
 
@@ -148,7 +148,7 @@ const StreetDailyReport = () => {
           marginBottom={3}
           alignItems={"center"}
         >
-          <TextSnippetIcon sx={{ fontSize: 30 }} />
+          <TextSnippetIcon sx={{fontSize: 30}} />
           Relatório Diário de Street
         </Typography>
         <Card>
@@ -214,7 +214,7 @@ const StreetDailyReport = () => {
                       position: "relative",
                       overflow: "auto",
                       maxHeight: 300,
-                      "& ul": { padding: 0 }
+                      "& ul": {padding: 0}
                     }}
                     subheader={<li />}
                   >
@@ -234,7 +234,7 @@ const StreetDailyReport = () => {
                       </li>
                     ))}
                   </MenuList>
-                  <Alert severity={"warning"} sx={{ mt: 3 }}>
+                  <Alert severity={"warning"} sx={{mt: 3}}>
                     <AlertTitle>Aviso</AlertTitle>
                     Este campo se refere aos clientes cadastrados na data do
                     relatório
@@ -243,14 +243,14 @@ const StreetDailyReport = () => {
                 <Grid item xs={12}>
                   <Divider variant={"middle"} />
                 </Grid>
-                <Grid item xs={12} sx={{ display: "flex" }}>
+                <Grid item xs={12} sx={{display: "flex"}}>
                   <LoadingButton
                     type={"submit"}
                     variant={"contained"}
                     loading={isLoading}
-                    sx={{ marginLeft: "auto" }}
+                    sx={{marginLeft: "auto"}}
                   >
-                    <SaveAltIcon sx={{ mr: 1 }} />
+                    <SaveAltIcon sx={{mr: 1}} />
                     Salvar
                   </LoadingButton>
                 </Grid>

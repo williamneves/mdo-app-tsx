@@ -1,5 +1,5 @@
 // ** React Imports
-import { ReactElement, useState } from "react"
+import {ReactElement, useState} from "react"
 
 // ** MUI Imports
 import Box from "@mui/material/Box"
@@ -20,7 +20,7 @@ import DotsVertical from "mdi-material-ui/DotsVertical"
 import AccountOutline from "mdi-material-ui/AccountOutline"
 
 // ** Types and Interfaces
-import { ThemeColor } from "src/@core/layouts/types"
+import {ThemeColor} from "src/@core/layouts/types"
 import Sale from "src/interfaces/Sale"
 
 // ** Custom Components Imports
@@ -63,20 +63,20 @@ const salesData: SaleDataType[] = [
 const renderStats = (salesData: SaleDataType[]) => {
   return salesData.map((sale: SaleDataType, index: number) => (
     <Grid item xs={12} sm={3} key={index}>
-      <Box key={index} sx={{ display: "flex", alignItems: "center" }}>
+      <Box key={index} sx={{display: "flex", alignItems: "center"}}>
         <CustomAvatar
-          skin='light'
-          variant='rounded'
+          skin="light"
+          variant="rounded"
           color={sale.color}
-          sx={{ mr: 4 }}
+          sx={{mr: 4}}
         >
           {sale.icon}
         </CustomAvatar>
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Typography variant='h6' sx={{ fontWeight: 600 }}>
+        <Box sx={{display: "flex", flexDirection: "column"}}>
+          <Typography variant="h6" sx={{fontWeight: 600}}>
             {sale.stats}
           </Typography>
-          <Typography variant='caption'>{sale.title}</Typography>
+          <Typography variant="caption">{sale.title}</Typography>
         </Box>
       </Box>
     </Grid>
@@ -94,7 +94,7 @@ interface CardStatisticsSalesProps {
 
 const CardStatisticsSales = (props: CardStatisticsSalesProps) => {
   // ** Props
-  const { data, caption, percentage } = props
+  const {data, caption, percentage} = props
 
   // ** States
   const [collapsed, setCollapsed] = useState<boolean>(true)
@@ -102,25 +102,25 @@ const CardStatisticsSales = (props: CardStatisticsSalesProps) => {
   return (
     <Card>
       <CardHeader
-        title='Resumo de Vendas'
-        titleTypographyProps={{ variant: "h6" }}
+        title="Resumo de Vendas"
+        titleTypographyProps={{variant: "h6"}}
         action={
           <IconButton
-            size='small'
-            aria-label='collapse'
-            sx={{ color: "text.secondary" }}
+            size="small"
+            aria-label="collapse"
+            sx={{color: "text.secondary"}}
             onClick={() => setCollapsed(!collapsed)}
           >
             {!collapsed ? (
-              <ChevronDown fontSize='small' />
+              <ChevronDown fontSize="small" />
             ) : (
-              <ChevronUp fontSize='small' />
+              <ChevronUp fontSize="small" />
             )}
           </IconButton>
         }
         subheader={
-          <Box sx={{ display: "flex", alignItems: "center" }}>
-            <Typography variant='subtitle2' sx={{ mr: 1.5 }}>
+          <Box sx={{display: "flex", alignItems: "center"}}>
+            <Typography variant="subtitle2" sx={{mr: 1.5}}>
               {caption}
             </Typography>
             {/*<Typography variant="subtitle2" sx={{ color: percentage.type === "decrease" ? 'error.main' : "success.main" }}>*/}

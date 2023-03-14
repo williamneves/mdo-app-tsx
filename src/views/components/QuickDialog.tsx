@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { Fragment, forwardRef } from "react"
+import React, {Fragment, forwardRef} from "react"
 import Link from "next/link"
 
 // ** MUI Imports
@@ -13,7 +13,7 @@ import DialogContent from "@mui/material/DialogContent"
 import Typography from "@mui/material/Typography"
 import IconButton from "@mui/material/IconButton"
 import Slide from "@mui/material/Slide"
-import { useTheme, useMediaQuery } from "@mui/material"
+import {useTheme, useMediaQuery} from "@mui/material"
 
 // ** MUI Icons
 import Close from "@mui/icons-material/Close"
@@ -88,8 +88,8 @@ const QuickDialog = (props: QuickDialogProps) => {
   // Switch Actions
   const mappingActions = (action: QuickDialogAction, index: number) => {
     // Deconstruct Action
-    const { mode } = action
-    const { label } = action.props
+    const {mode} = action
+    const {label} = action.props
 
     // Creating a unique key for each action
     const key = mode + label + (index + 1)
@@ -136,16 +136,16 @@ const QuickDialog = (props: QuickDialogProps) => {
         maxWidth={maxWidth || "md"}
         open={open}
         onClose={blockClose ? () => {} : handleClose}
-        aria-labelledby='QuickDialog-title'
+        aria-labelledby="QuickDialog-title"
       >
         <DialogTitle
-          id='QuickDialog-title'
+          id="QuickDialog-title"
           display={"flex"}
           justifyContent={"start"}
           alignItems={"center"}
           gap={3}
           marginLeft={4}
-          sx={{ p: 4 }}
+          sx={{p: 4}}
         >
           {/* Icon */}
           {data.headerIcon ? (
@@ -154,7 +154,7 @@ const QuickDialog = (props: QuickDialogProps) => {
             <VisibilityIcon color={"primary"} />
           )}
           {/* Title */}
-          <Typography variant='h6' component='span'>
+          <Typography variant="h6" component="span">
             {data.headerTitle || "Quick View"}
           </Typography>
 
@@ -163,7 +163,7 @@ const QuickDialog = (props: QuickDialogProps) => {
             customCloseComponent
           ) : (
             <IconButton
-              aria-label='close'
+              aria-label="close"
               onClick={handleClose}
               sx={{
                 top: 10,
@@ -176,11 +176,11 @@ const QuickDialog = (props: QuickDialogProps) => {
             </IconButton>
           )}
         </DialogTitle>
-        <DialogContent dividers sx={{ p: 4 }}>
+        <DialogContent dividers sx={{p: 4}}>
           {data.content}
         </DialogContent>
         <DialogActions
-          sx={{ paddingX: "1.2rem!important", paddingY: "0.8rem!important" }}
+          sx={{paddingX: "1.2rem!important", paddingY: "0.8rem!important"}}
         >
           <Box
             display={"flex"}

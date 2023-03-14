@@ -1,11 +1,11 @@
 // ** React Imports
-import { ReactNode, ReactElement, useEffect } from "react"
+import {ReactNode, ReactElement, useEffect} from "react"
 
 // ** Next Imports
-import { useRouter } from "next/router"
+import {useRouter} from "next/router"
 
 // ** Hooks Import
-import { useAuth } from "src/hooks/useAuth"
+import {useAuth} from "src/hooks/useAuth"
 import ls from "src/configs/localStorage"
 
 interface GuestGuardProps {
@@ -14,7 +14,7 @@ interface GuestGuardProps {
 }
 
 const GuestGuard = (props: GuestGuardProps) => {
-  const { children, fallback } = props
+  const {children, fallback} = props
   const auth = useAuth()
   const router = useRouter()
 

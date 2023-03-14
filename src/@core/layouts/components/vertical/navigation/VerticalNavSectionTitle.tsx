@@ -1,14 +1,12 @@
 // ** MUI Imports
 import Divider from "@mui/material/Divider"
 import Typography from "@mui/material/Typography"
-import { styled, useTheme } from "@mui/material/styles"
-import MuiListSubheader, {
-  ListSubheaderProps
-} from "@mui/material/ListSubheader"
+import {styled, useTheme} from "@mui/material/styles"
+import MuiListSubheader, {ListSubheaderProps} from "@mui/material/ListSubheader"
 
 // ** Types
-import { NavSectionTitle } from "src/@core/layouts/types"
-import { Settings } from "src/@core/context/settingsContext"
+import {NavSectionTitle} from "src/@core/layouts/types"
+import {Settings} from "src/@core/context/settingsContext"
 
 // ** Custom Components Imports
 import Translations from "src/layouts/components/Translations"
@@ -24,8 +22,8 @@ interface Props {
 
 // ** Styled Components
 const ListSubheader = styled((props: ListSubheaderProps) => (
-  <MuiListSubheader component='li' {...props} />
-))(({ theme }) => ({
+  <MuiListSubheader component="li" {...props} />
+))(({theme}) => ({
   lineHeight: 1,
   display: "flex",
   position: "static",
@@ -38,14 +36,14 @@ const ListSubheader = styled((props: ListSubheaderProps) => (
 
 const VerticalNavSectionTitle = (props: Props) => {
   // ** Props
-  const { item, navHover, settings, collapsedNavWidth, navigationBorderWidth } =
+  const {item, navHover, settings, collapsedNavWidth, navigationBorderWidth} =
     props
 
   // ** Hook
   const theme = useTheme()
 
   // ** Vars
-  const { skin, navCollapsed } = settings
+  const {skin, navCollapsed} = settings
 
   const conditionalBorderColor = () => {
     if (skin === "semi-dark" && theme.palette.mode === "light") {
@@ -82,25 +80,25 @@ const VerticalNavSectionTitle = (props: Props) => {
   return (
     <CanViewNavSectionTitle navTitle={item}>
       <ListSubheader
-        className='nav-section-title'
+        className="nav-section-title"
         sx={{
           ...(navCollapsed && !navHover
             ? {
                 py: 4.75,
                 px: (collapsedNavWidth - navigationBorderWidth - 22) / 8
               }
-            : { pl: 0 })
+            : {pl: 0})
         }}
       >
         <Divider
-          textAlign='left'
+          textAlign="left"
           sx={{
             m: 0,
             lineHeight: "normal",
             ...conditionalBorderColor(),
-            "&:after": { display: "none" },
+            "&:after": {display: "none"},
             ...(navCollapsed && !navHover
-              ? { width: 22 }
+              ? {width: 22}
               : {
                   width: "100%",
                   "&:before": {
@@ -117,7 +115,7 @@ const VerticalNavSectionTitle = (props: Props) => {
           }}
         >
           {navCollapsed && !navHover ? null : (
-            <Typography noWrap variant='caption' sx={{ ...conditionalColor() }}>
+            <Typography noWrap variant="caption" sx={{...conditionalColor()}}>
               <Translations text={item.sectionTitle} />
             </Typography>
           )}

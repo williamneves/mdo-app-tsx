@@ -1,4 +1,4 @@
-import { DateFormatting, PaymentTypes } from "./types"
+import {DateFormatting, PaymentTypes} from "./types"
 
 /**
  ** Format and return date in Humanize format
@@ -38,10 +38,10 @@ export const formatDateToMonthShort = (
   toTimeForCurrentDay = true
 ) => {
   const date = new Date(value)
-  let formatting: DateFormatting = { month: "short", day: "numeric" }
+  let formatting: DateFormatting = {month: "short", day: "numeric"}
 
   if (toTimeForCurrentDay && isToday(date)) {
-    formatting = { hour: "numeric", minute: "numeric" }
+    formatting = {hour: "numeric", minute: "numeric"}
   }
 
   return new Intl.DateTimeFormat("en-US", formatting).format(new Date(value))

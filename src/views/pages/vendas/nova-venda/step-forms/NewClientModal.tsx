@@ -1,5 +1,5 @@
 // ** React Imports
-import { Fragment, useState, useEffect } from "react"
+import {Fragment, useState, useEffect} from "react"
 import SelectInputController from "components/inputs/SelectInputController"
 import TextInputControlled from "components/inputs/TextInputControlled"
 import PatternInputControlled from "components/inputs/PatternInputControlled"
@@ -24,16 +24,16 @@ import CloseTwoToneIcon from "@mui/icons-material/CloseTwoTone"
 // ** Third Party Imports
 import * as yup from "yup"
 import toast from "react-hot-toast"
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup"
-import { validateCPF, validatePhone } from "validations-br"
+import {useForm} from "react-hook-form"
+import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
+import {validateCPF, validatePhone} from "validations-br"
 
 // ** Import Hooks
-import { useAuth } from "src/hooks/useAuth"
-import { verifyDuplicatedName } from "src/@utils/verifyDuplicatedName"
+import {useAuth} from "src/hooks/useAuth"
+import {verifyDuplicatedName} from "src/@utils/verifyDuplicatedName"
 
 // Import Interfaces
-import { useQueryClient } from "@tanstack/react-query"
+import {useQueryClient} from "@tanstack/react-query"
 import Client from "src/interfaces/Client"
 
 // ** Import Api
@@ -64,7 +64,7 @@ const NewClientModal = ({
   const createNewClient = clientsQ.useCreateClientQuery(queryClient)
 
   // ** Context
-  const { selectedStore, user: userDB } = useAuth()
+  const {selectedStore, user: userDB} = useAuth()
 
   // ** Hook Form
   /// *** Form Schema
@@ -76,7 +76,7 @@ const NewClientModal = ({
       .test("duplicatedName", "Nome já cadastrado", value => {
         if (value === "") return true
         if (value && verifyIfNameAreDuplicated) {
-          const { status } = verifyDuplicatedName(value, clientList)
+          const {status} = verifyDuplicatedName(value, clientList)
 
           if (status)
             toast(
@@ -146,7 +146,7 @@ const NewClientModal = ({
     handleSubmit,
     getFieldState,
     formState,
-    formState: { errors },
+    formState: {errors},
     trigger
   } = useForm({
     defaultValues: newClientDefaultValues,
@@ -186,10 +186,10 @@ const NewClientModal = ({
       <Dialog
         open={isOpen}
         onClose={() => {}}
-        aria-labelledby='form-dialog-title'
+        aria-labelledby="form-dialog-title"
       >
         <DialogTitle
-          id='form-dialog-title'
+          id="form-dialog-title"
           sx={{
             display: "flex",
             alignItems: "center",
@@ -201,7 +201,7 @@ const NewClientModal = ({
           Criar novo Cliente
         </DialogTitle>
         <DialogContent>
-          <DialogContentText variant={"subtitle2"} sx={{ mb: 5 }}>
+          <DialogContentText variant={"subtitle2"} sx={{mb: 5}}>
             Use esse formulário para adicionar rapidamente um cliente para a
             venda. Serão precisas poucas informações, após isso, aperte em{" "}
             <b>CRIAR</b> e volte para a venda.
@@ -230,11 +230,11 @@ const NewClientModal = ({
                     }}
                   >
                     <FormControlLabel
-                      label='Verificar Duplicidade do Nome'
-                      labelPlacement='start'
+                      label="Verificar Duplicidade do Nome"
+                      labelPlacement="start"
                       control={
                         <Checkbox
-                          size='small'
+                          size="small"
                           checked={verifyIfNameAreDuplicated}
                           onChange={e =>
                             setSaveDuplicatedName(e.target.checked)
@@ -270,9 +270,9 @@ const NewClientModal = ({
                   errors={errors}
                   selectItems={{
                     items: [
-                      { key: "male", value: "male", label: "Masculino" },
-                      { key: "female", value: "female", label: "Feminino" },
-                      { key: "other", value: "other", label: "Outros" }
+                      {key: "male", value: "male", label: "Masculino"},
+                      {key: "female", value: "female", label: "Feminino"},
+                      {key: "other", value: "other", label: "Outros"}
                     ]
                   }}
                 />
@@ -289,7 +289,7 @@ const NewClientModal = ({
             </Grid>
           </form>
         </DialogContent>
-        <DialogActions className='dialog-actions-normal'>
+        <DialogActions className="dialog-actions-normal">
           <Button
             endIcon={<CloseTwoToneIcon />}
             color={"secondary"}
@@ -300,10 +300,10 @@ const NewClientModal = ({
           </Button>
           <LoadingButton
             variant={"contained"}
-            type='submit'
+            type="submit"
             form={"New-Client-Form"}
             loading={loading}
-            loadingPosition='end'
+            loadingPosition="end"
             endIcon={<PersonAddAltTwoToneIcon />}
           >
             {loading ? "Criando..." : "Criar"}

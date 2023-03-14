@@ -1,4 +1,4 @@
-import { formattedCurrency } from "src/@utils/formatCurrency"
+import {formattedCurrency} from "src/@utils/formatCurrency"
 import FaceIcon from "@mui/icons-material/Face"
 import Face3Icon from "@mui/icons-material/Face3"
 import PaidIcon from "@mui/icons-material/Paid"
@@ -18,8 +18,9 @@ import {
   ListSubheader
 } from "@mui/material"
 import moment from "moment/moment"
-import { getImageUrl } from "src/configs/sanityConfig"
+import {getImageUrl} from "src/configs/sanityConfig"
 import Sale from "src/interfaces/Sale"
+import Origin from "@src/interfaces/Origin"
 
 interface SaleCardProps {
   newSaleMockup: Sale | null
@@ -41,7 +42,7 @@ const outputOrigins = (origins: any[]) => {
   return output
 }
 
-export function SaleCardList({ newSaleMockup }: SaleCardProps) {
+export function SaleCardList({newSaleMockup}: SaleCardProps) {
   return (
     <List dense subheader={<ListSubheader>Resumo da Venda</ListSubheader>}>
       <ListItem disablePadding>
@@ -103,7 +104,7 @@ export function SaleCardList({ newSaleMockup }: SaleCardProps) {
                       : newSaleMockup?.user?.imageURL
                   }
                   alt={newSaleMockup?.user?.name}
-                  sx={{ width: 24, height: 24 }}
+                  sx={{width: 24, height: 24}}
                 />
               ) : (
                 <FaceIcon />
@@ -123,10 +124,10 @@ export function SaleCardList({ newSaleMockup }: SaleCardProps) {
           </ListItemIcon>
           <ListItemText
             primary={`Valor da venda: R$ ${
-              formattedCurrency(newSaleMockup?.saleAmount!) || "0,00"
+              formattedCurrency(newSaleMockup?.saleAmount as number) || "0,00"
             }`}
             secondary={`Custo da venda: R$ ${
-              formattedCurrency(newSaleMockup?.totalCost!) || "0,00"
+              formattedCurrency(newSaleMockup?.totalCost as number) || "0,00"
             }`}
           />
         </ListItemButton>
@@ -157,7 +158,7 @@ export function SaleCardList({ newSaleMockup }: SaleCardProps) {
           </ListItemIcon>
           <ListItemText
             primary={`Origem do Cliente: ${
-              outputOrigins(newSaleMockup?.origin!) || "Indefinido"
+              outputOrigins(newSaleMockup?.origin as Origin[]) || "Indefinido"
             }`}
           />
         </ListItemButton>

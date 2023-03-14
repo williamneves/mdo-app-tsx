@@ -1,16 +1,16 @@
 // ** React Imports
-import { Fragment } from "react"
+import {Fragment} from "react"
 
 // ** MUI Components
 import useMediaQuery from "@mui/material/useMediaQuery"
-import { styled, useTheme } from "@mui/material/styles"
+import {styled, useTheme} from "@mui/material/styles"
 
 interface FooterIllustrationsProp {
   image?: string
 }
 
 // Styled Components
-const MaskImg = styled("img")(({ theme }) => ({
+const MaskImg = styled("img")(({theme}) => ({
   zIndex: -1,
   bottom: "7%",
   width: "100%",
@@ -22,7 +22,7 @@ const MaskImg = styled("img")(({ theme }) => ({
 
 const FooterIllustrationsV2 = (props: FooterIllustrationsProp) => {
   // ** Props
-  const { image } = props
+  const {image} = props
 
   // ** Hook
   const theme = useTheme()
@@ -36,7 +36,7 @@ const FooterIllustrationsV2 = (props: FooterIllustrationsProp) => {
   if (!hidden) {
     return (
       <Fragment>
-        <MaskImg alt='mask' src={src} />
+        <MaskImg alt="mask" src={src} />
       </Fragment>
     )
   } else {

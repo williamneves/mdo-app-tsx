@@ -12,7 +12,7 @@ interface InputControllerProps extends ControllerProps {
 }
 
 export const InputController = (props: InputControllerProps) => {
-  const { name, errors } = props
+  const {name, errors} = props
 
   // @ts-ignore
   return (
@@ -20,7 +20,7 @@ export const InputController = (props: InputControllerProps) => {
       <Controller {...props} />
       {errors[name] && (
         <FormHelperText
-          sx={{ color: "error.main" }}
+          sx={{color: "error.main"}}
           id={`${name}-text-input-form`}
         >
           {/* @ts-ignore */}

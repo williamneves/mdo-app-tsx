@@ -1,6 +1,6 @@
 // ** React Imports
 import moment from "moment/moment"
-import { Fragment, useState, useEffect } from "react"
+import {Fragment, useState, useEffect} from "react"
 
 // ** MUI Imports
 import {
@@ -17,8 +17,8 @@ import {
 } from "@mui/material"
 
 // ** Import Queries
-import { useQueryClient } from "@tanstack/react-query"
-import { SaleCardList } from "@views/pages/vendas/nova-venda/NewSaleMockup"
+import {useQueryClient} from "@tanstack/react-query"
+import {SaleCardList} from "@views/pages/vendas/nova-venda/NewSaleMockup"
 
 // ** Import Third Party Libraries
 import toast from "react-hot-toast"
@@ -66,7 +66,7 @@ interface NovaVendaWizardProps {
   editSale?: Sale | null
 }
 
-const NovaVendaWizard = ({ mode, editSale }: NovaVendaWizardProps) => {
+const NovaVendaWizard = ({mode, editSale}: NovaVendaWizardProps) => {
   // ** States
   const [activeStep, setActiveStep] = useState<number>(mode === "edit" ? 3 : 0)
   const [hasErrorsStep1, setHasErrorsStep1] = useState<boolean>(false)
@@ -316,15 +316,15 @@ const NovaVendaWizard = ({ mode, editSale }: NovaVendaWizardProps) => {
                       {...labelProps}
                       StepIconComponent={StepperCustomDot}
                     >
-                      <div className='step-label'>
-                        <Typography className='step-number'>
+                      <div className="step-label">
+                        <Typography className="step-number">
                           0{index + 1}
                         </Typography>
                         <div>
-                          <Typography className='step-title'>
+                          <Typography className="step-title">
                             {step.title}
                           </Typography>
-                          <Typography className='step-subtitle'>
+                          <Typography className="step-subtitle">
                             {step.subtitle}
                           </Typography>
                         </div>
@@ -337,7 +337,7 @@ const NovaVendaWizard = ({ mode, editSale }: NovaVendaWizardProps) => {
           </StepperWrapper>
         </CardContent>
 
-        <Divider sx={{ m: 0 }} />
+        <Divider sx={{m: 0}} />
 
         <CardContent>{renderContent()}</CardContent>
       </Card>
@@ -351,27 +351,27 @@ const NovaVendaWizard = ({ mode, editSale }: NovaVendaWizardProps) => {
               title={`👏 Parabéns! Venda #${
                 newSale?.saleNumber || 2222
               } foi atualizada!`}
-              subtitle='A venda foi atualizada!'
+              subtitle="A venda foi atualizada!"
             />
           ) : (
             <CardHeader
               title={`👏 Parabéns! Venda #${
                 newSale?.saleNumber || 2222
               } criada com sucesso!`}
-              subtitle='A venda foi criada com sucesso!'
+              subtitle="A venda foi criada com sucesso!"
             />
           )}
-          <Divider sx={{ paddingY: 0, marginY: 0, width: "100%" }} />
+          <Divider sx={{paddingY: 0, marginY: 0, width: "100%"}} />
           <CardContent>
             <SaleCardList newSaleMockup={newSale} />
           </CardContent>
-          <Divider sx={{ paddingY: 0, marginY: 0, width: "100%" }} />
-          <CardActions sx={{ justifyContent: "flex-end", paddingY: 2 }}>
+          <Divider sx={{paddingY: 0, marginY: 0, width: "100%"}} />
+          <CardActions sx={{justifyContent: "flex-end", paddingY: 2}}>
             <Button
-              variant='contained'
-              color='primary'
+              variant="contained"
+              color="primary"
               onClick={handleReset}
-              sx={{ marginY: 3 }}
+              sx={{marginY: 3}}
             >
               Criar Nova Venda
             </Button>

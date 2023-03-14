@@ -2,7 +2,7 @@
 import Box from "@mui/material/Box"
 
 // ** Type Import
-import { HorizontalNavItemsType } from "src/@core/layouts/types"
+import {HorizontalNavItemsType} from "src/@core/layouts/types"
 
 // ** Config Import
 import themeConfig from "src/configs/themeConfig"
@@ -21,14 +21,14 @@ interface Props {
 const Navigation = (props: Props) => {
   return (
     <Box
-      className='menu-content'
+      className="menu-content"
       sx={{
         display: "flex",
         flexWrap: "wrap",
         alignItems: "center",
         "& > *": {
-          "&:not(:last-child)": { mr: 2 },
-          ...(themeConfig.menuTextTruncate && { maxWidth: 220 })
+          "&:not(:last-child)": {mr: 2},
+          ...(themeConfig.menuTextTruncate && {maxWidth: 220})
         }
       }}
     >

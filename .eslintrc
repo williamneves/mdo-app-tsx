@@ -14,7 +14,16 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": [
-    "@typescript-eslint"
-  ]
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/ban-ts-comment": 1,
+    "@typescript-eslint/no-empty-function": 1,
+    "@typescript-eslint/no-non-null-asserted-optional-chain": 1,
+    "react/display-name": "off",
+    "react-hooks/rules-of-hooks": 1,
+    "eact/no-unescaped-entities": 0,
+    "no-useless-catch": 1,
+    "no-useless-escape": 1,
+    "react/no-unescaped-entities": 0
+  }
 }

@@ -1,8 +1,8 @@
 // ** MUI Imports
-import { styled } from "@mui/material/styles"
-import Box, { BoxProps } from "@mui/material/Box"
+import {styled} from "@mui/material/styles"
+import Box, {BoxProps} from "@mui/material/Box"
 
-const CleaveWrapper = styled(Box)<BoxProps>(({ theme }) => ({
+const CleaveWrapper = styled(Box)<BoxProps>(({theme}) => ({
   "& input": {
     height: 56,
     width: "100%",

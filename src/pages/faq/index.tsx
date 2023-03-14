@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from "react"
+import {useState} from "react"
 
 // ** MUI Imports
 import Grid from "@mui/material/Grid"
@@ -22,7 +22,7 @@ import GroupIcon from "@mui/icons-material/Group"
 import * as faqApi from "@queries/faqPosts/hooks"
 import FaqPost from "interfaces/FaqPost"
 import FaqAccordion from "@views/pages/faq/FaqAccordion"
-import { matchSorter } from "match-sorter"
+import {matchSorter} from "match-sorter"
 
 const categoryData = {
   vendedores: {
@@ -58,7 +58,7 @@ export async function getStaticProps() {
   }
 }
 
-const Faq = ({ faqPosts }: { faqPosts: FaqPost[] }) => {
+const Faq = ({faqPosts}: {faqPosts: FaqPost[]}) => {
   const [search, setSearch] = useState<string>("")
 
   // Filter the unique categories in faqPosts.category
@@ -104,11 +104,11 @@ const Faq = ({ faqPosts }: { faqPosts: FaqPost[] }) => {
               color: "primary.main"
             }}
           >
-            <QuizIcon sx={{ fontSize: 36 }} />
-            <Typography variant='h5'>Olá, como podemos ajudar?</Typography>
+            <QuizIcon sx={{fontSize: 36}} />
+            <Typography variant="h5">Olá, como podemos ajudar?</Typography>
           </Box>
           <Typography
-            variant='subtitle2'
+            variant="subtitle2"
             textAlign={"center"}
             paddingX={4}
             gutterBottom
@@ -122,7 +122,7 @@ const Faq = ({ faqPosts }: { faqPosts: FaqPost[] }) => {
               label={"Pesquise aqui"}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position='start'>
+                  <InputAdornment position="start">
                     <SearchIcon />
                   </InputAdornment>
                 )
@@ -133,17 +133,17 @@ const Faq = ({ faqPosts }: { faqPosts: FaqPost[] }) => {
       </Grid>
 
       <Grid item xs={12} md={6} mx={"auto"}>
-        {categories.map(category => (
-          <Box>
-            <Box sx={{ display: "flex", alignItems: "center", mt: 7 }}>
+        {categories.map((category, index) => (
+          <Box key={index}>
+            <Box sx={{display: "flex", alignItems: "center", mt: 7}}>
               <Avatar variant={"rounded"}>{categoryData[category].icon}</Avatar>
-              <Box sx={{ ml: 4 }}>
-                <Typography variant='h6' sx={{ lineHeight: "2rem" }}>
+              <Box sx={{ml: 4}}>
+                <Typography variant="h6" sx={{lineHeight: "2rem"}}>
                   {categoryData[category].title}
                 </Typography>
               </Box>
             </Box>
-            <Box sx={{ mt: 5 }}>
+            <Box sx={{mt: 5}}>
               {filteredPosts.map(question => {
                 if (question.category.includes(category))
                   return <FaqAccordion question={question} />

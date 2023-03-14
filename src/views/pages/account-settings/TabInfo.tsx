@@ -1,5 +1,5 @@
 // ** React Imports
-import { forwardRef, useState } from "react"
+import {forwardRef, useState} from "react"
 
 // ** MUI Imports
 import Grid from "@mui/material/Grid"
@@ -23,7 +23,7 @@ import DatePicker from "react-datepicker"
 import DatePickerWrapper from "src/@core/styles/libs/react-datepicker"
 
 const CustomInput = forwardRef((props, ref) => {
-  return <TextField inputRef={ref} label='Birth Date' fullWidth {...props} />
+  return <TextField inputRef={ref} label="Birth Date" fullWidth {...props} />
 })
 
 const TabInfo = () => {
@@ -34,14 +34,14 @@ const TabInfo = () => {
     <CardContent>
       <form>
         <Grid container spacing={6}>
-          <Grid item xs={12} sx={{ mt: 5 }}>
+          <Grid item xs={12} sx={{mt: 5}}>
             <TextField
               fullWidth
               multiline
-              label='Bio'
+              label="Bio"
               minRows={2}
-              placeholder='Bio'
-              defaultValue='The name’s John Deo. I am a tireless seeker of knowledge, occasional purveyor of wisdom and also, coincidentally, a graphic designer. Algolia helps businesses across industries quickly create relevant 😎, scalable 😀, and lightning 😍 fast search and discovery experiences.'
+              placeholder="Bio"
+              defaultValue="The name’s John Deo. I am a tireless seeker of knowledge, occasional purveyor of wisdom and also, coincidentally, a graphic designer. Algolia helps businesses across industries quickly create relevant 😎, scalable 😀, and lightning 😍 fast search and discovery experiences."
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -50,8 +50,8 @@ const TabInfo = () => {
                 selected={date}
                 showYearDropdown
                 showMonthDropdown
-                id='account-settings-date'
-                placeholderText='MM-DD-YYYY'
+                id="account-settings-date"
+                placeholderText="MM-DD-YYYY"
                 customInput={<CustomInput />}
                 onChange={date => setDate(date)}
               />
@@ -60,79 +60,79 @@ const TabInfo = () => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              type='number'
-              label='Phone'
-              placeholder='(123) 456-7890'
+              type="number"
+              label="Phone"
+              placeholder="(123) 456-7890"
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label='Website'
-              placeholder='https://example.com/'
-              defaultValue='https://pixinvent.com/'
+              label="Website"
+              placeholder="https://example.com/"
+              defaultValue="https://pixinvent.com/"
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
               <InputLabel>Country</InputLabel>
-              <Select label='Country' defaultValue='USA'>
-                <MenuItem value='USA'>USA</MenuItem>
-                <MenuItem value='UK'>UK</MenuItem>
-                <MenuItem value='Australia'>Australia</MenuItem>
-                <MenuItem value='Germany'>Germany</MenuItem>
+              <Select label="Country" defaultValue="USA">
+                <MenuItem value="USA">USA</MenuItem>
+                <MenuItem value="UK">UK</MenuItem>
+                <MenuItem value="Australia">Australia</MenuItem>
+                <MenuItem value="Germany">Germany</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
-              <InputLabel id='form-layouts-separator-multiple-select-label'>
+              <InputLabel id="form-layouts-separator-multiple-select-label">
                 Languages
               </InputLabel>
               <Select
                 multiple
                 defaultValue={["English"]}
-                id='account-settings-multiple-select'
-                labelId='account-settings-multiple-select-label'
+                id="account-settings-multiple-select"
+                labelId="account-settings-multiple-select-label"
                 input={
                   <OutlinedInput
-                    label='Languages'
-                    id='select-multiple-language'
+                    label="Languages"
+                    id="select-multiple-language"
                   />
                 }
               >
-                <MenuItem value='English'>English</MenuItem>
-                <MenuItem value='French'>French</MenuItem>
-                <MenuItem value='Spanish'>Spanish</MenuItem>
-                <MenuItem value='Portuguese'>Portuguese</MenuItem>
-                <MenuItem value='Italian'>Italian</MenuItem>
-                <MenuItem value='German'>German</MenuItem>
-                <MenuItem value='Arabic'>Arabic</MenuItem>
+                <MenuItem value="English">English</MenuItem>
+                <MenuItem value="French">French</MenuItem>
+                <MenuItem value="Spanish">Spanish</MenuItem>
+                <MenuItem value="Portuguese">Portuguese</MenuItem>
+                <MenuItem value="Italian">Italian</MenuItem>
+                <MenuItem value="German">German</MenuItem>
+                <MenuItem value="Arabic">Arabic</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl>
-              <FormLabel sx={{ lineHeight: 1.5 }}>Gender</FormLabel>
+              <FormLabel sx={{lineHeight: 1.5}}>Gender</FormLabel>
               <RadioGroup
                 row
-                defaultValue='male'
-                aria-label='gender'
-                name='account-settings-info-radio'
+                defaultValue="male"
+                aria-label="gender"
+                name="account-settings-info-radio"
               >
                 <FormControlLabel
-                  value='male'
-                  label='Male'
+                  value="male"
+                  label="Male"
                   control={<Radio />}
                 />
                 <FormControlLabel
-                  value='female'
-                  label='Female'
+                  value="female"
+                  label="Female"
                   control={<Radio />}
                 />
                 <FormControlLabel
-                  value='other'
-                  label='Other'
+                  value="other"
+                  label="Other"
                   control={<Radio />}
                 />
               </RadioGroup>
@@ -141,15 +141,15 @@ const TabInfo = () => {
           <Grid
             item
             xs={12}
-            sx={{ pt: theme => `${theme.spacing(7)} !important` }}
+            sx={{pt: theme => `${theme.spacing(7)} !important`}}
           >
-            <Button variant='contained' sx={{ mr: 4 }}>
+            <Button variant="contained" sx={{mr: 4}}>
               Save Changes
             </Button>
             <Button
-              type='reset'
-              variant='outlined'
-              color='secondary'
+              type="reset"
+              variant="outlined"
+              color="secondary"
               onClick={() => setDate(null)}
             >
               Reset

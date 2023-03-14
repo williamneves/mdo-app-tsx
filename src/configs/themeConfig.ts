@@ -6,7 +6,7 @@
  */
 
 // ** MUI Imports
-import { PaletteMode, Direction } from "@mui/material"
+import {PaletteMode, Direction} from "@mui/material"
 
 // ** Icon Import
 import Circle from "mdi-material-ui/Circle"

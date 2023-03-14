@@ -1,5 +1,5 @@
 // ** MUI Imports
-import React, { useEffect } from "react"
+import React, {useEffect} from "react"
 import Card from "@mui/material/Card"
 import Grid from "@mui/material/Grid"
 import Typography from "@mui/material/Typography"
@@ -8,9 +8,9 @@ import CardContent from "@mui/material/CardContent"
 import Button from "@mui/lab/LoadingButton"
 
 // ** Component Imports
-import { useForm } from "react-hook-form"
+import {useForm} from "react-hook-form"
 import * as yup from "yup"
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup"
+import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
 import TextInputControlled from "src/views/components/inputs/TextInputControlled"
 import CurrencyMaskInputControlled from "src/views/components/inputs/CurrencyMaskInputControlled"
 import SelectInputController from "src/views/components/inputs/SelectInputController"
@@ -19,14 +19,14 @@ import DateInputControlled from "components/inputs/DateInputControlled"
 import PatternInputControlled from "components/inputs/PatternInputControlled"
 
 // ** Import Validate CPF
-import { cpf } from "cpf-cnpj-validator"
+import {cpf} from "cpf-cnpj-validator"
 
 const Home = () => {
   const DefaultValues = {
     TextInput: "",
     NumericMaskInput: 0,
     selectInput: " ",
-    AutoComplete: [{ _id: "", name: "", age: 0, phone: "" }],
+    AutoComplete: [{_id: "", name: "", age: 0, phone: ""}],
     DateInput: null,
     cpfInput: "",
     phoneInput: ""
@@ -72,7 +72,7 @@ const Home = () => {
     control,
     handleSubmit,
     getValues,
-    formState: { errors }
+    formState: {errors}
   } = useForm<FormValues>({
     defaultValues: DefaultValues,
     resolver: yupResolver(schema)
@@ -87,20 +87,20 @@ const Home = () => {
   }, [])
 
   const autoCompleteOptions = [
-    { _id: "1", name: "John", age: 20, phone: "9549949940" },
-    { _id: "2", name: "Marta", age: 21, phone: "3210022212" },
-    { _id: "3", name: "Adam", age: 22, phone: "7861230022" },
-    { _id: "4", name: "Sara", age: 23, phone: "9549949944" },
-    { _id: "5", name: "John", age: 24, phone: "9549949945" }
+    {_id: "1", name: "John", age: 20, phone: "9549949940"},
+    {_id: "2", name: "Marta", age: 21, phone: "3210022212"},
+    {_id: "3", name: "Adam", age: 22, phone: "7861230022"},
+    {_id: "4", name: "Sara", age: 23, phone: "9549949944"},
+    {_id: "5", name: "John", age: 24, phone: "9549949945"}
   ]
 
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
         <Card>
-          <CardHeader title='Testing all custom components from Project'></CardHeader>
+          <CardHeader title="Testing all custom components from Project"></CardHeader>
           <CardContent>
-            <Typography sx={{ mb: 2 }} variant={"h4"}>
+            <Typography sx={{mb: 2}} variant={"h4"}>
               Input de Text
             </Typography>
             <form autoComplete={"off"} onSubmit={handleSubmit(onSubmit)}>
@@ -125,7 +125,7 @@ const Home = () => {
             </form>
           </CardContent>
           <CardContent>
-            <Typography sx={{ mb: 2 }} variant={"h4"}>
+            <Typography sx={{mb: 2}} variant={"h4"}>
               Input de Dinheiro
             </Typography>
             <form autoComplete={"off"} onSubmit={handleSubmit(onSubmit)}>
@@ -151,7 +151,7 @@ const Home = () => {
             </form>
           </CardContent>
           <CardContent>
-            <Typography sx={{ mb: 2 }} variant={"h4"}>
+            <Typography sx={{mb: 2}} variant={"h4"}>
               Input de Dinheiro
             </Typography>
             <form autoComplete={"off"} onSubmit={handleSubmit(onSubmit)}>
@@ -178,7 +178,7 @@ const Home = () => {
             </form>
           </CardContent>
           <CardContent>
-            <Typography sx={{ mb: 2 }} variant={"h4"}>
+            <Typography sx={{mb: 2}} variant={"h4"}>
               Input de Dinheiro
             </Typography>
             <form autoComplete={"off"} onSubmit={handleSubmit(onSubmit)}>
@@ -216,7 +216,7 @@ const Home = () => {
             </form>
           </CardContent>
           <CardContent>
-            <Typography sx={{ mb: 2 }} variant={"h4"}>
+            <Typography sx={{mb: 2}} variant={"h4"}>
               Input de Dinheiro
             </Typography>
             <form autoComplete={"off"} onSubmit={handleSubmit(onSubmit)}>
@@ -249,7 +249,7 @@ const Home = () => {
             </form>
           </CardContent>
           <CardContent>
-            <Typography sx={{ mb: 2 }} variant={"h4"}>
+            <Typography sx={{mb: 2}} variant={"h4"}>
               Input de Dinheiro
             </Typography>
             <form autoComplete={"off"} onSubmit={handleSubmit(onSubmit)}>

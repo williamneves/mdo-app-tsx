@@ -1,5 +1,5 @@
 // ** React Imports
-import { ReactNode, SyntheticEvent } from "react"
+import {ReactNode, SyntheticEvent} from "react"
 
 // ** Next Imports
 import Link from "next/link"
@@ -8,10 +8,10 @@ import Link from "next/link"
 import MuiLink from "@mui/material/Link"
 import Button from "@mui/material/Button"
 import TextField from "@mui/material/TextField"
-import Box, { BoxProps } from "@mui/material/Box"
+import Box, {BoxProps} from "@mui/material/Box"
 import useMediaQuery from "@mui/material/useMediaQuery"
-import { styled, useTheme } from "@mui/material/styles"
-import Typography, { TypographyProps } from "@mui/material/Typography"
+import {styled, useTheme} from "@mui/material/styles"
+import Typography, {TypographyProps} from "@mui/material/Typography"
 
 // ** Icons Imports
 import ChevronLeft from "mdi-material-ui/ChevronLeft"
@@ -23,23 +23,21 @@ import themeConfig from "src/configs/themeConfig"
 import BlankLayout from "src/@core/layouts/BlankLayout"
 
 // ** Hooks
-import { useSettings } from "src/@core/hooks/useSettings"
+import {useSettings} from "src/@core/hooks/useSettings"
 
 // ** Demo Imports
 import FooterIllustrationsV2 from "src/views/pages/auth/FooterIllustrationsV2"
 
 // Styled Components
-const ForgotPasswordIllustrationWrapper = styled(Box)<BoxProps>(
-  ({ theme }) => ({
-    padding: theme.spacing(20),
-    paddingRight: "0 !important",
-    [theme.breakpoints.down("lg")]: {
-      padding: theme.spacing(10)
-    }
-  })
-)
+const ForgotPasswordIllustrationWrapper = styled(Box)<BoxProps>(({theme}) => ({
+  padding: theme.spacing(20),
+  paddingRight: "0 !important",
+  [theme.breakpoints.down("lg")]: {
+    padding: theme.spacing(10)
+  }
+}))
 
-const ForgotPasswordIllustration = styled("img")(({ theme }) => ({
+const ForgotPasswordIllustration = styled("img")(({theme}) => ({
   maxWidth: "48rem",
   [theme.breakpoints.down("xl")]: {
     maxWidth: "38rem"
@@ -49,7 +47,7 @@ const ForgotPasswordIllustration = styled("img")(({ theme }) => ({
   }
 }))
 
-const RightWrapper = styled(Box)<BoxProps>(({ theme }) => ({
+const RightWrapper = styled(Box)<BoxProps>(({theme}) => ({
   width: "100%",
   [theme.breakpoints.up("md")]: {
     maxWidth: 400
@@ -59,27 +57,27 @@ const RightWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   }
 }))
 
-const BoxWrapper = styled(Box)<BoxProps>(({ theme }) => ({
+const BoxWrapper = styled(Box)<BoxProps>(({theme}) => ({
   width: "100%",
   [theme.breakpoints.down("md")]: {
     maxWidth: 400
   }
 }))
 
-const TypographyStyled = styled(Typography)<TypographyProps>(({ theme }) => ({
+const TypographyStyled = styled(Typography)<TypographyProps>(({theme}) => ({
   fontWeight: 600,
   letterSpacing: "0.18px",
   marginBottom: theme.spacing(1.5),
-  [theme.breakpoints.down("md")]: { marginTop: theme.spacing(8) }
+  [theme.breakpoints.down("md")]: {marginTop: theme.spacing(8)}
 }))
 
 const ForgotPassword = () => {
   // ** Hooks
   const theme = useTheme()
-  const { settings } = useSettings()
+  const {settings} = useSettings()
 
   // ** Vars
-  const { skin } = settings
+  const {skin} = settings
   const hidden = useMediaQuery(theme.breakpoints.down("md"))
 
   const handleSubmit = (e: SyntheticEvent) => {
@@ -92,7 +90,7 @@ const ForgotPassword = () => {
       : "auth-v2-forgot-password-illustration"
 
   return (
-    <Box className='content-right'>
+    <Box className="content-right">
       {!hidden ? (
         <Box
           sx={{
@@ -105,7 +103,7 @@ const ForgotPassword = () => {
         >
           <ForgotPasswordIllustrationWrapper>
             <ForgotPasswordIllustration
-              alt='forgot-password-illustration'
+              alt="forgot-password-illustration"
               src={`/images/pages/${imageSource}-${theme.palette.mode}.png`}
             />
           </ForgotPasswordIllustrationWrapper>
@@ -117,7 +115,7 @@ const ForgotPassword = () => {
       <RightWrapper
         sx={
           skin === "bordered" && !hidden
-            ? { borderLeft: `1px solid ${theme.palette.divider}` }
+            ? {borderLeft: `1px solid ${theme.palette.divider}`}
             : {}
         }
       >
@@ -144,82 +142,82 @@ const ForgotPassword = () => {
             >
               <svg
                 width={47}
-                fill='none'
+                fill="none"
                 height={26}
-                viewBox='0 0 268 150'
-                xmlns='http://www.w3.org/2000/svg'
+                viewBox="0 0 268 150"
+                xmlns="http://www.w3.org/2000/svg"
               >
                 <rect
-                  rx='25.1443'
-                  width='50.2886'
-                  height='143.953'
+                  rx="25.1443"
+                  width="50.2886"
+                  height="143.953"
                   fill={theme.palette.primary.main}
-                  transform='matrix(-0.865206 0.501417 0.498585 0.866841 195.571 0)'
+                  transform="matrix(-0.865206 0.501417 0.498585 0.866841 195.571 0)"
                 />
                 <rect
-                  rx='25.1443'
-                  width='50.2886'
-                  height='143.953'
-                  fillOpacity='0.4'
-                  fill='url(#paint0_linear_7821_79167)'
-                  transform='matrix(-0.865206 0.501417 0.498585 0.866841 196.084 0)'
+                  rx="25.1443"
+                  width="50.2886"
+                  height="143.953"
+                  fillOpacity="0.4"
+                  fill="url(#paint0_linear_7821_79167)"
+                  transform="matrix(-0.865206 0.501417 0.498585 0.866841 196.084 0)"
                 />
                 <rect
-                  rx='25.1443'
-                  width='50.2886'
-                  height='143.953'
+                  rx="25.1443"
+                  width="50.2886"
+                  height="143.953"
                   fill={theme.palette.primary.main}
-                  transform='matrix(0.865206 0.501417 -0.498585 0.866841 173.147 0)'
+                  transform="matrix(0.865206 0.501417 -0.498585 0.866841 173.147 0)"
                 />
                 <rect
-                  rx='25.1443'
-                  width='50.2886'
-                  height='143.953'
+                  rx="25.1443"
+                  width="50.2886"
+                  height="143.953"
                   fill={theme.palette.primary.main}
-                  transform='matrix(-0.865206 0.501417 0.498585 0.866841 94.1973 0)'
+                  transform="matrix(-0.865206 0.501417 0.498585 0.866841 94.1973 0)"
                 />
                 <rect
-                  rx='25.1443'
-                  width='50.2886'
-                  height='143.953'
-                  fillOpacity='0.4'
-                  fill='url(#paint1_linear_7821_79167)'
-                  transform='matrix(-0.865206 0.501417 0.498585 0.866841 94.1973 0)'
+                  rx="25.1443"
+                  width="50.2886"
+                  height="143.953"
+                  fillOpacity="0.4"
+                  fill="url(#paint1_linear_7821_79167)"
+                  transform="matrix(-0.865206 0.501417 0.498585 0.866841 94.1973 0)"
                 />
                 <rect
-                  rx='25.1443'
-                  width='50.2886'
-                  height='143.953'
+                  rx="25.1443"
+                  width="50.2886"
+                  height="143.953"
                   fill={theme.palette.primary.main}
-                  transform='matrix(0.865206 0.501417 -0.498585 0.866841 71.7728 0)'
+                  transform="matrix(0.865206 0.501417 -0.498585 0.866841 71.7728 0)"
                 />
                 <defs>
                   <linearGradient
-                    y1='0'
-                    x1='25.1443'
-                    x2='25.1443'
-                    y2='143.953'
-                    id='paint0_linear_7821_79167'
-                    gradientUnits='userSpaceOnUse'
+                    y1="0"
+                    x1="25.1443"
+                    x2="25.1443"
+                    y2="143.953"
+                    id="paint0_linear_7821_79167"
+                    gradientUnits="userSpaceOnUse"
                   >
                     <stop />
-                    <stop offset='1' stopOpacity='0' />
+                    <stop offset="1" stopOpacity="0" />
                   </linearGradient>
                   <linearGradient
-                    y1='0'
-                    x1='25.1443'
-                    x2='25.1443'
-                    y2='143.953'
-                    id='paint1_linear_7821_79167'
-                    gradientUnits='userSpaceOnUse'
+                    y1="0"
+                    x1="25.1443"
+                    x2="25.1443"
+                    y2="143.953"
+                    id="paint1_linear_7821_79167"
+                    gradientUnits="userSpaceOnUse"
                   >
                     <stop />
-                    <stop offset='1' stopOpacity='0' />
+                    <stop offset="1" stopOpacity="0" />
                   </linearGradient>
                 </defs>
               </svg>
               <Typography
-                variant='h6'
+                variant="h6"
                 sx={{
                   ml: 2,
                   lineHeight: 1,
@@ -230,28 +228,28 @@ const ForgotPassword = () => {
                 {themeConfig.templateName}
               </Typography>
             </Box>
-            <Box sx={{ mb: 6 }}>
-              <TypographyStyled variant='h5'>
+            <Box sx={{mb: 6}}>
+              <TypographyStyled variant="h5">
                 Forgot Password? 🔒
               </TypographyStyled>
-              <Typography variant='body2'>
+              <Typography variant="body2">
                 Enter your email and we&prime;ll send you instructions to reset
                 your password
               </Typography>
             </Box>
-            <form noValidate autoComplete='off' onSubmit={handleSubmit}>
+            <form noValidate autoComplete="off" onSubmit={handleSubmit}>
               <TextField
                 autoFocus
-                type='email'
-                label='Email'
-                sx={{ display: "flex", mb: 4 }}
+                type="email"
+                label="Email"
+                sx={{display: "flex", mb: 4}}
               />
               <Button
                 fullWidth
-                size='large'
-                type='submit'
-                variant='contained'
-                sx={{ mb: 5.25 }}
+                size="large"
+                type="submit"
+                variant="contained"
+                sx={{mb: 5.25}}
               >
                 Send reset link
               </Button>
@@ -262,7 +260,7 @@ const ForgotPassword = () => {
                   justifyContent: "center"
                 }}
               >
-                <Link passHref href='/login'>
+                <Link passHref href="/login">
                   <Typography
                     component={MuiLink}
                     sx={{
@@ -272,7 +270,7 @@ const ForgotPassword = () => {
                       justifyContent: "center"
                     }}
                   >
-                    <ChevronLeft sx={{ mr: 1.5, fontSize: "2rem" }} />
+                    <ChevronLeft sx={{mr: 1.5, fontSize: "2rem"}} />
                     <span>Back to login</span>
                   </Typography>
                 </Link>

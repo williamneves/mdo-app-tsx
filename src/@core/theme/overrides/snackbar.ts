@@ -1,8 +1,8 @@
 // ** MUI Imports
-import { Theme } from "@mui/material/styles"
+import {Theme} from "@mui/material/styles"
 
 // ** Theme Type Import
-import { Skin } from "src/@core/layouts/types"
+import {Skin} from "src/@core/layouts/types"
 
 const Snackbar = (theme: Theme, skin: Skin) => {
   return {
@@ -11,7 +11,7 @@ const Snackbar = (theme: Theme, skin: Skin) => {
         root: {
           borderRadius: 8,
           padding: theme.spacing(1.75, 4),
-          ...(skin === "bordered" && { boxShadow: "none" }),
+          ...(skin === "bordered" && {boxShadow: "none"}),
           backgroundColor:
             theme.palette.mode === "light"
               ? theme.palette.grey[900]

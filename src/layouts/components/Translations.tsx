@@ -2,7 +2,7 @@ interface Props {
   text: string
 }
 
-const Translations = ({ text }: Props) => {
+const Translations = ({text}: Props) => {
   return <>{text}</>
 }
 

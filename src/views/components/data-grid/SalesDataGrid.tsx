@@ -1,9 +1,9 @@
 // ** React Imports
 import AlertAction from "components/AlertAction"
-import React, { Fragment, useEffect, useState } from "react"
+import React, {Fragment, useEffect, useState} from "react"
 
 // ** Next Router
-import { useRouter } from "next/router"
+import {useRouter} from "next/router"
 
 // ** MUI Imports
 import {
@@ -19,7 +19,7 @@ import {
   Avatar,
   Button
 } from "@mui/material"
-import { DataGrid, GridColumns } from "@mui/x-data-grid"
+import {DataGrid, GridColumns} from "@mui/x-data-grid"
 
 // ** MUI Icons Imports
 import GroupsIcon from "@mui/icons-material/Groups"
@@ -39,15 +39,15 @@ import Sale from "interfaces/Sale"
 
 // Third Party Imports
 import toast from "react-hot-toast"
-import { filterSales, matchSearchFilterByKeys } from "src/@utils/filters"
-import { formattedCurrencyWithSymbol } from "src/@utils/formatCurrency"
+import {filterSales, matchSearchFilterByKeys} from "src/@utils/filters"
+import {formattedCurrencyWithSymbol} from "src/@utils/formatCurrency"
 
 // ** Components
-import SimpleDialog, { DataDialog } from "components/SimpleDialog"
-import { SaleCardList } from "src/views/pages/vendas/nova-venda/NewSaleMockup"
+import SimpleDialog, {DataDialog} from "components/SimpleDialog"
+import {SaleCardList} from "src/views/pages/vendas/nova-venda/NewSaleMockup"
 
 // ** Api Imports
-import { useQueryClient } from "@tanstack/react-query"
+import {useQueryClient} from "@tanstack/react-query"
 import * as salesQ from "src/queries/sales"
 
 // ** Rendered Element
@@ -81,25 +81,25 @@ const auditStatusColors = (status: "pending" | "approved" | "rejected") => {
       return {
         color: "warning",
         text: "Pendente",
-        icon: <HourglassTopTwoToneIcon fontSize={"small"} color='warning' />
+        icon: <HourglassTopTwoToneIcon fontSize={"small"} color="warning" />
       }
     case "approved":
       return {
         color: "success",
         text: "Aprovado",
-        icon: <CheckCircleTwoToneIcon fontSize={"small"} color='success' />
+        icon: <CheckCircleTwoToneIcon fontSize={"small"} color="success" />
       }
     case "rejected":
       return {
         color: "error",
         text: "Rejeitado",
-        icon: <ThumbDownAltTwoToneIcon fontSize={"small"} color='error' />
+        icon: <ThumbDownAltTwoToneIcon fontSize={"small"} color="error" />
       }
     default:
       return {
         color: "warning",
         text: "Pendente",
-        icon: <HourglassTopTwoToneIcon fontSize={"small"} color='warning' />
+        icon: <HourglassTopTwoToneIcon fontSize={"small"} color="warning" />
       }
   }
 }
@@ -112,7 +112,7 @@ const SalesDataGrid = (props: SalesDataGridProps): JSX.Element => {
   const deleteSale = salesQ.useUpdateSaleByKeyValueMutation(queryClient)
 
   // ** Props
-  const { sales, loading } = props
+  const {sales, loading} = props
 
   // ** States
   const [searchText, setSearchText] = useState<string>("")
@@ -182,8 +182,8 @@ const SalesDataGrid = (props: SalesDataGridProps): JSX.Element => {
       type: "date",
       align: "center",
       headerAlign: "center",
-      renderCell: ({ row }: RowsData) => (
-        <Typography variant='body2'>
+      renderCell: ({row}: RowsData) => (
+        <Typography variant="body2">
           {/* @ts-ignore */}
           {row.date}
         </Typography>
@@ -196,7 +196,7 @@ const SalesDataGrid = (props: SalesDataGridProps): JSX.Element => {
       align: "center",
       headerAlign: "center",
       minWidth: 140,
-      renderCell: ({ row }: RowsData) => (
+      renderCell: ({row}: RowsData) => (
         <Box width={"100%"}>
           <Box
             sx={{
@@ -205,11 +205,11 @@ const SalesDataGrid = (props: SalesDataGridProps): JSX.Element => {
               justifyContent: "center"
             }}
           >
-            <Typography variant='body2'>{row.saleNumber}</Typography>
+            <Typography variant="body2">{row.saleNumber}</Typography>
           </Box>
           {row.PDVNumber && (
             <Fragment>
-              <Divider sx={{ paddingY: 0, marginY: 0, width: "100%" }} />
+              <Divider sx={{paddingY: 0, marginY: 0, width: "100%"}} />
               <Box
                 sx={{
                   display: "flex",
@@ -217,7 +217,7 @@ const SalesDataGrid = (props: SalesDataGridProps): JSX.Element => {
                   justifyContent: "center"
                 }}
               >
-                <Typography variant='body2'>PDV: {row.PDVNumber}</Typography>
+                <Typography variant="body2">PDV: {row.PDVNumber}</Typography>
               </Box>
             </Fragment>
           )}
@@ -231,8 +231,8 @@ const SalesDataGrid = (props: SalesDataGridProps): JSX.Element => {
       align: "center",
       headerAlign: "center",
       minWidth: 140,
-      renderCell: ({ row }: RowsData) => (
-        <Typography variant='body2'>
+      renderCell: ({row}: RowsData) => (
+        <Typography variant="body2">
           {formattedCurrencyWithSymbol(row.saleAmount)}
         </Typography>
       )
@@ -244,8 +244,8 @@ const SalesDataGrid = (props: SalesDataGridProps): JSX.Element => {
       align: "left",
       headerAlign: "left",
       flex: 1,
-      renderCell: ({ row }: RowsData) => (
-        <Typography variant='body2'>{row.client.name.toUpperCase()}</Typography>
+      renderCell: ({row}: RowsData) => (
+        <Typography variant="body2">{row.client.name.toUpperCase()}</Typography>
       )
     },
     {
@@ -254,8 +254,8 @@ const SalesDataGrid = (props: SalesDataGridProps): JSX.Element => {
       type: "number",
       align: "center",
       headerAlign: "center",
-      renderCell: ({ row }: RowsData) => (
-        <Typography variant='body2'>{row.score.toFixed(2)}</Typography>
+      renderCell: ({row}: RowsData) => (
+        <Typography variant="body2">{row.score.toFixed(2)}</Typography>
       )
     },
     {
@@ -266,8 +266,8 @@ const SalesDataGrid = (props: SalesDataGridProps): JSX.Element => {
       headerAlign: "center",
       flex: 1,
       minWidth: 150,
-      renderCell: ({ row }: RowsData) => (
-        <Typography variant='body2'>{row.paymentMethod.title}</Typography>
+      renderCell: ({row}: RowsData) => (
+        <Typography variant="body2">{row.paymentMethod.title}</Typography>
       )
     },
     {
@@ -278,8 +278,8 @@ const SalesDataGrid = (props: SalesDataGridProps): JSX.Element => {
       headerAlign: "center",
       flex: 1,
       minWidth: 150,
-      renderCell: ({ row }: RowsData) => {
-        const { color, text, icon } = auditStatusColors(row.auditStatus)
+      renderCell: ({row}: RowsData) => {
+        const {color, text, icon} = auditStatusColors(row.auditStatus)
         return (
           <Chip
             label={text}
@@ -302,7 +302,7 @@ const SalesDataGrid = (props: SalesDataGridProps): JSX.Element => {
       disableColumnMenu: true,
       disableReorder: true,
       width: 120,
-      renderCell: ({ row }: RowsData) => (
+      renderCell: ({row}: RowsData) => (
         <Box
           sx={{
             display: "flex",
@@ -341,31 +341,31 @@ const SalesDataGrid = (props: SalesDataGridProps): JSX.Element => {
               title={
                 <Typography
                   variant={"h6"}
-                  sx={{ display: "flex", alignItems: "center" }}
+                  sx={{display: "flex", alignItems: "center"}}
                 >
                   <PointOfSaleTwoToneIcon
                     color={"primary"}
-                    sx={{ mr: 2, fontSize: 30 }}
+                    sx={{mr: 2, fontSize: 30}}
                   />
                   Minhas Vendas
                 </Typography>
               }
               action={
                 <TextField
-                  label='Pesquisar'
-                  variant='standard'
+                  label="Pesquisar"
+                  variant="standard"
                   value={searchText}
                   onChange={e => setSearchText(e.target.value)}
                   InputProps={{
-                    startAdornment: <Magnify fontSize='small' />,
+                    startAdornment: <Magnify fontSize="small" />,
                     endAdornment: (
                       <IconButton
-                        size='small'
-                        title='Clear'
-                        aria-label='Clear'
+                        size="small"
+                        title="Clear"
+                        aria-label="Clear"
                         onClick={() => setSearchText("")}
                       >
-                        <Close fontSize='small' />
+                        <Close fontSize="small" />
                       </IconButton>
                     )
                   }}

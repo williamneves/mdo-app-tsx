@@ -1,8 +1,8 @@
 // ** MUI Imports
-import { Theme } from "@mui/material/styles"
+import {Theme} from "@mui/material/styles"
 
 // ** Type Import
-import { Settings } from "src/@core/context/settingsContext"
+import {Settings} from "src/@core/context/settingsContext"
 
 // ** Overrides Imports
 import MuiFab from "./fab"
@@ -40,7 +40,7 @@ import MuiToggleButton from "./toggleButton"
 import MuiDateTimePicker from "./dateTimePicker"
 
 const Overrides = (theme: Theme, settings: Settings) => {
-  const { skin } = settings
+  const {skin} = settings
 
   const fab = MuiFab(theme)
   const chip = MuiChip(theme)

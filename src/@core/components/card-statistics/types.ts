@@ -1,8 +1,8 @@
 // ** React Imports
-import { ReactNode } from "react"
+import {ReactNode} from "react"
 
 // ** Types
-import { ThemeColor } from "src/@core/layouts/types"
+import {ThemeColor} from "src/@core/layouts/types"
 
 export type CardStatsHorizontalProps = {
   title: string

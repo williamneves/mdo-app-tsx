@@ -1,17 +1,17 @@
 // ** React Imports
-import React, { useState, useEffect, Fragment } from "react"
+import React, {useState, useEffect, Fragment} from "react"
 
 // ** Third Party Imports
 import * as yup from "yup"
-import { useForm } from "react-hook-form"
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup"
+import {useForm} from "react-hook-form"
+import {yupResolver} from "@hookform/resolvers/yup/dist/yup"
 import toast from "react-hot-toast"
 
-const moment = require("moment")
+import moment from "moment"
 import "moment-timezone"
 
 // ** MUI Imports
-import { Grid, Typography, Button } from "@mui/material"
+import {Grid, Typography, Button} from "@mui/material"
 import ChevronRightIcon from "@mui/icons-material/ChevronRight"
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
 import PersonAddAltTwoToneIcon from "@mui/icons-material/PersonAddAltTwoTone"
@@ -26,13 +26,13 @@ import AutocompleteInputControlled from "components/inputs/AutocompleteInputCont
 import NewClientModal from "./NewClientModal"
 
 // ** Import Context and Queries
-import { useAuth } from "src/hooks/useAuth"
+import {useAuth} from "src/hooks/useAuth"
 import * as clientsQ from "src/queries/clients"
 import * as salesQ from "src/queries/sales"
 import * as salesHooks from "src/queries/sales/hooks"
 
 // ** Import Hooks
-import { getAllObjectKeys, filterListByKeyValue } from "src/@utils/filters"
+import {getAllObjectKeys, filterListByKeyValue} from "src/@utils/filters"
 
 // ** Rendered Element
 // Interface for Step2FormProps
@@ -42,7 +42,7 @@ interface Step1FormProps {
   handleBack: () => void
   onSubmit: (value: any) => void
   setSaleObject: (value: any) => void
-  steps: Array<{ title: string; subtitle: string }>
+  steps: Array<{title: string; subtitle: string}>
   step1Data: any
   setStep1Data: (value: any) => void
   mode?: "create" | "edit"
@@ -51,10 +51,10 @@ interface Step1FormProps {
 // Rendered Element
 const Step1Form = (props: Step1FormProps) => {
   // ** Props and States
-  const { setHasErrors, onSubmit, steps, step1Data, mode } = props
-  const { user: userDB, selectedStore } = useAuth()
-  const { data: allClients } = clientsQ.useGetClientsByReferenceIdQuery(
-    { referenceId: selectedStore!._id },
+  const {setHasErrors, onSubmit, steps, step1Data, mode} = props
+  const {user: userDB, selectedStore} = useAuth()
+  const {data: allClients} = clientsQ.useGetClientsByReferenceIdQuery(
+    {referenceId: selectedStore!._id},
     {
       active: !!userDB,
       placeholderData: []
@@ -229,12 +229,12 @@ const Step1Form = (props: Step1FormProps) => {
           {/* Step Title */}
           <Grid item xs={12}>
             <Typography
-              variant='body2'
-              sx={{ fontWeight: 600, color: "text.primary" }}
+              variant="body2"
+              sx={{fontWeight: 600, color: "text.primary"}}
             >
               {steps[0].title}
             </Typography>
-            <Typography variant='caption' component='p'>
+            <Typography variant="caption" component="p">
               {steps[0].subtitle}
             </Typography>
           </Grid>
@@ -242,13 +242,13 @@ const Step1Form = (props: Step1FormProps) => {
           {/* Edit Mode Alert */}
           {mode === "edit" && (
             <Grid item xs={12}>
-              <Alert severity='info'>
+              <Alert severity="info">
                 <AlertTitle>Modo de edição</AlertTitle>
-                <Typography variant='body2'>
+                <Typography variant="body2">
                   <strong>Atenção:</strong> Alterações feitas aqui afetarão a
                   venda original.
                 </Typography>
-                <Typography variant='body2'>
+                <Typography variant="body2">
                   Somente alguns campos podem ser editados.
                 </Typography>
               </Alert>
@@ -304,13 +304,13 @@ const Step1Form = (props: Step1FormProps) => {
               noOptionsText={
                 <Fragment>
                   <Typography
-                    variant='body2'
-                    sx={{ fontWeight: 600, paddingBottom: 3 }}
+                    variant="body2"
+                    sx={{fontWeight: 600, paddingBottom: 3}}
                   >
                     Nenhum cliente encontrado
                   </Typography>
                   <Button
-                    variant='text'
+                    variant="text"
                     endIcon={<PersonAddAltTwoToneIcon />}
                     onClick={(): void => setNewClientDialogOpen(true)}
                   >
@@ -334,7 +334,7 @@ const Step1Form = (props: Step1FormProps) => {
                 "role",
                 "vendor"
               )}
-              loading={!Boolean(selectedStore)}
+              loading={!selectedStore}
               disabled={userDB?.role === "vendor" || mode === "edit"}
               filterKeys={getAllObjectKeys(selectedStore?.employees)}
             />
@@ -349,7 +349,7 @@ const Step1Form = (props: Step1FormProps) => {
               optionLabel={"name"}
               errors={errorsStep1}
               options={userDB?.stores}
-              loading={!Boolean(userDB?.stores)}
+              loading={!userDB?.stores}
               filterKeys={getAllObjectKeys(userDB?.stores)}
               disabled={
                 userDB?.stores.length === 1 ||
@@ -370,9 +370,9 @@ const Step1Form = (props: Step1FormProps) => {
             }}
           >
             <Button
-              size='large'
-              variant='outlined'
-              color='secondary'
+              size="large"
+              variant="outlined"
+              color="secondary"
               startIcon={<ChevronLeftIcon />}
               disabled
             >
@@ -380,9 +380,9 @@ const Step1Form = (props: Step1FormProps) => {
             </Button>
             {mode === "edit" && (
               <Button
-                size='large'
-                variant='outlined'
-                color='secondary'
+                size="large"
+                variant="outlined"
+                color="secondary"
                 endIcon={<RestartAltIcon />}
                 onClick={() => resetStep1()}
               >
@@ -390,10 +390,10 @@ const Step1Form = (props: Step1FormProps) => {
               </Button>
             )}
             <Button
-              size='large'
+              size="large"
               endIcon={<ChevronRightIcon />}
-              type='submit'
-              variant='contained'
+              type="submit"
+              variant="contained"
               form={"formStep1"}
             >
               Próximo

@@ -1,12 +1,12 @@
 // ** React Imports
-import { useEffect, ReactNode } from "react"
+import {useEffect, ReactNode} from "react"
 
 // ** MUI Imports
-import { Direction } from "@mui/material"
+import {Direction} from "@mui/material"
 
 // ** Emotion Imports
 import createCache from "@emotion/cache"
-import { CacheProvider } from "@emotion/react"
+import {CacheProvider} from "@emotion/react"
 
 // ** RTL Plugin
 import stylisRTLPlugin from "stylis-plugin-rtl"
@@ -24,7 +24,7 @@ const styleCache = () =>
   })
 
 const Direction = (props: DirectionProps) => {
-  const { children, direction } = props
+  const {children, direction} = props
 
   useEffect(() => {
     document.dir = direction

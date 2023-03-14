@@ -1,11 +1,11 @@
 // ** MUI imports
-import { styled } from "@mui/material/styles"
-import Box, { BoxProps } from "@mui/material/Box"
+import {styled} from "@mui/material/styles"
+import Box, {BoxProps} from "@mui/material/Box"
 
 // ** utilities
-import { hexToRGBA } from "src/@core/utils/hex-to-rgba"
+import {hexToRGBA} from "src/@core/utils/hex-to-rgba"
 
-const CalendarWrapper = styled(Box)<BoxProps>(({ theme }) => ({
+const CalendarWrapper = styled(Box)<BoxProps>(({theme}) => ({
   display: "flex",
   position: "relative",
   borderRadius: theme.shape.borderRadius,

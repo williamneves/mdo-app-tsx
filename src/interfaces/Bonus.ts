@@ -2,7 +2,7 @@ import {
   SanityDefaultObject,
   SanityDefaultReference
 } from "./SanityDefaultInterfaces"
-import { Moment } from "moment"
+import {Moment} from "moment"
 import Store from "./Store"
 import User from "./User"
 import Goal from "./Goal"

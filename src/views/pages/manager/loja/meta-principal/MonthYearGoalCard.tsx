@@ -1,5 +1,5 @@
 // ** React Imports
-import { Fragment, ReactElement } from "react"
+import {Fragment, ReactElement} from "react"
 
 // ** MUI Imports
 import Box from "@mui/material/Box"
@@ -18,7 +18,7 @@ import DotsVertical from "mdi-material-ui/DotsVertical"
 import AccountOutline from "mdi-material-ui/AccountOutline"
 
 // ** Types
-import { ThemeColor } from "src/@core/layouts/types"
+import {ThemeColor} from "src/@core/layouts/types"
 
 // ** Custom Components Imports
 import CustomAvatar from "src/@core/components/mui/avatar"
@@ -54,20 +54,20 @@ const salesData: SaleDataType[] = [
 const renderStats = () => {
   return salesData.map((sale: SaleDataType, index: number) => (
     <Grid item xs={12} sm={4} key={index}>
-      <Box key={index} sx={{ display: "flex", alignItems: "center" }}>
+      <Box key={index} sx={{display: "flex", alignItems: "center"}}>
         <CustomAvatar
-          skin='light'
-          variant='rounded'
+          skin="light"
+          variant="rounded"
           color={sale.color}
-          sx={{ mr: 4 }}
+          sx={{mr: 4}}
         >
           {sale.icon}
         </CustomAvatar>
-        <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Typography variant='h6' sx={{ fontWeight: 600 }}>
+        <Box sx={{display: "flex", flexDirection: "column"}}>
+          <Typography variant="h6" sx={{fontWeight: 600}}>
             {sale.stats}
           </Typography>
-          <Typography variant='caption'>{sale.title}</Typography>
+          <Typography variant="caption">{sale.title}</Typography>
         </Box>
       </Box>
     </Grid>
@@ -75,30 +75,29 @@ const renderStats = () => {
 }
 
 // ** Rendered Element
-interface MonthYearGoalCardProps {}
 
-const MonthYearGoalCard = (props: MonthYearGoalCardProps): JSX.Element => {
+const MonthYearGoalCard = (): JSX.Element => {
   return (
     <Grid item xs={12} sm={12} md={6} lg={4}>
       <Card>
         <CardHeader
-          sx={{ pb: 3.25 }}
-          title='Sales Overview'
-          titleTypographyProps={{ variant: "h6" }}
+          sx={{pb: 3.25}}
+          title="Sales Overview"
+          titleTypographyProps={{variant: "h6"}}
           action={
-            <IconButton aria-label='settings' className='card-more-options'>
+            <IconButton aria-label="settings" className="card-more-options">
               <DotsVertical />
             </IconButton>
           }
           subheader={
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography variant='caption' sx={{ mr: 1.5 }}>
+            <Box sx={{display: "flex", alignItems: "center"}}>
+              <Typography variant="caption" sx={{mr: 1.5}}>
                 Total 42.5k Sales
               </Typography>
-              <Typography variant='subtitle2' sx={{ color: "success.main" }}>
+              <Typography variant="subtitle2" sx={{color: "success.main"}}>
                 +18%
               </Typography>
-              <ChevronUp fontSize='small' sx={{ color: "success.main" }} />
+              <ChevronUp fontSize="small" sx={{color: "success.main"}} />
             </Box>
           }
         />

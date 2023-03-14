@@ -48,21 +48,21 @@ export interface AlertActionProps {
 const getIcon = (type: AlertActionProps["alertType"]) => {
   switch (type) {
     case "success":
-      return <DoneOutlineTwoToneIcon sx={{ color: "success.main" }} />
+      return <DoneOutlineTwoToneIcon sx={{color: "success.main"}} />
     case "error":
-      return <ReportTwoToneIcon sx={{ color: "error.main" }} />
+      return <ReportTwoToneIcon sx={{color: "error.main"}} />
     case "info":
-      return <InfoTwoToneIcon sx={{ color: "info.main" }} />
+      return <InfoTwoToneIcon sx={{color: "info.main"}} />
     case "warning":
-      return <WarningTwoToneIcon sx={{ color: "warning.main" }} />
+      return <WarningTwoToneIcon sx={{color: "warning.main"}} />
     default:
-      return <InfoTwoToneIcon sx={{ color: "info.main" }} />
+      return <InfoTwoToneIcon sx={{color: "info.main"}} />
   }
 }
 
 export default function AlertAction(props: AlertActionProps) {
   // ** Props
-  const { open, setOpen, title } = props
+  const {open, setOpen, title} = props
 
   const handleClose = () => {
     setOpen(false)
@@ -82,7 +82,7 @@ export default function AlertAction(props: AlertActionProps) {
           {title}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id='alert-dialog-description'>
+          <DialogContentText id="alert-dialog-description">
             {props.content}
           </DialogContentText>
         </DialogContent>

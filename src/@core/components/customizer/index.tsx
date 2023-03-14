@@ -1,5 +1,5 @@
 // ** React Imports
-import { useState } from "react"
+import {useState} from "react"
 
 // ** Third Party Components
 import PerfectScrollbar from "react-perfect-scrollbar"
@@ -8,14 +8,14 @@ import PerfectScrollbar from "react-perfect-scrollbar"
 import Radio from "@mui/material/Radio"
 import Switch from "@mui/material/Switch"
 import Divider from "@mui/material/Divider"
-import { styled } from "@mui/material/styles"
+import {styled} from "@mui/material/styles"
 import IconButton from "@mui/material/IconButton"
 import InputLabel from "@mui/material/InputLabel"
 import RadioGroup from "@mui/material/RadioGroup"
 import Typography from "@mui/material/Typography"
-import Box, { BoxProps } from "@mui/material/Box"
+import Box, {BoxProps} from "@mui/material/Box"
 import FormControlLabel from "@mui/material/FormControlLabel"
-import MuiDrawer, { DrawerProps } from "@mui/material/Drawer"
+import MuiDrawer, {DrawerProps} from "@mui/material/Drawer"
 
 // ** Icons Imports
 import Cog from "mdi-material-ui/Cog"
@@ -23,12 +23,12 @@ import Check from "mdi-material-ui/Check"
 import Close from "mdi-material-ui/Close"
 
 // ** Type Import
-import { Settings } from "src/@core/context/settingsContext"
+import {Settings} from "src/@core/context/settingsContext"
 
 // ** Hook Import
-import { useSettings } from "src/@core/hooks/useSettings"
+import {useSettings} from "src/@core/hooks/useSettings"
 
-const Toggler = styled(Box)<BoxProps>(({ theme }) => ({
+const Toggler = styled(Box)<BoxProps>(({theme}) => ({
   right: 0,
   top: "50%",
   display: "flex",
@@ -42,7 +42,7 @@ const Toggler = styled(Box)<BoxProps>(({ theme }) => ({
   borderBottomLeftRadius: theme.shape.borderRadius
 }))
 
-const Drawer = styled(MuiDrawer)<DrawerProps>(({ theme }) => ({
+const Drawer = styled(MuiDrawer)<DrawerProps>(({theme}) => ({
   width: 400,
   zIndex: theme.zIndex.modal,
   "& .MuiFormControlLabel-root": {
@@ -56,11 +56,11 @@ const Drawer = styled(MuiDrawer)<DrawerProps>(({ theme }) => ({
   }
 }))
 
-const CustomizerSpacing = styled("div")(({ theme }) => ({
+const CustomizerSpacing = styled("div")(({theme}) => ({
   padding: theme.spacing(5, 6)
 }))
 
-const ColorBox = styled(Box)<BoxProps>(({ theme }) => ({
+const ColorBox = styled(Box)<BoxProps>(({theme}) => ({
   width: 40,
   height: 40,
   display: "flex",
@@ -78,7 +78,7 @@ const Customizer = () => {
   const [open, setOpen] = useState<boolean>(false)
 
   // ** Hook
-  const { settings, saveSettings } = useSettings()
+  const {settings, saveSettings} = useSettings()
 
   // ** Vars
   const {
@@ -100,17 +100,17 @@ const Customizer = () => {
     field: keyof Settings,
     value: Settings[keyof Settings]
   ): void => {
-    saveSettings({ ...settings, [field]: value })
+    saveSettings({...settings, [field]: value})
   }
 
   return (
-    <div className='customizer'>
-      <Toggler className='customizer-toggler' onClick={() => setOpen(true)}>
-        <Cog fontSize='small' sx={{ color: "common.white" }} />
+    <div className="customizer">
+      <Toggler className="customizer-toggler" onClick={() => setOpen(true)}>
+        <Cog fontSize="small" sx={{color: "common.white"}} />
       </Toggler>
-      <Drawer open={open} hideBackdrop anchor='right' variant='persistent'>
+      <Drawer open={open} hideBackdrop anchor="right" variant="persistent">
         <Box
-          className='customizer-header'
+          className="customizer-header"
           sx={{
             position: "relative",
             p: theme => theme.spacing(3.5, 5),
@@ -118,12 +118,12 @@ const Customizer = () => {
           }}
         >
           <Typography
-            variant='h6'
-            sx={{ fontWeight: 600, textTransform: "uppercase" }}
+            variant="h6"
+            sx={{fontWeight: 600, textTransform: "uppercase"}}
           >
             Theme Customizer
           </Typography>
-          <Typography sx={{ color: "text.secondary" }}>
+          <Typography sx={{color: "text.secondary"}}>
             Customize & Preview in Real Time
           </Typography>
           <IconButton
@@ -136,21 +136,21 @@ const Customizer = () => {
               transform: "translateY(-50%)"
             }}
           >
-            <Close fontSize='small' />
+            <Close fontSize="small" />
           </IconButton>
         </Box>
-        <PerfectScrollbar options={{ wheelPropagation: false }}>
-          <CustomizerSpacing className='customizer-body'>
+        <PerfectScrollbar options={{wheelPropagation: false}}>
+          <CustomizerSpacing className="customizer-body">
             <Typography
-              component='p'
-              variant='caption'
-              sx={{ mb: 4, color: "text.disabled", textTransform: "uppercase" }}
+              component="p"
+              variant="caption"
+              sx={{mb: 4, color: "text.disabled", textTransform: "uppercase"}}
             >
               Theming
             </Typography>
 
             {/* Skin */}
-            <Box sx={{ mb: 4 }}>
+            <Box sx={{mb: 4}}>
               <Typography>Skin</Typography>
               <RadioGroup
                 row
@@ -166,19 +166,19 @@ const Customizer = () => {
                 }}
               >
                 <FormControlLabel
-                  value='default'
-                  label='Default'
+                  value="default"
+                  label="Default"
                   control={<Radio />}
                 />
                 <FormControlLabel
-                  value='bordered'
-                  label='Bordered'
+                  value="bordered"
+                  label="Bordered"
                   control={<Radio />}
                 />
                 {layout === "horizontal" ? null : (
                   <FormControlLabel
-                    value='semi-dark'
-                    label='Semi Dark'
+                    value="semi-dark"
+                    label="Semi Dark"
                     control={<Radio />}
                   />
                 )}
@@ -186,11 +186,11 @@ const Customizer = () => {
             </Box>
 
             {/* Mode */}
-            <Box sx={{ mb: 4 }}>
+            <Box sx={{mb: 4}}>
               <Typography>Mode</Typography>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Box sx={{display: "flex", alignItems: "center"}}>
                 <InputLabel
-                  htmlFor='change-mode'
+                  htmlFor="change-mode"
                   sx={{
                     cursor: "pointer",
                     fontSize: "0.875rem",
@@ -200,15 +200,15 @@ const Customizer = () => {
                   Light
                 </InputLabel>
                 <Switch
-                  id='change-mode'
-                  name='change-mode'
+                  id="change-mode"
+                  name="change-mode"
                   checked={mode === "dark"}
                   onChange={e =>
                     handleChange("mode", e.target.checked ? "dark" : "light")
                   }
                 />
                 <InputLabel
-                  htmlFor='change-mode'
+                  htmlFor="change-mode"
                   sx={{
                     cursor: "pointer",
                     fontSize: "0.875rem",
@@ -222,31 +222,31 @@ const Customizer = () => {
 
             {/* Color Picker */}
             <Box>
-              <Typography sx={{ mb: 2.5 }}>Primary Color</Typography>
-              <Box sx={{ display: "flex" }}>
+              <Typography sx={{mb: 2.5}}>Primary Color</Typography>
+              <Box sx={{display: "flex"}}>
                 <ColorBox
                   onClick={() => handleChange("themeColor", "primary")}
                   sx={{
                     ml: 0,
                     backgroundColor: "#666CFF",
                     ...(themeColor === "primary"
-                      ? { boxShadow: 9 }
-                      : { "&:hover": { boxShadow: 4 } })
+                      ? {boxShadow: 9}
+                      : {"&:hover": {boxShadow: 4}})
                   }}
                 >
-                  {themeColor === "primary" ? <Check fontSize='small' /> : null}
+                  {themeColor === "primary" ? <Check fontSize="small" /> : null}
                 </ColorBox>
                 <ColorBox
                   onClick={() => handleChange("themeColor", "secondary")}
                   sx={{
                     backgroundColor: "secondary.main",
                     ...(themeColor === "secondary"
-                      ? { boxShadow: 9 }
-                      : { "&:hover": { boxShadow: 4 } })
+                      ? {boxShadow: 9}
+                      : {"&:hover": {boxShadow: 4}})
                   }}
                 >
                   {themeColor === "secondary" ? (
-                    <Check fontSize='small' />
+                    <Check fontSize="small" />
                   ) : null}
                 </ColorBox>
                 <ColorBox
@@ -254,33 +254,33 @@ const Customizer = () => {
                   sx={{
                     backgroundColor: "success.main",
                     ...(themeColor === "success"
-                      ? { boxShadow: 9 }
-                      : { "&:hover": { boxShadow: 4 } })
+                      ? {boxShadow: 9}
+                      : {"&:hover": {boxShadow: 4}})
                   }}
                 >
-                  {themeColor === "success" ? <Check fontSize='small' /> : null}
+                  {themeColor === "success" ? <Check fontSize="small" /> : null}
                 </ColorBox>
                 <ColorBox
                   onClick={() => handleChange("themeColor", "error")}
                   sx={{
                     backgroundColor: "error.main",
                     ...(themeColor === "error"
-                      ? { boxShadow: 9 }
-                      : { "&:hover": { boxShadow: 4 } })
+                      ? {boxShadow: 9}
+                      : {"&:hover": {boxShadow: 4}})
                   }}
                 >
-                  {themeColor === "error" ? <Check fontSize='small' /> : null}
+                  {themeColor === "error" ? <Check fontSize="small" /> : null}
                 </ColorBox>
                 <ColorBox
                   onClick={() => handleChange("themeColor", "warning")}
                   sx={{
                     backgroundColor: "warning.main",
                     ...(themeColor === "warning"
-                      ? { boxShadow: 9 }
-                      : { "&:hover": { boxShadow: 4 } })
+                      ? {boxShadow: 9}
+                      : {"&:hover": {boxShadow: 4}})
                   }}
                 >
-                  {themeColor === "warning" ? <Check fontSize='small' /> : null}
+                  {themeColor === "warning" ? <Check fontSize="small" /> : null}
                 </ColorBox>
                 <ColorBox
                   onClick={() => handleChange("themeColor", "info")}
@@ -288,29 +288,29 @@ const Customizer = () => {
                     mr: 0,
                     backgroundColor: "info.main",
                     ...(themeColor === "info"
-                      ? { boxShadow: 9 }
-                      : { "&:hover": { boxShadow: 4 } })
+                      ? {boxShadow: 9}
+                      : {"&:hover": {boxShadow: 4}})
                   }}
                 >
-                  {themeColor === "info" ? <Check fontSize='small' /> : null}
+                  {themeColor === "info" ? <Check fontSize="small" /> : null}
                 </ColorBox>
               </Box>
             </Box>
           </CustomizerSpacing>
 
-          <Divider sx={{ m: 0 }} />
+          <Divider sx={{m: 0}} />
 
-          <CustomizerSpacing className='customizer-body'>
+          <CustomizerSpacing className="customizer-body">
             <Typography
-              component='p'
-              variant='caption'
-              sx={{ mb: 4, color: "text.disabled", textTransform: "uppercase" }}
+              component="p"
+              variant="caption"
+              sx={{mb: 4, color: "text.disabled", textTransform: "uppercase"}}
             >
               Layout
             </Typography>
 
             {/* Content Width */}
-            <Box sx={{ mb: 4 }}>
+            <Box sx={{mb: 4}}>
               <Typography>Content Width</Typography>
               <RadioGroup
                 row
@@ -329,20 +329,20 @@ const Customizer = () => {
                 }}
               >
                 <FormControlLabel
-                  value='full'
-                  label='Full'
+                  value="full"
+                  label="Full"
                   control={<Radio />}
                 />
                 <FormControlLabel
-                  value='boxed'
-                  label='Boxed'
+                  value="boxed"
+                  label="Boxed"
                   control={<Radio />}
                 />
               </RadioGroup>
             </Box>
 
             {/* AppBar */}
-            <Box sx={{ mb: 4 }}>
+            <Box sx={{mb: 4}}>
               <Typography>AppBar Type</Typography>
               <RadioGroup
                 row
@@ -358,19 +358,19 @@ const Customizer = () => {
                 }}
               >
                 <FormControlLabel
-                  value='fixed'
-                  label='Fixed'
+                  value="fixed"
+                  label="Fixed"
                   control={<Radio />}
                 />
                 <FormControlLabel
-                  value='static'
-                  label='Static'
+                  value="static"
+                  label="Static"
                   control={<Radio />}
                 />
                 {layout === "horizontal" ? null : (
                   <FormControlLabel
-                    value='hidden'
-                    label='Hidden'
+                    value="hidden"
+                    label="Hidden"
                     control={<Radio />}
                   />
                 )}
@@ -378,7 +378,7 @@ const Customizer = () => {
             </Box>
 
             {/* Footer */}
-            <Box sx={{ mb: 4 }}>
+            <Box sx={{mb: 4}}>
               <Typography>Footer Type</Typography>
               <RadioGroup
                 row
@@ -394,18 +394,18 @@ const Customizer = () => {
                 }}
               >
                 <FormControlLabel
-                  value='fixed'
-                  label='Fixed'
+                  value="fixed"
+                  label="Fixed"
                   control={<Radio />}
                 />
                 <FormControlLabel
-                  value='static'
-                  label='Static'
+                  value="static"
+                  label="Static"
                   control={<Radio />}
                 />
                 <FormControlLabel
-                  value='hidden'
-                  label='Hidden'
+                  value="hidden"
+                  label="Hidden"
                   control={<Radio />}
                 />
               </RadioGroup>
@@ -422,7 +422,7 @@ const Customizer = () => {
             >
               <Typography>AppBar Blur</Typography>
               <Switch
-                name='appBarBlur'
+                name="appBarBlur"
                 checked={appBarBlur}
                 onChange={e => handleChange("appBarBlur", e.target.checked)}
               />
@@ -438,7 +438,7 @@ const Customizer = () => {
             >
               <Typography>RTL</Typography>
               <Switch
-                name='direction'
+                name="direction"
                 checked={direction === "rtl"}
                 onChange={e =>
                   handleChange("direction", e.target.checked ? "rtl" : "ltr")
@@ -447,13 +447,13 @@ const Customizer = () => {
             </Box>
           </CustomizerSpacing>
 
-          <Divider sx={{ m: 0 }} />
+          <Divider sx={{m: 0}} />
 
-          <CustomizerSpacing className='customizer-body'>
+          <CustomizerSpacing className="customizer-body">
             <Typography
-              component='p'
-              variant='caption'
-              sx={{ mb: 4, color: "text.disabled", textTransform: "uppercase" }}
+              component="p"
+              variant="caption"
+              sx={{mb: 4, color: "text.disabled", textTransform: "uppercase"}}
             >
               Menu
             </Typography>
@@ -483,13 +483,13 @@ const Customizer = () => {
                 }}
               >
                 <FormControlLabel
-                  value='vertical'
-                  label='Vertical'
+                  value="vertical"
+                  label="Vertical"
                   control={<Radio />}
                 />
                 <FormControlLabel
-                  value='horizontal'
-                  label='Horizontal'
+                  value="horizontal"
+                  label="Horizontal"
                   control={<Radio />}
                 />
               </RadioGroup>
@@ -497,7 +497,7 @@ const Customizer = () => {
 
             {/* Menu Toggle */}
             {navHidden || layout === "horizontal" ? null : (
-              <Box sx={{ mb: 4 }}>
+              <Box sx={{mb: 4}}>
                 <Typography>Menu Toggle</Typography>
                 <RadioGroup
                   row
@@ -516,13 +516,13 @@ const Customizer = () => {
                   }}
                 >
                   <FormControlLabel
-                    value='accordion'
-                    label='Accordion'
+                    value="accordion"
+                    label="Accordion"
                     control={<Radio />}
                   />
                   <FormControlLabel
-                    value='collapse'
-                    label='Collapse'
+                    value="collapse"
+                    label="Collapse"
                     control={<Radio />}
                   />
                 </RadioGroup>
@@ -541,7 +541,7 @@ const Customizer = () => {
               >
                 <Typography>Menu Collapsed</Typography>
                 <Switch
-                  name='navCollapsed'
+                  name="navCollapsed"
                   checked={navCollapsed}
                   onChange={e => handleChange("navCollapsed", e.target.checked)}
                 />
@@ -559,7 +559,7 @@ const Customizer = () => {
               >
                 <Typography>Menu Hidden</Typography>
                 <Switch
-                  name='navHidden'
+                  name="navHidden"
                   checked={navHidden}
                   onChange={e => handleChange("navHidden", e.target.checked)}
                 />

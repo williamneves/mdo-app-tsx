@@ -1,9 +1,9 @@
-export type ErrCallbackType = (err: { [key: string]: string }) => void
+export type ErrCallbackType = (err: {[key: string]: string}) => void
 
 import SelectedStore from "@src/interfaces/SelectedStore"
 import AuthUser from "src/interfaces/authUser"
 import User from "@src/interfaces/User"
-import { ChangeUserParams } from "src/@auth/authHooks"
+import {ChangeUserParams} from "src/@auth/authHooks"
 
 export type LoginParams = {
   email: string

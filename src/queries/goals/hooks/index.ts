@@ -1,4 +1,4 @@
-import { dbClient } from "src/configs/sanityConfig"
+import {dbClient} from "src/configs/sanityConfig"
 import Goal from "src/interfaces/Goal"
 import groq from "groq"
 
@@ -79,7 +79,7 @@ export const getAllGoals = async () => {
 // * Goals by Store
 export const getGoalsByStore = async (storeId: string) => {
   try {
-    return dbClient.fetch<Goal[]>(goalsByStoreGROQ, { storeId })
+    return dbClient.fetch<Goal[]>(goalsByStoreGROQ, {storeId})
   } catch (error) {
     throw error
   }
@@ -94,7 +94,7 @@ export const getMainGoalsByStore = async (
   console.log(
     "🚀 ~ file: index.ts ~ line 97 ~ getMainGoalsByStore ~ mainGoalsByStoreGROQ, { storeId, dateStart, dateEnd }",
     mainGoalsByStoreGROQ,
-    { storeId, dateStart, dateEnd }
+    {storeId, dateStart, dateEnd}
   )
 
   try {
@@ -111,7 +111,7 @@ export const getMainGoalsByStore = async (
 // * Get one Goal by ID
 export const getGoalById = async (id: string) => {
   try {
-    return dbClient.fetch<Goal>(goalById, { id })
+    return dbClient.fetch<Goal>(goalById, {id})
   } catch (error) {
     throw error
   }

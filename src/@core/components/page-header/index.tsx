@@ -2,11 +2,11 @@
 import Grid from "@mui/material/Grid"
 
 // ** Types
-import { PageHeaderProps } from "./types"
+import {PageHeaderProps} from "./types"
 
 const PageHeader = (props: PageHeaderProps) => {
   // ** Props
-  const { title, subtitle } = props
+  const {title, subtitle} = props
 
   return (
     <Grid item xs={12}>

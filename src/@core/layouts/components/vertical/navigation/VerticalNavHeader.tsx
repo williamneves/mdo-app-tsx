@@ -1,20 +1,20 @@
 // ** React Import
-import { ReactNode } from "react"
+import {ReactNode} from "react"
 
 // ** Next Import
 import Link from "next/link"
 
 // ** MUI Imports
 import IconButton from "@mui/material/IconButton"
-import Box, { BoxProps } from "@mui/material/Box"
-import { styled, useTheme } from "@mui/material/styles"
-import Typography, { TypographyProps } from "@mui/material/Typography"
+import Box, {BoxProps} from "@mui/material/Box"
+import {styled, useTheme} from "@mui/material/styles"
+import Typography, {TypographyProps} from "@mui/material/Typography"
 
 // ** Icons
 import Close from "mdi-material-ui/Close"
 
 // ** Type Import
-import { Settings } from "src/@core/context/settingsContext"
+import {Settings} from "src/@core/context/settingsContext"
 
 // ** Configs
 import themeConfig from "src/configs/themeConfig"
@@ -33,7 +33,7 @@ interface Props {
 }
 
 // ** Styled Components
-const MenuHeaderWrapper = styled(Box)<BoxProps>(({ theme }) => ({
+const MenuHeaderWrapper = styled(Box)<BoxProps>(({theme}) => ({
   display: "flex",
   alignItems: "center",
   paddingRight: theme.spacing(4),
@@ -71,9 +71,9 @@ const VerticalNavHeader = (props: Props) => {
 
   // ** Hooks & Vars
   const theme = useTheme()
-  const { skin, direction, navCollapsed } = settings
+  const {skin, direction, navCollapsed} = settings
   const menuCollapsedStyles =
-    navCollapsed && !navHover ? { opacity: 0 } : { opacity: 1 }
+    navCollapsed && !navHover ? {opacity: 0} : {opacity: 1}
 
   const svgFillSecondary = () => {
     if (skin === "semi-dark" && theme.palette.mode === "light") {
@@ -132,95 +132,95 @@ const VerticalNavHeader = (props: Props) => {
 
   return (
     <MenuHeaderWrapper
-      className='nav-header'
-      sx={{ pl: menuHeaderPaddingLeft() }}
+      className="nav-header"
+      sx={{pl: menuHeaderPaddingLeft()}}
     >
       {userVerticalNavMenuBranding ? (
         userVerticalNavMenuBranding(props)
       ) : (
-        <Link href='/' passHref>
+        <Link href="/" passHref>
           <StyledLink>
             <svg
               width={40}
-              fill='none'
+              fill="none"
               height={22}
-              viewBox='0 0 268 150'
-              xmlns='http://www.w3.org/2000/svg'
+              viewBox="0 0 268 150"
+              xmlns="http://www.w3.org/2000/svg"
             >
               <rect
-                rx='25.1443'
-                width='50.2886'
-                height='143.953'
+                rx="25.1443"
+                width="50.2886"
+                height="143.953"
                 fill={theme.palette.primary.main}
-                transform='matrix(-0.865206 0.501417 0.498585 0.866841 195.571 0)'
+                transform="matrix(-0.865206 0.501417 0.498585 0.866841 195.571 0)"
               />
               <rect
-                rx='25.1443'
-                width='50.2886'
-                height='143.953'
-                fillOpacity='0.4'
-                fill='url(#paint0_linear_7821_79167)'
-                transform='matrix(-0.865206 0.501417 0.498585 0.866841 196.084 0)'
+                rx="25.1443"
+                width="50.2886"
+                height="143.953"
+                fillOpacity="0.4"
+                fill="url(#paint0_linear_7821_79167)"
+                transform="matrix(-0.865206 0.501417 0.498585 0.866841 196.084 0)"
               />
               <rect
-                rx='25.1443'
-                width='50.2886'
-                height='143.953'
+                rx="25.1443"
+                width="50.2886"
+                height="143.953"
                 fill={theme.palette.primary.main}
-                transform='matrix(0.865206 0.501417 -0.498585 0.866841 173.147 0)'
+                transform="matrix(0.865206 0.501417 -0.498585 0.866841 173.147 0)"
               />
               <rect
-                rx='25.1443'
-                width='50.2886'
-                height='143.953'
+                rx="25.1443"
+                width="50.2886"
+                height="143.953"
                 fill={theme.palette.primary.main}
-                transform='matrix(-0.865206 0.501417 0.498585 0.866841 94.1973 0)'
+                transform="matrix(-0.865206 0.501417 0.498585 0.866841 94.1973 0)"
               />
               <rect
-                rx='25.1443'
-                width='50.2886'
-                height='143.953'
-                fillOpacity='0.4'
-                fill='url(#paint1_linear_7821_79167)'
-                transform='matrix(-0.865206 0.501417 0.498585 0.866841 94.1973 0)'
+                rx="25.1443"
+                width="50.2886"
+                height="143.953"
+                fillOpacity="0.4"
+                fill="url(#paint1_linear_7821_79167)"
+                transform="matrix(-0.865206 0.501417 0.498585 0.866841 94.1973 0)"
               />
               <rect
-                rx='25.1443'
-                width='50.2886'
-                height='143.953'
+                rx="25.1443"
+                width="50.2886"
+                height="143.953"
                 fill={theme.palette.primary.main}
-                transform='matrix(0.865206 0.501417 -0.498585 0.866841 71.7728 0)'
+                transform="matrix(0.865206 0.501417 -0.498585 0.866841 71.7728 0)"
               />
               <defs>
                 <linearGradient
-                  y1='0'
-                  x1='25.1443'
-                  x2='25.1443'
-                  y2='143.953'
-                  id='paint0_linear_7821_79167'
-                  gradientUnits='userSpaceOnUse'
+                  y1="0"
+                  x1="25.1443"
+                  x2="25.1443"
+                  y2="143.953"
+                  id="paint0_linear_7821_79167"
+                  gradientUnits="userSpaceOnUse"
                 >
                   <stop />
-                  <stop offset='1' stopOpacity='0' />
+                  <stop offset="1" stopOpacity="0" />
                 </linearGradient>
                 <linearGradient
-                  y1='0'
-                  x1='25.1443'
-                  x2='25.1443'
-                  y2='143.953'
-                  id='paint1_linear_7821_79167'
-                  gradientUnits='userSpaceOnUse'
+                  y1="0"
+                  x1="25.1443"
+                  x2="25.1443"
+                  y2="143.953"
+                  id="paint1_linear_7821_79167"
+                  gradientUnits="userSpaceOnUse"
                 >
                   <stop />
-                  <stop offset='1' stopOpacity='0' />
+                  <stop offset="1" stopOpacity="0" />
                 </linearGradient>
               </defs>
             </svg>
             <HeaderTitle
-              variant='h6'
+              variant="h6"
               sx={{
                 ...menuCollapsedStyles,
-                ...(navCollapsed && !navHover ? {} : { ml: 2 })
+                ...(navCollapsed && !navHover ? {} : {ml: 2})
               }}
             >
               {themeConfig.templateName}
@@ -234,16 +234,16 @@ const VerticalNavHeader = (props: Props) => {
           disableRipple
           disableFocusRipple
           onClick={toggleNavVisibility}
-          sx={{ p: 0, backgroundColor: "transparent !important" }}
+          sx={{p: 0, backgroundColor: "transparent !important"}}
         >
-          <Close fontSize='small' />
+          <Close fontSize="small" />
         </IconButton>
       ) : (
         <IconButton
           disableRipple
           disableFocusRipple
           onClick={() =>
-            saveSettings({ ...settings, navCollapsed: !navCollapsed })
+            saveSettings({...settings, navCollapsed: !navCollapsed})
           }
           sx={{
             p: 0,
@@ -260,11 +260,11 @@ const VerticalNavHeader = (props: Props) => {
           ) : (
             <Box
               width={22}
-              fill='none'
+              fill="none"
               height={22}
-              component='svg'
-              viewBox='0 0 22 22'
-              xmlns='http://www.w3.org/2000/svg'
+              component="svg"
+              viewBox="0 0 22 22"
+              xmlns="http://www.w3.org/2000/svg"
               sx={{
                 transform: `rotate(${svgRotationDeg()}deg)`,
                 transition: "transform .25s ease-in-out .35s"
@@ -272,11 +272,11 @@ const VerticalNavHeader = (props: Props) => {
             >
               <path
                 fill={svgFillSecondary()}
-                d='M11.4854 4.88844C11.0082 4.41121 10.2344 4.41121 9.75716 4.88844L4.51029 10.1353C4.03299 10.6126 4.03299 11.3865 4.51029 11.8638L9.75716 17.1107C10.2344 17.5879 11.0082 17.5879 11.4854 17.1107C11.9626 16.6334 11.9626 15.8597 11.4854 15.3824L7.96674 11.8638C7.48943 11.3865 7.48943 10.6126 7.96674 10.1353L11.4854 6.61667C11.9626 6.13943 11.9626 5.36568 11.4854 4.88844Z'
+                d="M11.4854 4.88844C11.0082 4.41121 10.2344 4.41121 9.75716 4.88844L4.51029 10.1353C4.03299 10.6126 4.03299 11.3865 4.51029 11.8638L9.75716 17.1107C10.2344 17.5879 11.0082 17.5879 11.4854 17.1107C11.9626 16.6334 11.9626 15.8597 11.4854 15.3824L7.96674 11.8638C7.48943 11.3865 7.48943 10.6126 7.96674 10.1353L11.4854 6.61667C11.9626 6.13943 11.9626 5.36568 11.4854 4.88844Z"
               />
               <path
                 fill={svgFillDisabled()}
-                d='M15.8683 4.88844L10.6214 10.1353C10.1441 10.6126 10.1441 11.3865 10.6214 11.8638L15.8683 17.1107C16.3455 17.5879 17.1193 17.5879 17.5965 17.1107C18.0737 16.6334 18.0737 15.8597 17.5965 15.3824L14.0779 11.8638C13.6005 11.3865 13.6005 10.6126 14.0779 10.1353L17.5965 6.61667C18.0737 6.13943 18.0737 5.36568 17.5965 4.88844C17.1193 4.41121 16.3455 4.41121 15.8683 4.88844Z'
+                d="M15.8683 4.88844L10.6214 10.1353C10.1441 10.6126 10.1441 11.3865 10.6214 11.8638L15.8683 17.1107C16.3455 17.5879 17.1193 17.5879 17.5965 17.1107C18.0737 16.6334 18.0737 15.8597 17.5965 15.3824L14.0779 11.8638C13.6005 11.3865 13.6005 10.6126 14.0779 10.1353L17.5965 6.61667C18.0737 6.13943 18.0737 5.36568 17.5965 4.88844C17.1193 4.41121 16.3455 4.41121 15.8683 4.88844Z"
               />
             </Box>
           )}

@@ -2,16 +2,16 @@
 import AccountOutline from "mdi-material-ui/AccountOutline"
 import Poll from "mdi-material-ui/Poll"
 import TrendingUp from "mdi-material-ui/TrendingUp"
-import { Fragment, useState, useEffect } from "react"
+import {Fragment, useState, useEffect} from "react"
 
 // ** Import Component
 import CardStatisticsSales from "components/cards/CardStatisticsSales"
-import { SaleDataType } from "components/cards/CardStatisticsSales"
-import { GetDateRange, createDateRange } from "src/@utils/createDateRange"
+import {SaleDataType} from "components/cards/CardStatisticsSales"
+import {GetDateRange, createDateRange} from "src/@utils/createDateRange"
 
 // ** Api Imports
 import * as salesQ from "src/queries/sales"
-import { useAuth } from "src/hooks/useAuth"
+import {useAuth} from "src/hooks/useAuth"
 
 // ** Import Utils
 import {
@@ -29,10 +29,10 @@ interface SalesOverviewProps {
 
 const SalesOverview = (props: SalesOverviewProps): JSX.Element => {
   // ** Hooks
-  const { user, selectedUser, selectedStore } = useAuth()
+  const {user, selectedUser, selectedStore} = useAuth()
 
   // ** Props
-  const { dateRange } = props
+  const {dateRange} = props
 
   // ** States
   const [salesData, setSalesData] = useState<SaleDataType[] | []>([])
@@ -40,9 +40,9 @@ const SalesOverview = (props: SalesOverviewProps): JSX.Element => {
   // ** Apis
   const defaultDateRange = createDateRange("thisMonth")
   // Store Sales
-  const { data: storeSales, isLoading: storeSalesLoading } =
+  const {data: storeSales, isLoading: storeSalesLoading} =
     salesQ.useAllSalesByReferenceAndDateRangeQuery(
-      selectedStore?._id!,
+      selectedStore?._id as string,
       dateRange && dateRange.range
         ? dateRange.range
         : {
@@ -52,7 +52,7 @@ const SalesOverview = (props: SalesOverviewProps): JSX.Element => {
     )
 
   // Vendor Sales
-  const { data: vendorSales, isLoading: vendorSalesLoading } =
+  const {data: vendorSales, isLoading: vendorSalesLoading} =
     salesQ.useAllSalesByReferenceAndDateRangeQuery(
       selectedUser && selectedUser?._id ? selectedUser._id : user!._id,
       dateRange && dateRange.range
@@ -64,18 +64,16 @@ const SalesOverview = (props: SalesOverviewProps): JSX.Element => {
     )
 
   // Vendor Sales Last Period
-  const {
-    data: vendorSalesLastPeriod,
-    isLoading: vendorSalesLastPeriodLoading
-  } = salesQ.useAllSalesByReferenceAndDateRangeQuery(
-    selectedUser && selectedUser?._id ? selectedUser._id : user!._id,
-    dateRange && dateRange.pastRange
-      ? dateRange.pastRange
-      : {
-          startDate: defaultDateRange!.pastRange!.startDate,
-          endDate: defaultDateRange!.pastRange!.endDate
-        }
-  )
+  const {data: vendorSalesLastPeriod, isLoading: vendorSalesLastPeriodLoading} =
+    salesQ.useAllSalesByReferenceAndDateRangeQuery(
+      selectedUser && selectedUser?._id ? selectedUser._id : user!._id,
+      dateRange && dateRange.pastRange
+        ? dateRange.pastRange
+        : {
+            startDate: defaultDateRange!.pastRange!.startDate,
+            endDate: defaultDateRange!.pastRange!.endDate
+          }
+    )
 
   const caption = () => {
     return `Total da Loja: ${formattedCurrencyWithSymbol(
@@ -88,7 +86,7 @@ const SalesOverview = (props: SalesOverviewProps): JSX.Element => {
   }, [vendorSalesLoading])
 
   const captionLastPeriod = () => {
-    let output: { type: string; percentage: string } = {
+    const output: {type: string; percentage: string} = {
       type: "",
       percentage: ""
     }

@@ -1,5 +1,5 @@
 // ** React Imports
-import { ReactNode } from "react"
+import {ReactNode} from "react"
 
 export type SidebarType = {
   show: boolean

@@ -1,35 +1,35 @@
 // ** Sale Score Calculation
 export default (saleObj: any) => {
-  let { saleAmount: sale, totalCost: cost, paymentMethod: payment } = saleObj
-  let { paymentType: paymentMethod } = payment
+  const {saleAmount: sale, totalCost: cost, paymentMethod: payment} = saleObj
+  const {paymentType: paymentMethod} = payment
 
   const markup = Math.round(((sale - cost) / cost) * 10) / 10 // Markup
   const profit = Math.round(sale - cost) // Profit
   let score = 0 // Score
-  let maxScore = 10 // Max Score
+  const maxScore = 10 // Max Score
 
-  let priceRange = {
-    1: { min: 0, max: 999 },
-    2: { min: 1000, max: 1599 },
-    3: { min: 1600, max: 2399 },
-    4: { min: 2400, max: 3999 },
-    5: { min: 4000, max: 999999 }
+  const priceRange = {
+    1: {min: 0, max: 999},
+    2: {min: 1000, max: 1599},
+    3: {min: 1600, max: 2399},
+    4: {min: 2400, max: 3999},
+    5: {min: 4000, max: 999999}
   }
-  let profitRange = {
-    1: { min: 0, max: 399 },
-    2: { min: 400, max: 799 },
-    3: { min: 800, max: 1299 },
-    4: { min: 1300, max: 1899 },
-    5: { min: 1900, max: 999999 }
+  const profitRange = {
+    1: {min: 0, max: 399},
+    2: {min: 400, max: 799},
+    3: {min: 800, max: 1299},
+    4: {min: 1300, max: 1899},
+    5: {min: 1900, max: 999999}
   }
-  let markupRange = {
-    1: { min: 0, max: 2.5 },
-    2: { min: 2.6, max: 3.1 },
-    3: { min: 3.2, max: 4.1 },
-    4: { min: 4.1, max: 5 },
-    5: { min: 5.1, max: 999999 }
+  const markupRange = {
+    1: {min: 0, max: 2.5},
+    2: {min: 2.6, max: 3.1},
+    3: {min: 3.2, max: 4.1},
+    4: {min: 4.1, max: 5},
+    5: {min: 5.1, max: 999999}
   }
-  let paymentMethodMultiplicator = () => {
+  const paymentMethodMultiplicator = () => {
     switch (paymentMethod) {
       case "cash":
         return 1.05
@@ -54,7 +54,7 @@ export default (saleObj: any) => {
   // console.log("score + based on price", score);
 
   // Add score based on profit
-  let profitScore = () => {
+  const profitScore = () => {
     if (profit > profitRange[5].max) {
       return 3.75
     } else if (profit > profitRange[4].max) {
@@ -73,7 +73,7 @@ export default (saleObj: any) => {
   // console.log("score + based on profit", score);
 
   // add score based on price
-  let priceScore = () => {
+  const priceScore = () => {
     if (sale > priceRange[5].max) {
       return 3
     } else if (sale > priceRange[4].max) {
@@ -92,7 +92,7 @@ export default (saleObj: any) => {
   // console.log("score + based on price range", score);
 
   // Add score based on markup
-  let markupScore = () => {
+  const markupScore = () => {
     if (markup > markupRange[5].max) {
       return 3
     } else if (markup > markupRange[4].max) {

@@ -1,8 +1,8 @@
 // ** React Imports
-import { useState, SyntheticEvent, Fragment } from "react"
+import {useState, SyntheticEvent, Fragment} from "react"
 
 // ** Next Import
-import { useRouter } from "next/router"
+import {useRouter} from "next/router"
 
 // ** MUI Imports
 import Box from "@mui/material/Box"
@@ -11,7 +11,7 @@ import Badge from "@mui/material/Badge"
 import Avatar from "@mui/material/Avatar"
 import Divider from "@mui/material/Divider"
 import MenuItem from "@mui/material/MenuItem"
-import { styled } from "@mui/material/styles"
+import {styled} from "@mui/material/styles"
 import Typography from "@mui/material/Typography"
 
 // ** Icons Imports
@@ -24,17 +24,17 @@ import MessageOutline from "mdi-material-ui/MessageOutline"
 import HelpCircleOutline from "mdi-material-ui/HelpCircleOutline"
 
 // ** Context
-import { useAuth } from "src/hooks/useAuth"
+import {useAuth} from "src/hooks/useAuth"
 
 // ** Type Imports
-import { Settings } from "src/@core/context/settingsContext"
+import {Settings} from "src/@core/context/settingsContext"
 
 interface Props {
   settings: Settings
 }
 
 // ** Styled Components
-const BadgeContentSpan = styled("span")(({ theme }) => ({
+const BadgeContentSpan = styled("span")(({theme}) => ({
   width: 8,
   height: 8,
   borderRadius: "50%",
@@ -44,17 +44,17 @@ const BadgeContentSpan = styled("span")(({ theme }) => ({
 
 const UserDropdown = (props: Props) => {
   // ** Props
-  const { settings } = props
+  const {settings} = props
 
   // ** States
   const [anchorEl, setAnchorEl] = useState<Element | null>(null)
 
   // ** Hooks
   const router = useRouter()
-  const { logout } = useAuth()
+  const {logout} = useAuth()
 
   // ** Vars
-  const { direction } = settings
+  const {direction} = settings
 
   const handleDropdownOpen = (event: SyntheticEvent) => {
     setAnchorEl(event.currentTarget)
@@ -89,9 +89,9 @@ const UserDropdown = (props: Props) => {
   return (
     <Fragment>
       <Badge
-        overlap='circular'
+        overlap="circular"
         onClick={handleDropdownOpen}
-        sx={{ ml: 2, cursor: "pointer" }}
+        sx={{ml: 2, cursor: "pointer"}}
         badgeContent={<BadgeContentSpan />}
         anchorOrigin={{
           vertical: "bottom",
@@ -99,17 +99,17 @@ const UserDropdown = (props: Props) => {
         }}
       >
         <Avatar
-          alt='John Doe'
+          alt="John Doe"
           onClick={handleDropdownOpen}
-          sx={{ width: 40, height: 40 }}
-          src='/images/avatars/1.png'
+          sx={{width: 40, height: 40}}
+          src="/images/avatars/1.png"
         />
       </Badge>
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={() => handleDropdownClose()}
-        sx={{ "& .MuiMenu-paper": { width: 230, mt: 4 } }}
+        sx={{"& .MuiMenu-paper": {width: 230, mt: 4}}}
         anchorOrigin={{
           vertical: "bottom",
           horizontal: direction === "ltr" ? "right" : "left"
@@ -119,10 +119,10 @@ const UserDropdown = (props: Props) => {
           horizontal: direction === "ltr" ? "right" : "left"
         }}
       >
-        <Box sx={{ pt: 2, pb: 3, px: 4 }}>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+        <Box sx={{pt: 2, pb: 3, px: 4}}>
+          <Box sx={{display: "flex", alignItems: "center"}}>
             <Badge
-              overlap='circular'
+              overlap="circular"
               badgeContent={<BadgeContentSpan />}
               anchorOrigin={{
                 vertical: "bottom",
@@ -130,9 +130,9 @@ const UserDropdown = (props: Props) => {
               }}
             >
               <Avatar
-                alt='John Doe'
-                src='/images/avatars/1.png'
-                sx={{ width: "2.5rem", height: "2.5rem" }}
+                alt="John Doe"
+                src="/images/avatars/1.png"
+                sx={{width: "2.5rem", height: "2.5rem"}}
               />
             </Badge>
             <Box
@@ -143,76 +143,70 @@ const UserDropdown = (props: Props) => {
                 flexDirection: "column"
               }}
             >
-              <Typography sx={{ fontWeight: 600 }}>John Doe</Typography>
+              <Typography sx={{fontWeight: 600}}>John Doe</Typography>
               <Typography
-                variant='body2'
-                sx={{ fontSize: "0.8rem", color: "text.disabled" }}
+                variant="body2"
+                sx={{fontSize: "0.8rem", color: "text.disabled"}}
               >
                 Admin
               </Typography>
             </Box>
           </Box>
         </Box>
-        <Divider sx={{ mt: 0, mb: 1 }} />
+        <Divider sx={{mt: 0, mb: 1}} />
         <MenuItem
-          sx={{ p: 0 }}
+          sx={{p: 0}}
           onClick={() => handleDropdownClose("/apps/user/view/12")}
         >
           <Box sx={styles}>
-            <AccountOutline sx={{ mr: 2 }} />
+            <AccountOutline sx={{mr: 2}} />
             Profile
           </Box>
         </MenuItem>
         <MenuItem
-          sx={{ p: 0 }}
+          sx={{p: 0}}
           onClick={() => handleDropdownClose("/apps/email")}
         >
           <Box sx={styles}>
-            <EmailOutline sx={{ mr: 2 }} />
+            <EmailOutline sx={{mr: 2}} />
             Inbox
           </Box>
         </MenuItem>
-        <MenuItem
-          sx={{ p: 0 }}
-          onClick={() => handleDropdownClose("/apps/chat")}
-        >
+        <MenuItem sx={{p: 0}} onClick={() => handleDropdownClose("/apps/chat")}>
           <Box sx={styles}>
-            <MessageOutline sx={{ mr: 2 }} />
+            <MessageOutline sx={{mr: 2}} />
             Chat
           </Box>
         </MenuItem>
         <Divider />
         <MenuItem
-          sx={{ p: 0 }}
+          sx={{p: 0}}
           onClick={() => handleDropdownClose("/pages/account-settings")}
         >
           <Box sx={styles}>
-            <CogOutline sx={{ mr: 2 }} />
+            <CogOutline sx={{mr: 2}} />
             Settings
           </Box>
         </MenuItem>
         <MenuItem
-          sx={{ p: 0 }}
+          sx={{p: 0}}
           onClick={() => handleDropdownClose("/pages/pricing")}
         >
           <Box sx={styles}>
-            <CurrencyUsd sx={{ mr: 2 }} />
+            <CurrencyUsd sx={{mr: 2}} />
             Pricing
           </Box>
         </MenuItem>
-        <MenuItem
-          sx={{ p: 0 }}
-          onClick={() => handleDropdownClose("/pages/faq")}
-        >
+        <MenuItem sx={{p: 0}} onClick={() => handleDropdownClose("/pages/faq")}>
           <Box sx={styles}>
-            <HelpCircleOutline sx={{ mr: 2 }} />
+            <HelpCircleOutline sx={{mr: 2}} />
             FAQ
           </Box>
         </MenuItem>
         <Divider />
-        <MenuItem sx={{ py: 2 }} onClick={handleLogout}>
+        <MenuItem sx={{py: 2}} onClick={handleLogout}>
           <LogoutVariant
-            sx={{ mr: 2, fontSize: "1.375rem", color: "text.secondary" }}
+            sx={{mr: 2, fontSize: "1.375rem", color: "text.secondary"}}
           />
           Logout
         </MenuItem>

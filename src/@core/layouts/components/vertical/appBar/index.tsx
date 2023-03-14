@@ -1,17 +1,17 @@
 // ** React Imports
-import { ReactNode } from "react"
+import {ReactNode} from "react"
 
 // ** MUI Imports
-import { styled, useTheme } from "@mui/material/styles"
+import {styled, useTheme} from "@mui/material/styles"
 import useScrollTrigger from "@mui/material/useScrollTrigger"
-import MuiAppBar, { AppBarProps } from "@mui/material/AppBar"
-import MuiToolbar, { ToolbarProps } from "@mui/material/Toolbar"
+import MuiAppBar, {AppBarProps} from "@mui/material/AppBar"
+import MuiToolbar, {ToolbarProps} from "@mui/material/Toolbar"
 
 // ** Type Import
-import { Settings } from "src/@core/context/settingsContext"
+import {Settings} from "src/@core/context/settingsContext"
 
 // ** Util Import
-import { hexToRGBA } from "src/@core/utils/hex-to-rgba"
+import {hexToRGBA} from "src/@core/utils/hex-to-rgba"
 
 interface Props {
   hidden: boolean
@@ -21,7 +21,7 @@ interface Props {
   verticalAppBarContent?: (props?: any) => ReactNode
 }
 
-const AppBar = styled(MuiAppBar)<AppBarProps>(({ theme }) => ({
+const AppBar = styled(MuiAppBar)<AppBarProps>(({theme}) => ({
   transition: "none",
   alignItems: "center",
   justifyContent: "center",
@@ -35,7 +35,7 @@ const AppBar = styled(MuiAppBar)<AppBarProps>(({ theme }) => ({
   }
 }))
 
-const Toolbar = styled(MuiToolbar)<ToolbarProps>(({ theme }) => ({
+const Toolbar = styled(MuiToolbar)<ToolbarProps>(({theme}) => ({
   width: "100%",
   padding: "0 !important",
   borderBottomLeftRadius: theme.shape.borderRadius,
@@ -47,7 +47,7 @@ const Toolbar = styled(MuiToolbar)<ToolbarProps>(({ theme }) => ({
 
 const LayoutAppBar = (props: Props) => {
   // ** Props
-  const { settings, verticalAppBarContent: userVerticalAppBarContent } = props
+  const {settings, verticalAppBarContent: userVerticalAppBarContent} = props
 
   // ** Hooks
   const theme = useTheme()
@@ -57,12 +57,12 @@ const LayoutAppBar = (props: Props) => {
   })
 
   // ** Vars
-  const { skin, appBar, appBarBlur, contentWidth } = settings
+  const {skin, appBar, appBarBlur, contentWidth} = settings
 
   const appBarFixedStyles = () => {
     return {
       px: `${theme.spacing(6)} !important`,
-      ...(appBarBlur && { backdropFilter: "blur(8px)" }),
+      ...(appBarBlur && {backdropFilter: "blur(8px)"}),
       boxShadow: theme.shadows[skin === "bordered" ? 0 : 3],
       backgroundColor: hexToRGBA(
         theme.palette.background.paper,
@@ -82,15 +82,14 @@ const LayoutAppBar = (props: Props) => {
   return (
     <AppBar
       elevation={0}
-      color='default'
-      className='layout-navbar'
+      color="default"
+      className="layout-navbar"
       position={appBar === "fixed" ? "sticky" : "static"}
     >
       <Toolbar
-        className='navbar-content-container'
+        className="navbar-content-container"
         sx={{
-          ...(appBar === "fixed" &&
-            scrollTrigger && { ...appBarFixedStyles() }),
+          ...(appBar === "fixed" && scrollTrigger && {...appBarFixedStyles()}),
           ...(contentWidth === "boxed" && {
             "@media (min-width:1440px)": {
               maxWidth: `calc(1440px - ${theme.spacing(6)} * 2)`

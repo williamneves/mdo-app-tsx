@@ -1,9 +1,9 @@
 // ** React Imports
-import { Fragment } from "react"
+import {Fragment} from "react"
 
 // ** MUI Components
 import useMediaQuery from "@mui/material/useMediaQuery"
-import { styled, useTheme } from "@mui/material/styles"
+import {styled, useTheme} from "@mui/material/styles"
 
 interface FooterIllustrationsProp {
   image?: string
@@ -17,7 +17,7 @@ const MaskImg = styled("img")(() => ({
   position: "absolute"
 }))
 
-const ShapeImg = styled("img")(({ theme }) => ({
+const ShapeImg = styled("img")(({theme}) => ({
   left: "15%",
   bottom: "12%",
   position: "absolute",
@@ -29,7 +29,7 @@ const ShapeImg = styled("img")(({ theme }) => ({
 
 const FooterIllustrations = (props: FooterIllustrationsProp) => {
   // ** Props
-  const { image } = props
+  const {image} = props
 
   // ** Hook
   const theme = useTheme()
@@ -42,9 +42,9 @@ const FooterIllustrations = (props: FooterIllustrationsProp) => {
   if (!hidden) {
     return (
       <Fragment>
-        <ShapeImg alt='shape' src={src} />
+        <ShapeImg alt="shape" src={src} />
         <MaskImg
-          alt='mask'
+          alt="mask"
           src={`/images/pages/misc-mask-${theme.palette.mode}.png`}
         />
       </Fragment>

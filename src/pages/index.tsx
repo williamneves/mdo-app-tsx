@@ -1,14 +1,14 @@
 // ** React Imports
-import { useEffect } from "react"
+import {useEffect} from "react"
 
 // ** Next Imports
-import { useRouter } from "next/router"
+import {useRouter} from "next/router"
 
 // ** Spinner Import
 import Spinner from "src/@core/components/spinner"
 
 // ** Hook Imports
-import { useAuth } from "src/hooks/useAuth"
+import {useAuth} from "src/hooks/useAuth"
 
 /**
  *  Set Home URL based on User Roles
