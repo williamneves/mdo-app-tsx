@@ -1,11 +1,11 @@
 // ** MUI Imports
-import { Theme } from '@mui/material/styles'
+import { Theme } from "@mui/material/styles"
 
 // ** Theme Config Imports
-import themeConfig from 'src/configs/themeConfig'
+import themeConfig from "src/configs/themeConfig"
 
 // ** Util Import
-import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
+import { hexToRGBA } from "src/@core/utils/hex-to-rgba"
 
 const Button = (theme: Theme) => {
   return {
@@ -16,22 +16,22 @@ const Button = (theme: Theme) => {
           borderRadius: 8,
           lineHeight: 1.715,
           padding: `${theme.spacing(1.75, 3)}`,
-          '&.MuiButton-textPrimary:hover': {
+          "&.MuiButton-textPrimary:hover": {
             backgroundColor: hexToRGBA(theme.palette.primary.main, 0.08)
           },
-          '&.MuiButton-textSecondary:hover': {
+          "&.MuiButton-textSecondary:hover": {
             backgroundColor: hexToRGBA(theme.palette.secondary.main, 0.08)
           },
-          '&.MuiButton-textSuccess:hover': {
+          "&.MuiButton-textSuccess:hover": {
             backgroundColor: hexToRGBA(theme.palette.success.main, 0.08)
           },
-          '&.MuiButton-textError:hover': {
+          "&.MuiButton-textError:hover": {
             backgroundColor: hexToRGBA(theme.palette.error.main, 0.08)
           },
-          '&.MuiButton-textWarning:hover': {
+          "&.MuiButton-textWarning:hover": {
             backgroundColor: hexToRGBA(theme.palette.warning.main, 0.08)
           },
-          '&.MuiButton-textInfo:hover': {
+          "&.MuiButton-textInfo:hover": {
             backgroundColor: hexToRGBA(theme.palette.info.main, 0.08)
           }
         },
@@ -42,32 +42,32 @@ const Button = (theme: Theme) => {
         outlined: {
           lineHeight: 1.572,
           padding: `${theme.spacing(1.75, 5.25)}`,
-          '&.MuiButton-outlinedPrimary:hover': {
+          "&.MuiButton-outlinedPrimary:hover": {
             backgroundColor: hexToRGBA(theme.palette.primary.main, 0.08)
           },
-          '&.MuiButton-outlinedSecondary:hover': {
+          "&.MuiButton-outlinedSecondary:hover": {
             backgroundColor: hexToRGBA(theme.palette.secondary.main, 0.08)
           },
-          '&.MuiButton-outlinedSuccess:hover': {
+          "&.MuiButton-outlinedSuccess:hover": {
             backgroundColor: hexToRGBA(theme.palette.success.main, 0.08)
           },
-          '&.MuiButton-outlinedError:hover': {
+          "&.MuiButton-outlinedError:hover": {
             backgroundColor: hexToRGBA(theme.palette.error.main, 0.08)
           },
-          '&.MuiButton-outlinedWarning:hover': {
+          "&.MuiButton-outlinedWarning:hover": {
             backgroundColor: hexToRGBA(theme.palette.warning.main, 0.08)
           },
-          '&.MuiButton-outlinedInfo:hover': {
+          "&.MuiButton-outlinedInfo:hover": {
             backgroundColor: hexToRGBA(theme.palette.info.main, 0.08)
           }
         },
         sizeSmall: {
           lineHeight: 1.693,
           padding: `${theme.spacing(1, 2.25)}`,
-          '&.MuiButton-contained': {
+          "&.MuiButton-contained": {
             padding: `${theme.spacing(1, 3.25)}`
           },
-          '&.MuiButton-outlined': {
+          "&.MuiButton-outlined": {
             lineHeight: 1.539,
             padding: `${theme.spacing(1, 3)}`
           }
@@ -75,10 +75,10 @@ const Button = (theme: Theme) => {
         sizeLarge: {
           lineHeight: 1.734,
           padding: `${theme.spacing(2, 5.5)}`,
-          '&.MuiButton-contained': {
+          "&.MuiButton-contained": {
             padding: `${theme.spacing(2, 6.5)}`
           },
-          '&.MuiButton-outlined': {
+          "&.MuiButton-outlined": {
             lineHeight: 1.6,
             padding: `${theme.spacing(2, 6.25)}`
           }

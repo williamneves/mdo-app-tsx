@@ -1,11 +1,16 @@
 // ** Types Import
-import { Settings } from 'src/@core/context/settingsContext'
-import { NavLink, NavGroup, NavSectionTitle, VerticalNavItemsType } from 'src/@core/layouts/types'
+import { Settings } from "src/@core/context/settingsContext"
+import {
+  NavLink,
+  NavGroup,
+  NavSectionTitle,
+  VerticalNavItemsType
+} from "src/@core/layouts/types"
 
 // ** Custom Menu Components
-import VerticalNavLink from './VerticalNavLink'
-import VerticalNavGroup from './VerticalNavGroup'
-import VerticalNavSectionTitle from './VerticalNavSectionTitle'
+import VerticalNavLink from "./VerticalNavLink"
+import VerticalNavGroup from "./VerticalNavGroup"
+import VerticalNavSectionTitle from "./VerticalNavSectionTitle"
 
 interface Props {
   parent?: NavGroup
@@ -22,7 +27,9 @@ interface Props {
   setCurrentActiveGroup: (item: string[]) => void
 }
 
-const resolveNavItemComponent = (item: NavGroup | NavLink | NavSectionTitle) => {
+const resolveNavItemComponent = (
+  item: NavGroup | NavLink | NavSectionTitle
+) => {
   if ((item as NavSectionTitle).sectionTitle) return VerticalNavSectionTitle
   if ((item as NavGroup).children) return VerticalNavGroup
 
@@ -33,11 +40,13 @@ const VerticalNavItems = (props: Props) => {
   // ** Props
   const { verticalNavItems } = props
 
-  const RenderMenuItems = verticalNavItems?.map((item: NavGroup | NavLink | NavSectionTitle, index: number) => {
-    const TagName: any = resolveNavItemComponent(item)
+  const RenderMenuItems = verticalNavItems?.map(
+    (item: NavGroup | NavLink | NavSectionTitle, index: number) => {
+      const TagName: any = resolveNavItemComponent(item)
 
-    return <TagName {...props} key={index} item={item} />
-  })
+      return <TagName {...props} key={index} item={item} />
+    }
+  )
 
   return <>{RenderMenuItems}</>
 }

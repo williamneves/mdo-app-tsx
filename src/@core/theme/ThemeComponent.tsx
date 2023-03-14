@@ -1,32 +1,36 @@
 // ** React Imports
-import { ReactNode } from 'react'
+import { ReactNode } from "react"
 
 // ** MUI Imports
-import { deepmerge } from '@mui/utils'
-import { Theme } from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline'
-import GlobalStyles from '@mui/material/GlobalStyles'
-import { ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material/styles'
+import { deepmerge } from "@mui/utils"
+import { Theme } from "@mui/material/styles"
+import CssBaseline from "@mui/material/CssBaseline"
+import GlobalStyles from "@mui/material/GlobalStyles"
+import {
+  ThemeProvider,
+  createTheme,
+  responsiveFontSizes
+} from "@mui/material/styles"
 
 // ** Type Imports
-import { Settings } from 'src/@core/context/settingsContext'
+import { Settings } from "src/@core/context/settingsContext"
 
 // ** Theme Config
-import themeConfig from 'src/configs/themeConfig'
+import themeConfig from "src/configs/themeConfig"
 
 // ** Direction component for LTR or RTL
-import Direction from 'src/layouts/components/Direction'
+import Direction from "src/layouts/components/Direction"
 
 // ** Theme Override Imports
-import overrides from './overrides'
-import typography from './typography'
+import overrides from "./overrides"
+import typography from "./typography"
 
 // ** Theme
-import themeOptions from './ThemeOptions'
-import UserThemeOptions from 'src/layouts/UserThemeOptions'
+import themeOptions from "./ThemeOptions"
+import UserThemeOptions from "src/layouts/UserThemeOptions"
 
 // ** Global Styles
-import GlobalStyling from './globalStyles'
+import GlobalStyling from "./globalStyles"
 
 interface Props {
   settings: Settings
@@ -48,7 +52,8 @@ const ThemeComponent = (props: Props) => {
     deepmerge({ ...overrides(theme, settings) }, UserThemeOptions()?.components)
 
   // ** Deep Merge Typography of core and user
-  const mergeTypography = (theme: Theme) => deepmerge(typography(theme), UserThemeOptions()?.typography)
+  const mergeTypography = (theme: Theme) =>
+    deepmerge(typography(theme), UserThemeOptions()?.typography)
 
   // ** Continue theme creation and pass merged component overrides to CreateTheme function
   theme = createTheme(theme, {

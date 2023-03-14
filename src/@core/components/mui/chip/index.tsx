@@ -1,11 +1,11 @@
 // ** MUI Imports
-import MuiChip from '@mui/material/Chip'
+import MuiChip from "@mui/material/Chip"
 
 // ** Types
-import { CustomChipProps } from './types'
+import { CustomChipProps } from "./types"
 
 // ** Hooks Imports
-import useBgColor, { UseBgColorType } from 'src/@core/hooks/useBgColor'
+import useBgColor, { UseBgColorType } from "src/@core/hooks/useBgColor"
 
 const Chip = (props: CustomChipProps) => {
   // ** Props
@@ -27,8 +27,8 @@ const Chip = (props: CustomChipProps) => {
     <MuiChip
       {...props}
       variant='filled'
-      {...(skin === 'light' && { className: 'MuiChip-light' })}
-      sx={skin === 'light' && color ? Object.assign(colors[color], sx) : sx}
+      {...(skin === "light" && { className: "MuiChip-light" })}
+      sx={skin === "light" && color ? Object.assign(colors[color], sx) : sx}
     />
   )
 }

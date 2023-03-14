@@ -1,6 +1,6 @@
-import { dbClient } from "src/configs/sanityConfig";
-import Client from "src/interfaces/Client";
-import moment from "moment";
+import { dbClient } from "src/configs/sanityConfig"
+import Client from "src/interfaces/Client"
+import moment from "moment"
 
 const queryAllClients = `
   *[
@@ -58,7 +58,7 @@ const queryAllClients = `
         }
     },
   }
-  `;
+  `
 
 const queryAllClientsByRefenceId = `
   *[
@@ -118,48 +118,50 @@ const queryAllClientsByRefenceId = `
         }
     },
   }
-  `;
+  `
 
 // Check if CPF is Unique at Sanity
-export const cpfIsUnique = async (cpf: number):Promise<boolean> => {
-  try{
+export const cpfIsUnique = async (cpf: number): Promise<boolean> => {
+  try {
     const result = await dbClient.fetch(`count(*[cpf=="${cpf}"])`)
     console.log(result)
-    return result === 0;
-  }
-  catch(error){
+    return result === 0
+  } catch (error) {
     throw error
   }
-};
+}
 
 export const getAllClients = async (): Promise<Client[]> => {
   try {
-    return await dbClient.fetch(queryAllClients);
+    return await dbClient.fetch(queryAllClients)
   } catch (e) {
-    console.log(e);
-    throw e;
+    console.log(e)
+    throw e
   }
-};
+}
 
-export const getAllClientsByReferenceId = async ({referenceId}: {referenceId: string}): Promise<Client[]> => {
+export const getAllClientsByReferenceId = async ({
+  referenceId
+}: {
+  referenceId: string
+}): Promise<Client[]> => {
   try {
-    return await dbClient.fetch(queryAllClientsByRefenceId, {referenceId});
+    return await dbClient.fetch(queryAllClientsByRefenceId, { referenceId })
   } catch (e) {
-    console.log(e);
-    throw e;
+    console.log(e)
+    throw e
   }
 }
 
 export const createClient = async (client: Client) => {
-
   // Validate body fields
   if (!client.name || !client.store._id || !client.createdBy._id)
-    throw new Error("Missing required fields");
+    throw new Error("Missing required fields")
 
-  async function getNewClientNumber():Promise<number> {
-    const data = await increaseClientCode();
-    console.log('number',data);
-    return data.clientNumber;
+  async function getNewClientNumber(): Promise<number> {
+    const data = await increaseClientCode()
+    console.log("number", data)
+    return data.clientNumber
   }
 
   let clientObject = {
@@ -170,7 +172,9 @@ export const createClient = async (client: Client) => {
     name: client.name, // required
     phone: (client.phone && client.phone) || "",
     email: (client.email && client.email) || "",
-    birthday: client.birthday ? moment(client.birthday).format("YYYY-MM-DD") : null,
+    birthday: client.birthday
+      ? moment(client.birthday).format("YYYY-MM-DD")
+      : null,
     gender: (client.gender && client.gender) || "",
     hearAboutUs: (client.hearAboutUs && client.hearAboutUs) || "",
     cpf: (client.cpf && client.cpf) || "",
@@ -193,36 +197,34 @@ export const createClient = async (client: Client) => {
       _type: "reference",
       _ref: client.createdBy._id
     }
-  };
+  }
 
   try {
     // Increment client number
-    const { clientNumber } = await increaseClientCode();
-    clientObject.clientNumber = clientNumber;
+    const { clientNumber } = await increaseClientCode()
+    clientObject.clientNumber = clientNumber
     // Create client
-    const result = await dbClient.create(clientObject);
-    console.log("success", result);
-    return result;
+    const result = await dbClient.create(clientObject)
+    console.log("success", result)
+    return result
   } catch (error) {
-    throw error;
+    throw error
   }
-};
+}
 
 export const increaseClientCode = async () => {
   try {
     return dbClient
       .patch("8a7d451e-193d-4ebc-92c1-40dfc7725ed8")
       .inc({ clientNumber: 1 })
-      .commit();
+      .commit()
   } catch (error) {
-    throw error;
+    throw error
   }
-};
+}
 
 export const updateClient = async (client: Client) => {
-
-  if (!client._id)
-    throw new Error("Missing required fields");
+  if (!client._id) throw new Error("Missing required fields")
 
   const clientObject = {
     _type: "client",
@@ -231,7 +233,9 @@ export const updateClient = async (client: Client) => {
     name: client.name, // required
     phone: (client.phone && client.phone) || "",
     email: (client.email && client.email) || "",
-    birthday: client.birthday ? moment(client.birthday).format("YYYY-MM-DD") : null,
+    birthday: client.birthday
+      ? moment(client.birthday).format("YYYY-MM-DD")
+      : null,
     gender: (client.gender && client.gender) || "",
     hearAboutUs: (client.hearAboutUs && client.hearAboutUs) || "",
     cpf: (client.cpf && client.cpf) || "",
@@ -254,22 +258,22 @@ export const updateClient = async (client: Client) => {
       _type: "reference",
       _ref: client.createdBy._id
     }
-  };
+  }
 
   try {
-    return dbClient.patch(client._id).set(clientObject).commit();
+    return dbClient.patch(client._id).set(clientObject).commit()
   } catch (error) {
-    throw error;
+    throw error
   }
-};
+}
 
 export const deleteClient = async (clientID: string) => {
   try {
-    return await dbClient.delete(clientID);
+    return await dbClient.delete(clientID)
   } catch (error) {
-    throw error;
+    throw error
   }
-};
+}
 
 export const getClientById = async (clientID: string) => {
   const q = `
@@ -326,16 +330,15 @@ export const getClientById = async (clientID: string) => {
         }
     },
   }
-  `;
+  `
 
   try {
-    return await dbClient.fetch(q);
+    return await dbClient.fetch(q)
   } catch (error) {
-    throw error;
+    throw error
   }
-};
+}
 export const getClientByClientNumber = async (clientNumber: number) => {
-
   const q = `
   *[
     _type == "client"
@@ -390,12 +393,11 @@ export const getClientByClientNumber = async (clientNumber: number) => {
         }
     },
   }
-  `;
+  `
 
   try {
-    return await dbClient.fetch(q);
+    return await dbClient.fetch(q)
   } catch (e) {
-    throw e;
+    throw e
   }
-
-};
+}

@@ -1,39 +1,35 @@
 // ** React Imports
-import { Fragment } from "react";
+import { Fragment } from "react"
 
 // ** MUI Imports
-import Grid from "@mui/material/Grid";
+import Grid from "@mui/material/Grid"
 
 // ** Import Components
-import MonthYearGoalCard from "./MonthYearGoalCard";
+import MonthYearGoalCard from "./MonthYearGoalCard"
 
 // ** Types and Interfaces
 
-
 // ** Rendered Element Interface
 interface MonthlyYearGoalsCardsGridProps {
-  year: number;
+  year: number
 }
 
 // ** Rendered Element Component
-const MonthlyYearGoalsCardsGrid = (props: MonthlyYearGoalsCardsGridProps): JSX.Element => {
-
+const MonthlyYearGoalsCardsGrid = (
+  props: MonthlyYearGoalsCardsGridProps
+): JSX.Element => {
   // Create a array with 12 elements
-  const array12 = Array.from(Array(12).keys());
+  const array12 = Array.from(Array(12).keys())
 
-  const {
-      year,
-  } = props;
+  const { year } = props
 
   return (
     <Grid container spacing={6}>
-      {
-        array12.map((month, index) => (
-          <MonthYearGoalCard key={index} />
-        ))
-      }
+      {array12.map((month, index) => (
+        <MonthYearGoalCard key={index} />
+      ))}
     </Grid>
-  );
-};
+  )
+}
 
-export default MonthlyYearGoalsCardsGrid;
+export default MonthlyYearGoalsCardsGrid

@@ -1,8 +1,8 @@
-import { dbClient } from "src/configs/sanityConfig";
-import Product from "src/interfaces/Product";
-import Origin from "src/interfaces/Origin";
-import Sale from "src/interfaces/Sale";
-import moment from "moment";
+import { dbClient } from "src/configs/sanityConfig"
+import Product from "src/interfaces/Product"
+import Origin from "src/interfaces/Origin"
+import Sale from "src/interfaces/Sale"
+import moment from "moment"
 
 // Create the sale number
 const getSaleNumberAndLastSaleNumber = `*[_id=="8a7d451e-193d-4ebc-92c1-40dfc7725ed8"]{
@@ -10,21 +10,21 @@ const getSaleNumberAndLastSaleNumber = `*[_id=="8a7d451e-193d-4ebc-92c1-40dfc772
   "lastSaleNumber": *[_type=="sale"] | order(_createdAt desc)[0]{
   saleNumber,
 }
-}`;
+}`
 
 const lastSalesNumbers = async () => {
-  const data = await dbClient.fetch(getSaleNumberAndLastSaleNumber);
+  const data = await dbClient.fetch(getSaleNumberAndLastSaleNumber)
   return {
     actualSaleNumber: data[0].saleNumber,
     lastSaleNumber: data[0].lastSaleNumber.saleNumber
-  };
-};
+  }
+}
 
 // Handle the sale number creation
 export const getSaleNumber = async (): Promise<number> => {
   // Create New Promise
   return new Promise(async (resolve, reject) => {
-    const { actualSaleNumber, lastSaleNumber } = await lastSalesNumbers();
+    const { actualSaleNumber, lastSaleNumber } = await lastSalesNumbers()
     // Check if the last sale number is the same as the actual sale number
     if (actualSaleNumber === lastSaleNumber) {
       // Increment the sale number by 1 and return it
@@ -32,14 +32,14 @@ export const getSaleNumber = async (): Promise<number> => {
         .patch("8a7d451e-193d-4ebc-92c1-40dfc7725ed8")
         .inc({ saleNumber: 1 })
         .commit()
-        .then((res) => {
-          console.log("Sale number updated");
-          console.log(res.saleNumber);
-          return resolve(res.saleNumber);
+        .then(res => {
+          console.log("Sale number updated")
+          console.log(res.saleNumber)
+          return resolve(res.saleNumber)
         })
-        .catch((err) => {
-          return reject(err);
-        });
+        .catch(err => {
+          return reject(err)
+        })
     }
 
     // If the last sale number is not the same as the actual sale number
@@ -49,24 +49,23 @@ export const getSaleNumber = async (): Promise<number> => {
         .patch("8a7d451e-193d-4ebc-92c1-40dfc7725ed8")
         .set({ saleNumber: lastSaleNumber + 1 })
         .commit()
-        .then((res) => {
-          return resolve(res.saleNumber);
+        .then(res => {
+          return resolve(res.saleNumber)
         })
-        .catch((err) => {
-          return reject(err);
-        });
+        .catch(err => {
+          return reject(err)
+        })
     }
 
     // If the sale number is greater than the last sale number, return the actual sale number
     if (actualSaleNumber > lastSaleNumber) {
-      return resolve(actualSaleNumber);
+      return resolve(actualSaleNumber)
     }
-  });
-};
+  })
+}
 
 // Validate the P.D.V. number
 export const validatePDVNumber = async (PDVNumber: any): Promise<boolean> => {
-
   // const intPDVNumber = parseInt(PDVNumber);
   try {
     const data = await dbClient.fetch(
@@ -77,13 +76,13 @@ export const validatePDVNumber = async (PDVNumber: any): Promise<boolean> => {
       && canceled!=true
       && excluded!=true
       ])`
-    );
-    console.log(data);
-    return data === 0;
+    )
+    console.log(data)
+    return data === 0
   } catch (err) {
-    return false;
+    return false
   }
-};
+}
 
 // Get All Products By Reference (Store)
 const allProductsByReferenceQuery = `
@@ -100,19 +99,19 @@ const allProductsByReferenceQuery = `
   sku,
   category,
   store,
-}`;
+}`
 
-
-export const getAllProductsByReference = async (referenceID: string): Promise<Product[]> => {
+export const getAllProductsByReference = async (
+  referenceID: string
+): Promise<Product[]> => {
   try {
     return dbClient.fetch(allProductsByReferenceQuery, {
       storeRef: referenceID as string
-    });
+    })
   } catch (err) {
-    throw err;
+    throw err
   }
-};
-
+}
 
 // Get All Products By Reference (Store)
 const allPaymentMethodByReferenceQuery = `
@@ -129,18 +128,19 @@ const allPaymentMethodByReferenceQuery = `
   sku,
   category,
   store,
-}`;
+}`
 
-
-export const getAllPaymentMethodByReference = async (referenceID: string): Promise<Product[]> => {
+export const getAllPaymentMethodByReference = async (
+  referenceID: string
+): Promise<Product[]> => {
   try {
     return dbClient.fetch(allPaymentMethodByReferenceQuery, {
       storeRef: referenceID as string
-    });
+    })
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
 const getAllOriginQ = `
  *[
@@ -151,32 +151,32 @@ const getAllOriginQ = `
     name,
     displayName,
   }
-  `;
+  `
 
 export const getAllOrigin = async (): Promise<Origin[]> => {
   try {
-    return dbClient.fetch(getAllOriginQ);
+    return dbClient.fetch(getAllOriginQ)
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
 // Prepare OriginsObject for sale
 const prepareOriginsObject = (origins: any) => {
-  const originsObject: any = [];
+  const originsObject: any = []
   origins.forEach((origin: any, index: number) => {
     originsObject.push({
       _ref: origin._id,
       _type: "reference",
       _key: `0${index}`
-    });
-  });
-  return originsObject;
-};
+    })
+  })
+  return originsObject
+}
 
 // Prepare ProductsObject for sale
 const prepareProductsObject = (products: any) => {
-  const productsObject: any = [];
+  const productsObject: any = []
   products.forEach((product: any, index: number) => {
     productsObject.push({
       _key: `0${index}`,
@@ -188,14 +188,14 @@ const prepareProductsObject = (products: any) => {
       quantity: parseInt(product.quantity),
       discount: parseFloat(product.discount),
       cost: parseFloat(product.cost)
-    });
-  });
-  return productsObject;
-};
+    })
+  })
+  return productsObject
+}
 
 // Prepare PaymentsObject for sale
 const preparePaymentsObject = (payments: any) => {
-  const paymentsObject: any = [];
+  const paymentsObject: any = []
   payments.forEach((payment: any, index: number) => {
     paymentsObject.push({
       _key: `${index}`,
@@ -205,10 +205,10 @@ const preparePaymentsObject = (payments: any) => {
       },
       paymentAmount: parseFloat(payment.paymentAmount),
       splitQuantity: parseInt(payment.splitQuantity)
-    });
-  });
-  return paymentsObject;
-};
+    })
+  })
+  return paymentsObject
+}
 
 // Get one sale by ID
 const getOneSaleByIdQ = `
@@ -230,15 +230,15 @@ const getOneSaleByIdQ = `
     product->,
   }
   }[0]
-`;
+`
 
 export const getOneSaleById = async (id: string): Promise<Sale> => {
   try {
-    return dbClient.fetch(getOneSaleByIdQ, { saleID: id });
+    return dbClient.fetch(getOneSaleByIdQ, { saleID: id })
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
 // Get Sales By Store by Date Range
 const getSalesByReferenceByDateRangeQ = `
@@ -266,27 +266,26 @@ const getSalesByReferenceByDateRangeQ = `
     product->,
   }
   }
-  `;
+  `
 
 export const getSalesByReferenceByDateRange = async (
   storeRef: string,
   { startDate, endDate }: { startDate: string; endDate: string }
 ): Promise<Sale[]> => {
-  console.log('dateRange',startDate, endDate, storeRef);
+  console.log("dateRange", startDate, endDate, storeRef)
   try {
     return dbClient.fetch(getSalesByReferenceByDateRangeQ, {
       storeRef: storeRef,
       startDate: startDate,
       endDate: endDate
-    });
+    })
   } catch (err) {
-    throw err;
+    throw err
   }
 }
 
 // Create a new sale
 export const createSale = async (sale: Sale): Promise<Sale> => {
-
   const saleObject = {
     _type: "sale",
     saleNumber: sale.saleNumber,
@@ -324,21 +323,19 @@ export const createSale = async (sale: Sale): Promise<Sale> => {
       _ref: sale.store._id,
       _type: "reference"
     }
-  };
-
-  try {
-    const newSale = await dbClient.create(saleObject);
-    // fetch the new sale
-    return getOneSaleById(newSale._id);
-  } catch (err) {
-    throw err;
   }
 
-};
+  try {
+    const newSale = await dbClient.create(saleObject)
+    // fetch the new sale
+    return getOneSaleById(newSale._id)
+  } catch (err) {
+    throw err
+  }
+}
 
 // Create a new sale
 export const updateEntireSale = async (sale: Sale): Promise<Sale> => {
-
   const saleObject = {
     _type: "sale",
     _id: sale._id,
@@ -377,19 +374,16 @@ export const updateEntireSale = async (sale: Sale): Promise<Sale> => {
       _ref: sale.store._id,
       _type: "reference"
     }
-  };
-
-  try {
-    const newSale = await dbClient.createOrReplace(saleObject);
-    // fetch the new sale
-    return getOneSaleById(newSale._id);
-  } catch (err) {
-    throw err;
   }
 
-};
-
-
+  try {
+    const newSale = await dbClient.createOrReplace(saleObject)
+    // fetch the new sale
+    return getOneSaleById(newSale._id)
+  } catch (err) {
+    throw err
+  }
+}
 
 // Get pending sales
 const getPendingSalesQ = `
@@ -412,48 +406,64 @@ const getPendingSalesQ = `
     product->,
   }
 }
-`;
+`
 
 export const getPendingSales = async (referenceID: string): Promise<Sale[]> => {
   try {
-    return dbClient.fetch(getPendingSalesQ);
+    return dbClient.fetch(getPendingSalesQ)
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
 // Change sale audit status
-export const changeSaleAuditStatus = async (saleID: string, status: "approved" | "rejected", auditFeedBack: string): Promise<Sale> => {
+export const changeSaleAuditStatus = async (
+  saleID: string,
+  status: "approved" | "rejected",
+  auditFeedBack: string
+): Promise<Sale> => {
   try {
-    return await dbClient.patch(saleID).set({ auditStatus: status, auditFeedBack: auditFeedBack }).commit();
+    return await dbClient
+      .patch(saleID)
+      .set({ auditStatus: status, auditFeedBack: auditFeedBack })
+      .commit()
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
 // Remove sale
 export const removeSale = async (saleID: string): Promise<Sale> => {
   try {
-    return await dbClient.delete(saleID);
+    return await dbClient.delete(saleID)
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
 // Update sale by key and value
-export const updateSaleByKeyAndValue = async (saleID: string, key: string, value: any): Promise<Sale> => {
+export const updateSaleByKeyAndValue = async (
+  saleID: string,
+  key: string,
+  value: any
+): Promise<Sale> => {
   try {
-    return await dbClient.patch(saleID).set({ [key]: value }).commit();
+    return await dbClient
+      .patch(saleID)
+      .set({ [key]: value })
+      .commit()
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
 // Get sales by sale number
-export const getSaleBySaleNumber = async (saleNumber: number): Promise<Sale[]> => {
+export const getSaleBySaleNumber = async (
+  saleNumber: number
+): Promise<Sale[]> => {
   try {
     const sale = await dbClient.fetch(
-        `*[_type=="sale" && saleNumber==${saleNumber}]{
+      `*[_type=="sale" && saleNumber==${saleNumber}]{
         ...,
         "origin": userReferrer[]->,
         user->,
@@ -466,19 +476,25 @@ export const getSaleBySaleNumber = async (saleNumber: number): Promise<Sale[]> =
           product->,
         }
       }`,
-        { saleNumber: saleNumber }
-    );
-    console.log(sale);
-    return sale;
+      { saleNumber: saleNumber }
+    )
+    console.log(sale)
+    return sale
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
-export const updateSaleClient = async (saleID: string, clientID: string): Promise<Sale> => {
+export const updateSaleClient = async (
+  saleID: string,
+  clientID: string
+): Promise<Sale> => {
   try {
-    return await dbClient.patch(saleID).set({ client: { _ref: clientID, _type: "reference" } }).commit();
+    return await dbClient
+      .patch(saleID)
+      .set({ client: { _ref: clientID, _type: "reference" } })
+      .commit()
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}

@@ -1,8 +1,8 @@
 // ** MUI Imports
-import { Theme } from '@mui/material/styles'
+import { Theme } from "@mui/material/styles"
 
 // ** Util Import
-import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
+import { hexToRGBA } from "src/@core/utils/hex-to-rgba"
 
 const Progress = (theme: Theme) => {
   return {
@@ -11,22 +11,22 @@ const Progress = (theme: Theme) => {
         root: {
           height: 6,
           borderRadius: theme.shape.borderRadius,
-          '&.MuiLinearProgress-colorPrimary': {
+          "&.MuiLinearProgress-colorPrimary": {
             backgroundColor: hexToRGBA(theme.palette.primary.main, 0.12)
           },
-          '&.MuiLinearProgress-colorSecondary': {
+          "&.MuiLinearProgress-colorSecondary": {
             backgroundColor: hexToRGBA(theme.palette.secondary.main, 0.12)
           },
-          '&.MuiLinearProgress-colorSuccess': {
+          "&.MuiLinearProgress-colorSuccess": {
             backgroundColor: hexToRGBA(theme.palette.success.main, 0.12)
           },
-          '&.MuiLinearProgress-colorError': {
+          "&.MuiLinearProgress-colorError": {
             backgroundColor: hexToRGBA(theme.palette.error.main, 0.12)
           },
-          '&.MuiLinearProgress-colorWarning': {
+          "&.MuiLinearProgress-colorWarning": {
             backgroundColor: hexToRGBA(theme.palette.warning.main, 0.12)
           },
-          '&.MuiLinearProgress-colorInfo': {
+          "&.MuiLinearProgress-colorInfo": {
             backgroundColor: hexToRGBA(theme.palette.info.main, 0.12)
           }
         },

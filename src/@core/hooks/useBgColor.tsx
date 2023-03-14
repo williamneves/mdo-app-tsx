@@ -1,8 +1,8 @@
 // ** MUI Imports
-import { useTheme } from '@mui/material/styles'
+import { useTheme } from "@mui/material/styles"
 
 // ** Util Import
-import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
+import { hexToRGBA } from "src/@core/utils/hex-to-rgba"
 
 export type UseBgColorType = {
   [key: string]: {

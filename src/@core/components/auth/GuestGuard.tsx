@@ -1,12 +1,12 @@
 // ** React Imports
-import { ReactNode, ReactElement, useEffect } from 'react'
+import { ReactNode, ReactElement, useEffect } from "react"
 
 // ** Next Imports
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router"
 
 // ** Hooks Import
-import { useAuth } from 'src/hooks/useAuth'
-import ls from "src/configs/localStorage";
+import { useAuth } from "src/hooks/useAuth"
+import ls from "src/configs/localStorage"
 
 interface GuestGuardProps {
   children: ReactNode
@@ -24,7 +24,7 @@ const GuestGuard = (props: GuestGuardProps) => {
     }
 
     if (ls.get("b3_userData")) {
-      router.replace('/')
+      router.replace("/")
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router.route])

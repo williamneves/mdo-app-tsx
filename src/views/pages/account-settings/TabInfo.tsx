@@ -1,26 +1,26 @@
 // ** React Imports
-import { forwardRef, useState } from 'react'
+import { forwardRef, useState } from "react"
 
 // ** MUI Imports
-import Grid from '@mui/material/Grid'
-import Radio from '@mui/material/Radio'
-import Select from '@mui/material/Select'
-import Button from '@mui/material/Button'
-import MenuItem from '@mui/material/MenuItem'
-import TextField from '@mui/material/TextField'
-import FormLabel from '@mui/material/FormLabel'
-import InputLabel from '@mui/material/InputLabel'
-import RadioGroup from '@mui/material/RadioGroup'
-import CardContent from '@mui/material/CardContent'
-import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import FormControlLabel from '@mui/material/FormControlLabel'
+import Grid from "@mui/material/Grid"
+import Radio from "@mui/material/Radio"
+import Select from "@mui/material/Select"
+import Button from "@mui/material/Button"
+import MenuItem from "@mui/material/MenuItem"
+import TextField from "@mui/material/TextField"
+import FormLabel from "@mui/material/FormLabel"
+import InputLabel from "@mui/material/InputLabel"
+import RadioGroup from "@mui/material/RadioGroup"
+import CardContent from "@mui/material/CardContent"
+import FormControl from "@mui/material/FormControl"
+import OutlinedInput from "@mui/material/OutlinedInput"
+import FormControlLabel from "@mui/material/FormControlLabel"
 
 // ** Third Party Imports
-import DatePicker from 'react-datepicker'
+import DatePicker from "react-datepicker"
 
 // ** Styled Components
-import DatePickerWrapper from 'src/@core/styles/libs/react-datepicker'
+import DatePickerWrapper from "src/@core/styles/libs/react-datepicker"
 
 const CustomInput = forwardRef((props, ref) => {
   return <TextField inputRef={ref} label='Birth Date' fullWidth {...props} />
@@ -58,7 +58,12 @@ const TabInfo = () => {
             </DatePickerWrapper>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <TextField fullWidth type='number' label='Phone' placeholder='(123) 456-7890' />
+            <TextField
+              fullWidth
+              type='number'
+              label='Phone'
+              placeholder='(123) 456-7890'
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -81,13 +86,20 @@ const TabInfo = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
             <FormControl fullWidth>
-              <InputLabel id='form-layouts-separator-multiple-select-label'>Languages</InputLabel>
+              <InputLabel id='form-layouts-separator-multiple-select-label'>
+                Languages
+              </InputLabel>
               <Select
                 multiple
-                defaultValue={['English']}
+                defaultValue={["English"]}
                 id='account-settings-multiple-select'
                 labelId='account-settings-multiple-select-label'
-                input={<OutlinedInput label='Languages' id='select-multiple-language' />}
+                input={
+                  <OutlinedInput
+                    label='Languages'
+                    id='select-multiple-language'
+                  />
+                }
               >
                 <MenuItem value='English'>English</MenuItem>
                 <MenuItem value='French'>French</MenuItem>
@@ -102,18 +114,44 @@ const TabInfo = () => {
           <Grid item xs={12} sm={6}>
             <FormControl>
               <FormLabel sx={{ lineHeight: 1.5 }}>Gender</FormLabel>
-              <RadioGroup row defaultValue='male' aria-label='gender' name='account-settings-info-radio'>
-                <FormControlLabel value='male' label='Male' control={<Radio />} />
-                <FormControlLabel value='female' label='Female' control={<Radio />} />
-                <FormControlLabel value='other' label='Other' control={<Radio />} />
+              <RadioGroup
+                row
+                defaultValue='male'
+                aria-label='gender'
+                name='account-settings-info-radio'
+              >
+                <FormControlLabel
+                  value='male'
+                  label='Male'
+                  control={<Radio />}
+                />
+                <FormControlLabel
+                  value='female'
+                  label='Female'
+                  control={<Radio />}
+                />
+                <FormControlLabel
+                  value='other'
+                  label='Other'
+                  control={<Radio />}
+                />
               </RadioGroup>
             </FormControl>
           </Grid>
-          <Grid item xs={12} sx={{ pt: theme => `${theme.spacing(7)} !important` }}>
+          <Grid
+            item
+            xs={12}
+            sx={{ pt: theme => `${theme.spacing(7)} !important` }}
+          >
             <Button variant='contained' sx={{ mr: 4 }}>
               Save Changes
             </Button>
-            <Button type='reset' variant='outlined' color='secondary' onClick={() => setDate(null)}>
+            <Button
+              type='reset'
+              variant='outlined'
+              color='secondary'
+              onClick={() => setDate(null)}
+            >
               Reset
             </Button>
           </Grid>

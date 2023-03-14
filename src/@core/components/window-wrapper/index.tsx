@@ -1,8 +1,8 @@
 // ** React Imports
-import { useState, useEffect, ReactNode } from 'react'
+import { useState, useEffect, ReactNode } from "react"
 
 // ** Next Import
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router"
 
 interface Props {
   children: ReactNode
@@ -16,7 +16,7 @@ const WindowWrapper = ({ children }: Props) => {
 
   useEffect(
     () => {
-      if (typeof window !== 'undefined') {
+      if (typeof window !== "undefined") {
         setWindowReadyFlag(true)
       }
     },

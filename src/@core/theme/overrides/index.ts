@@ -1,43 +1,43 @@
 // ** MUI Imports
-import { Theme } from '@mui/material/styles'
+import { Theme } from "@mui/material/styles"
 
 // ** Type Import
-import { Settings } from 'src/@core/context/settingsContext'
+import { Settings } from "src/@core/context/settingsContext"
 
 // ** Overrides Imports
-import MuiFab from './fab'
-import MuiCard from './card'
-import MuiChip from './chip'
-import MuiLink from './link'
-import MuiList from './list'
-import MuiMenu from './menu'
-import MuiTabs from './tabs'
-import MuiInput from './input'
-import MuiPaper from './paper'
-import MuiTable from './table'
-import MuiAlerts from './alerts'
-import MuiButton from './button'
-import MuiDialog from './dialog'
-import MuiRating from './rating'
-import MuiSelect from './select'
-import MuiAvatar from './avatars'
-import Progress from './progress'
-import MuiDivider from './divider'
-import MuiPopover from './popover'
-import MuiTooltip from './tooltip'
-import MuiBackdrop from './backdrop'
-import MuiDataGrid from './dataGrid'
-import MuiSnackbar from './snackbar'
-import MuiSwitches from './switches'
-import MuiTimeline from './timeline'
-import MuiAccordion from './accordion'
-import MuiPagination from './pagination'
-import MuiTypography from './typography'
-import MuiBreadcrumbs from './breadcrumbs'
-import MuiButtonGroup from './buttonGroup'
-import MuiAutocomplete from './autocomplete'
-import MuiToggleButton from './toggleButton'
-import MuiDateTimePicker from './dateTimePicker'
+import MuiFab from "./fab"
+import MuiCard from "./card"
+import MuiChip from "./chip"
+import MuiLink from "./link"
+import MuiList from "./list"
+import MuiMenu from "./menu"
+import MuiTabs from "./tabs"
+import MuiInput from "./input"
+import MuiPaper from "./paper"
+import MuiTable from "./table"
+import MuiAlerts from "./alerts"
+import MuiButton from "./button"
+import MuiDialog from "./dialog"
+import MuiRating from "./rating"
+import MuiSelect from "./select"
+import MuiAvatar from "./avatars"
+import Progress from "./progress"
+import MuiDivider from "./divider"
+import MuiPopover from "./popover"
+import MuiTooltip from "./tooltip"
+import MuiBackdrop from "./backdrop"
+import MuiDataGrid from "./dataGrid"
+import MuiSnackbar from "./snackbar"
+import MuiSwitches from "./switches"
+import MuiTimeline from "./timeline"
+import MuiAccordion from "./accordion"
+import MuiPagination from "./pagination"
+import MuiTypography from "./typography"
+import MuiBreadcrumbs from "./breadcrumbs"
+import MuiButtonGroup from "./buttonGroup"
+import MuiAutocomplete from "./autocomplete"
+import MuiToggleButton from "./toggleButton"
+import MuiDateTimePicker from "./dateTimePicker"
 
 const Overrides = (theme: Theme, settings: Settings) => {
   const { skin } = settings

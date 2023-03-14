@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp, getApps, getApp } from 'firebase/app';
+import { initializeApp, getApps, getApp } from "firebase/app"
 
 import {
   getAuth,
@@ -16,11 +16,10 @@ import {
   onAuthStateChanged,
   verifyPasswordResetCode,
   confirmPasswordReset,
-  updatePassword,
-} from 'firebase/auth';
+  updatePassword
+} from "firebase/auth"
 
-import { getAnalytics } from 'firebase/analytics';
-
+import { getAnalytics } from "firebase/analytics"
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -32,24 +31,24 @@ const firebaseConfig = {
   messagingSenderId: "1035945001885",
   appId: "1:1035945001885:web:3dc13f84bc3784a4c7e574",
   measurementId: "G-8FL1NLB140"
-};
+}
 
 // Initialize Firebase
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp()
 
 // Initialize Firebase Analytics
-let analytics;
+let analytics
 
-if (app.name && typeof window !== 'undefined') {
-  analytics = getAnalytics(app);
+if (app.name && typeof window !== "undefined") {
+  analytics = getAnalytics(app)
 }
 
 // Initialize Firebase Authentication and get a reference to the service
-const auth = getAuth(app);
+const auth = getAuth(app)
 
 // Providers
-const providerGoogle = new GoogleAuthProvider();
-const providerFacebook = new FacebookAuthProvider();
+const providerGoogle = new GoogleAuthProvider()
+const providerFacebook = new FacebookAuthProvider()
 
 // Exports
 export {
@@ -73,5 +72,5 @@ export {
   onAuthStateChanged,
   verifyPasswordResetCode,
   confirmPasswordReset,
-  updatePassword,
+  updatePassword
 }

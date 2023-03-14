@@ -1,18 +1,17 @@
-import { SanityDefaultObject } from "src/interfaces/SanityDefaultInterfaces";
-
+import { SanityDefaultObject } from "src/interfaces/SanityDefaultInterfaces"
 
 export default interface PaymentMethod extends Partial<SanityDefaultObject> {
-  inactive: boolean;
-  title: string;
-  description: string;
+  inactive: boolean
+  title: string
+  description: string
   paymentType:
-    "creditCard"
+    | "creditCard"
     | "debitCard"
     | "cash"
     | "installment"
     | "pix"
     | "ted"
-    | "other";
-  store: any;
-  bankAccount: any;
+    | "other"
+  store: any
+  bankAccount: any
 }

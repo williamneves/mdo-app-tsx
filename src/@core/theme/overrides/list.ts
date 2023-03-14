@@ -1,5 +1,5 @@
 // ** MUI Imports
-import { Theme } from '@mui/material/styles'
+import { Theme } from "@mui/material/styles"
 
 const List = (theme: Theme) => {
   return {
@@ -23,10 +23,10 @@ const List = (theme: Theme) => {
     MuiListItemText: {
       styleOverrides: {
         dense: {
-          '& .MuiListItemText-primary': {
+          "& .MuiListItemText-primary": {
             color: theme.palette.text.primary
           },
-          '& .MuiListItemText-primary, & .MuiListItemText-secondary': {
+          "& .MuiListItemText-primary, & .MuiListItemText-secondary": {
             lineHeight: 1.43
           }
         }
@@ -36,7 +36,7 @@ const List = (theme: Theme) => {
       styleOverrides: {
         root: {
           fontWeight: 600,
-          textTransform: 'uppercase',
+          textTransform: "uppercase",
           color: theme.palette.text.primary
         }
       }

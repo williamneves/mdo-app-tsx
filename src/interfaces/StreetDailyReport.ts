@@ -1,6 +1,9 @@
-import User from 'src/interfaces/User';
-import { SanityDefaultObject, SanityDefaultReference } from "src/interfaces/SanityDefaultInterfaces";
-import Store from "src/interfaces/Store";
+import User from "src/interfaces/User"
+import {
+  SanityDefaultObject,
+  SanityDefaultReference
+} from "src/interfaces/SanityDefaultInterfaces"
+import Store from "src/interfaces/Store"
 
 export default interface StreetDailyReport extends SanityDefaultObject {
   inactive: boolean

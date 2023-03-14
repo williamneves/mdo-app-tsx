@@ -1,6 +1,5 @@
-import { dbClient } from "src/configs/sanityConfig";
-import AuthUser from "src/interfaces/authUser";
-
+import { dbClient } from "src/configs/sanityConfig"
+import AuthUser from "src/interfaces/authUser"
 
 // ** Get User by AuthID **
 export const Q_userByAuthUID = `
@@ -59,20 +58,19 @@ export const Q_userByAuthUID = `
       _createdAt,
       _updatedAt,
       }
-      `;
+      `
 
 // ** Get authUser by UID **
 const fetchUserDB = async (authUID: string): Promise<AuthUser> => {
-  try{
+  try {
     // Fetch user from Sanity
     const user = await dbClient.fetch(Q_userByAuthUID, { authUID })
     // Return user
     return user[0]
-  }
-  catch(error){
+  } catch (error) {
     console.log(error)
-    throw(error)
+    throw error
   }
-};
+}
 
-export default fetchUserDB;
+export default fetchUserDB

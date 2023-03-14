@@ -1,57 +1,59 @@
 // ** React Imports
-import { ReactNode, useState, Fragment, MouseEvent } from 'react'
+import { ReactNode, useState, Fragment, MouseEvent } from "react"
 
 // ** Next Imports
-import Link from 'next/link'
+import Link from "next/link"
 
 // ** MUI Components
-import MuiLink from '@mui/material/Link'
-import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
-import Checkbox from '@mui/material/Checkbox'
-import TextField from '@mui/material/TextField'
-import InputLabel from '@mui/material/InputLabel'
-import IconButton from '@mui/material/IconButton'
-import Box, { BoxProps } from '@mui/material/Box'
-import FormControl from '@mui/material/FormControl'
-import useMediaQuery from '@mui/material/useMediaQuery'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import { styled, useTheme } from '@mui/material/styles'
-import FormHelperText from '@mui/material/FormHelperText'
-import InputAdornment from '@mui/material/InputAdornment'
-import Typography, { TypographyProps } from '@mui/material/Typography'
-import MuiFormControlLabel, { FormControlLabelProps } from '@mui/material/FormControlLabel'
+import MuiLink from "@mui/material/Link"
+import Button from "@mui/material/Button"
+import Divider from "@mui/material/Divider"
+import Checkbox from "@mui/material/Checkbox"
+import TextField from "@mui/material/TextField"
+import InputLabel from "@mui/material/InputLabel"
+import IconButton from "@mui/material/IconButton"
+import Box, { BoxProps } from "@mui/material/Box"
+import FormControl from "@mui/material/FormControl"
+import useMediaQuery from "@mui/material/useMediaQuery"
+import OutlinedInput from "@mui/material/OutlinedInput"
+import { styled, useTheme } from "@mui/material/styles"
+import FormHelperText from "@mui/material/FormHelperText"
+import InputAdornment from "@mui/material/InputAdornment"
+import Typography, { TypographyProps } from "@mui/material/Typography"
+import MuiFormControlLabel, {
+  FormControlLabelProps
+} from "@mui/material/FormControlLabel"
 
 // ** Icons Imports
-import Google from 'mdi-material-ui/Google'
-import Github from 'mdi-material-ui/Github'
-import Twitter from 'mdi-material-ui/Twitter'
-import Facebook from 'mdi-material-ui/Facebook'
-import EyeOutline from 'mdi-material-ui/EyeOutline'
-import EyeOffOutline from 'mdi-material-ui/EyeOffOutline'
+import Google from "mdi-material-ui/Google"
+import Github from "mdi-material-ui/Github"
+import Twitter from "mdi-material-ui/Twitter"
+import Facebook from "mdi-material-ui/Facebook"
+import EyeOutline from "mdi-material-ui/EyeOutline"
+import EyeOffOutline from "mdi-material-ui/EyeOffOutline"
 
 // ** Third Party Imports
-import * as yup from 'yup'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm, Controller } from 'react-hook-form'
+import * as yup from "yup"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { useForm, Controller } from "react-hook-form"
 
 // ** Configs
-import themeConfig from 'src/configs/themeConfig'
+import themeConfig from "src/configs/themeConfig"
 
 // ** Layout Import
-import BlankLayout from 'src/@core/layouts/BlankLayout'
+import BlankLayout from "src/@core/layouts/BlankLayout"
 
 // ** Hooks
-import { useAuth } from 'src/hooks/useAuth'
-import { useSettings } from 'src/@core/hooks/useSettings'
+import { useAuth } from "src/hooks/useAuth"
+import { useSettings } from "src/@core/hooks/useSettings"
 
 // ** Demo Imports
-import FooterIllustrationsV2 from 'src/views/pages/auth/FooterIllustrationsV2'
+import FooterIllustrationsV2 from "src/views/pages/auth/FooterIllustrationsV2"
 
 const defaultValues = {
-  email: '',
-  username: '',
-  password: '',
+  email: "",
+  username: "",
+  password: "",
   terms: false
 }
 interface FormData {
@@ -64,53 +66,55 @@ interface FormData {
 // ** Styled Components
 const RegisterIllustrationWrapper = styled(Box)<BoxProps>(({ theme }) => ({
   padding: theme.spacing(20),
-  paddingRight: '0 !important',
-  [theme.breakpoints.down('lg')]: {
+  paddingRight: "0 !important",
+  [theme.breakpoints.down("lg")]: {
     padding: theme.spacing(10)
   }
 }))
 
-const RegisterIllustration = styled('img')(({ theme }) => ({
-  maxWidth: '48rem',
-  [theme.breakpoints.down('xl')]: {
-    maxWidth: '38rem'
+const RegisterIllustration = styled("img")(({ theme }) => ({
+  maxWidth: "48rem",
+  [theme.breakpoints.down("xl")]: {
+    maxWidth: "38rem"
   },
-  [theme.breakpoints.down('lg')]: {
-    maxWidth: '30rem'
+  [theme.breakpoints.down("lg")]: {
+    maxWidth: "30rem"
   }
 }))
 
 const RightWrapper = styled(Box)<BoxProps>(({ theme }) => ({
-  width: '100%',
-  [theme.breakpoints.up('md')]: {
+  width: "100%",
+  [theme.breakpoints.up("md")]: {
     maxWidth: 400
   },
-  [theme.breakpoints.up('lg')]: {
+  [theme.breakpoints.up("lg")]: {
     maxWidth: 450
   }
 }))
 
 const BoxWrapper = styled(Box)<BoxProps>(({ theme }) => ({
-  width: '100%',
-  [theme.breakpoints.down('md')]: {
+  width: "100%",
+  [theme.breakpoints.down("md")]: {
     maxWidth: 400
   }
 }))
 
 const TypographyStyled = styled(Typography)<TypographyProps>(({ theme }) => ({
   fontWeight: 600,
-  letterSpacing: '0.18px',
+  letterSpacing: "0.18px",
   marginBottom: theme.spacing(1.5),
-  [theme.breakpoints.down('md')]: { marginTop: theme.spacing(8) }
+  [theme.breakpoints.down("md")]: { marginTop: theme.spacing(8) }
 }))
 
-const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(({ theme }) => ({
-  marginBottom: theme.spacing(4),
-  '& .MuiFormControlLabel-label': {
-    fontSize: '0.875rem',
-    color: theme.palette.text.secondary
-  }
-}))
+const FormControlLabel = styled(MuiFormControlLabel)<FormControlLabelProps>(
+  ({ theme }) => ({
+    marginBottom: theme.spacing(4),
+    "& .MuiFormControlLabel-label": {
+      fontSize: "0.875rem",
+      color: theme.palette.text.secondary
+    }
+  })
+)
 const Register = () => {
   // ** States
   const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -119,7 +123,7 @@ const Register = () => {
   const theme = useTheme()
   const { register } = useAuth()
   const { settings } = useSettings()
-  const hidden = useMediaQuery(theme.breakpoints.down('md'))
+  const hidden = useMediaQuery(theme.breakpoints.down("md"))
 
   // ** Vars
   const { skin } = settings
@@ -127,7 +131,9 @@ const Register = () => {
     password: yup.string().min(5).required(),
     username: yup.string().min(3).required(),
     email: yup.string().email().required(),
-    terms: yup.bool().oneOf([true], 'You must accept the privacy policy & terms')
+    terms: yup
+      .bool()
+      .oneOf([true], "You must accept the privacy policy & terms")
   })
 
   const {
@@ -137,7 +143,7 @@ const Register = () => {
     formState: { errors }
   } = useForm({
     defaultValues,
-    mode: 'onBlur',
+    mode: "onBlur",
     resolver: yupResolver(schema)
   })
 
@@ -145,44 +151,63 @@ const Register = () => {
     const { email, username, password } = data
     register({ email, username, password }, err => {
       if (err.email) {
-        setError('email', {
-          type: 'manual',
+        setError("email", {
+          type: "manual",
           message: err.email
         })
       }
       if (err.username) {
-        setError('username', {
-          type: 'manual',
+        setError("username", {
+          type: "manual",
           message: err.username
         })
       }
     })
   }
 
-  const imageSource = skin === 'bordered' ? 'auth-v2-register-illustration-bordered' : 'auth-v2-register-illustration'
+  const imageSource =
+    skin === "bordered"
+      ? "auth-v2-register-illustration-bordered"
+      : "auth-v2-register-illustration"
 
   return (
     <Box className='content-right'>
       {!hidden ? (
-        <Box sx={{ flex: 1, display: 'flex', position: 'relative', alignItems: 'center', justifyContent: 'center' }}>
+        <Box
+          sx={{
+            flex: 1,
+            display: "flex",
+            position: "relative",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
           <RegisterIllustrationWrapper>
             <RegisterIllustration
               alt='register-illustration'
               src={`/images/pages/${imageSource}-${theme.palette.mode}.png`}
             />
           </RegisterIllustrationWrapper>
-          <FooterIllustrationsV2 image={`/images/pages/auth-v2-register-mask-${theme.palette.mode}.png`} />
+          <FooterIllustrationsV2
+            image={`/images/pages/auth-v2-register-mask-${theme.palette.mode}.png`}
+          />
         </Box>
       ) : null}
-      <RightWrapper sx={skin === 'bordered' && !hidden ? { borderLeft: `1px solid ${theme.palette.divider}` } : {}}>
+      <RightWrapper
+        sx={
+          skin === "bordered" && !hidden
+            ? { borderLeft: `1px solid ${theme.palette.divider}` }
+            : {}
+        }
+      >
         <Box
           sx={{
             p: 7,
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'background.paper'
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "background.paper"
           }}
         >
           <BoxWrapper>
@@ -190,13 +215,19 @@ const Register = () => {
               sx={{
                 top: 30,
                 left: 40,
-                display: 'flex',
-                position: 'absolute',
-                alignItems: 'center',
-                justifyContent: 'center'
+                display: "flex",
+                position: "absolute",
+                alignItems: "center",
+                justifyContent: "center"
               }}
             >
-              <svg width={47} fill='none' height={26} viewBox='0 0 268 150' xmlns='http://www.w3.org/2000/svg'>
+              <svg
+                width={47}
+                fill='none'
+                height={26}
+                viewBox='0 0 268 150'
+                xmlns='http://www.w3.org/2000/svg'
+              >
                 <rect
                   rx='25.1443'
                   width='50.2886'
@@ -266,15 +297,31 @@ const Register = () => {
                   </linearGradient>
                 </defs>
               </svg>
-              <Typography variant='h6' sx={{ ml: 2, lineHeight: 1, fontWeight: 700, fontSize: '1.5rem !important' }}>
+              <Typography
+                variant='h6'
+                sx={{
+                  ml: 2,
+                  lineHeight: 1,
+                  fontWeight: 700,
+                  fontSize: "1.5rem !important"
+                }}
+              >
                 {themeConfig.templateName}
               </Typography>
             </Box>
             <Box sx={{ mb: 6 }}>
-              <TypographyStyled variant='h5'>Adventure starts here 🚀</TypographyStyled>
-              <Typography variant='body2'>Make your app management easy and fun!</Typography>
+              <TypographyStyled variant='h5'>
+                Adventure starts here 🚀
+              </TypographyStyled>
+              <Typography variant='body2'>
+                Make your app management easy and fun!
+              </Typography>
             </Box>
-            <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
+            <form
+              noValidate
+              autoComplete='off'
+              onSubmit={handleSubmit(onSubmit)}
+            >
               <FormControl fullWidth sx={{ mb: 4 }}>
                 <Controller
                   name='username'
@@ -293,7 +340,9 @@ const Register = () => {
                   )}
                 />
                 {errors.username && (
-                  <FormHelperText sx={{ color: 'error.main' }}>{errors.username.message}</FormHelperText>
+                  <FormHelperText sx={{ color: "error.main" }}>
+                    {errors.username.message}
+                  </FormHelperText>
                 )}
               </FormControl>
               <FormControl fullWidth sx={{ mb: 4 }}>
@@ -312,10 +361,17 @@ const Register = () => {
                     />
                   )}
                 />
-                {errors.email && <FormHelperText sx={{ color: 'error.main' }}>{errors.email.message}</FormHelperText>}
+                {errors.email && (
+                  <FormHelperText sx={{ color: "error.main" }}>
+                    {errors.email.message}
+                  </FormHelperText>
+                )}
               </FormControl>
               <FormControl fullWidth>
-                <InputLabel htmlFor='auth-login-v2-password' error={Boolean(errors.password)}>
+                <InputLabel
+                  htmlFor='auth-login-v2-password'
+                  error={Boolean(errors.password)}
+                >
                   Password
                 </InputLabel>
                 <Controller
@@ -330,7 +386,7 @@ const Register = () => {
                       onChange={onChange}
                       id='auth-login-v2-password'
                       error={Boolean(errors.password)}
-                      type={showPassword ? 'text' : 'password'}
+                      type={showPassword ? "text" : "password"}
                       endAdornment={
                         <InputAdornment position='end'>
                           <IconButton
@@ -346,7 +402,9 @@ const Register = () => {
                   )}
                 />
                 {errors.password && (
-                  <FormHelperText sx={{ color: 'error.main' }}>{errors.password.message}</FormHelperText>
+                  <FormHelperText sx={{ color: "error.main" }}>
+                    {errors.password.message}
+                  </FormHelperText>
                 )}
               </FormControl>
 
@@ -359,14 +417,16 @@ const Register = () => {
                     return (
                       <FormControlLabel
                         sx={{
-                          ...(errors.terms ? { color: 'error.main' } : null),
-                          '& .MuiFormControlLabel-label': { fontSize: '0.875rem' }
+                          ...(errors.terms ? { color: "error.main" } : null),
+                          "& .MuiFormControlLabel-label": {
+                            fontSize: "0.875rem"
+                          }
                         }}
                         control={
                           <Checkbox
                             checked={value}
                             onChange={onChange}
-                            sx={errors.terms ? { color: 'error.main' } : null}
+                            sx={errors.terms ? { color: "error.main" } : null}
                           />
                         }
                         label={
@@ -374,16 +434,18 @@ const Register = () => {
                             <Typography
                               variant='body2'
                               component='span'
-                              sx={{ color: errors.terms ? 'error.main' : '' }}
+                              sx={{ color: errors.terms ? "error.main" : "" }}
                             >
-                              I agree to{' '}
+                              I agree to{" "}
                             </Typography>
                             <Link href='/' passHref>
                               <Typography
                                 variant='body2'
                                 component={MuiLink}
-                                sx={{ color: 'primary.main' }}
-                                onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
+                                sx={{ color: "primary.main" }}
+                                onClick={(e: MouseEvent<HTMLElement>) =>
+                                  e.preventDefault()
+                                }
                               >
                                 privacy policy & terms
                               </Typography>
@@ -395,44 +457,91 @@ const Register = () => {
                   }}
                 />
                 {errors.terms && (
-                  <FormHelperText sx={{ mt: 0, color: 'error.main' }}>{errors.terms.message}</FormHelperText>
+                  <FormHelperText sx={{ mt: 0, color: "error.main" }}>
+                    {errors.terms.message}
+                  </FormHelperText>
                 )}
               </FormControl>
-              <Button fullWidth size='large' type='submit' variant='contained' sx={{ mb: 7 }}>
+              <Button
+                fullWidth
+                size='large'
+                type='submit'
+                variant='contained'
+                sx={{ mb: 7 }}
+              >
                 Sign up
               </Button>
-              <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
-                <Typography sx={{ mr: 2, color: 'text.secondary' }}>Already have an account?</Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  flexWrap: "wrap",
+                  justifyContent: "center"
+                }}
+              >
+                <Typography sx={{ mr: 2, color: "text.secondary" }}>
+                  Already have an account?
+                </Typography>
                 <Typography>
                   <Link passHref href='/login'>
-                    <Typography component={MuiLink} sx={{ color: 'primary.main' }}>
+                    <Typography
+                      component={MuiLink}
+                      sx={{ color: "primary.main" }}
+                    >
                       Sign in instead
                     </Typography>
                   </Link>
                 </Typography>
               </Box>
-              <Divider sx={{ mt: 5, mb: 7.5, '& .MuiDivider-wrapper': { px: 4 } }}>or</Divider>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Divider
+                sx={{ mt: 5, mb: 7.5, "& .MuiDivider-wrapper": { px: 4 } }}
+              >
+                or
+              </Divider>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
                 <Link href='/' passHref>
-                  <IconButton component='a' onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>
-                    <Facebook sx={{ color: '#497ce2' }} />
+                  <IconButton
+                    component='a'
+                    onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
+                  >
+                    <Facebook sx={{ color: "#497ce2" }} />
                   </IconButton>
                 </Link>
                 <Link href='/' passHref>
-                  <IconButton component='a' onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>
-                    <Twitter sx={{ color: '#1da1f2' }} />
+                  <IconButton
+                    component='a'
+                    onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
+                  >
+                    <Twitter sx={{ color: "#1da1f2" }} />
                   </IconButton>
                 </Link>
                 <Link href='/' passHref>
-                  <IconButton component='a' onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>
+                  <IconButton
+                    component='a'
+                    onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
+                  >
                     <Github
-                      sx={{ color: theme => (theme.palette.mode === 'light' ? '#272727' : theme.palette.grey[300]) }}
+                      sx={{
+                        color: theme =>
+                          theme.palette.mode === "light"
+                            ? "#272727"
+                            : theme.palette.grey[300]
+                      }}
                     />
                   </IconButton>
                 </Link>
                 <Link href='/' passHref>
-                  <IconButton component='a' onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}>
-                    <Google sx={{ color: '#db4437' }} />
+                  <IconButton
+                    component='a'
+                    onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
+                  >
+                    <Google sx={{ color: "#db4437" }} />
                   </IconButton>
                 </Link>
               </Box>

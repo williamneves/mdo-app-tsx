@@ -1,8 +1,8 @@
 // ** React Imports
-import { ReactNode } from 'react'
+import { ReactNode } from "react"
 
 // ** Types
-import { ThemeColor } from 'src/@core/layouts/types'
+import { ThemeColor } from "src/@core/layouts/types"
 
 export type CardStatsHorizontalProps = {
   title: string
@@ -10,7 +10,7 @@ export type CardStatsHorizontalProps = {
   icon: ReactNode
   color?: ThemeColor
   trendNumber: string
-  trend?: 'positive' | 'negative'
+  trend?: "positive" | "negative"
 }
 
 export type CardStatsVerticalProps = {
@@ -20,7 +20,7 @@ export type CardStatsVerticalProps = {
   chipText: string
   color?: ThemeColor
   trendNumber: string
-  trend?: 'positive' | 'negative'
+  trend?: "positive" | "negative"
 }
 
 export type CardStatsCharacterProps = {
@@ -30,5 +30,5 @@ export type CardStatsCharacterProps = {
   chipText: string
   trendNumber: string
   chipColor?: ThemeColor
-  trend?: 'positive' | 'negative'
+  trend?: "positive" | "negative"
 }

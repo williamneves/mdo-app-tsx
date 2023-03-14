@@ -1,11 +1,11 @@
 // ** MUI Imports
-import MuiBadge from '@mui/material/Badge'
+import MuiBadge from "@mui/material/Badge"
 
 // ** Types
-import { CustomBadgeProps } from './types'
+import { CustomBadgeProps } from "./types"
 
 // ** Hooks Imports
-import useBgColor, { UseBgColorType } from 'src/@core/hooks/useBgColor'
+import useBgColor, { UseBgColorType } from "src/@core/hooks/useBgColor"
 
 const Badge = (props: CustomBadgeProps) => {
   // ** Props
@@ -26,7 +26,11 @@ const Badge = (props: CustomBadgeProps) => {
   return (
     <MuiBadge
       {...props}
-      sx={skin === 'light' && color ? Object.assign({ '& .MuiBadge-badge': colors[color] }, sx) : sx}
+      sx={
+        skin === "light" && color
+          ? Object.assign({ "& .MuiBadge-badge": colors[color] }, sx)
+          : sx
+      }
     />
   )
 }

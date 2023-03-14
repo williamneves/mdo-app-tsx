@@ -1,19 +1,19 @@
 // ** React Imports
-import { ReactNode } from 'react'
+import { ReactNode } from "react"
 
 // ** Next Import
-import Link from 'next/link'
+import Link from "next/link"
 
 // ** MUI Imports
-import Box from '@mui/material/Box'
-import Typography from '@mui/material/Typography'
-import { styled, useTheme } from '@mui/material/styles'
+import Box from "@mui/material/Box"
+import Typography from "@mui/material/Typography"
+import { styled, useTheme } from "@mui/material/styles"
 
 // ** Type Import
-import { Settings } from 'src/@core/context/settingsContext'
+import { Settings } from "src/@core/context/settingsContext"
 
 // ** Theme Config Import
-import themeConfig from 'src/configs/themeConfig'
+import themeConfig from "src/configs/themeConfig"
 
 interface Props {
   hidden: boolean
@@ -23,10 +23,10 @@ interface Props {
   horizontalAppBarBranding?: (props?: any) => ReactNode
 }
 
-const StyledLink = styled('a')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  textDecoration: 'none',
+const StyledLink = styled("a")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  textDecoration: "none",
   marginRight: theme.spacing(8)
 }))
 
@@ -41,13 +41,26 @@ const AppBarContent = (props: Props) => {
   const theme = useTheme()
 
   return (
-    <Box sx={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+    <Box
+      sx={{
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between"
+      }}
+    >
       {userHorizontalAppBarBranding ? (
         userHorizontalAppBarBranding(props)
       ) : (
         <Link href='/' passHref>
           <StyledLink>
-            <svg width={40} fill='none' height={22} viewBox='0 0 268 150' xmlns='http://www.w3.org/2000/svg'>
+            <svg
+              width={40}
+              fill='none'
+              height={22}
+              viewBox='0 0 268 150'
+              xmlns='http://www.w3.org/2000/svg'
+            >
               <rect
                 rx='25.1443'
                 width='50.2886'
@@ -117,7 +130,10 @@ const AppBarContent = (props: Props) => {
                 </linearGradient>
               </defs>
             </svg>
-            <Typography variant='h6' sx={{ ml: 2, fontWeight: 700, lineHeight: 1.2 }}>
+            <Typography
+              variant='h6'
+              sx={{ ml: 2, fontWeight: 700, lineHeight: 1.2 }}
+            >
               {themeConfig.templateName}
             </Typography>
           </StyledLink>

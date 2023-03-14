@@ -1,45 +1,45 @@
 // ** React Imports
-import React, { useState, Fragment, ChangeEvent } from "react";
+import React, { useState, Fragment, ChangeEvent } from "react"
 
 // ** MUI Imports
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import { styled } from "@mui/material/styles";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import { LoadingButton } from "@mui/lab";
+import Box from "@mui/material/Box"
+import Grid from "@mui/material/Grid"
+import { styled } from "@mui/material/styles"
+import TextField from "@mui/material/TextField"
+import Typography from "@mui/material/Typography"
+import CardContent from "@mui/material/CardContent"
+import Button from "@mui/material/Button"
+import { LoadingButton } from "@mui/lab"
 
 // ** Third Party Imports
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import toast from "react-hot-toast";
+import * as yup from "yup"
+import { yupResolver } from "@hookform/resolvers/yup"
+import toast from "react-hot-toast"
 
 // ** Hooks
-import { useForm } from "react-hook-form";
-import { useAuth } from "src/hooks/useAuth";
+import { useForm } from "react-hook-form"
+import { useAuth } from "src/hooks/useAuth"
 
 // ** Custom Components
-import TextInputControlled from "components/inputs/TextInputControlled";
+import TextInputControlled from "components/inputs/TextInputControlled"
 
 // ** Import Sanity Config
-import { dbClient, getImageUrl } from "src/configs/sanityConfig";
-import AuthUser from "src/interfaces/authUser";
+import { dbClient, getImageUrl } from "src/configs/sanityConfig"
+import AuthUser from "src/interfaces/authUser"
 
 const ImgStyled = styled("img")(({ theme }) => ({
   width: 120,
   height: 120,
   marginRight: theme.spacing(5),
   borderRadius: theme.shape.borderRadius
-}));
+}))
 
 const ButtonStyled = styled(Button)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     width: "100%",
     textAlign: "center"
   }
-}));
+}))
 
 const ResetButtonStyled = styled(Button)(({ theme }) => ({
   marginLeft: theme.spacing(4),
@@ -49,23 +49,24 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
     textAlign: "center",
     marginTop: theme.spacing(4)
   }
-}));
+}))
 
 interface Props {
-  userDB: AuthUser;
+  userDB: AuthUser
 }
 
 const TabAccount = ({ userDB }: Props) => {
+  const { name, email, role, imageAsset, imageURL, profile, stores } = userDB
+  const initialProfilePhoto = imageAsset
+    ? getImageUrl(imageAsset).url()
+    : imageURL
 
-  const { name, email, role, imageAsset, imageURL, profile, stores } = userDB;
-  const initialProfilePhoto = imageAsset ? getImageUrl(imageAsset).url() : imageURL;
-
-  const { updateUser } = useAuth();
+  const { updateUser } = useAuth()
 
   const schema = yup.object().shape({
     name: yup.string().required("O Nome não pode estar vazio"),
     position: yup.string().required("O Cargo não pode estar vazio")
-  });
+  })
 
   const {
     handleSubmit,
@@ -79,31 +80,31 @@ const TabAccount = ({ userDB }: Props) => {
       name,
       position: profile?.jobTitle
     }
-  });
+  })
 
   // ** States
-  const [imgSrc, setImgSrc] = useState(initialProfilePhoto);
-  const [newImage, setNewImage] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [imgSrc, setImgSrc] = useState(initialProfilePhoto)
+  const [newImage, setNewImage] = useState<any>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const onChangeFile = async (file: ChangeEvent<HTMLInputElement>) => {
-    const reader = new FileReader();
-    const { files } = file.target;
+    const reader = new FileReader()
+    const { files } = file.target
 
     if (files && files.length !== 0) {
       reader.onload = () => {
-        setImgSrc(reader.result as any);
-      };
-      reader.readAsDataURL(files[0]);
+        setImgSrc(reader.result as any)
+      }
+      reader.readAsDataURL(files[0])
 
-      setImgSrc(files[0] as any);
-      setNewImage(files[0]);
+      setImgSrc(files[0] as any)
+      setNewImage(files[0])
     }
-  };
+  }
 
-  const onSubmit = async (data: { name: string, position: string }) => {
-    const toastId = toast.loading("Atualizando informações...");
-    setIsLoading(true);
+  const onSubmit = async (data: { name: string; position: string }) => {
+    const toastId = toast.loading("Atualizando informações...")
+    setIsLoading(true)
 
     const newDataObj: {
       name: string
@@ -116,41 +117,41 @@ const TabAccount = ({ userDB }: Props) => {
       profile: {
         jobTitle: data.position
       }
-    };
+    }
 
     if (newImage) {
       try {
-        dbClient.assets.upload("image", newImage).then((imageAsset) => {
+        dbClient.assets.upload("image", newImage).then(imageAsset => {
           newDataObj.imageAsset = {
-            _type: 'image',
+            _type: "image",
             asset: {
               _ref: imageAsset._id,
-              _type: 'reference'
+              _type: "reference"
             }
-          };
+          }
           updateUser({
             newInfo: newDataObj
-          });
-          toast.success("Informações atualizadas com sucesso!", { id: toastId });
-        });
+          })
+          toast.success("Informações atualizadas com sucesso!", { id: toastId })
+        })
       } catch (e) {
-        toast.error("Erro ao atualizar informações", { id: toastId });
+        toast.error("Erro ao atualizar informações", { id: toastId })
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
     } else {
       try {
         await updateUser({
           newInfo: newDataObj
-        });
-        toast.success("Informações atualizadas com sucesso!", { id: toastId });
+        })
+        toast.success("Informações atualizadas com sucesso!", { id: toastId })
       } catch (e) {
-        toast.error("Erro ao atualizar informações", { id: toastId });
+        toast.error("Erro ao atualizar informações", { id: toastId })
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
     }
-  };
+  }
 
   return (
     <CardContent>
@@ -175,13 +176,18 @@ const TabAccount = ({ userDB }: Props) => {
                     id={"account-settings-upload-image"}
                   />
                 </ButtonStyled>
-                <ResetButtonStyled disabled={isLoading} color="error" variant="outlined" onClick={() => {
-                  setImgSrc(initialProfilePhoto);
-                  setNewImage(null);
-                }}>
+                <ResetButtonStyled
+                  disabled={isLoading}
+                  color='error'
+                  variant='outlined'
+                  onClick={() => {
+                    setImgSrc(initialProfilePhoto)
+                    setNewImage(null)
+                  }}
+                >
                   Cancelar
                 </ResetButtonStyled>
-                <Typography sx={{ mt: 4 }} component="p" variant="caption">
+                <Typography sx={{ mt: 4 }} component='p' variant='caption'>
                   Permitido apenas imagens de até 2MB
                 </Typography>
               </Box>
@@ -219,7 +225,7 @@ const TabAccount = ({ userDB }: Props) => {
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-              label="Loja"
+              label='Loja'
               placeholder={stores[0]?.name}
               defaultValue={stores[0]?.name}
               disabled
@@ -249,7 +255,7 @@ const TabAccount = ({ userDB }: Props) => {
         </Grid>
       </form>
     </CardContent>
-  );
-};
+  )
+}
 
-export default TabAccount;
+export default TabAccount

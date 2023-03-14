@@ -1,13 +1,13 @@
 // ** React Imports
-import { ReactNode } from 'react'
+import { ReactNode } from "react"
 
 // ** MUI Imports
-import { SvgIconProps } from '@mui/material'
+import { SvgIconProps } from "@mui/material"
 
 interface UserIconProps {
   iconProps?: SvgIconProps
   icon: string | ReactNode
-  componentType: 'search' | 'vertical-menu' | 'horizontal-menu'
+  componentType: "search" | "vertical-menu" | "horizontal-menu"
 }
 
 const UserIcon = (props: UserIconProps) => {
@@ -18,19 +18,19 @@ const UserIcon = (props: UserIconProps) => {
 
   let styles
 
-  if (componentType === 'search') {
+  if (componentType === "search") {
     // Conditional Props based on component type, like have different font size or icon color
     /* styles = {
       color: 'blue',
       fontSize: '2rem'
     } */
-  } else if (componentType === 'vertical-menu') {
+  } else if (componentType === "vertical-menu") {
     // Conditional Props based on component type, like have different font size or icon color
     /* styles = {
       color: 'red',
       fontSize: '1.5rem'
     } */
-  } else if (componentType === 'horizontal-menu') {
+  } else if (componentType === "horizontal-menu") {
     // Conditional Props based on component type, like have different font size or icon color
     /* styles = {
       color: 'green',

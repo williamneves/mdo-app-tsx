@@ -1,5 +1,5 @@
-import { Gender } from '@core/utils/types'
-import SelectedStore from "src/interfaces/SelectedStore";
+import { Gender } from "@core/utils/types"
+import SelectedStore from "src/interfaces/SelectedStore"
 
 export default interface AuthUser {
   _id: string
@@ -10,7 +10,13 @@ export default interface AuthUser {
   email: string
   imageURL: string
   imageAsset?: any
-  role: "admin" | "manager" | "coordinator" | "vendor" | "streetVendor" | "client"
+  role:
+    | "admin"
+    | "manager"
+    | "coordinator"
+    | "vendor"
+    | "streetVendor"
+    | "client"
   stores: Array<SelectedStore>
   profile: {
     jobTitle: string

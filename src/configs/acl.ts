@@ -1,7 +1,7 @@
-import { AbilityBuilder, Ability } from '@casl/ability'
+import { AbilityBuilder, Ability } from "@casl/ability"
 
 export type Subjects = string
-export type Actions = 'manage' | 'create' | 'read' | 'update' | 'delete'
+export type Actions = "manage" | "create" | "read" | "update" | "delete"
 
 export type AppAbility = Ability<[Actions, Subjects]> | undefined
 
@@ -20,39 +20,39 @@ const defineRulesFor = (role: string, subject: string) => {
   const { can, rules } = new AbilityBuilder(AppAbility)
 
   if (role === "admin") {
-    can("manage", "all");
+    can("manage", "all")
   } else if (role === "vendor") {
     // can('manage', 'all')
-    can(["manage"], "vendor-page");
-    can(["manage"], "finance-page");
-    can(["manage"], "user-page");
-    can(["read"], "general-page");
-    can(["read"], "street-page");
-    can(["read"], "acl-page");
-    can(["read"], "acl-page2");
+    can(["manage"], "vendor-page")
+    can(["manage"], "finance-page")
+    can(["manage"], "user-page")
+    can(["read"], "general-page")
+    can(["read"], "street-page")
+    can(["read"], "acl-page")
+    can(["read"], "acl-page2")
   } else if (role === "streetVendor") {
     // can('manage', 'all')
-    can(["manage"], "street-page");
-    can(["manage"], "finance-page");
-    can(["manage"], "user-page");
-    can(["read"], "general-page");
-    can(["read"], "acl-page");
-    can(["read"], "acl-page2");
+    can(["manage"], "street-page")
+    can(["manage"], "finance-page")
+    can(["manage"], "user-page")
+    can(["read"], "general-page")
+    can(["read"], "acl-page")
+    can(["read"], "acl-page2")
   } else if (role === "manager") {
-    can(["manage"], "manager-page");
-    can(["manage"], "finance-page");
+    can(["manage"], "manager-page")
+    can(["manage"], "finance-page")
     // can('manage', 'all')
-    can(["manage"], "vendor-page");
-    can(["manage"], "user-page");
-    can(["manage"], "street-page");
-    can(["read"], "general-page");
-    can(["read"], "acl-page");
-    can(["read"], "acl-page2");
+    can(["manage"], "vendor-page")
+    can(["manage"], "user-page")
+    can(["manage"], "street-page")
+    can(["read"], "general-page")
+    can(["read"], "acl-page")
+    can(["read"], "acl-page2")
   } else {
-    can(["read", "create", "update", "delete"], subject);
+    can(["read", "create", "update", "delete"], subject)
   }
 
-  return rules;
+  return rules
 }
 
 export const buildAbilityFor = (role: string, subject: string): AppAbility => {
@@ -64,8 +64,8 @@ export const buildAbilityFor = (role: string, subject: string): AppAbility => {
 }
 
 export const defaultACLObj: ACLObj = {
-  action: 'manage',
-  subject: 'all'
+  action: "manage",
+  subject: "all"
 }
 
 export default defineRulesFor

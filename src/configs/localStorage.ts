@@ -1,13 +1,13 @@
-import SecureLS from 'secure-ls';
+import SecureLS from "secure-ls"
 
-let ls: any;
+let ls: any
 const init = () => {
   ls = new SecureLS({
-    encodingType: 'aes',
+    encodingType: "aes",
     encryptionSecret: process.env.NEXT_PUBLIC_LOCALSTORAGE_KEY,
-    isCompression: false,
-  });
-};
-if (global?.localStorage) init();
+    isCompression: false
+  })
+}
+if (global?.localStorage) init()
 
-export default ls;
+export default ls

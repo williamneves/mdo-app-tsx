@@ -1,27 +1,29 @@
 // ** MUI Imports
-import { Theme } from '@mui/material/styles'
+import { Theme } from "@mui/material/styles"
 
 // ** Theme Type Import
-import { Skin } from 'src/@core/layouts/types'
+import { Skin } from "src/@core/layouts/types"
 
 // ** Util Import
-import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
+import { hexToRGBA } from "src/@core/utils/hex-to-rgba"
 
 const Dialog = (theme: Theme, skin: Skin) => {
   return {
     MuiDialog: {
       styleOverrides: {
         paper: {
-          boxShadow: theme.shadows[skin === 'bordered' ? 0 : 10],
-          ...(skin === 'bordered' && { border: `1px solid ${theme.palette.divider}` }),
-          '&:not(.MuiDialog-paperFullScreen)': {
-            '@media (max-width:599px)': {
+          boxShadow: theme.shadows[skin === "bordered" ? 0 : 10],
+          ...(skin === "bordered" && {
+            border: `1px solid ${theme.palette.divider}`
+          }),
+          "&:not(.MuiDialog-paperFullScreen)": {
+            "@media (max-width:599px)": {
               margin: theme.spacing(4),
               width: `calc(100% - ${theme.spacing(8)})`,
               maxWidth: `calc(100% - ${theme.spacing(8)}) !important`
             }
           },
-          '& > .MuiList-root': {
+          "& > .MuiList-root": {
             paddingLeft: theme.spacing(1),
             paddingRight: theme.spacing(1)
           }
@@ -39,62 +41,64 @@ const Dialog = (theme: Theme, skin: Skin) => {
       styleOverrides: {
         root: {
           padding: theme.spacing(5),
-          '& + .MuiDialogContent-root': {
+          "& + .MuiDialogContent-root": {
             paddingTop: 0
           },
-          '& + .MuiDialogActions-root': {
+          "& + .MuiDialogActions-root": {
             paddingTop: 0
           },
 
           // Styling for Mobile Date Picker starts
-          '& .PrivatePickersToolbar-root': {
+          "& .PrivatePickersToolbar-root": {
             padding: theme.spacing(4, 5),
             color: theme.palette.primary.contrastText,
             backgroundColor: theme.palette.primary.main,
-            '& .MuiTypography-root': {
+            "& .MuiTypography-root": {
               color: theme.palette.primary.contrastText
             },
-            '& span.MuiTypography-overline': {
-              fontSize: '1rem',
-              lineHeight: '24px',
-              letterSpacing: '0.15px'
+            "& span.MuiTypography-overline": {
+              fontSize: "1rem",
+              lineHeight: "24px",
+              letterSpacing: "0.15px"
             },
             '& ~ div[class^="css-"] > div[class^="css-"]': {
               marginTop: theme.spacing(6),
               marginBottom: theme.spacing(6),
               '& > div[class^="css-"]': {
                 backgroundColor:
-                  theme.palette.mode === 'light' ? theme.palette.grey[50] : theme.palette.background.default,
-                '& ~ .MuiIconButton-root span.MuiTypography-caption': {
-                  color: 'inherit'
+                  theme.palette.mode === "light"
+                    ? theme.palette.grey[50]
+                    : theme.palette.background.default,
+                "& ~ .MuiIconButton-root span.MuiTypography-caption": {
+                  color: "inherit"
                 }
               }
             },
-            '& .PrivateTimePickerToolbar-hourMinuteLabel': {
-              alignItems: 'center',
-              '& > .MuiButton-root span.MuiTypography-root': {
+            "& .PrivateTimePickerToolbar-hourMinuteLabel": {
+              alignItems: "center",
+              "& > .MuiButton-root span.MuiTypography-root": {
                 fontWeight: 500,
-                lineHeight: '72px',
-                fontSize: '3.75rem',
-                letterSpacing: '-0.5px'
+                lineHeight: "72px",
+                fontSize: "3.75rem",
+                letterSpacing: "-0.5px"
               },
-              '& > .MuiTypography-root': {
+              "& > .MuiTypography-root": {
                 color: hexToRGBA(theme.palette.primary.contrastText, 0.54),
-                '& + .MuiButton-root > span.MuiTypography-root': {
+                "& + .MuiButton-root > span.MuiTypography-root": {
                   color: hexToRGBA(theme.palette.primary.contrastText, 0.54)
                 }
               }
             },
-            '& .PrivateTimePickerToolbar-ampmSelection': {
-              '& .MuiButton-root': {
+            "& .PrivateTimePickerToolbar-ampmSelection": {
+              "& .MuiButton-root": {
                 marginBottom: theme.spacing(2)
               },
-              '.PrivateTimePickerToolbar-ampmLabel': {
+              ".PrivateTimePickerToolbar-ampmLabel": {
                 lineHeight: 1.5,
                 fontWeight: 400,
-                fontSize: '1rem',
-                letterSpacing: '0.15px',
-                '&:not(.Mui-selected)': {
+                fontSize: "1rem",
+                letterSpacing: "0.15px",
+                "&:not(.Mui-selected)": {
                   color: hexToRGBA(theme.palette.primary.contrastText, 0.54)
                 }
               }
@@ -102,7 +106,7 @@ const Dialog = (theme: Theme, skin: Skin) => {
           },
           '& [role="listbox"] > span[role="option"]': {
             lineHeight: 1.25,
-            fontSize: '0.875rem'
+            fontSize: "0.875rem"
           }
 
           // Styling for Mobile Date Picker ends
@@ -113,7 +117,7 @@ const Dialog = (theme: Theme, skin: Skin) => {
       styleOverrides: {
         root: {
           padding: theme.spacing(5),
-          '&.dialog-actions-dense': {
+          "&.dialog-actions-dense": {
             padding: theme.spacing(2.5),
             paddingTop: 0
           }

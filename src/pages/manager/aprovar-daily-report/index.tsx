@@ -1,47 +1,46 @@
 // ** React Imports
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"
 
 // ** MUI Imports
-import Box from "@mui/material/Grid";
-import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardHeader from "@mui/material/CardHeader";
-import Typography from "@mui/material/Typography";
-import Fab from "@mui/material/Fab";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-import MUIDatepicker from "@mui/lab/DatePicker";
-import Divider from "@mui/material/Divider";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import TextField from "@mui/material/TextField";
-import { DataGrid } from "@mui/x-data-grid";
+import Box from "@mui/material/Grid"
+import Grid from "@mui/material/Grid"
+import Button from "@mui/material/Button"
+import Card from "@mui/material/Card"
+import CardHeader from "@mui/material/CardHeader"
+import Typography from "@mui/material/Typography"
+import Fab from "@mui/material/Fab"
+import LocalizationProvider from "@mui/lab/LocalizationProvider"
+import MUIDatepicker from "@mui/lab/DatePicker"
+import Divider from "@mui/material/Divider"
+import AdapterDateFns from "@mui/lab/AdapterDateFns"
+import TextField from "@mui/material/TextField"
+import { DataGrid } from "@mui/x-data-grid"
 
 // ** MUI Icons
-import ThumbUpAltTwoToneIcon from "@mui/icons-material/ThumbUpAltTwoTone";
-import ThumbDownAltTwoToneIcon from "@mui/icons-material/ThumbDownAltTwoTone";
-import UpdateIcon from "@mui/icons-material/Update";
+import ThumbUpAltTwoToneIcon from "@mui/icons-material/ThumbUpAltTwoTone"
+import ThumbDownAltTwoToneIcon from "@mui/icons-material/ThumbDownAltTwoTone"
+import UpdateIcon from "@mui/icons-material/Update"
 
 // ** Third Party Imports
-import moment from "moment";
-import toast from "react-hot-toast";
-import QuickDialog from "components/QuickDialog";
-import DialogContent from "components/DialogContent";
+import moment from "moment"
+import toast from "react-hot-toast"
+import QuickDialog from "components/QuickDialog"
+import DialogContent from "components/DialogContent"
 
 // ** Hooks Imports
-import * as useDailyReport from "src/queries/streetDailyReport";
-import { useQueryClient } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
+import * as useDailyReport from "src/queries/streetDailyReport"
+import { useQueryClient } from "@tanstack/react-query"
+import { useForm } from "react-hook-form"
 
 // ** Types
-import StreetDailyReport from "src/interfaces/StreetDailyReport";
+import StreetDailyReport from "src/interfaces/StreetDailyReport"
 
 const ApproveDailyReport = () => {
-
   // ** States
-  const [rangeDateStart, setRangeDateStart] = useState<Date>(new Date());
-  const [rangeDateEnd, setRangeDateEnd] = useState<Date>(new Date());
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
-  const [dialogData, setDialogData] = useState({});
+  const [rangeDateStart, setRangeDateStart] = useState<Date>(new Date())
+  const [rangeDateEnd, setRangeDateEnd] = useState<Date>(new Date())
+  const [openDialog, setOpenDialog] = useState<boolean>(false)
+  const [dialogData, setDialogData] = useState({})
 
   const {
     control,
@@ -52,125 +51,157 @@ const ApproveDailyReport = () => {
     defaultValues: {
       feedback: ""
     }
-  });
+  })
 
   // ** React Query Hooks
-  const {
-    data: reportsData,
-    isLoading: reportsIsLoading
-  } = useDailyReport.useGetAllDailyReportsQuery();
-  const queryClient = useQueryClient();
-  const changeReportStatus = useDailyReport.useChangeAuditStatusQuery(queryClient);
+  const { data: reportsData, isLoading: reportsIsLoading } =
+    useDailyReport.useGetAllDailyReportsQuery()
+  const queryClient = useQueryClient()
+  const changeReportStatus =
+    useDailyReport.useChangeAuditStatusQuery(queryClient)
 
   // Get only reports that are pending
-  const pendingReports = reportsData?.filter((report: StreetDailyReport) => report.auditStatus === "pending");
+  const pendingReports = reportsData?.filter(
+    (report: StreetDailyReport) => report.auditStatus === "pending"
+  )
 
   // Get the first day of the month
   useEffect(() => {
-    console.log(moment().startOf("month"));
-    const today = new Date();
-    const firstDay = new Date(today.getFullYear(), today.getMonth(), 2);
-    setRangeDateStart(firstDay);
-  }, []);
+    console.log(moment().startOf("month"))
+    const today = new Date()
+    const firstDay = new Date(today.getFullYear(), today.getMonth(), 2)
+    setRangeDateStart(firstDay)
+  }, [])
 
   const handleUpdateDates = () => {
-    setRangeDateStart(rangeDateStart);
-    setRangeDateEnd(rangeDateEnd);
-  };
+    setRangeDateStart(rangeDateStart)
+    setRangeDateEnd(rangeDateEnd)
+  }
 
-  const changeAuditStatus = async (reportID: string, action: "approved" | "rejected") => {
-    const toastId = toast.loading("Aguarde...");
+  const changeAuditStatus = async (
+    reportID: string,
+    action: "approved" | "rejected"
+  ) => {
+    const toastId = toast.loading("Aguarde...")
     try {
-      await changeReportStatus.mutateAsync({ reportID, status: action, auditFeedBack: getValues("feedback") });
-      toast.success("Status do relatório atualizado com sucesso!", { id: toastId });
-      setOpenDialog(false);
-      reset();
+      await changeReportStatus.mutateAsync({
+        reportID,
+        status: action,
+        auditFeedBack: getValues("feedback")
+      })
+      toast.success("Status do relatório atualizado com sucesso!", {
+        id: toastId
+      })
+      setOpenDialog(false)
+      reset()
     } catch (e) {
-      toast.error("Erro ao atualizar status do relatório!", { id: toastId });
+      toast.error("Erro ao atualizar status do relatório!", { id: toastId })
     }
-  };
+  }
 
   const approveAllReports = async () => {
-    const toastId = toast.loading("Aguarde...");
+    const toastId = toast.loading("Aguarde...")
     try {
-      await Promise.all(pendingReports.map(async (report: StreetDailyReport) => {
-        await changeReportStatus.mutateAsync({ reportID: report._id, status: "approved", auditFeedBack: "" });
-      }));
-      toast.success("Relatórios aprovados com sucesso!", { id: toastId });
-      setOpenDialog(false);
+      await Promise.all(
+        pendingReports.map(async (report: StreetDailyReport) => {
+          await changeReportStatus.mutateAsync({
+            reportID: report._id,
+            status: "approved",
+            auditFeedBack: ""
+          })
+        })
+      )
+      toast.success("Relatórios aprovados com sucesso!", { id: toastId })
+      setOpenDialog(false)
     } catch (e) {
-      toast.error("Erro ao aprovar todos os relatórios!", { id: toastId });
+      toast.error("Erro ao aprovar todos os relatórios!", { id: toastId })
     }
-  };
+  }
 
   const handleApproveAllReports = () => {
     setDialogData({
       headerTitle: "Aprovar todos os relatórios",
       content: "Realmente deseja aprovar todos os relatórios?",
-      actions: [{
-        mode: "button",
-        props: {
-          label: "confirmar",
-          color: "primary",
-          variant: "contained",
-          onClick: () => approveAllReports()
+      actions: [
+        {
+          mode: "button",
+          props: {
+            label: "confirmar",
+            color: "primary",
+            variant: "contained",
+            onClick: () => approveAllReports()
+          }
+        },
+        {
+          mode: "button",
+          props: {
+            label: "cancelar",
+            color: "error",
+            variant: "outlined",
+            onClick: () => setOpenDialog(false)
+          }
         }
-      }, {
-        mode: "button",
-        props: {
-          label: "cancelar",
-          color: "error",
-          variant: "outlined",
-          onClick: () => setOpenDialog(false)
-        }
-      }]
-    });
+      ]
+    })
 
-    setOpenDialog(true);
-  };
+    setOpenDialog(true)
+  }
 
-  const handleApproveRejectReport = (report: StreetDailyReport, action: "Aprovar" | "Recusar") => {
-
+  const handleApproveRejectReport = (
+    report: StreetDailyReport,
+    action: "Aprovar" | "Recusar"
+  ) => {
     setDialogData({
       id: report._id,
       report: report,
       headerTitle: `${action} relatório`,
-      content: <DialogContent
-        headerMessage={`Realmente deseja ${action.toLocaleLowerCase()} o relatório do dia ${moment(report.reportDate).format("DD/MM/YYYY")} 
+      content: (
+        <DialogContent
+          headerMessage={`Realmente deseja ${action.toLocaleLowerCase()} o relatório do dia ${moment(
+            report.reportDate
+          ).format("DD/MM/YYYY")} 
         feito por ${report.reporter.name}?`}
-        inputProps={{
-          control: control,
-          errors: errors,
-          name: "feedback",
-          label: "Feedback (Opcional)",
-          multiline: true,
-          rows: 3
-        }}
-      />,
-      actions: [{
-        mode: "button",
-        props: {
-          label: "confirmar",
-          color: "primary",
-          variant: "contained",
-          onClick: () => changeAuditStatus(report._id, action === "Aprovar" ? "approved" : "rejected")
+          inputProps={{
+            control: control,
+            errors: errors,
+            name: "feedback",
+            label: "Feedback (Opcional)",
+            multiline: true,
+            rows: 3
+          }}
+        />
+      ),
+      actions: [
+        {
+          mode: "button",
+          props: {
+            label: "confirmar",
+            color: "primary",
+            variant: "contained",
+            onClick: () =>
+              changeAuditStatus(
+                report._id,
+                action === "Aprovar" ? "approved" : "rejected"
+              )
+          }
+        },
+        {
+          mode: "button",
+          props: {
+            label: "cancelar",
+            color: "error",
+            variant: "outlined",
+            onClick: () => setOpenDialog(false)
+          }
         }
-      }, {
-        mode: "button",
-        props: {
-          label: "cancelar",
-          color: "error",
-          variant: "outlined",
-          onClick: () => setOpenDialog(false)
-        }
-      }]
-    });
+      ]
+    })
 
-    setOpenDialog(true);
-  };
+    setOpenDialog(true)
+  }
 
   interface RowData {
-    row: StreetDailyReport;
+    row: StreetDailyReport
   }
 
   // ** Columns
@@ -181,7 +212,8 @@ const ApproveDailyReport = () => {
       headerName: "Data",
       type: "date",
       field: "date",
-      valueGetter: ({ row }: RowData) => moment(row.reportDate).format("DD/MM/YY"),
+      valueGetter: ({ row }: RowData) =>
+        moment(row.reportDate).format("DD/MM/YY"),
       renderCell: ({ row }: RowData) => (
         <Typography variant={"body2"}>
           {moment(row.reportDate).format("DD/MM/YY")}
@@ -207,9 +239,7 @@ const ApproveDailyReport = () => {
       type: "number",
       align: "center",
       renderCell: ({ row }: RowData) => (
-        <Typography variant={"body2"}>
-          {row.clientsApproached}
-        </Typography>
+        <Typography variant={"body2"}>{row.clientsApproached}</Typography>
       )
     },
     {
@@ -219,7 +249,9 @@ const ApproveDailyReport = () => {
       field: "clientsRegistered",
       align: "center",
       renderCell: ({ row }: RowData) => (
-        <Typography variant={"body2"}>{row.clientsRegistered.length}</Typography>
+        <Typography variant={"body2"}>
+          {row.clientsRegistered.length}
+        </Typography>
       )
     },
     {
@@ -242,7 +274,7 @@ const ApproveDailyReport = () => {
       disableColumnMenu: true,
       minWidth: 120,
       renderCell: ({ row }: RowData) => (
-        <Box display="flex" justifyContent="center" gap={3} alignItems="center">
+        <Box display='flex' justifyContent='center' gap={3} alignItems='center'>
           <Fab
             sx={{
               color: "white",
@@ -265,7 +297,7 @@ const ApproveDailyReport = () => {
               height: "35px"
             }}
             onClick={() => {
-              handleApproveRejectReport(row, "Recusar");
+              handleApproveRejectReport(row, "Recusar")
             }}
           >
             <ThumbDownAltTwoToneIcon fontSize={"small"} />
@@ -273,7 +305,7 @@ const ApproveDailyReport = () => {
         </Box>
       )
     }
-  ];
+  ]
 
   return (
     <Grid container spacing={6}>
@@ -291,7 +323,7 @@ const ApproveDailyReport = () => {
             <Grid item xs={12} md={6}>
               <CardHeader
                 sx={{ textAlign: { xs: "center", md: "left" } }}
-                title="Aprovar Reports Diários"
+                title='Aprovar Reports Diários'
               />
             </Grid>
             <Grid
@@ -308,31 +340,31 @@ const ApproveDailyReport = () => {
             >
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <MUIDatepicker
-                  label="Data Inicial"
+                  label='Data Inicial'
                   value={rangeDateStart}
-                  onChange={(newValue) => {
-                    setRangeDateStart(newValue as Date);
+                  onChange={newValue => {
+                    setRangeDateStart(newValue as Date)
                   }}
-                  renderInput={(params) => (
+                  renderInput={params => (
                     <TextField size={"small"} {...params} />
                   )}
                 />
               </LocalizationProvider>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <MUIDatepicker
-                  label="Data Final"
+                  label='Data Final'
                   value={rangeDateEnd}
-                  onChange={(newValue) => {
-                    setRangeDateEnd(newValue as Date);
+                  onChange={newValue => {
+                    setRangeDateEnd(newValue as Date)
                   }}
-                  renderInput={(params) => (
+                  renderInput={params => (
                     <TextField size={"small"} {...params} />
                   )}
                 />
               </LocalizationProvider>
               <Button
-                variant="outlined"
-                color="primary"
+                variant='outlined'
+                color='primary'
                 sx={{ minWidth: "130px" }}
                 onClick={handleUpdateDates}
                 startIcon={<UpdateIcon />}
@@ -349,7 +381,7 @@ const ApproveDailyReport = () => {
               }
             }}
             autoHeight
-            getRowId={(row) => row._id}
+            getRowId={row => row._id}
             loading={reportsIsLoading}
             // @ts-ignore
             columns={columns}
@@ -368,7 +400,7 @@ const ApproveDailyReport = () => {
         data={dialogData}
       />
     </Grid>
-  );
-};
+  )
+}
 
-export default ApproveDailyReport;
+export default ApproveDailyReport

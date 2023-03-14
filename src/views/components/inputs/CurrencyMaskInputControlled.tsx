@@ -1,15 +1,14 @@
-import { NumericFormat, NumericFormatProps } from "react-number-format";
-import InputAdornment from "@mui/material/InputAdornment";
+import { NumericFormat, NumericFormatProps } from "react-number-format"
+import InputAdornment from "@mui/material/InputAdornment"
 import {
   TextField,
   TextFieldProps,
   StandardTextFieldProps,
   FilledTextFieldProps,
   OutlinedTextFieldProps
-} from "@mui/material";
-import { InputController } from "./InputController";
-import { FieldErrors } from "react-hook-form";
-
+} from "@mui/material"
+import { InputController } from "./InputController"
+import { FieldErrors } from "react-hook-form"
 
 const numericSetup = {
   thousandSeparator: ".",
@@ -17,23 +16,26 @@ const numericSetup = {
   allowedDecimalSeparators: ["%", ",", "/", " ", "-", "."],
   decimalScale: 2,
   decimalSeparator: ","
-};
-
-// @ts-ignore
-interface CurrencyMaskInputControlledProps extends NumericFormatProps, OutlinedTextFieldProps {
-  name: string;
-  control: any;
-  errors: FieldErrors;
-  readOnly?: boolean;
-  // Just pass a ReactNode to simple string to startAdornment and endAdornment
-  startAdornment?: JSX.Element | string;
-  endAdornment?: JSX.Element | string;
 }
 
-const CustomTextField = (props: any) => <TextField {...props} />;
+// @ts-ignore
+interface CurrencyMaskInputControlledProps
+  extends NumericFormatProps,
+    OutlinedTextFieldProps {
+  name: string
+  control: any
+  errors: FieldErrors
+  readOnly?: boolean
+  // Just pass a ReactNode to simple string to startAdornment and endAdornment
+  startAdornment?: JSX.Element | string
+  endAdornment?: JSX.Element | string
+}
 
-const CurrencyMaskInputControlled = (props: CurrencyMaskInputControlledProps) => {
+const CustomTextField = (props: any) => <TextField {...props} />
 
+const CurrencyMaskInputControlled = (
+  props: CurrencyMaskInputControlledProps
+) => {
   const {
     name,
     control,
@@ -42,14 +44,17 @@ const CurrencyMaskInputControlled = (props: CurrencyMaskInputControlledProps) =>
     startAdornment,
     endAdornment,
     ...rest
-  } = props;
+  } = props
 
   return (
     <InputController
       control={control}
       errors={errors}
       name={name}
-      render={({ field: { onChange, name, value }, fieldState: { invalid } }) => (
+      render={({
+        field: { onChange, name, value },
+        fieldState: { invalid }
+      }) => (
         <NumericFormat
           {...numericSetup}
           onValueChange={({ floatValue }) => onChange(floatValue)}
@@ -58,19 +63,15 @@ const CurrencyMaskInputControlled = (props: CurrencyMaskInputControlledProps) =>
           error={invalid}
           InputProps={{
             readOnly: readOnly || props.InputProps?.readOnly,
-            startAdornment: (
-              startAdornment ?
-                <InputAdornment position="start">
-                  {startAdornment}
-                </InputAdornment>
-                : props.InputProps?.startAdornment
+            startAdornment: startAdornment ? (
+              <InputAdornment position='start'>{startAdornment}</InputAdornment>
+            ) : (
+              props.InputProps?.startAdornment
             ),
-            endAdornment: (
-              startAdornment ?
-                <InputAdornment position="end">
-                  {endAdornment}
-                </InputAdornment>
-                : props.InputProps?.endAdornment
+            endAdornment: startAdornment ? (
+              <InputAdornment position='end'>{endAdornment}</InputAdornment>
+            ) : (
+              props.InputProps?.endAdornment
             )
           }}
           {...rest}
@@ -78,8 +79,8 @@ const CurrencyMaskInputControlled = (props: CurrencyMaskInputControlledProps) =>
         />
       )}
     />
-  );
-};
+  )
+}
 
 CurrencyMaskInputControlled.defaultProps = {
   variant: "outlined"

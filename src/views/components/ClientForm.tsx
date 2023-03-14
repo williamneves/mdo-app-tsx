@@ -1,71 +1,74 @@
 // ** React Imports
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react"
 
 // ** MUI Imports
-import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import CardContent from "@mui/material/CardContent";
-import LoadingButton from "@mui/lab/LoadingButton";
-import FormControl from "@mui/material/FormControl";
-import Divider from "@mui/material/Divider";
-import Button from "@mui/material/Button";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
-import TextField from "@mui/material/TextField";
+import Card from "@mui/material/Card"
+import Grid from "@mui/material/Grid"
+import Typography from "@mui/material/Typography"
+import CardContent from "@mui/material/CardContent"
+import LoadingButton from "@mui/lab/LoadingButton"
+import FormControl from "@mui/material/FormControl"
+import Divider from "@mui/material/Divider"
+import Button from "@mui/material/Button"
+import FormGroup from "@mui/material/FormGroup"
+import FormControlLabel from "@mui/material/FormControlLabel"
+import Switch from "@mui/material/Switch"
+import TextField from "@mui/material/TextField"
 
 // ** MUI Icons Imports
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import SaveAltIcon from "@mui/icons-material/SaveAlt";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import PersonAddIcon from "@mui/icons-material/PersonAdd"
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts"
+import SaveAltIcon from "@mui/icons-material/SaveAlt"
+import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 
 // ** Hooks
-import { Controller, useForm } from "react-hook-form";
-import { useAuth } from "src/hooks/useAuth";
-import * as useClient from "src/queries/clients";
-import { useQueryClient } from "@tanstack/react-query";
+import { Controller, useForm } from "react-hook-form"
+import { useAuth } from "src/hooks/useAuth"
+import * as useClient from "src/queries/clients"
+import { useQueryClient } from "@tanstack/react-query"
 
 // ** Third Party Imports
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
-import toast from "react-hot-toast";
-import { validateCPF, validatePhone } from "validations-br";
-import cep from "cep-promise";
+import * as yup from "yup"
+import { yupResolver } from "@hookform/resolvers/yup/dist/yup"
+import toast from "react-hot-toast"
+import { validateCPF, validatePhone } from "validations-br"
+import cep from "cep-promise"
 
 // ** Next Imports
-import { useRouter } from "next/router";
+import { useRouter } from "next/router"
 
 // ** Third Party Components
-import TextInputControlled from "components/inputs/TextInputControlled";
-import SelectInputController from "components/inputs/SelectInputController";
-import DateInputControlled from "components/inputs/DateInputControlled";
-import PatternInputControlled from "components/inputs/PatternInputControlled";
-import AutocompleteInputControlled from "components/inputs/AutocompleteInputControlled";
+import TextInputControlled from "components/inputs/TextInputControlled"
+import SelectInputController from "components/inputs/SelectInputController"
+import DateInputControlled from "components/inputs/DateInputControlled"
+import PatternInputControlled from "components/inputs/PatternInputControlled"
+import AutocompleteInputControlled from "components/inputs/AutocompleteInputControlled"
 
 // ** Types
-import Client from "src/interfaces/Client";
+import Client from "src/interfaces/Client"
 
 interface Props {
-  client?: Client;
+  client?: Client
 }
 
 const clientForm = ({ client }: Props) => {
-
-  const { user } = useAuth();
-  const router = useRouter();
+  const { user } = useAuth()
+  const router = useRouter()
 
   // React Query
-  const queryClient = useQueryClient();
-  const createClient = useClient.useCreateClientQuery(queryClient);
-  const updateClient = useClient.useUpdateClientQuery(queryClient);
-  const { isLoading } = createClient;
+  const queryClient = useQueryClient()
+  const createClient = useClient.useCreateClientQuery(queryClient)
+  const updateClient = useClient.useUpdateClientQuery(queryClient)
+  const { isLoading } = createClient
 
-  interface DefaultValues extends Omit<Client, "clientNumber" | "birthday" | "gender" | "_createdAt" | "_updatedAt"> {
-    clientNumber?: number | null,
-    birthday?: Date | null | "",
-    gender?: "male" | "female" | "other" | "",
+  interface DefaultValues
+    extends Omit<
+      Client,
+      "clientNumber" | "birthday" | "gender" | "_createdAt" | "_updatedAt"
+    > {
+    clientNumber?: number | null
+    birthday?: Date | null | ""
+    gender?: "male" | "female" | "other" | ""
   }
 
   const defaultValue: DefaultValues = {
@@ -93,24 +96,25 @@ const clientForm = ({ client }: Props) => {
     createdBy: {
       name: ""
     }
-  };
+  }
 
   const schema = yup.object().shape({
     inactive: yup.boolean(),
     clientNumber: yup.number().nullable(),
     name: yup.string().required("Esse campo é obrigatório *"),
-    phone: yup.string()
+    phone: yup
+      .string()
       .nullable()
-      .test("phone", "Número Inválido", (value) => {
-        if (value === "") return true;
-        return validatePhone(value as string);
+      .test("phone", "Número Inválido", value => {
+        if (value === "") return true
+        return validatePhone(value as string)
       }),
     email: yup.string().email("Email inválido"),
     birthday: yup.date().nullable(),
     gender: yup.string(),
-    cpf: yup.string().test("cpf", "CPF Inválido", (value) => {
-      if (value === "") return true;
-      return validateCPF(value as string);
+    cpf: yup.string().test("cpf", "CPF Inválido", value => {
+      if (value === "") return true
+      return validateCPF(value as string)
     }),
     hearAboutUs: yup.string(),
     address: yup.object().shape({
@@ -128,49 +132,53 @@ const clientForm = ({ client }: Props) => {
       name: yup.string(),
       _id: yup.string()
     })
-  });
+  })
 
   // States
-  const [clientsNumber, setClientsNumber] = useState(0);
-  const [isLoadingAddress, setIsLoadingAddress] = useState(false);
+  const [clientsNumber, setClientsNumber] = useState(0)
+  const [isLoadingAddress, setIsLoadingAddress] = useState(false)
 
   // Effects
   useEffect(() => {
-    if (user && !client) setValue("createdBy", user);
-  }, [user, clientsNumber]);
+    if (user && !client) setValue("createdBy", user)
+  }, [user, clientsNumber])
 
   // Set default store if user has only one store
   useEffect(() => {
-    if (user && user.stores.length === 1) setValue("store", user.stores[0]);
-  }, [user]);
+    if (user && user.stores.length === 1) setValue("store", user.stores[0])
+  }, [user])
 
   const setAddressByCep = () => {
-    setIsLoadingAddress(true);
+    setIsLoadingAddress(true)
     cep(getValues("address.zipCode")!)
-      .then((response) => {
+      .then(response => {
         setTimeout(() => {
-          setValue("address.street", response?.street as never || "");
-          setValue("address.city", response?.city as never || "");
-          setValue("address.state", response?.state as never || "");
+          setValue("address.street", (response?.street as never) || "")
+          setValue("address.city", (response?.city as never) || "")
+          setValue("address.state", (response?.state as never) || "")
           toast.success("CEP encontrado! Endereço carregado automaticamente", {
             duration: 4000,
             position: "top-center"
-          });
-          setFocus("address.number");
-          setIsLoadingAddress(false);
-        }, 500);
+          })
+          setFocus("address.number")
+          setIsLoadingAddress(false)
+        }, 500)
       })
-      .catch((error) => {
-        console.log(error);
-        toast.error("CEP não encontrado! preencha os campos de endereço manualmente", {
-          duration: 4000,
-          position: "top-center"
-        });
-        setIsLoadingAddress(false);
-      });
-  };
+      .catch(error => {
+        console.log(error)
+        toast.error(
+          "CEP não encontrado! preencha os campos de endereço manualmente",
+          {
+            duration: 4000,
+            position: "top-center"
+          }
+        )
+        setIsLoadingAddress(false)
+      })
+  }
 
-  const getAddressLabel = (fieldName: string) => isLoadingAddress ? "Buscando endereço..." : fieldName;
+  const getAddressLabel = (fieldName: string) =>
+    isLoadingAddress ? "Buscando endereço..." : fieldName
 
   const {
     control,
@@ -184,44 +192,61 @@ const clientForm = ({ client }: Props) => {
     defaultValues: client ? client : defaultValue,
     resolver: yupResolver(schema),
     mode: "onBlur"
-  });
+  })
 
   const onSubmit = async (data: any) => {
-
-    const toastId = toast.loading(client ? "Editando cliente..." : "Salvando cliente...");
+    const toastId = toast.loading(
+      client ? "Editando cliente..." : "Salvando cliente..."
+    )
 
     try {
-      if (client) await updateClient.mutateAsync(data);
-      else await createClient.mutateAsync(data);
-      toast.success(`Cliente ${client ?
-          `#${client?.clientNumber} editado` : "criado"} com sucesso!`,
-        { id: toastId, position: "top-center" });
-      if (client) router.push("/clientes/lista-de-clientes");
-      reset();
-      setClientsNumber(clientsNumber + 1);
+      if (client) await updateClient.mutateAsync(data)
+      else await createClient.mutateAsync(data)
+      toast.success(
+        `Cliente ${
+          client ? `#${client?.clientNumber} editado` : "criado"
+        } com sucesso!`,
+        { id: toastId, position: "top-center" }
+      )
+      if (client) router.push("/clientes/lista-de-clientes")
+      reset()
+      setClientsNumber(clientsNumber + 1)
     } catch (error) {
-      console.log("error", error);
-      toast.error("Não foi possível salvar, tente novamente ou fale com o suporte", {
-        id: toastId,
-        position: "top-center"
-      });
+      console.log("error", error)
+      toast.error(
+        "Não foi possível salvar, tente novamente ou fale com o suporte",
+        {
+          id: toastId,
+          position: "top-center"
+        }
+      )
     }
-  };
+  }
 
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
-        <Typography variant="h5" display={"flex"} alignItems={"center"} marginBottom={3} gap={2} px={5}>
-          {
-            client ?
-              <Fragment>
-                <ManageAccountsIcon sx={{ color: "primary.main", fontSize: 30 }} /> Editar Cliente
-              </Fragment>
-              :
-              <Fragment>
-                <PersonAddIcon sx={{ color: "primary.main", fontSize: 30 }} /> Cadastro de Cliente
-              </Fragment>
-          }
+        <Typography
+          variant='h5'
+          display={"flex"}
+          alignItems={"center"}
+          marginBottom={3}
+          gap={2}
+          px={5}
+        >
+          {client ? (
+            <Fragment>
+              <ManageAccountsIcon
+                sx={{ color: "primary.main", fontSize: 30 }}
+              />{" "}
+              Editar Cliente
+            </Fragment>
+          ) : (
+            <Fragment>
+              <PersonAddIcon sx={{ color: "primary.main", fontSize: 30 }} />{" "}
+              Cadastro de Cliente
+            </Fragment>
+          )}
         </Typography>
         <Card>
           <CardContent>
@@ -232,8 +257,7 @@ const clientForm = ({ client }: Props) => {
                     <Typography variant={"h6"}>Informações Pessoais</Typography>
                   </Divider>
                 </Grid>
-                {
-                  client &&
+                {client && (
                   <Grid item xs={12}>
                     <FormControl fullWidth>
                       <Controller
@@ -243,7 +267,7 @@ const clientForm = ({ client }: Props) => {
                         render={({ field: { value, onChange } }) => (
                           <FormGroup row>
                             <FormControlLabel
-                              label="O cliente está ativo?"
+                              label='O cliente está ativo?'
                               control={
                                 <Switch
                                   disabled={isLoading}
@@ -257,7 +281,7 @@ const clientForm = ({ client }: Props) => {
                       />
                     </FormControl>
                   </Grid>
-                }
+                )}
                 <Grid item xs={12} sm={6}>
                   <TextInputControlled
                     name={"name"}
@@ -303,14 +327,13 @@ const clientForm = ({ client }: Props) => {
                     control={control}
                     errors={errors}
                     disabled={isLoading}
-                    selectItems={
-                      {
-                        items: [
-                          { key: "male", value: "male", label: "Homem" },
-                          { key: "male", value: "female", label: "Mulher" },
-                          { key: "male", value: "other", label: "Outros" }
-                        ]
-                      }}
+                    selectItems={{
+                      items: [
+                        { key: "male", value: "male", label: "Homem" },
+                        { key: "male", value: "female", label: "Mulher" },
+                        { key: "male", value: "other", label: "Outros" }
+                      ]
+                    }}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -347,7 +370,8 @@ const clientForm = ({ client }: Props) => {
                     errors={errors}
                     disabled={isLoading}
                     onBlur={() => {
-                      if ((getValues("address.zipCode") as string).length === 8) setAddressByCep();
+                      if ((getValues("address.zipCode") as string).length === 8)
+                        setAddressByCep()
                     }}
                   />
                 </Grid>
@@ -414,23 +438,23 @@ const clientForm = ({ client }: Props) => {
                     errors={errors}
                     options={user?.stores}
                     loading={!Boolean(user?.stores)}
-                    disabled={user?.stores.length === 1 || user?.role !== "admin" || isLoading}
+                    disabled={
+                      user?.stores.length === 1 ||
+                      user?.role !== "admin" ||
+                      isLoading
+                    }
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <Divider variant={"middle"} />
                 </Grid>
                 <Grid item xs={12} sx={{ display: "flex" }}>
-                  {
-                    client &&
-                    <Button
-                      variant={"outlined"}
-                      onClick={() => history.back()}
-                    >
+                  {client && (
+                    <Button variant={"outlined"} onClick={() => history.back()}>
                       <ArrowBackIcon sx={{ mr: 2 }} />
                       Voltar
                     </Button>
-                  }
+                  )}
                   <LoadingButton
                     loading={isLoading}
                     type={"submit"}
@@ -447,7 +471,7 @@ const clientForm = ({ client }: Props) => {
         </Card>
       </Grid>
     </Grid>
-  );
-};
+  )
+}
 
-export default clientForm;
+export default clientForm

@@ -1,9 +1,13 @@
 // ** Types
-import { HorizontalNavItemsType, NavGroup, NavLink } from 'src/@core/layouts/types'
+import {
+  HorizontalNavItemsType,
+  NavGroup,
+  NavLink
+} from "src/@core/layouts/types"
 
 // ** Custom Navigation Components
-import HorizontalNavLink from './HorizontalNavLink'
-import HorizontalNavGroup from './HorizontalNavGroup'
+import HorizontalNavLink from "./HorizontalNavLink"
+import HorizontalNavGroup from "./HorizontalNavGroup"
 
 interface Props {
   hasParent?: boolean
@@ -16,11 +20,13 @@ const resolveComponent = (item: NavGroup | NavLink) => {
 }
 
 const HorizontalNavItems = (props: Props) => {
-  const RenderMenuItems = props.horizontalNavItems?.map((item: NavGroup | NavLink, index: number) => {
-    const TagName: any = resolveComponent(item)
+  const RenderMenuItems = props.horizontalNavItems?.map(
+    (item: NavGroup | NavLink, index: number) => {
+      const TagName: any = resolveComponent(item)
 
-    return <TagName {...props} key={index} item={item} />
-  })
+      return <TagName {...props} key={index} item={item} />
+    }
+  )
 
   return <>{RenderMenuItems}</>
 }

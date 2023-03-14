@@ -1,20 +1,20 @@
-import { Gender } from "@core/utils/types";
-import { SanityDefaultObject } from "src/interfaces/SanityDefaultInterfaces";
+import { Gender } from "@core/utils/types"
+import { SanityDefaultObject } from "src/interfaces/SanityDefaultInterfaces"
 
 // Client Interface
 export default interface Client extends Partial<SanityDefaultObject> {
-  _id: string;
-  inactive?: boolean;
-  clientNumber: number;
-  name: string;
-  phone?: string;
-  email?: string;
-  birthday?: Date;
-  gender?: Gender;
-  hearAboutUs?: string;
-  cpf?: string;
-  store: any;
-  createdBy: any;
+  _id: string
+  inactive?: boolean
+  clientNumber: number
+  name: string
+  phone?: string
+  email?: string
+  birthday?: Date
+  gender?: Gender
+  hearAboutUs?: string
+  cpf?: string
+  store: any
+  createdBy: any
   address?: {
     street?: string
     number?: string
@@ -22,5 +22,5 @@ export default interface Client extends Partial<SanityDefaultObject> {
     city?: string
     state?: string
     zipCode?: string
-  };
+  }
 }

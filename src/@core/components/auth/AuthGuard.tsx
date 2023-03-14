@@ -1,12 +1,12 @@
 // ** React Imports
-import { ReactNode, ReactElement, useEffect } from 'react'
+import { ReactNode, ReactElement, useEffect } from "react"
 
 // ** Next Imports
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router"
 
 // ** Hooks Import
-import { useAuth } from 'src/hooks/useAuth'
-import ls from "src/configs/localStorage";
+import { useAuth } from "src/hooks/useAuth"
+import ls from "src/configs/localStorage"
 
 interface AuthGuardProps {
   children: ReactNode
@@ -19,23 +19,19 @@ const AuthGuard = (props: AuthGuardProps) => {
   const router = useRouter()
 
   useEffect(
-
     () => {
       if (!router.isReady) {
         return
       }
-      console.log('AuthGuard useEffect')
-      if (
-        auth.user === null
-        && !ls.get("b3_userData")
-      ) {
-        if (router.asPath !== '/') {
+      console.log("AuthGuard useEffect")
+      if (auth.user === null && !ls.get("b3_userData")) {
+        if (router.asPath !== "/") {
           router.replace({
-            pathname: '/login',
+            pathname: "/login",
             query: { returnUrl: router.asPath }
           })
         } else {
-          router.replace('/login')
+          router.replace("/login")
         }
       }
     },
@@ -44,7 +40,7 @@ const AuthGuard = (props: AuthGuardProps) => {
   )
 
   if (auth.loading || auth.user === null) {
-    console.log('AuthGuard loading***')
+    console.log("AuthGuard loading***")
     return fallback
   }
 

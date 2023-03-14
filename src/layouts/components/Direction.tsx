@@ -1,15 +1,15 @@
 // ** React Imports
-import { useEffect, ReactNode } from 'react'
+import { useEffect, ReactNode } from "react"
 
 // ** MUI Imports
-import { Direction } from '@mui/material'
+import { Direction } from "@mui/material"
 
 // ** Emotion Imports
-import createCache from '@emotion/cache'
-import { CacheProvider } from '@emotion/react'
+import createCache from "@emotion/cache"
+import { CacheProvider } from "@emotion/react"
 
 // ** RTL Plugin
-import stylisRTLPlugin from 'stylis-plugin-rtl'
+import stylisRTLPlugin from "stylis-plugin-rtl"
 
 interface DirectionProps {
   children: ReactNode
@@ -18,7 +18,7 @@ interface DirectionProps {
 
 const styleCache = () =>
   createCache({
-    key: 'rtl',
+    key: "rtl",
     prepend: true,
     stylisPlugins: [stylisRTLPlugin]
   })
@@ -30,7 +30,7 @@ const Direction = (props: DirectionProps) => {
     document.dir = direction
   }, [direction])
 
-  if (direction === 'rtl') {
+  if (direction === "rtl") {
     return <CacheProvider value={styleCache()}>{children}</CacheProvider>
   }
 

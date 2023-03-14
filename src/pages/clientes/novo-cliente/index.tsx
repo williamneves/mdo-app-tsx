@@ -1,15 +1,12 @@
-import ClientForm from "components/ClientForm";
+import ClientForm from "components/ClientForm"
 
 const NewClient = () => {
-
-  return (
-    <ClientForm />
-  );
-};
+  return <ClientForm />
+}
 
 NewClient.acl = {
   action: "read",
   subject: "street-page"
-};
+}
 
-export default NewClient;
+export default NewClient

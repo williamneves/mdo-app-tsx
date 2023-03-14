@@ -1,21 +1,27 @@
-import { ReactNode } from 'react'
-import { Settings } from 'src/@core/context/settingsContext'
+import { ReactNode } from "react"
+import { Settings } from "src/@core/context/settingsContext"
 
-export type Layout = 'vertical' | 'horizontal' | 'blank' | 'blankWithAppBar'
+export type Layout = "vertical" | "horizontal" | "blank" | "blankWithAppBar"
 
-export type Skin = 'default' | 'bordered' | 'semi-dark'
+export type Skin = "default" | "bordered" | "semi-dark"
 
-export type ContentWidth = 'full' | 'boxed'
+export type ContentWidth = "full" | "boxed"
 
-export type AppBar = 'fixed' | 'static' | 'hidden'
+export type AppBar = "fixed" | "static" | "hidden"
 
-export type Footer = 'fixed' | 'static' | 'hidden'
+export type Footer = "fixed" | "static" | "hidden"
 
-export type ThemeColor = 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success'
+export type ThemeColor =
+  | "primary"
+  | "secondary"
+  | "error"
+  | "warning"
+  | "info"
+  | "success"
 
-export type VerticalNavToggle = 'accordion' | 'collapse'
+export type VerticalNavToggle = "accordion" | "collapse"
 
-export type HorizontalMenuToggle = 'hover' | 'click'
+export type HorizontalMenuToggle = "hover" | "click"
 
 export type NavLink = {
   icon?: any
@@ -27,7 +33,14 @@ export type NavLink = {
   badgeContent?: string
   externalLink?: boolean
   openInNewTab?: boolean
-  badgeColor?: 'default' | 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info'
+  badgeColor?:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "success"
+    | "error"
+    | "warning"
+    | "info"
 }
 
 export type NavGroup = {
@@ -37,7 +50,14 @@ export type NavGroup = {
   subject?: string
   badgeContent?: string
   children?: (NavGroup | NavLink)[]
-  badgeColor?: 'default' | 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info'
+  badgeColor?:
+    | "default"
+    | "primary"
+    | "secondary"
+    | "success"
+    | "error"
+    | "warning"
+    | "info"
 }
 
 export type NavSectionTitle = {

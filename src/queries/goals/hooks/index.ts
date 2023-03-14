@@ -1,6 +1,6 @@
-import { dbClient } from "src/configs/sanityConfig";
-import Goal from "src/interfaces/Goal";
-import groq from "groq";
+import { dbClient } from "src/configs/sanityConfig"
+import Goal from "src/interfaces/Goal"
+import groq from "groq"
 
 const activeAndNotDraf = `
 && !(_id in path("drafts.**")) 
@@ -22,7 +22,7 @@ const allGoalsGROQ = groq`
     },
   }`
 
-const goalsByStoreGROQ =  groq`
+const goalsByStoreGROQ = groq`
   *[_type == "goal" && $storeId in targetStores[]->_id] {
     ...,
     targetStores[]->{
@@ -35,7 +35,7 @@ const goalsByStoreGROQ =  groq`
     },
   }`
 
-const mainGoalsByStoreGROQ =  groq`
+const mainGoalsByStoreGROQ = groq`
 *[_type == "goal" 
 && $storeId in targetStores[]->_id
 && mainStoreGoal == true
@@ -66,80 +66,80 @@ const goalById = groq`
     },
   }[0]`
 
-
 // ** Hooks **
 // * All Goals
 export const getAllGoals = async () => {
   try {
     return dbClient.fetch<Goal[]>(allGoalsGROQ)
-  }
-  catch (error) {
+  } catch (error) {
     throw error
   }
 }
 
 // * Goals by Store
 export const getGoalsByStore = async (storeId: string) => {
-
   try {
     return dbClient.fetch<Goal[]>(goalsByStoreGROQ, { storeId })
-  }
-  catch (error) {
+  } catch (error) {
     throw error
   }
 }
 
 // * Main Goals by Store
-export const getMainGoalsByStore = async (storeId: string, dateStart: string, dateEnd: string) => {
-  console.log("🚀 ~ file: index.ts ~ line 97 ~ getMainGoalsByStore ~ mainGoalsByStoreGROQ, { storeId, dateStart, dateEnd }", mainGoalsByStoreGROQ, { storeId, dateStart, dateEnd })
-  
+export const getMainGoalsByStore = async (
+  storeId: string,
+  dateStart: string,
+  dateEnd: string
+) => {
+  console.log(
+    "🚀 ~ file: index.ts ~ line 97 ~ getMainGoalsByStore ~ mainGoalsByStoreGROQ, { storeId, dateStart, dateEnd }",
+    mainGoalsByStoreGROQ,
+    { storeId, dateStart, dateEnd }
+  )
+
   try {
-    return dbClient.fetch<Goal[]>(mainGoalsByStoreGROQ, { storeId, dateStart, dateEnd })
-  }
-  catch (error) {
+    return dbClient.fetch<Goal[]>(mainGoalsByStoreGROQ, {
+      storeId,
+      dateStart,
+      dateEnd
+    })
+  } catch (error) {
     throw error
   }
-
 }
 
 // * Get one Goal by ID
 export const getGoalById = async (id: string) => {
   try {
-    return dbClient.fetch<Goal>(goalById, {id})
-  }
-  catch (error) {
-    throw error;
+    return dbClient.fetch<Goal>(goalById, { id })
+  } catch (error) {
+    throw error
   }
 }
 
 // * Create Goal
-export const createGoal = async (goal: Goal): Promise<Goal>  => {
-
+export const createGoal = async (goal: Goal): Promise<Goal> => {
   // Create Goal Object
   const goalObject = {
     _type: "goal",
-    ...goal,
+    ...goal
   }
 
   try {
     return dbClient.create(goalObject)
-  }
-  catch (e) {
-    throw e;
+  } catch (e) {
+    throw e
   }
 }
 
 // * Update Goal
-export const updateGoal = async (id: string, updatedData: Partial<Goal>): Promise<Goal> => {
+export const updateGoal = async (
+  id: string,
+  updatedData: Partial<Goal>
+): Promise<Goal> => {
   try {
     return dbClient.patch(id).set(updatedData).commit()
-  }
-  catch (e) {
-    throw e;
+  } catch (e) {
+    throw e
   }
 }
-
-
-
-
-

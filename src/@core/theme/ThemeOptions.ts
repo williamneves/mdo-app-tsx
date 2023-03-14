@@ -1,18 +1,18 @@
 // ** MUI Theme Provider
-import { deepmerge } from '@mui/utils'
-import { ThemeOptions } from '@mui/material'
+import { deepmerge } from "@mui/utils"
+import { ThemeOptions } from "@mui/material"
 
 // ** User Theme Options
-import UserThemeOptions from 'src/layouts/UserThemeOptions'
+import UserThemeOptions from "src/layouts/UserThemeOptions"
 
 // ** Type Import
-import { Settings } from 'src/@core/context/settingsContext'
+import { Settings } from "src/@core/context/settingsContext"
 
 // ** Theme Override Imports
-import palette from './palette'
-import spacing from './spacing'
-import shadows from './shadows'
-import breakpoints from './breakpoints'
+import palette from "./palette"
+import spacing from "./spacing"
+import shadows from "./shadows"
+import breakpoints from "./breakpoints"
 
 const themeOptions = (settings: Settings): ThemeOptions => {
   // ** Vars
@@ -35,19 +35,19 @@ const themeOptions = (settings: Settings): ThemeOptions => {
         fontFamily:
           userFontFamily ||
           [
-            'Inter',
-            'sans-serif',
-            '-apple-system',
-            'BlinkMacSystemFont',
+            "Inter",
+            "sans-serif",
+            "-apple-system",
+            "BlinkMacSystemFont",
             '"Segoe UI"',
-            'Roboto',
+            "Roboto",
             '"Helvetica Neue"',
-            'Arial',
-            'sans-serif',
+            "Arial",
+            "sans-serif",
             '"Apple Color Emoji"',
             '"Segoe UI Emoji"',
             '"Segoe UI Symbol"'
-          ].join(',')
+          ].join(",")
       },
       shadows: shadows(mode),
       ...spacing,

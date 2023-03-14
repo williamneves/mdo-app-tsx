@@ -1,9 +1,9 @@
 // ** MUI Imports
-import { styled } from '@mui/material/styles'
+import { styled } from "@mui/material/styles"
 
-const CardWrapper = styled('div')({
-  display: 'flex',
-  '& .rccs, & .rccs__card': {
+const CardWrapper = styled("div")({
+  display: "flex",
+  "& .rccs, & .rccs__card": {
     margin: 0
   }
 })

@@ -1,12 +1,14 @@
 // ** React Imports
-import { ReactNode } from 'react'
+import { ReactNode } from "react"
 
 // ** MUI Imports
-import { styled, useTheme } from '@mui/material/styles'
-import MuiSwipeableDrawer, { SwipeableDrawerProps } from '@mui/material/SwipeableDrawer'
+import { styled, useTheme } from "@mui/material/styles"
+import MuiSwipeableDrawer, {
+  SwipeableDrawerProps
+} from "@mui/material/SwipeableDrawer"
 
 // ** Type Import
-import { Settings } from 'src/@core/context/settingsContext'
+import { Settings } from "src/@core/context/settingsContext"
 
 interface Props {
   hidden: boolean
@@ -22,20 +24,20 @@ interface Props {
 }
 
 const SwipeableDrawer = styled(MuiSwipeableDrawer)<SwipeableDrawerProps>({
-  overflowX: 'hidden',
-  transition: 'width .25s ease-in-out',
-  '& ul': {
-    listStyle: 'none'
+  overflowX: "hidden",
+  transition: "width .25s ease-in-out",
+  "& ul": {
+    listStyle: "none"
   },
-  '& .MuiListItem-gutters': {
+  "& .MuiListItem-gutters": {
     paddingLeft: 4,
     paddingRight: 4
   },
-  '& .MuiDrawer-paper': {
-    left: 'unset',
-    right: 'unset',
-    overflowX: 'hidden',
-    transition: 'width .25s ease-in-out, box-shadow .25s ease-in-out'
+  "& .MuiDrawer-paper": {
+    left: "unset",
+    right: "unset",
+    overflowX: "hidden",
+    transition: "width .25s ease-in-out, box-shadow .25s ease-in-out"
   }
 })
 
@@ -61,15 +63,15 @@ const Drawer = (props: Props) => {
   const { skin, navCollapsed } = settings
 
   const drawerColor = () => {
-    if (skin === 'semi-dark' && theme.palette.mode === 'light') {
+    if (skin === "semi-dark" && theme.palette.mode === "light") {
       return {
-        '& .MuiTypography-root': {
+        "& .MuiTypography-root": {
           color: `rgba(${theme.palette.customColors.dark}, 0.87)`
         }
       }
-    } else if (skin === 'semi-dark' && theme.palette.mode === 'dark') {
+    } else if (skin === "semi-dark" && theme.palette.mode === "dark") {
       return {
-        '& .MuiTypography-root': {
+        "& .MuiTypography-root": {
           color: `rgba(${theme.palette.customColors.light}, 0.87)`
         }
       }
@@ -77,11 +79,11 @@ const Drawer = (props: Props) => {
   }
 
   const drawerBgColor = () => {
-    if (skin === 'semi-dark' && theme.palette.mode === 'light') {
+    if (skin === "semi-dark" && theme.palette.mode === "light") {
       return {
         backgroundColor: theme.palette.customColors.darkBg
       }
-    } else if (skin === 'semi-dark' && theme.palette.mode === 'dark') {
+    } else if (skin === "semi-dark" && theme.palette.mode === "dark") {
       return {
         backgroundColor: theme.palette.customColors.lightBg
       }
@@ -118,7 +120,7 @@ const Drawer = (props: Props) => {
   return (
     <SwipeableDrawer
       className='layout-vertical-nav'
-      variant={hidden ? 'temporary' : 'permanent'}
+      variant={hidden ? "temporary" : "permanent"}
       {...(hidden ? { ...MobileDrawerProps } : { ...DesktopDrawerProps })}
       sx={{
         width: navCollapsed ? collapsedNavWidth : navWidth
@@ -129,7 +131,10 @@ const Drawer = (props: Props) => {
           ...drawerBgColor(),
           width: navCollapsed && !navHover ? collapsedNavWidth : navWidth,
           ...(!hidden && navCollapsed && navHover ? { boxShadow: 10 } : {}),
-          borderRight: navigationBorderWidth === 0 ? 0 : `${navigationBorderWidth}px solid ${theme.palette.divider}`
+          borderRight:
+            navigationBorderWidth === 0
+              ? 0
+              : `${navigationBorderWidth}px solid ${theme.palette.divider}`
         }
       }}
     >

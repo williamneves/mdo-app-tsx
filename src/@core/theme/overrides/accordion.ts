@@ -1,23 +1,23 @@
 // ** MUI Imports
-import { Theme } from '@mui/material/styles'
+import { Theme } from "@mui/material/styles"
 
 const Accordion = (theme: Theme) => {
   return {
     MuiAccordion: {
       styleOverrides: {
         root: {
-          '&:first-of-type': {
+          "&:first-of-type": {
             borderTopLeftRadius: 8,
             borderTopRightRadius: 8
           },
-          '&:last-of-type': {
+          "&:last-of-type": {
             borderBottomLeftRadius: 8,
             borderBottomRightRadius: 8
           },
-          '&.Mui-disabled': {
+          "&.Mui-disabled": {
             backgroundColor: `rgba(${theme.palette.customColors.main}, 0.12)`
           },
-          '&.Mui-expanded': {
+          "&.Mui-expanded": {
             boxShadow: theme.shadows[3]
           }
         }
@@ -27,8 +27,8 @@ const Accordion = (theme: Theme) => {
       styleOverrides: {
         root: {
           padding: `0 ${theme.spacing(5)}`,
-          '& + .MuiCollapse-root': {
-            '& .MuiAccordionDetails-root:first-of-type': {
+          "& + .MuiCollapse-root": {
+            "& .MuiAccordionDetails-root:first-of-type": {
               paddingTop: 0
             }
           }
@@ -42,7 +42,7 @@ const Accordion = (theme: Theme) => {
       styleOverrides: {
         root: {
           padding: theme.spacing(5),
-          '& + .MuiAccordionDetails-root': {
+          "& + .MuiAccordionDetails-root": {
             paddingTop: 0
           }
         }

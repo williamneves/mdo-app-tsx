@@ -1,11 +1,22 @@
-import { SanityDefaultObject, SanityDefaultReference } from "./SanityDefaultInterfaces"
+import {
+  SanityDefaultObject,
+  SanityDefaultReference
+} from "./SanityDefaultInterfaces"
 import { Moment } from "moment"
 import Store from "./Store"
 import User from "./User"
 import Goal from "./Goal"
 
 export interface IBonusEntries {
-  type: "sales" | "clientsTaken" | "appointmentsCreated" | "shareBonus" | "managerBonus" | "others" | "healthCare" | "generalDiscount"
+  type:
+    | "sales"
+    | "clientsTaken"
+    | "appointmentsCreated"
+    | "shareBonus"
+    | "managerBonus"
+    | "others"
+    | "healthCare"
+    | "generalDiscount"
   description: string
   operation: "add" | "subtract"
   value: number
@@ -16,7 +27,7 @@ export interface IBOnusRange {
   dateEnd: Date | Moment
 }
 
-export type TBonusPaymentType = "cash" | "points" | "others";
+export type TBonusPaymentType = "cash" | "points" | "others"
 
 export default interface IBonus extends Partial<SanityDefaultObject> {
   inactive?: boolean

@@ -1,11 +1,11 @@
 // ** React Imports
-import { ReactNode, useContext } from 'react'
+import { ReactNode, useContext } from "react"
 
 // ** Component Imports
-import { AbilityContext } from 'src/layouts/components/acl/Can'
+import { AbilityContext } from "src/layouts/components/acl/Can"
 
 // ** Types
-import { NavGroup, NavLink } from 'src/@core/layouts/types'
+import { NavGroup, NavLink } from "src/@core/layouts/types"
 
 interface Props {
   navGroup?: NavGroup
@@ -30,13 +30,16 @@ const CanViewNavGroup = (props: Props) => {
   }
 
   const canViewMenuGroup = (item: NavGroup) => {
-    const hasAnyVisibleChild = item.children && checkForVisibleChild(item.children)
+    const hasAnyVisibleChild =
+      item.children && checkForVisibleChild(item.children)
 
     if (!(item.action && item.subject)) {
       return hasAnyVisibleChild
     }
 
-    return ability && ability.can(item.action, item.subject) && hasAnyVisibleChild
+    return (
+      ability && ability.can(item.action, item.subject) && hasAnyVisibleChild
+    )
   }
 
   return navGroup && canViewMenuGroup(navGroup) ? <>{children}</> : null

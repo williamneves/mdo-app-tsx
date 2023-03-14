@@ -1,25 +1,24 @@
 // ** React Imports
-import { ReactNode, useState } from 'react'
+import { ReactNode, useState } from "react"
 
 // ** Next Imports
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router"
 
 // ** Types
-import type { ACLObj, AppAbility } from 'src/configs/acl'
+import type { ACLObj, AppAbility } from "src/configs/acl"
 
 // ** Context Imports
-import { AbilityContext } from 'src/layouts/components/acl/Can'
+import { AbilityContext } from "src/layouts/components/acl/Can"
 
 // ** Config Import
-import { buildAbilityFor } from 'src/configs/acl'
+import { buildAbilityFor } from "src/configs/acl"
 
 // ** Component Import
-import NotAuthorized from 'src/pages/401'
-import BlankLayout from 'src/@core/layouts/BlankLayout'
+import NotAuthorized from "src/pages/401"
+import BlankLayout from "src/@core/layouts/BlankLayout"
 
 // ** Hooks
-import { useAuth } from 'src/hooks/useAuth'
-
+import { useAuth } from "src/hooks/useAuth"
 
 interface AclGuardProps {
   children: ReactNode
@@ -38,7 +37,12 @@ const AclGuard = (props: AclGuardProps) => {
   const router = useRouter()
 
   // If guestGuard is true and user is not logged in or its an error page, render the page without checking access
-  if (guestGuard || router.route === '/404' || router.route === '/500' || router.route === '/') {
+  if (
+    guestGuard ||
+    router.route === "/404" ||
+    router.route === "/500" ||
+    router.route === "/"
+  ) {
     return <>{children}</>
   }
 
@@ -49,7 +53,11 @@ const AclGuard = (props: AclGuardProps) => {
 
   // Check the access of current user and render pages
   if (ability && ability.can(aclAbilities.action, aclAbilities.subject)) {
-    return <AbilityContext.Provider value={ability}>{children}</AbilityContext.Provider>
+    return (
+      <AbilityContext.Provider value={ability}>
+        {children}
+      </AbilityContext.Provider>
+    )
   }
 
   // Render Not Authorized component if the current user has limited access

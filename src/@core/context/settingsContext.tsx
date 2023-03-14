@@ -1,14 +1,21 @@
 // ** React Imports
-import { createContext, useState, ReactNode, useEffect } from 'react'
+import { createContext, useState, ReactNode, useEffect } from "react"
 
 // ** MUI Imports
-import { PaletteMode, Direction } from '@mui/material'
+import { PaletteMode, Direction } from "@mui/material"
 
 // ** ThemeConfig Import
-import themeConfig from 'src/configs/themeConfig'
+import themeConfig from "src/configs/themeConfig"
 
 // ** Types Import
-import { Skin, AppBar, Footer, ThemeColor, ContentWidth, VerticalNavToggle } from 'src/@core/layouts/types'
+import {
+  Skin,
+  AppBar,
+  Footer,
+  ThemeColor,
+  ContentWidth,
+  VerticalNavToggle
+} from "src/@core/layouts/types"
 
 export type Settings = {
   skin: Skin
@@ -21,10 +28,16 @@ export type Settings = {
   navCollapsed: boolean
   themeColor: ThemeColor
   contentWidth: ContentWidth
-  layout?: 'vertical' | 'horizontal'
-  lastLayout?: 'vertical' | 'horizontal'
+  layout?: "vertical" | "horizontal"
+  lastLayout?: "vertical" | "horizontal"
   verticalNavToggleType: VerticalNavToggle
-  toastPosition?: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
+  toastPosition?:
+    | "top-left"
+    | "top-center"
+    | "top-right"
+    | "bottom-left"
+    | "bottom-center"
+    | "bottom-right"
 }
 
 export type PageSpecificSettings = {
@@ -38,10 +51,16 @@ export type PageSpecificSettings = {
   navCollapsed?: boolean
   themeColor?: ThemeColor
   contentWidth?: ContentWidth
-  layout?: 'vertical' | 'horizontal'
-  lastLayout?: 'vertical' | 'horizontal'
+  layout?: "vertical" | "horizontal"
+  lastLayout?: "vertical" | "horizontal"
   verticalNavToggleType?: VerticalNavToggle
-  toastPosition?: 'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
+  toastPosition?:
+    | "top-left"
+    | "top-center"
+    | "top-right"
+    | "bottom-left"
+    | "bottom-center"
+    | "bottom-right"
 }
 export type SettingsContextValue = {
   settings: Settings
@@ -54,7 +73,7 @@ interface SettingsProviderProps {
 }
 
 const initialSettings: Settings = {
-  themeColor: 'primary',
+  themeColor: "primary",
   mode: themeConfig.mode,
   footer: themeConfig.footer,
   layout: themeConfig.layout,
@@ -66,8 +85,14 @@ const initialSettings: Settings = {
   contentWidth: themeConfig.contentWidth,
   toastPosition: themeConfig.toastPosition,
   verticalNavToggleType: themeConfig.verticalNavToggleType,
-  skin: themeConfig.layout === 'horizontal' && themeConfig.skin === 'semi-dark' ? 'default' : themeConfig.skin,
-  appBar: themeConfig.layout === 'horizontal' && themeConfig.appBar === 'hidden' ? 'fixed' : themeConfig.appBar
+  skin:
+    themeConfig.layout === "horizontal" && themeConfig.skin === "semi-dark"
+      ? "default"
+      : themeConfig.skin,
+  appBar:
+    themeConfig.layout === "horizontal" && themeConfig.appBar === "hidden"
+      ? "fixed"
+      : themeConfig.appBar
 }
 
 const staticSettings = {
@@ -83,7 +108,7 @@ const restoreSettings = (): Settings | null => {
   let settings = null
 
   try {
-    const storedData: string | null = window.localStorage.getItem('settings')
+    const storedData: string | null = window.localStorage.getItem("settings")
 
     if (storedData) {
       settings = { ...JSON.parse(storedData), ...staticSettings }
@@ -107,7 +132,7 @@ const storeSettings = (settings: Settings) => {
   delete initSettings.navHidden
   delete initSettings.lastLayout
   delete initSettings.toastPosition
-  window.localStorage.setItem('settings', JSON.stringify(initSettings))
+  window.localStorage.setItem("settings", JSON.stringify(initSettings))
 }
 
 // ** Create Context
@@ -116,7 +141,10 @@ export const SettingsContext = createContext<SettingsContextValue>({
   settings: initialSettings
 })
 
-export const SettingsProvider = ({ children, pageSettings }: SettingsProviderProps) => {
+export const SettingsProvider = ({
+  children,
+  pageSettings
+}: SettingsProviderProps) => {
   // ** State
   const [settings, setSettings] = useState<Settings>({ ...initialSettings })
 
@@ -134,11 +162,11 @@ export const SettingsProvider = ({ children, pageSettings }: SettingsProviderPro
   }, [pageSettings])
 
   useEffect(() => {
-    if (settings.layout === 'horizontal' && settings.skin === 'semi-dark') {
-      saveSettings({ ...settings, skin: 'default' })
+    if (settings.layout === "horizontal" && settings.skin === "semi-dark") {
+      saveSettings({ ...settings, skin: "default" })
     }
-    if (settings.layout === 'horizontal' && settings.appBar === 'hidden') {
-      saveSettings({ ...settings, appBar: 'fixed' })
+    if (settings.layout === "horizontal" && settings.appBar === "hidden") {
+      saveSettings({ ...settings, appBar: "fixed" })
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -149,7 +177,11 @@ export const SettingsProvider = ({ children, pageSettings }: SettingsProviderPro
     setSettings(updatedSettings)
   }
 
-  return <SettingsContext.Provider value={{ settings, saveSettings }}>{children}</SettingsContext.Provider>
+  return (
+    <SettingsContext.Provider value={{ settings, saveSettings }}>
+      {children}
+    </SettingsContext.Provider>
+  )
 }
 
 export const SettingsConsumer = SettingsContext.Consumer

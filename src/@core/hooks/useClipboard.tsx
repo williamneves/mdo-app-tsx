@@ -1,8 +1,8 @@
 // ** React Imports
-import { RefObject, useCallback, useRef } from 'react'
+import { RefObject, useCallback, useRef } from "react"
 
 // ** Third Party Imports
-import copy from 'clipboard-copy'
+import copy from "clipboard-copy"
 
 interface UseClipboardOptions {
   copiedTimeout?: number
@@ -17,8 +17,10 @@ interface ClipboardAPI {
   readonly target: RefObject<any>
 }
 
-const isInputLike = (node: any): node is HTMLInputElement | HTMLTextAreaElement => {
-  return node && (node.nodeName === 'TEXTAREA' || node.nodeName === 'INPUT')
+const isInputLike = (
+  node: any
+): node is HTMLInputElement | HTMLTextAreaElement => {
+  return node && (node.nodeName === "TEXTAREA" || node.nodeName === "INPUT")
 }
 
 const useClipboard = (options: UseClipboardOptions = {}): ClipboardAPI => {
@@ -48,7 +50,7 @@ const useClipboard = (options: UseClipboardOptions = {}): ClipboardAPI => {
   }
 
   const copyHandler = useCallback((text?: string | HTMLElement) => {
-    if (typeof text === 'string') {
+    if (typeof text === "string") {
       clipboardCopy(text)
     } else if (targetRef.current) {
       clipboardCopy(targetRef.current.value)

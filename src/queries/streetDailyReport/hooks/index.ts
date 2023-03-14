@@ -1,11 +1,11 @@
-import { dbClient } from "../../../configs/sanityConfig";
-import StreetDailyReport from "src/interfaces/StreetDailyReport";
-import moment from "moment";
+import { dbClient } from "../../../configs/sanityConfig"
+import StreetDailyReport from "src/interfaces/StreetDailyReport"
+import moment from "moment"
 
 export const createDailyReport = async (data: StreetDailyReport) => {
-  console.log("data", data);
+  console.log("data", data)
 
-  if(!data.reportDate || !data.reporter)
+  if (!data.reportDate || !data.reporter)
     throw new Error("Missing required fields")
 
   let reportObject = {
@@ -15,7 +15,8 @@ export const createDailyReport = async (data: StreetDailyReport) => {
     clientsRegistered: (data.clientsRegistered && data.clientsRegistered) || [],
     activitiesReport: (data.activitiesReport && data.activitiesReport) || "",
     reportDate: moment(data.reportDate).format("YYYY-MM-DD"),
-    scheduledAppointments: (data.scheduledAppointments && data.scheduledAppointments) || 0,
+    scheduledAppointments:
+      (data.scheduledAppointments && data.scheduledAppointments) || 0,
 
     store: {
       // required
@@ -27,19 +28,21 @@ export const createDailyReport = async (data: StreetDailyReport) => {
       _type: "reference",
       _ref: data.reporter._id
     }
-  };
-  console.log("reportObject", reportObject);
+  }
+  console.log("reportObject", reportObject)
   try {
-    return await dbClient.create(reportObject);
+    return await dbClient.create(reportObject)
   } catch (err) {
-    throw err;
+    throw err
   }
 }
 
-export const getClientsByReporter = async (reporterID: string, reportDate: string) => {
-
-  console.log("reporterID", reporterID);
-  console.log("reportDate", reportDate);
+export const getClientsByReporter = async (
+  reporterID: string,
+  reportDate: string
+) => {
+  console.log("reporterID", reporterID)
+  console.log("reportDate", reportDate)
 
   const query = `
   *[
@@ -57,14 +60,14 @@ export const getClientsByReporter = async (reporterID: string, reportDate: strin
     _createdAt,
   createdBy->
 }
-  `;
+  `
 
   try {
-    return await dbClient.fetch(query);
+    return await dbClient.fetch(query)
   } catch (err) {
-    throw err;
+    throw err
   }
-};
+}
 
 export const getAllDailyReports = async () => {
   const query = `
@@ -79,16 +82,20 @@ export const getAllDailyReports = async () => {
     store->,
     reporter->,
   }
-  `;
+  `
 
   try {
-    return await dbClient.fetch(query);
+    return await dbClient.fetch(query)
   } catch (err) {
-    throw err;
+    throw err
   }
 }
 
-export const changeAuditStatus = async (reportID: string, status: "approved" | "rejected", auditFeedBack: string) => {
+export const changeAuditStatus = async (
+  reportID: string,
+  status: "approved" | "rejected",
+  auditFeedBack: string
+) => {
   const query = `
   *[_type == "streetDailyReport" && _id == "${reportID}"]{
     _id,
@@ -101,14 +108,17 @@ export const changeAuditStatus = async (reportID: string, status: "approved" | "
     store->,
     reporter->,
   }
-  `;
+  `
 
   try {
-    const report = await dbClient.fetch(query);
+    const report = await dbClient.fetch(query)
     if (report.length > 0) {
-      return await dbClient.patch(report[0]._id).set({ auditStatus: status, auditFeedBack: auditFeedBack }).commit();
+      return await dbClient
+        .patch(report[0]._id)
+        .set({ auditStatus: status, auditFeedBack: auditFeedBack })
+        .commit()
     }
   } catch (err) {
-    throw err;
+    throw err
   }
 }

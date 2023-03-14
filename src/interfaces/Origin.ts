@@ -1,7 +1,7 @@
-import { SanityDefaultObject } from "src/interfaces/SanityDefaultInterfaces";
+import { SanityDefaultObject } from "src/interfaces/SanityDefaultInterfaces"
 
 export default interface Origin extends Partial<SanityDefaultObject> {
-  name: string;
-  inactive: boolean;
-  displayName: string;
+  name: string
+  inactive: boolean
+  displayName: string
 }

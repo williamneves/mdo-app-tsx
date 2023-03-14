@@ -1,5 +1,5 @@
 // ** MUI Imports
-import { Theme } from '@mui/material/styles'
+import { Theme } from "@mui/material/styles"
 
 const Table = (theme: Theme) => {
   return {
@@ -14,12 +14,12 @@ const Table = (theme: Theme) => {
     MuiTableHead: {
       styleOverrides: {
         root: {
-          textTransform: 'uppercase',
-          '& .MuiTableCell-head': {
+          textTransform: "uppercase",
+          "& .MuiTableCell-head": {
             fontWeight: 500,
-            fontSize: '0.75rem',
-            lineHeight: '1.959rem',
-            letterSpacing: '0.17px'
+            fontSize: "0.75rem",
+            lineHeight: "1.959rem",
+            letterSpacing: "0.17px"
           }
         }
       }
@@ -27,15 +27,16 @@ const Table = (theme: Theme) => {
     MuiTableBody: {
       styleOverrides: {
         root: {
-          '& .MuiTableCell-body': {
+          "& .MuiTableCell-body": {
             fontWeight: 400,
-            fontSize: '0.875rem',
-            lineHeight: '1.358rem',
-            letterSpacing: '0.15px',
-            '&:not(.MuiTableCell-sizeSmall):not(.MuiTableCell-paddingCheckbox):not(.MuiTableCell-paddingNone)': {
-              paddingTop: theme.spacing(4),
-              paddingBottom: theme.spacing(4)
-            }
+            fontSize: "0.875rem",
+            lineHeight: "1.358rem",
+            letterSpacing: "0.15px",
+            "&:not(.MuiTableCell-sizeSmall):not(.MuiTableCell-paddingCheckbox):not(.MuiTableCell-paddingNone)":
+              {
+                paddingTop: theme.spacing(4),
+                paddingBottom: theme.spacing(4)
+              }
           }
         }
       }
@@ -43,10 +44,11 @@ const Table = (theme: Theme) => {
     MuiTableRow: {
       styleOverrides: {
         root: {
-          '& .MuiTableCell-head:first-of-type, & .MuiTableCell-root:first-of-type ': {
-            paddingLeft: theme.spacing(5)
-          },
-          '& .MuiTableCell-head:last-child, & .MuiTableCell-root:last-child': {
+          "& .MuiTableCell-head:first-of-type, & .MuiTableCell-root:first-of-type ":
+            {
+              paddingLeft: theme.spacing(5)
+            },
+          "& .MuiTableCell-head:last-child, & .MuiTableCell-root:last-child": {
             paddingRight: theme.spacing(5)
           }
         }
@@ -56,8 +58,8 @@ const Table = (theme: Theme) => {
       styleOverrides: {
         root: {
           borderBottom: `1px solid ${theme.palette.divider}`,
-          '& .MuiButton-root': {
-            textTransform: 'uppercase',
+          "& .MuiButton-root": {
+            textTransform: "uppercase",
             color: theme.palette.text.secondary
           }
         },
@@ -69,7 +71,7 @@ const Table = (theme: Theme) => {
     MuiTablePagination: {
       styleOverrides: {
         root: {
-          '& .MuiIconButton-root.Mui-disabled': {
+          "& .MuiIconButton-root.Mui-disabled": {
             color: theme.palette.action.active
           }
         },

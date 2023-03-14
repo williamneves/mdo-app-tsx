@@ -2,8 +2,8 @@ export default {
   MuiBreadcrumbs: {
     styleOverrides: {
       li: {
-        '& > .MuiLink-root': {
-          textDecoration: 'none'
+        "& > .MuiLink-root": {
+          textDecoration: "none"
         }
       }
     }

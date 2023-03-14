@@ -1,33 +1,34 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent } from "react"
 import {
   Grid,
   Card,
   CardHeader,
-  CardContent, Button,
-  Divider, TextField,
+  CardContent,
+  Button,
+  Divider,
+  TextField,
   MenuItem
-} from '@mui/material';
-import ManageSearchTwoToneIcon from '@mui/icons-material/ManageSearchTwoTone';
-import { monthsOfTheYear, years } from 'src/pages/manager/bonus/lancar';
-import {IMonthsOfTheYear} from 'src/@types';
+} from "@mui/material"
+import ManageSearchTwoToneIcon from "@mui/icons-material/ManageSearchTwoTone"
+import { monthsOfTheYear, years } from "src/pages/manager/bonus/lancar"
+import { IMonthsOfTheYear } from "src/@types"
 
-import Goal from 'interfaces/Goal';
+import Goal from "interfaces/Goal"
 
 interface SelectPeriodAndGoalProps {
-  selectedGoalId?: string;
-  setSelectedGoalId: (goal: string) => void;
-  selectedMonth: {label: IMonthsOfTheYear, value: number};
-  setSelectedMonth: (month: { label: IMonthsOfTheYear, value: number }) => void;
-  selectedYear: number;
-  setSelectedYear: (year: number) => void;
-  goals: Goal[];
-  selectDisabled: boolean;
-  blockSelectGoal: boolean;
-  setBlockSelectGoal: (block: boolean) => void;
+  selectedGoalId?: string
+  setSelectedGoalId: (goal: string) => void
+  selectedMonth: { label: IMonthsOfTheYear; value: number }
+  setSelectedMonth: (month: { label: IMonthsOfTheYear; value: number }) => void
+  selectedYear: number
+  setSelectedYear: (year: number) => void
+  goals: Goal[]
+  selectDisabled: boolean
+  blockSelectGoal: boolean
+  setBlockSelectGoal: (block: boolean) => void
 }
 
 export function SelectPeriodAndGoal(props: SelectPeriodAndGoalProps) {
-
   // ** Props
   const {
     selectedGoalId,
@@ -40,14 +41,15 @@ export function SelectPeriodAndGoal(props: SelectPeriodAndGoalProps) {
     selectDisabled,
     blockSelectGoal,
     setBlockSelectGoal
-  } = props;
+  } = props
 
   return (
     <Grid item xs={12}>
       <Card>
         <CardHeader
           title='Selecionar Período e Meta'
-          subheader='Ao clicar selecionar, uma lista com os vendedores e alguns outros dados serão exibidos.' />
+          subheader='Ao clicar selecionar, uma lista com os vendedores e alguns outros dados serão exibidos.'
+        />
         <Divider />
         <CardContent>
           <Grid container spacing={2}>
@@ -56,21 +58,27 @@ export function SelectPeriodAndGoal(props: SelectPeriodAndGoalProps) {
               xs={12}
               md={6}
               sx={{
-                display: 'flex',
-                alignItems: 'center',
-              }}>
+                display: "flex",
+                alignItems: "center"
+              }}
+            >
               <Grid container item xs={12} spacing={3}>
                 <Grid item xs={9} md={8}>
                   <TextField
                     select
                     value={selectedMonth.value}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setSelectedMonth(monthsOfTheYear[parseInt(e.target.value)])}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setSelectedMonth(
+                        monthsOfTheYear[parseInt(e.target.value)]
+                      )
+                    }
                     variant='outlined'
                     label='Mês'
                     placeholder='Selecione o mês'
                     disabled={blockSelectGoal}
-                    fullWidth>
-                    {monthsOfTheYear.map((month) => (
+                    fullWidth
+                  >
+                    {monthsOfTheYear.map(month => (
                       <MenuItem key={month.value} value={month.value}>
                         {month.label}
                       </MenuItem>
@@ -81,13 +89,16 @@ export function SelectPeriodAndGoal(props: SelectPeriodAndGoalProps) {
                   <TextField
                     select
                     value={selectedYear}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setSelectedYear(parseInt(e.target.value))}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setSelectedYear(parseInt(e.target.value))
+                    }
                     variant='outlined'
                     label='Ano'
                     placeholder='Selecione o ano'
                     disabled={blockSelectGoal}
-                    fullWidth>
-                    {years().map((year) => (
+                    fullWidth
+                  >
+                    {years().map(year => (
                       <MenuItem key={year} value={year}>
                         {year}
                       </MenuItem>
@@ -101,30 +112,35 @@ export function SelectPeriodAndGoal(props: SelectPeriodAndGoalProps) {
               xs={12}
               md={6}
               sx={{
-                display: 'flex',
-                alignItems: 'center',
-              }}>
+                display: "flex",
+                alignItems: "center"
+              }}
+            >
               <Grid
                 container
                 item
                 xs={12}
                 spacing={3}
                 sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                }}>
+                  display: "flex",
+                  alignItems: "center"
+                }}
+              >
                 <Grid item xs={12} md={8}>
                   <TextField
                     select
                     value={selectedGoalId}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => setSelectedGoalId(e.target.value)}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setSelectedGoalId(e.target.value)
+                    }
                     variant='outlined'
                     label='Meta'
                     placeholder='Selecione a meta'
                     disabled={blockSelectGoal}
-                    fullWidth>
+                    fullWidth
+                  >
                     {goals?.length ? (
-                      goals?.map((goal) => (
+                      goals?.map(goal => (
                         <MenuItem key={goal._id} value={goal._id}>
                           {goal.name}
                         </MenuItem>
@@ -142,10 +158,9 @@ export function SelectPeriodAndGoal(props: SelectPeriodAndGoalProps) {
                     size='large'
                     onClick={() => setBlockSelectGoal(!blockSelectGoal)}
                     disabled={selectDisabled}
-                    endIcon={<ManageSearchTwoToneIcon />}>
-                    {
-                      !blockSelectGoal ? 'Selecionar' : 'Alterar'
-                    }
+                    endIcon={<ManageSearchTwoToneIcon />}
+                  >
+                    {!blockSelectGoal ? "Selecionar" : "Alterar"}
                   </Button>
                 </Grid>
               </Grid>
@@ -154,5 +169,5 @@ export function SelectPeriodAndGoal(props: SelectPeriodAndGoalProps) {
         </CardContent>
       </Card>
     </Grid>
-  );
+  )
 }

@@ -11,8 +11,14 @@ export type IMonthsOfTheYear =
   | "Setembro"
   | "Outubro"
   | "Novembro"
-  | "Dezembro";
-
+  | "Dezembro"
 
 // Employee Role
-export type IEmployeeRoles = "admin" | "manager" | "coordinator" | "vendor" | "streetVendor" | "all" | null
+export type IEmployeeRoles =
+  | "admin"
+  | "manager"
+  | "coordinator"
+  | "vendor"
+  | "streetVendor"
+  | "all"
+  | null

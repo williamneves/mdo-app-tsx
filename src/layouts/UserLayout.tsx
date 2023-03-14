@@ -1,28 +1,28 @@
 // ** React Imports
-import { ReactNode } from 'react'
+import { ReactNode } from "react"
 
 // ** MUI Imports
-import { Theme } from '@mui/material/styles'
-import useMediaQuery from '@mui/material/useMediaQuery'
+import { Theme } from "@mui/material/styles"
+import useMediaQuery from "@mui/material/useMediaQuery"
 
 // ** Layout Imports
 // !Do not remove this Layout import
-import Layout from 'src/@core/layouts/Layout'
+import Layout from "src/@core/layouts/Layout"
 
 // ** Navigation Imports
-import VerticalNavItems from 'src/navigation/vertical'
-import HorizontalNavItems from 'src/navigation/horizontal'
+import VerticalNavItems from "src/navigation/vertical"
+import HorizontalNavItems from "src/navigation/horizontal"
 
 // ** Component Import
 // Uncomment the below line (according to the layout type) when using server-side menu
 // import ServerSideVerticalNavItems from './components/vertical/ServerSideNavItems'
 // import ServerSideHorizontalNavItems from './components/horizontal/ServerSideNavItems'
 
-import VerticalAppBarContent from './components/vertical/AppBarContent'
-import HorizontalAppBarContent from './components/horizontal/AppBarContent'
+import VerticalAppBarContent from "./components/vertical/AppBarContent"
+import HorizontalAppBarContent from "./components/horizontal/AppBarContent"
 
 // ** Hook Import
-import { useSettings } from 'src/@core/hooks/useSettings'
+import { useSettings } from "src/@core/hooks/useSettings"
 
 interface Props {
   children: ReactNode
@@ -40,14 +40,14 @@ const UserLayout = ({ children }: Props) => {
    *  to know more about what values can be passed to this hook.
    *  ! Do not change this value unless you know what you are doing. It can break the template.
    */
-  const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down('lg'))
+  const hidden = useMediaQuery((theme: Theme) => theme.breakpoints.down("lg"))
 
   return (
     <Layout
       hidden={hidden}
       settings={settings}
       saveSettings={saveSettings}
-      {...(settings.layout === 'horizontal'
+      {...(settings.layout === "horizontal"
         ? {
             // ** Navigation Items
             horizontalNavItems: HorizontalNavItems(),
@@ -57,7 +57,10 @@ const UserLayout = ({ children }: Props) => {
 
             // ** AppBar Content
             horizontalAppBarContent: () => (
-              <HorizontalAppBarContent settings={settings} saveSettings={saveSettings} />
+              <HorizontalAppBarContent
+                settings={settings}
+                saveSettings={saveSettings}
+              />
             )
           }
         : {
@@ -79,7 +82,6 @@ const UserLayout = ({ children }: Props) => {
           })}
     >
       {children}
-      
     </Layout>
   )
 }

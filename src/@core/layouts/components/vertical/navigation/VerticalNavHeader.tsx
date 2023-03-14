@@ -1,23 +1,23 @@
 // ** React Import
-import { ReactNode } from 'react'
+import { ReactNode } from "react"
 
 // ** Next Import
-import Link from 'next/link'
+import Link from "next/link"
 
 // ** MUI Imports
-import IconButton from '@mui/material/IconButton'
-import Box, { BoxProps } from '@mui/material/Box'
-import { styled, useTheme } from '@mui/material/styles'
-import Typography, { TypographyProps } from '@mui/material/Typography'
+import IconButton from "@mui/material/IconButton"
+import Box, { BoxProps } from "@mui/material/Box"
+import { styled, useTheme } from "@mui/material/styles"
+import Typography, { TypographyProps } from "@mui/material/Typography"
 
 // ** Icons
-import Close from 'mdi-material-ui/Close'
+import Close from "mdi-material-ui/Close"
 
 // ** Type Import
-import { Settings } from 'src/@core/context/settingsContext'
+import { Settings } from "src/@core/context/settingsContext"
 
 // ** Configs
-import themeConfig from 'src/configs/themeConfig'
+import themeConfig from "src/configs/themeConfig"
 
 interface Props {
   hidden: boolean
@@ -34,24 +34,24 @@ interface Props {
 
 // ** Styled Components
 const MenuHeaderWrapper = styled(Box)<BoxProps>(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
+  display: "flex",
+  alignItems: "center",
   paddingRight: theme.spacing(4),
-  justifyContent: 'space-between',
-  transition: 'padding .25s ease-in-out',
+  justifyContent: "space-between",
+  transition: "padding .25s ease-in-out",
   minHeight: theme.mixins.toolbar.minHeight
 }))
 
 const HeaderTitle = styled(Typography)<TypographyProps>({
   fontWeight: 700,
   lineHeight: 1.2,
-  transition: 'opacity .25s ease-in-out, margin .25s ease-in-out'
+  transition: "opacity .25s ease-in-out, margin .25s ease-in-out"
 })
 
-const StyledLink = styled('a')({
-  display: 'flex',
-  alignItems: 'center',
-  textDecoration: 'none'
+const StyledLink = styled("a")({
+  display: "flex",
+  alignItems: "center",
+  textDecoration: "none"
 })
 
 const VerticalNavHeader = (props: Props) => {
@@ -72,21 +72,22 @@ const VerticalNavHeader = (props: Props) => {
   // ** Hooks & Vars
   const theme = useTheme()
   const { skin, direction, navCollapsed } = settings
-  const menuCollapsedStyles = navCollapsed && !navHover ? { opacity: 0 } : { opacity: 1 }
+  const menuCollapsedStyles =
+    navCollapsed && !navHover ? { opacity: 0 } : { opacity: 1 }
 
   const svgFillSecondary = () => {
-    if (skin === 'semi-dark' && theme.palette.mode === 'light') {
+    if (skin === "semi-dark" && theme.palette.mode === "light") {
       return `rgba(${theme.palette.customColors.dark}, 0.68)`
-    } else if (skin === 'semi-dark' && theme.palette.mode === 'dark') {
+    } else if (skin === "semi-dark" && theme.palette.mode === "dark") {
       return `rgba(${theme.palette.customColors.light}, 0.68)`
     } else {
       return theme.palette.text.secondary
     }
   }
   const svgFillDisabled = () => {
-    if (skin === 'semi-dark' && theme.palette.mode === 'light') {
+    if (skin === "semi-dark" && theme.palette.mode === "light") {
       return `rgba(${theme.palette.customColors.dark}, 0.38)`
-    } else if (skin === 'semi-dark' && theme.palette.mode === 'dark') {
+    } else if (skin === "semi-dark" && theme.palette.mode === "dark") {
       return `rgba(${theme.palette.customColors.light}, 0.38)`
     } else {
       return theme.palette.text.disabled
@@ -107,7 +108,7 @@ const VerticalNavHeader = (props: Props) => {
 
   const svgRotationDeg = () => {
     if (navCollapsed) {
-      if (direction === 'rtl') {
+      if (direction === "rtl") {
         if (navHover) {
           return 0
         } else {
@@ -121,7 +122,7 @@ const VerticalNavHeader = (props: Props) => {
         }
       }
     } else {
-      if (direction === 'rtl') {
+      if (direction === "rtl") {
         return 180
       } else {
         return 0
@@ -130,13 +131,22 @@ const VerticalNavHeader = (props: Props) => {
   }
 
   return (
-    <MenuHeaderWrapper className='nav-header' sx={{ pl: menuHeaderPaddingLeft() }}>
+    <MenuHeaderWrapper
+      className='nav-header'
+      sx={{ pl: menuHeaderPaddingLeft() }}
+    >
       {userVerticalNavMenuBranding ? (
         userVerticalNavMenuBranding(props)
       ) : (
         <Link href='/' passHref>
           <StyledLink>
-            <svg width={40} fill='none' height={22} viewBox='0 0 268 150' xmlns='http://www.w3.org/2000/svg'>
+            <svg
+              width={40}
+              fill='none'
+              height={22}
+              viewBox='0 0 268 150'
+              xmlns='http://www.w3.org/2000/svg'
+            >
               <rect
                 rx='25.1443'
                 width='50.2886'
@@ -206,7 +216,13 @@ const VerticalNavHeader = (props: Props) => {
                 </linearGradient>
               </defs>
             </svg>
-            <HeaderTitle variant='h6' sx={{ ...menuCollapsedStyles, ...(navCollapsed && !navHover ? {} : { ml: 2 }) }}>
+            <HeaderTitle
+              variant='h6'
+              sx={{
+                ...menuCollapsedStyles,
+                ...(navCollapsed && !navHover ? {} : { ml: 2 })
+              }}
+            >
               {themeConfig.templateName}
             </HeaderTitle>
           </StyledLink>
@@ -218,7 +234,7 @@ const VerticalNavHeader = (props: Props) => {
           disableRipple
           disableFocusRipple
           onClick={toggleNavVisibility}
-          sx={{ p: 0, backgroundColor: 'transparent !important' }}
+          sx={{ p: 0, backgroundColor: "transparent !important" }}
         >
           <Close fontSize='small' />
         </IconButton>
@@ -226,8 +242,14 @@ const VerticalNavHeader = (props: Props) => {
         <IconButton
           disableRipple
           disableFocusRipple
-          onClick={() => saveSettings({ ...settings, navCollapsed: !navCollapsed })}
-          sx={{ p: 0, color: 'text.primary', backgroundColor: 'transparent !important' }}
+          onClick={() =>
+            saveSettings({ ...settings, navCollapsed: !navCollapsed })
+          }
+          sx={{
+            p: 0,
+            color: "text.primary",
+            backgroundColor: "transparent !important"
+          }}
         >
           {userMenuLockedIcon && userMenuUnlockedIcon ? (
             navCollapsed ? (
@@ -245,7 +267,7 @@ const VerticalNavHeader = (props: Props) => {
               xmlns='http://www.w3.org/2000/svg'
               sx={{
                 transform: `rotate(${svgRotationDeg()}deg)`,
-                transition: 'transform .25s ease-in-out .35s'
+                transition: "transform .25s ease-in-out .35s"
               }}
             >
               <path
