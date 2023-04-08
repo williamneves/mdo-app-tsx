@@ -69,7 +69,7 @@ const AuthProvider = ({children}: Props) => {
   // ** Hooks
   const router = useRouter()
 
-  const getLocalStorageUser = async (authUID: string): Promise<AuthUser> => {
+const getLocalStorageUser = async (authUID: string): Promise<AuthUser> => {
     try {
       const localUser = await ls.get("b3_userData")
       if (

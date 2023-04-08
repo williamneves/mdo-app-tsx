@@ -136,7 +136,7 @@ const LoginPage = () => {
     control,
     setError,
     handleSubmit,
-    formState: {errors}
+    formState: {errors, isValid}
   } = useForm({
     defaultValues,
     mode: "onBlur",
@@ -337,6 +337,7 @@ const LoginPage = () => {
                   render={({field: {value, onChange, onBlur}}) => (
                     <TextField
                       autoFocus
+                      id={"email"}
                       label="Email"
                       value={value}
                       onBlur={onBlur}
@@ -347,7 +348,10 @@ const LoginPage = () => {
                   )}
                 />
                 {errors.email && (
-                  <FormHelperText sx={{color: "error.main"}}>
+                  <FormHelperText
+                    id="email-helper-text"
+                    sx={{color: "error.main"}}
+                  >
                     {errors.email.message}
                   </FormHelperText>
                 )}
@@ -365,11 +369,11 @@ const LoginPage = () => {
                   rules={{required: true}}
                   render={({field: {value, onChange, onBlur}}) => (
                     <OutlinedInput
+                      id="password"
                       value={value}
                       onBlur={onBlur}
                       label="Password"
                       onChange={onChange}
-                      id="auth-login-v2-password"
                       error={Boolean(errors.password)}
                       type={showPassword ? "text" : "password"}
                       endAdornment={
@@ -387,7 +391,10 @@ const LoginPage = () => {
                   )}
                 />
                 {errors.password && (
-                  <FormHelperText sx={{color: "error.main"}} id="">
+                  <FormHelperText
+                    sx={{color: "error.main"}}
+                    id="password-helper-text"
+                  >
                     {errors.password.message}
                   </FormHelperText>
                 )}
@@ -420,10 +427,17 @@ const LoginPage = () => {
               </Box>
               <Button
                 fullWidth
+                id="login-button"
+                disabled={
+                  (Boolean(errors?.email) || Boolean(errors?.password)) &&
+                  errors?.email?.message !== "Email ou Senha inválida"
+                }
                 size="large"
                 type="submit"
                 variant="contained"
-                sx={{mb: 7}}
+                sx={{
+                  mb: 7
+                }}
               >
                 Entrar
               </Button>
@@ -449,7 +463,7 @@ const LoginPage = () => {
                   </Link>
                 </Typography>
               </Box>
-              <Divider sx={{mt: 5, mb: 7.5, "& .MuiDivider-wrapper": {px: 4}}}>
+              {/* <Divider sx={{mt: 5, mb: 7.5, "& .MuiDivider-wrapper": {px: 4}}}>
                 ou
               </Divider>
               <Box
@@ -461,13 +475,14 @@ const LoginPage = () => {
               >
                 <Link href="/" passHref>
                   <IconButton
+                    id="google-login-button"
                     component="a"
                     onClick={(e: MouseEvent<HTMLElement>) => e.preventDefault()}
                   >
                     <Google sx={{color: "#db4437"}} />
                   </IconButton>
                 </Link>
-              </Box>
+              </Box> */}
             </form>
           </BoxWrapper>
         </Box>
