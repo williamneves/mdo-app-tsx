@@ -43,7 +43,18 @@ export default {
 			name: 'store',
 			type: 'reference',
 			to: [{ type: 'store' }],
-		}
+		},
+		{
+			title: 'stores',
+			name: 'stores',
+			type: 'array',
+			of: [
+				{
+					type: 'reference',
+					to: [{ type: 'store' }],
+				}
+			]
+		},
 	],
 	preview: {
 		select: {

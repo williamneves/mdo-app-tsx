@@ -45,6 +45,17 @@ export default {
 			],
 		},
 		{
+			title: 'stores',
+			name: 'stores',
+			type: 'array',
+			of: [
+				{
+					type: 'reference',
+					to: [ { type: 'store' } ],
+				}
+			]
+		},
+		{
 			title: 'Bank Account',
 			name: 'bankAccount',
 			type: 'reference',
