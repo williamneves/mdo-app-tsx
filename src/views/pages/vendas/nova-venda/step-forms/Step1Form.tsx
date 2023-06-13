@@ -297,7 +297,7 @@ const Step1Form = (props: Step1FormProps) => {
               optionLabel={"name"}
               errors={errorsStep1}
               options={allClients}
-              disabled={allClients?.length === 1}
+              // disabled={allClients?.length === 1}
               filterKeys={
                 allClients?.length !== 0 && getAllObjectKeys(allClients)
               }
